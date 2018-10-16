@@ -1537,4 +1537,5 @@
     <string name="RemindDayAt">\'Ricorda il\' d MMM \'alle\' HH:mm</string>
     <string name="RemindDayYearAt">\'Ricorda il\' d MMM yyyy \'alle\' HH:mm</string>
     <string name="BotsMenuTitle">Menu</string>
+    <string name="AppIconAdaptive">Adattiva</string>
 </resources>
