@@ -1675,6 +1675,9 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
                 ellipsize = true;
             }
         }
+        if (titleId == R.string.ConnectingToProxy) {
+            textToSet = "...";
+        }
         titleOverlayShown = title != null;
         if ((textToSet != null && titleTextView[0] == null) || getMeasuredWidth() == 0 || (titleTextView[0] != null && titleTextView[0].getVisibility() != View.VISIBLE)) {
             createTitleTextView(0);
