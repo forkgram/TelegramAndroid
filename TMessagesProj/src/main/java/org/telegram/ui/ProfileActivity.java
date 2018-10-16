@@ -11617,6 +11617,20 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         if (avatarContainer == null || nameTextView == null || getParentActivity() == null) {
             return;
         }
+        String onlineTextOverride;
+        int currentConnectionState = getConnectionsManager().getConnectionState();
+        if (currentConnectionState == ConnectionsManager.ConnectionStateWaitingForNetwork) {
+            onlineTextOverride = LocaleController.getString(R.string.WaitingForNetwork);
+        } else if (currentConnectionState == ConnectionsManager.ConnectionStateConnecting) {
+            onlineTextOverride = LocaleController.getString(R.string.Connecting);
+        } else if (currentConnectionState == ConnectionsManager.ConnectionStateUpdating) {
+            onlineTextOverride = LocaleController.getString(R.string.Updating);
+        } else if (currentConnectionState == ConnectionsManager.ConnectionStateConnectingToProxy) {
+            onlineTextOverride = "...";
+        } else {
+            onlineTextOverride = null;
+        }
+
         BaseFragment prevFragment = null;
         if (parentLayout != null && parentLayout.getFragmentStack().size() >= 2) {
             BaseFragment fragment = parentLayout.getFragmentStack().get(parentLayout.getFragmentStack().size() - 2);
