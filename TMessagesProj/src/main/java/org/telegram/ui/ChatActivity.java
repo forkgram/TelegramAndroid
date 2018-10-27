@@ -493,6 +493,7 @@ public class ChatActivity extends BaseFragment implements
     // private ChatActivitySideControlsButtonsLayout topButtonsLayout;
     private ChatActivitySideControlsButtonsLayout sideControlsButtonsLayout;
     private boolean pagedownButtonShowedByScroll;
+    private ActionBarMenuSubItem hideTitleItem;
     private int reactionsMentionCount;
     private int pollVotesMentionCount;
     public Bulletin messageSeenPrivacyBulletin;
@@ -1625,6 +1626,7 @@ public class ChatActivity extends BaseFragment implements
     private final static int bot_settings = 31;
     private final static int call = 32;
     private final static int video_call = 33;
+    private final static int hideTitle = 34;
 
     private final static int attach_photo = 0;
     private final static int attach_gallery = 1;
@@ -4048,6 +4050,20 @@ public class ChatActivity extends BaseFragment implements
                     dumpCanvas();
                 } else if (id == 889) {
                     sendDebugRichMessage();
+                } else if (id == hideTitle) {
+                    SharedConfig.hideTitleDialog = !SharedConfig.hideTitleDialog;
+                    updateTitle(false);
+                    checkAndUpdateAvatar();
+                    if (hideTitleItem != null) {
+                        if (SharedConfig.hideTitleDialog) {
+                            hideTitleItem.setText(LocaleController.getString("ShowTitle", R.string.ShowTitle));
+                        } else {
+                            hideTitleItem.setText(LocaleController.getString("HideTitle", R.string.HideTitle));
+                        }
+                    }
+
+                    SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+                    preferences.edit().putBoolean("hideTitle", SharedConfig.hideTitleDialog).commit();
                 }
             }
         });
@@ -4429,6 +4445,15 @@ public class ChatActivity extends BaseFragment implements
                 feeItemGap.setVisibility(View.GONE);
                 feeItemText.setVisibility(View.GONE);
             }
+            String hideTitleString = "";
+            if (SharedConfig.hideTitleDialog) {
+                hideTitleString = LocaleController.getString("ShowTitle", R.string.ShowTitle);
+            } else {
+                hideTitleString = LocaleController.getString("HideTitle", R.string.HideTitle);
+            }
+            hideTitleItem = headerItem.addSubItem(hideTitle, R.drawable.hide_title, hideTitleString, themeDelegate);
+
+
             if (currentUser != null && chatMode != MODE_SAVED) {
                 headerItem.lazilyAddSubItem(call, R.drawable.msg_callback, LocaleController.getString(R.string.Call));
                 headerItem.lazilyAddSubItem(video_call, R.drawable.msg_videocall, LocaleController.getString(R.string.VideoCall));
@@ -8304,8 +8329,8 @@ public class ChatActivity extends BaseFragment implements
         bottomOverlayText.setTextColor(getThemedColor(Theme.key_chat_secretChatStatusText));
         bottomOverlayText.setPadding(dp(24), 0, dp(24), 0);
         bottomOverlay.addView(bottomOverlayText, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER));
-        
-        
+
+
         bottomChannelButtonsLayout = new ChatActivityChannelButtonsLayout(context, resourceProvider, blurredBackgroundColorProvider, glassBackgroundDrawableFactory) {
             @Override
             public void setVisibility(int visibility) {
@@ -14320,7 +14345,7 @@ public class ChatActivity extends BaseFragment implements
         public String text;
         public ArrayList<TLRPC.MessageEntity> entities;
         public int offset, length;
-        
+
         public TLRPC.TodoItem task;
         public TLRPC.PollAnswer answer;
 
@@ -31659,7 +31684,7 @@ public class ChatActivity extends BaseFragment implements
                                 TranslateAlert2 alert = TranslateAlert2.showAlert(getParentActivity(), this, currentAccount, inputPeer, messageIdToTranslate[0], selectedObject.summarized, fromLang, toLangValue, finalMessageText, entities, noforwardsOrPaidMedia, onLinkPress, () -> dimBehindView(false));
                                 alert.setDimBehind(false);
                                 closeMenu(false);
-                                
+
 //                                final TranslateAlert3 alert =
 //                                    new TranslateAlert3(getContext(), resourceProvider)
 //                                        .setText(fromLang, finalMessageText)
