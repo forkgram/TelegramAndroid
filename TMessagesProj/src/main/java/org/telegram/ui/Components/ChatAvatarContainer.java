@@ -1020,6 +1020,12 @@ public class ChatAvatarContainer extends FrameLayout implements NotificationCent
             }
             avatarImageView.setRoundRadius(chat.forum ? AndroidUtilities.dp(16) : AndroidUtilities.dp(21));
         }
+
+        int visibility = org.telegram.messenger.SharedConfig.hideTitleDialog
+            ? android.view.View.GONE
+            : android.view.View.VISIBLE;
+        avatarImageView.setVisibility(visibility);
+        titleTextView.setVisibility(visibility);
     }
 
     public void updateOnlineCount() {
