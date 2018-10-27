@@ -401,6 +401,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private ActionBarMenuItem.Item feeItemGap;
     private ActionBarMenuItem.Item feeItemText;
     private ChatNotificationsPopupWrapper chatNotificationsPopupWrapper;
+    private ActionBarMenuSubItem hideTitleItem;
     private float pagedownButtonEnterProgress;
     private float searchUpDownEnterProgress;
     private float mentionsButtonEnterProgress;
@@ -1521,6 +1522,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private final static int bot_settings = 31;
     private final static int call = 32;
     private final static int video_call = 33;
+    private final static int hideTitle = 34;
 
     private final static int attach_photo = 0;
     private final static int attach_gallery = 1;
@@ -3902,6 +3904,20 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     if (button != null) {
                         button.setTextColor(getThemedColor(Theme.key_text_RedBold));
                     }
+                } else if (id == hideTitle) {
+                    SharedConfig.hideTitleDialog = !SharedConfig.hideTitleDialog;
+                    updateTitle(false);
+                    checkAndUpdateAvatar();
+                    if (hideTitleItem != null) {
+                        if (SharedConfig.hideTitleDialog) {
+                            hideTitleItem.setText(LocaleController.getString("ShowTitle", R.string.ShowTitle));
+                        } else {
+                            hideTitleItem.setText(LocaleController.getString("HideTitle", R.string.HideTitle));
+                        }
+                    }
+
+                    SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+                    preferences.edit().putBoolean("hideTitle", SharedConfig.hideTitleDialog).commit();
                 }
             }
         });
@@ -4242,6 +4258,15 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 feeItemGap.setVisibility(View.GONE);
                 feeItemText.setVisibility(View.GONE);
             }
+            String hideTitleString = "";
+            if (SharedConfig.hideTitleDialog) {
+                hideTitleString = LocaleController.getString("ShowTitle", R.string.ShowTitle);
+            } else {
+                hideTitleString = LocaleController.getString("HideTitle", R.string.HideTitle);
+            }
+            hideTitleItem = headerItem.addSubItem(hideTitle, R.drawable.hide_title, hideTitleString, themeDelegate);
+
+
             if (currentUser != null && chatMode != MODE_SAVED) {
                 headerItem.lazilyAddSubItem(call, R.drawable.msg_callback, LocaleController.getString(R.string.Call));
                 if (Build.VERSION.SDK_INT >= 18) {
