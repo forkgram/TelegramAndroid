@@ -3909,23 +3909,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 });
                 muteItemGap = headerItem.lazilyAddColoredGap();
             }
-            if (currentUser != null && chatMode != MODE_SAVED) {
-                headerItem.lazilyAddSubItem(call, R.drawable.msg_callback, LocaleController.getString(R.string.Call));
-                if (Build.VERSION.SDK_INT >= 18) {
-                    headerItem.lazilyAddSubItem(video_call, R.drawable.msg_videocall, LocaleController.getString(R.string.VideoCall));
-                }
-                if (userFull != null && userFull.phone_calls_available) {
-                    headerItem.showSubItem(call);
-                    if (userFull.video_calls_available) {
-                        headerItem.showSubItem(video_call);
-                    } else {
-                        headerItem.hideSubItem(video_call);
-                    }
-                } else {
-                    headerItem.hideSubItem(call);
-                    headerItem.hideSubItem(video_call);
-                }
-            }
 
             if (searchItem != null) {
                 headerItem.lazilyAddSubItem(search, R.drawable.msg_search, LocaleController.getString(R.string.Search));
@@ -3982,6 +3965,24 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     } else {
                         headerItem.lazilyAddSubItem(delete_chat, R.drawable.msg_delete, LocaleController.getString(R.string.DeleteChatUser));
                     }
+                }
+            }
+            
+            if (currentUser != null && chatMode != MODE_SAVED) {
+                headerItem.lazilyAddSubItem(call, R.drawable.msg_callback, LocaleController.getString(R.string.Call));
+                if (Build.VERSION.SDK_INT >= 18) {
+                    headerItem.lazilyAddSubItem(video_call, R.drawable.msg_videocall, LocaleController.getString(R.string.VideoCall));
+                }
+                if (userFull != null && userFull.phone_calls_available) {
+                    headerItem.showSubItem(call);
+                    if (userFull.video_calls_available) {
+                        headerItem.showSubItem(video_call);
+                    } else {
+                        headerItem.hideSubItem(video_call);
+                    }
+                } else {
+                    headerItem.hideSubItem(call);
+                    headerItem.hideSubItem(video_call);
                 }
             }
         } else if (chatMode == MODE_EDIT_BUSINESS_LINK) {
