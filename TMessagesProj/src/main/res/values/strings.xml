@@ -3,6 +3,10 @@
 
     <!--FORK CLIENT-->
     <string name="BottomDialogs">Tap here to start a new chat.</string>
+    <string name="ShowTitle">Show title</string>
+    <string name="HideTitle">Hide title</string>
+    <string name="RemoveFromHideMode">Remove from Hide Mode</string>
+    <string name="AddToHideMode">Add to Hide Mode</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
