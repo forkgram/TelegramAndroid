@@ -15927,8 +15927,6 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
         }, 300);
     }
 
-    private void setMessageObjectInternal(MessageObject messageObject) {
-
     void setMessageObjectInternal(MessageObject messageObject) {
         if (((messageObject.messageOwner.flags & TLRPC.MESSAGE_FLAG_HAS_VIEWS) != 0 || messageObject.messageOwner.replies != null) && !currentMessageObject.scheduled && !currentMessageObject.isSponsored()) {
             if (!currentMessageObject.viewsReloaded) {
