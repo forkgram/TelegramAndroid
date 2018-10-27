@@ -459,6 +459,7 @@ public class ChatActivity extends BaseFragment implements
     private ChatActivitySideControlsButtonsLayout topButtonsLayout;
     private ChatActivitySideControlsButtonsLayout sideControlsButtonsLayout;
     private boolean pagedownButtonShowedByScroll;
+    private ActionBarMenuSubItem hideTitleItem;
     private int reactionsMentionCount;
     public Bulletin messageSeenPrivacyBulletin;
     TextView webBotTitle;
@@ -1549,6 +1550,7 @@ public class ChatActivity extends BaseFragment implements
     private final static int bot_settings = 31;
     private final static int call = 32;
     private final static int video_call = 33;
+    private final static int hideTitle = 34;
 
     private final static int attach_photo = 0;
     private final static int attach_gallery = 1;
@@ -3975,6 +3977,20 @@ public class ChatActivity extends BaseFragment implements
                     if (button != null) {
                         button.setTextColor(getThemedColor(Theme.key_text_RedBold));
                     }
+                } else if (id == hideTitle) {
+                    SharedConfig.hideTitleDialog = !SharedConfig.hideTitleDialog;
+                    updateTitle(false);
+                    checkAndUpdateAvatar();
+                    if (hideTitleItem != null) {
+                        if (SharedConfig.hideTitleDialog) {
+                            hideTitleItem.setText(LocaleController.getString("ShowTitle", R.string.ShowTitle));
+                        } else {
+                            hideTitleItem.setText(LocaleController.getString("HideTitle", R.string.HideTitle));
+                        }
+                    }
+
+                    SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+                    preferences.edit().putBoolean("hideTitle", SharedConfig.hideTitleDialog).commit();
                 }
             }
         });
@@ -4315,6 +4331,15 @@ public class ChatActivity extends BaseFragment implements
                 feeItemGap.setVisibility(View.GONE);
                 feeItemText.setVisibility(View.GONE);
             }
+            String hideTitleString = "";
+            if (SharedConfig.hideTitleDialog) {
+                hideTitleString = LocaleController.getString("ShowTitle", R.string.ShowTitle);
+            } else {
+                hideTitleString = LocaleController.getString("HideTitle", R.string.HideTitle);
+            }
+            hideTitleItem = headerItem.addSubItem(hideTitle, R.drawable.hide_title, hideTitleString, themeDelegate);
+
+
             if (currentUser != null && chatMode != MODE_SAVED) {
                 headerItem.lazilyAddSubItem(call, R.drawable.msg_callback, LocaleController.getString(R.string.Call));
                 headerItem.lazilyAddSubItem(video_call, R.drawable.msg_videocall, LocaleController.getString(R.string.VideoCall));
