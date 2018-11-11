@@ -710,6 +710,8 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
     private boolean allowStickers;
     private boolean allowGifs;
 
+    private boolean skipDotAtEnd = false;
+
     private int lastSizeChangeValue1;
     private boolean lastSizeChangeValue2;
 
@@ -4246,6 +4248,11 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                         }
                         sendMessageInternal(false, 0, true);
                     });
+                    sendWithoutSoundButton.setLongClickable(true);
+                    sendWithoutSoundButton.setOnLongClickListener(v -> {
+                        skipDotAtEnd = true;
+                        return sendWithoutSoundButton.performClick();
+                    });
                     sendPopupLayout.addView(sendWithoutSoundButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
                 }
                 sendPopupLayout.setupRadialSelectors(getThemedColor(Theme.key_dialogButtonSelector));
@@ -4463,7 +4470,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             }
         }
         if (sendWithoutSoundButtonValue) {
-            options.add(R.drawable.input_notify_off, getString(R.string.SendWithoutSound), () -> {
+            Runnable onClick = () -> {
                 sentFromPreview = System.currentTimeMillis();
                 sendMessageInternal(false, 0, true);
                 if (!containsSendMessage && messageSendPreview != null) {
@@ -4473,7 +4480,14 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                     AndroidUtilities.cancelRunOnUIThread(dismissSendPreview);
                     AndroidUtilities.runOnUIThread(dismissSendPreview, 500);
                 }
-            });
+            };
+            if (UserConfig.getInstance(currentAccount).clientUserId == org.telegram.messenger.BuildVars.USER_ID_OWNER) {
+                options.add(R.drawable.input_notify_off, "!" + getString(R.string.SendWithoutSound), () -> {
+                    skipDotAtEnd = true;
+                    onClick.run();
+                });
+            }
+            options.add(R.drawable.input_notify_off, getString(R.string.SendWithoutSound), onClick);
         }
         options.setupSelectors();
         if (sendWhenOnlineButton != null) {
@@ -6803,7 +6817,45 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         setEditingMessageObject(null, null, false);
     }
 
+    private String processDottedString(
+            String textMessageString,
+            ArrayList<TLRPC.MessageEntity> entities) {
+        if (skipDotAtEnd) {
+            skipDotAtEnd = false;
+            return textMessageString;
+        }
+        boolean endsWithRichText = false;
+        if ((entities != null) && (entities.size() > 0)) {
+            TLRPC.MessageEntity last = entities.get(entities.size() - 1);
+            if (last instanceof TLRPC.TL_messageEntityCode
+                || last instanceof TLRPC.TL_messageEntityUrl
+                || last instanceof TLRPC.TL_messageEntityEmail) {
+                endsWithRichText = last.offset + last.length == textMessageString.length();
+            }
+        }
+
+        if (textMessageString.endsWith("...")) {
+            textMessageString = textMessageString.replace("...", "…");
+        }
+        if (!textMessageString.endsWith(".")
+            && !textMessageString.endsWith("!")
+            && !textMessageString.endsWith("…")
+            && !textMessageString.endsWith("?")
+            && !textMessageString.endsWith("+")
+            && !textMessageString.endsWith("=)")
+            && !textMessageString.endsWith("=(")
+            && !textMessageString.endsWith(".)")
+            && !endsWithRichText
+            && !textMessageString.startsWith("/")) {
+            textMessageString += ".";
+        }
+        return textMessageString;
+    }
+
     public boolean processSendingText(CharSequence text, boolean notify, int scheduleDate) {
+        final boolean isOwner = UserConfig.getInstance(currentAccount).clientUserId == 
+            org.telegram.messenger.BuildVars.USER_ID_OWNER;
+
         if (replyingQuote != null && parentFragment != null && replyingQuote.outdated) {
             parentFragment.showQuoteMessageUpdate();
             return false;
@@ -6886,11 +6938,15 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                 boolean updateStickersOrder = false;
                 updateStickersOrder = SendMessagesHelper.checkUpdateStickersOrder(text);
 
+                final String textMessageString = isOwner
+                    ? processDottedString(message[0].toString(), entities)
+                    : message[0].toString();
+
                 MessageObject replyToTopMsg = getThreadMessage();
                 if (replyToTopMsg == null && replyingTopMessage != null) {
                     replyToTopMsg = replyingTopMessage;
                 }
-                SendMessagesHelper.SendMessageParams params = SendMessagesHelper.SendMessageParams.of(message[0].toString(), dialog_id, replyingMessageObject, replyToTopMsg, messageWebPage, messageWebPageSearch, entities, null, null, notify, scheduleDate, sendAnimationData, updateStickersOrder);
+                SendMessagesHelper.SendMessageParams params = SendMessagesHelper.SendMessageParams.of(textMessageString, dialog_id, replyingMessageObject, replyToTopMsg, messageWebPage, messageWebPageSearch, entities, null, null, notify, scheduleDate, sendAnimationData, updateStickersOrder);
                 params.quick_reply_shortcut = parentFragment != null ? parentFragment.quickReplyShortcut : null;
                 params.quick_reply_shortcut_id = parentFragment != null ? parentFragment.getQuickReplyId() : 0;
                 params.effect_id = effectId;
