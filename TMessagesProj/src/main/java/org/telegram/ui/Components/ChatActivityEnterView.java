@@ -128,6 +128,7 @@ import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.Emoji;
+import org.telegram.messenger.EmojiData;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.ImageReceiver;
@@ -734,6 +735,8 @@ public class ChatActivityEnterView extends FrameLayout implements
     private boolean allowAnimatedEmoji;
     private boolean allowStickers;
     private boolean allowGifs;
+
+    private boolean skipDotAtEnd = false;
 
     private int lastSizeChangeValue1;
     private boolean lastSizeChangeValue2;
@@ -5181,7 +5184,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         }
 
         if (sendWithoutSoundButtonValue) {
-            options.add(R.drawable.input_notify_off, getString(R.string.SendWithoutSound), () -> {
+            Runnable onClick = () -> {
                 sentFromPreview = System.currentTimeMillis();
                 final boolean shownDialog = sendMessageInternal(false, 0, 0, 0, true);
                 if (!containsSendMessage && messageSendPreview != null) {
@@ -5192,7 +5195,14 @@ public class ChatActivityEnterView extends FrameLayout implements
                     AndroidUtilities.cancelRunOnUIThread(dismissSendPreview);
                     AndroidUtilities.runOnUIThread(dismissSendPreview, 500);
                 }
-            });
+            };
+            if (UserConfig.getInstance(currentAccount).clientUserId == org.telegram.messenger.BuildVars.USER_ID_OWNER) {
+                options.add(R.drawable.input_notify_off, "!" + getString(R.string.SendWithoutSound), () -> {
+                    skipDotAtEnd = true;
+                    onClick.run();
+                });
+            }
+            options.add(R.drawable.input_notify_off, getString(R.string.SendWithoutSound), onClick);
         }
         options.setupSelectors();
         if (sendWhenOnlineButton != null) {
@@ -7876,7 +7886,71 @@ public class ChatActivityEnterView extends FrameLayout implements
         setEditingMessageObject(null, null, false);
     }
 
+    private static boolean endsWithEmoji(String text) {
+        if (text == null || text.isEmpty()) {
+            return false;
+        }
+        boolean keycap = false;
+        int index = text.length();
+        while (index > 0) {
+            int cp = text.codePointBefore(index);
+            index -= Character.charCount(cp);
+            if (cp == 0x200D || cp == 0xFE0F || cp == 0xFE0E
+                    || (cp >= 0x1F3FB && cp <= 0x1F3FF)
+                    || (cp >= 0xE0020 && cp <= 0xE007F)) {
+                continue;
+            }
+            if (cp == 0x20E3) {
+                keycap = true;
+                continue;
+            }
+            return keycap
+                    || (cp >= 0x1F000 && cp <= 0x1FAFF)
+                    || EmojiData.dataCharsMap.containsKey((char) cp);
+        }
+        return false;
+    }
+
+    private String processDottedString(
+            String textMessageString,
+            ArrayList<TLRPC.MessageEntity> entities) {
+        if (skipDotAtEnd) {
+            skipDotAtEnd = false;
+            return textMessageString;
+        }
+        boolean endsWithRichText = false;
+        if ((entities != null) && (entities.size() > 0)) {
+            TLRPC.MessageEntity last = entities.get(entities.size() - 1);
+            if (last instanceof TLRPC.TL_messageEntityCode
+                || last instanceof TLRPC.TL_messageEntityUrl
+                || last instanceof TLRPC.TL_messageEntityEmail) {
+                endsWithRichText = last.offset + last.length == textMessageString.length();
+            }
+        }
+
+        if (textMessageString.endsWith("...")) {
+            textMessageString = textMessageString.replace("...", "…");
+        }
+        if (!textMessageString.endsWith(".")
+            && !textMessageString.endsWith("!")
+            && !textMessageString.endsWith("…")
+            && !textMessageString.endsWith("?")
+            && !textMessageString.endsWith("+")
+            && !textMessageString.endsWith("=)")
+            && !textMessageString.endsWith("=(")
+            && !textMessageString.endsWith(".)")
+            && !endsWithRichText
+            && !endsWithEmoji(textMessageString)
+            && !textMessageString.startsWith("/")) {
+            textMessageString += ".";
+        }
+        return textMessageString;
+    }
+
     public boolean processSendingText(CharSequence text, boolean notify, int scheduleDate, int scheduleRepeatPeriod, long payStars) {
+        final boolean isOwner = UserConfig.getInstance(currentAccount).clientUserId ==
+            org.telegram.messenger.BuildVars.USER_ID_OWNER;
+
         if (replyingQuote != null && parentFragment != null && replyingQuote.outdated) {
             parentFragment.showQuoteMessageUpdate();
             return false;
@@ -7959,11 +8033,19 @@ public class ChatActivityEnterView extends FrameLayout implements
                 boolean updateStickersOrder = false;
                 updateStickersOrder = SendMessagesHelper.checkUpdateStickersOrder(text);
 
+                if (skipDotAtEnd) {
+                    notify = false;
+                }
+
+                final String textMessageString = isOwner
+                    ? processDottedString(message[0].toString(), entities)
+                    : message[0].toString();
+
                 MessageObject replyToTopMsg = getThreadMessage();
                 if (replyToTopMsg == null && replyingTopMessage != null) {
                     replyToTopMsg = replyingTopMessage;
                 }
-                SendMessagesHelper.SendMessageParams params = SendMessagesHelper.SendMessageParams.of(message[0].toString(), dialog_id, replyingMessageObject, replyToTopMsg, messageWebPage, messageWebPageSearch, entities, null, null, notify, scheduleDate, scheduleRepeatPeriod, sendAnimationData, updateStickersOrder);
+                SendMessagesHelper.SendMessageParams params = SendMessagesHelper.SendMessageParams.of(textMessageString, dialog_id, replyingMessageObject, replyToTopMsg, messageWebPage, messageWebPageSearch, entities, null, null, notify, scheduleDate, scheduleRepeatPeriod, sendAnimationData, updateStickersOrder);
                 params.sendMessageChatArguments = parentFragment != null ? parentFragment.getMessageChatSendParams() : null;
                 params.effect_id = effectId;
                 params.payStars = payStars;
