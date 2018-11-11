@@ -12599,6 +12599,14 @@ public class ChatActivityEnterView extends FrameLayout implements
                         emojiView.hideSearchKeyboard();
                     }
                     setStickersExpanded(false, true, false);
+
+                    // If this sticker was sent from Sticker Suggestion -> View Pack,
+                    // Then don't sendMessage().
+                    if (Emoji.isValidEmoji(messageEditText.getText().toString())) {
+                        messageEditText.setText("");
+                    }
+                    sendMessage();
+
                     final TL_stories.StoryItem storyItem = delegate != null ? delegate.getReplyToStory() : null;
                     SendMessagesHelper.getInstance(currentAccount).sendSticker(sticker, query, dialog_id, replyingMessageObject, getThreadMessage(), storyItem, replyingQuote, sendAnimationData, notify, scheduleDate, scheduleRepeatPeriod, parent instanceof TLRPC.TL_messages_stickerSet, parent, parentFragment != null ? parentFragment.getMessageChatSendParams() : null, stars, getSendMonoForumPeerId(), getSendMessageSuggestionParams());
                     if (delegate != null) {
