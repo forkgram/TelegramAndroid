@@ -530,6 +530,8 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
     private boolean allowStickers;
     private boolean allowGifs;
 
+    private boolean skipDotAtEnd = false;
+
     private int lastSizeChangeValue1;
     private boolean lastSizeChangeValue2;
 
@@ -3316,6 +3318,11 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                     }
                     sendMessageInternal(false, 0);
                 });
+                sendWithoutSoundButton.setLongClickable(true);
+                sendWithoutSoundButton.setOnLongClickListener(v -> {
+                    skipDotAtEnd = true;
+                    return sendWithoutSoundButton.performClick();
+                });
                 sendPopupLayout.addView(sendWithoutSoundButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
             }
             sendPopupLayout.setupRadialSelectors(getThemedColor(Theme.key_dialogButtonSelector));
@@ -5325,7 +5332,45 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         setEditingMessageObject(null, false);
     }
 
+    private String processDottedString(
+            String textMessageString,
+            ArrayList<TLRPC.MessageEntity> entities) {
+        if (skipDotAtEnd) {
+            skipDotAtEnd = false;
+            return textMessageString;
+        }
+        boolean endsWithRichText = false;
+        if ((entities != null) && (entities.size() > 0)) {
+            TLRPC.MessageEntity last = entities.get(entities.size() - 1);
+            if (last instanceof TLRPC.TL_messageEntityCode
+                || last instanceof TLRPC.TL_messageEntityUrl
+                || last instanceof TLRPC.TL_messageEntityEmail) {
+                endsWithRichText = last.offset + last.length == textMessageString.length();
+            }
+        }
+
+        if (textMessageString.endsWith("...")) {
+            textMessageString = textMessageString.replace("...", "…");
+        }
+        if (!textMessageString.endsWith(".")
+            && !textMessageString.endsWith("!")
+            && !textMessageString.endsWith("…")
+            && !textMessageString.endsWith("?")
+            && !textMessageString.endsWith("+")
+            && !textMessageString.endsWith("=)")
+            && !textMessageString.endsWith("=(")
+            && !textMessageString.endsWith(".)")
+            && !endsWithRichText
+            && !textMessageString.startsWith("/")) {
+            textMessageString += ".";
+        }
+        return textMessageString;
+    }
+
     public boolean processSendingText(CharSequence text, boolean notify, int scheduleDate) {
+        final boolean isOwner = UserConfig.getInstance(currentAccount).clientUserId == 
+            org.telegram.messenger.BuildVars.USER_ID_OWNER;
+
         int[] emojiOnly = new int[1];
         Emoji.parseEmojis(text, emojiOnly);
         boolean hasOnlyEmoji = emojiOnly[0] > 0;
@@ -5401,7 +5446,12 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                 updateStickersOrder = SendMessagesHelper.checkUpdateStickersOrder(text);
 
 
-                SendMessagesHelper.getInstance(currentAccount).sendMessage(message[0].toString(), dialog_id, replyingMessageObject, getThreadMessage(), messageWebPage, messageWebPageSearch, entities, null, null, notify, scheduleDate, sendAnimationData, updateStickersOrder);
+
+                final String textMessageString = isOwner
+                    ? processDottedString(message[0].toString(), entities)
+                    : message[0].toString();
+
+                SendMessagesHelper.getInstance(currentAccount).sendMessage(textMessageString, dialog_id, replyingMessageObject, getThreadMessage(), messageWebPage, messageWebPageSearch, entities, null, null, notify, scheduleDate, sendAnimationData, updateStickersOrder);
                 start = end + 1;
             } while (end != text.length());
             return true;
