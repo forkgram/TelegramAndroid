@@ -370,6 +370,8 @@ public class ChatActivity extends BaseFragment implements
             DEBUG_SHARE_ALERT_MODE_LESS = 1,
             DEBUG_SHARE_ALERT_MODE_MORE = 2;
 
+    private static boolean IS_ANONYMOUS_FORWARD = false;
+
     public int shareAlertDebugMode = DEBUG_SHARE_ALERT_MODE_NORMAL;
     public boolean shareAlertDebugTopicsSlowMotion;
 
@@ -1606,6 +1608,7 @@ public class ChatActivity extends BaseFragment implements
 
     private final static int copy = 10;
     private final static int forward = 11;
+    private final static int forward_anonym = 111;
     private final static int delete = 12;
     private final static int chat_enc_timer = 13;
     private final static int chat_menu_attach = 14;
@@ -3737,7 +3740,8 @@ public class ChatActivity extends BaseFragment implements
                         return;
                     }
                     createDeleteMessagesAlert(null, null);
-                } else if (id == forward) {
+                } else if (id == forward || id == forward_anonym) {
+                    IS_ANONYMOUS_FORWARD = id == forward_anonym;
                     openForward(true);
                 } else if (id == share) {
                     share();
@@ -10213,6 +10217,7 @@ public class ChatActivity extends BaseFragment implements
             actionModeViews.add(actionMode.addItemWithWidth(copy, R.drawable.msg_copy, dp(48), LocaleController.getString(R.string.Copy)));
             if (!isSavedMessages && getDialogId() != UserObject.VERIFY) {
                 actionModeViews.add(actionMode.addItemWithWidth(forward, R.drawable.msg_forward, dp(48), LocaleController.getString(R.string.Forward)));
+                actionModeViews.add(actionMode.addItemWithWidth(forward_anonym, R.drawable.ic_ab_forward_anonym, dp(48), LocaleController.getString(R.string.Forward)));
             }
             actionModeViews.add(actionMode.addItemWithWidth(share, R.drawable.msg_shareout, dp(48), LocaleController.getString(R.string.ShareFile)));
             actionModeViews.add(actionMode.addItemWithWidth(delete, R.drawable.msg_delete, dp(48), LocaleController.getString(R.string.Delete)));
@@ -33032,6 +33037,21 @@ public class ChatActivity extends BaseFragment implements
                 createDeleteMessagesAlert(selectedObject, selectedObjectGroup, true);
                 break;
             }
+            case 202: {
+                IS_ANONYMOUS_FORWARD = true;
+                forwardingMessage = selectedObject;
+                forwardingMessageGroup = selectedObjectGroup;
+                Bundle args = new Bundle();
+                args.putBoolean("onlySelect", true);
+                args.putInt("dialogsType", 3);
+                args.putInt("messagesCount", forwardingMessageGroup == null ? 1 : forwardingMessageGroup.messages.size());
+                args.putInt("hasPoll", forwardingMessage.isPoll() ? (forwardingMessage.isPublicPoll() ? 2 : 1) : 0);
+                args.putBoolean("hasInvoice", forwardingMessage.isInvoice());
+                DialogsActivity fragment = new DialogsActivity(args);
+                fragment.setDelegate(this);
+                presentFragment(fragment);
+                break;
+            }
             case OPTION_FORWARD: {
                 if (getMessagesController().isFrozen()) {
                     AccountFrozenAlert.show(currentAccount);
@@ -33040,6 +33060,7 @@ public class ChatActivity extends BaseFragment implements
                     selectedObjectGroup = null;
                     return;
                 }
+                IS_ANONYMOUS_FORWARD = false;
                 forwardingMessage = selectedObject;
                 forwardingMessageGroup = selectedObjectGroup;
                 Bundle args = new Bundle();
@@ -45613,6 +45634,9 @@ public class ChatActivity extends BaseFragment implements
                     items.add(LocaleController.getString(R.string.Forward));
                     options.add(OPTION_FORWARD);
                     icons.add(R.drawable.msg_forward);
+                    items.add("Anonymous Forward");
+                    options.add(202);
+                    icons.add(R.drawable.ic_ab_forward_anonym);
                 }
                 if (allowUnpin) {
                     items.add(LocaleController.getString(R.string.UnpinMessage));
