@@ -32,8 +32,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.json.JSONObject;
 import org.telegram.messenger.voip.VideoCapturerDevice;
@@ -261,7 +259,7 @@ public class ApplicationLoader extends Application {
         }
 
         ApplicationLoader app = (ApplicationLoader) ApplicationLoader.applicationContext;
-        app.initPushServices();
+        //app.initPushServices();
         if (BuildVars.LOGS_ENABLED) {
             FileLog.d("app initied");
         }
@@ -378,7 +376,7 @@ public class ApplicationLoader extends Application {
             e.printStackTrace();
         }
     }
-
+/*
     private void initPushServices() {
         AndroidUtilities.runOnUIThread(() -> {
             if (getPushProvider().hasServices()) {
@@ -402,6 +400,7 @@ public class ApplicationLoader extends Application {
         }
         return true;
     }
+*/
 
     private static long lastNetworkCheck = -1;
     private static void ensureCurrentNetworkGet() {
