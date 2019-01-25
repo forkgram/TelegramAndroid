@@ -18,8 +18,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
-import com.google.firebase.platforminfo.UserAgentPublisher;
+//import com.google.android.gms.auth.api.signin.internal.Storage;
+//import com.google.firebase.platforminfo.UserAgentPublisher;
 
 import org.json.JSONObject;
 import org.telegram.messenger.AndroidUtilities;
