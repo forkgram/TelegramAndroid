@@ -85,10 +85,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
-    <uses-sdk tools:overrideLibrary="com.google.mlkit.vision.segmentation.subject"/>
-
     <queries>
-        <package android:name="com.google.android.apps.maps"/>
         <intent>
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="ton"/>
@@ -285,9 +282,6 @@
             </intent-filter>
             <meta-data android:name="android.service.chooser.chooser_target_service" android:value="androidx.sharetarget.ChooserTargetServiceCompat" />
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
-            <meta-data
-                android:name="com.google.mlkit.vision.DEPENDENCIES"
-                android:value="subject_segment" />
         </activity>
         <activity-alias
             android:name="org.telegram.ui.CallsActivity"
@@ -571,15 +565,6 @@
 
         <receiver android:name=".WearReplyReceiver" android:enabled="true"/>
 
-        <service
-            android:name=".WearAuthListenerService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-                <data android:scheme="wear" android:host="*" android:pathPrefix="/tg-wear-auth/" />
-            </intent-filter>
-        </service>
-
         <receiver android:name=".StopLiveLocationReceiver" android:enabled="true"/>
 
         <receiver android:name=".PopupReplyReceiver" android:enabled="true"/>
@@ -670,27 +655,6 @@
         <meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H" android:value="598dp" />
         <meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W" android:value="632dp" />
         <meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H" android:value="598dp" />
-
-        <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true" />
-
-        <!--
-        <meta-data android:name="com.google.android.gms.car.notification.SmallIcon" android:resource="@drawable/ic_player" />
-        <meta-data android:name="com.google.android.gms.car.application" android:resource="@xml/automotive_app_desc" />
-
-        <service
-            android:name="org.telegram.messenger.car.TelegramCarAppService"
-            android:exported="true"
-            android:foregroundServiceType="connectedDevice">
-            <intent-filter>
-                <action android:name="androidx.car.app.CarAppService" />
-                <category android:name="androidx.car.app.category.MESSAGING" />
-            </intent-filter>
-        </service>
-
-        <meta-data
-            android:name="androidx.car.app.minCarApiLevel"
-            android:value="5" />
-        -->
 
         <meta-data android:name="android.max_aspect" android:value="2.5" />
         <meta-data
