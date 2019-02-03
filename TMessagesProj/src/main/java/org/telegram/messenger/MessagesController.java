@@ -1258,6 +1258,7 @@ public class MessagesController extends BaseController implements NotificationCe
         MediaDataController mediaDataController = getMediaDataController();
         long date1 = DialogObject.getLastMessageOrDraftDate(dialog1, mediaDataController.getDraft(dialog1.id, 0));
         long date2 = DialogObject.getLastMessageOrDraftDate(dialog2, mediaDataController.getDraft(dialog2.id, 0));
+
         if (date1 < date2) {
             return 1;
         } else if (date1 > date2) {
@@ -1274,6 +1275,8 @@ public class MessagesController extends BaseController implements NotificationCe
     }
 
     private Comparator<TLRPC.Dialog> dialogComparator = (dialog1, dialog2) -> {
+        boolean unmutedPrimary = getGlobalMainSettings().getBoolean("unmutedOnTop", false);
+
         if (dialog1 instanceof TLRPC.TL_dialogFolder && !(dialog2 instanceof TLRPC.TL_dialogFolder)) {
             return -1;
         } else if (!(dialog1 instanceof TLRPC.TL_dialogFolder) && dialog2 instanceof TLRPC.TL_dialogFolder) {
@@ -1294,6 +1297,31 @@ public class MessagesController extends BaseController implements NotificationCe
         MediaDataController mediaDataController = getMediaDataController();
         long date1 = DialogObject.getLastMessageOrDraftDate(dialog1, mediaDataController.getDraft(dialog1.id, 0));
         long date2 = DialogObject.getLastMessageOrDraftDate(dialog2, mediaDataController.getDraft(dialog2.id, 0));
+
+        if (unmutedPrimary) {
+            final boolean mute1 = isDialogMuted(dialog1.id, 0);
+            final boolean mute2 = isDialogMuted(dialog2.id, 0);
+            final boolean unread1 = dialog1.unread_count > 0;
+            final boolean unread2 = dialog2.unread_count > 0;
+
+            final boolean newMention1 = unread1 && !mute1;
+            final boolean newMention2 = unread2 && !mute2;
+
+            if (!newMention1 && newMention2) {
+                return 1;
+            } else if (newMention1 && !newMention2) {
+                return -1;
+            } else if (newMention1 && newMention2) {
+                if (date1 < date2) {
+                    return 1;
+                } else if (date1 > date2) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+
         if (date1 < date2) {
             return 1;
         } else if (date1 > date2) {
@@ -11187,6 +11215,7 @@ public class MessagesController extends BaseController implements NotificationCe
                     getUserConfig().saveConfig(false);
                 }
             }));
+            sortDialogs(null);
         }
         if (!getUserConfig().notificationsSignUpSettingsLoaded) {
             loadSignUpNotificationsSettings();
@@ -12291,6 +12320,7 @@ public class MessagesController extends BaseController implements NotificationCe
 
     private void applyDialogNotificationsSettings(long dialogId, long topicId, TLRPC.PeerNotifySettings notify_settings) {
         getNotificationsController().getNotificationsSettingsFacade().applyDialogNotificationsSettings(dialogId, topicId, notify_settings);
+        sortDialogs(null);
     }
 
     private void applyDialogsNotificationsSettings(ArrayList<TLRPC.Dialog> dialogs) {
@@ -12302,6 +12332,7 @@ public class MessagesController extends BaseController implements NotificationCe
             }
         }
         editor.apply();
+        sortDialogs(null);
     }
 
     public void reloadMentionsCountForChannel(TLRPC.InputPeer peer, long taskId) {
@@ -18151,6 +18182,7 @@ public class MessagesController extends BaseController implements NotificationCe
                             }
                             getMessagesStorage().updateMutedDialogsFiltersCounters();
                         }
+                        sortDialogs(null);
                     } else if (baseUpdate instanceof TLRPC.TL_updateNewAuthorization) {
                         getUnconfirmedAuthController().processUpdate((TLRPC.TL_updateNewAuthorization) baseUpdate);
                     } else if (baseUpdate instanceof TLRPC.TL_updateChannel) {
