@@ -1,6 +1,7 @@
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 apply plugin: 'com.android.library'
+apply from: '../utils.gradle'
 
 repositories {
     mavenCentral()
@@ -63,6 +64,10 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.20'
 }
 
+def getStringForConfig(String s) {
+    return "\"" + s + "\""
+}
+
 def isWindows = String.valueOf(DefaultNativePlatform.currentOperatingSystem.toFamilyName() == OperatingSystemFamily.WINDOWS)
 android {
     compileSdkVersion 35
@@ -90,6 +95,7 @@ android {
         coreLibraryDesugaringEnabled true
     }
 
+    defaultConfig.versionCode = Integer.parseInt(Utils['getVersionCode']())
 
     defaultConfig {
         minSdkVersion 21
@@ -98,6 +104,18 @@ android {
         vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
 
         multiDexEnabled true
+
+        //obtain your own keys at https://core.telegram.org/api/obtaining_api_id
+        buildConfigField 'int', 'APP_ID', APP_ID
+        buildConfigField 'String', 'APP_HASH', getStringForConfig(APP_HASH)
+        buildConfigField 'int', 'USER_ID_OWNER', USER_ID_OWNER
+
+        vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
+
+        versionName = Utils['getVersionName']()
+        buildConfigField 'int', 'ADDITIONAL_BUILD_NUMBER', ADDITIONAL_BUILD_NUMBER
+        buildConfigField 'String', 'VERSION_NAME', getStringForConfig(versionName)
+        buildConfigField 'int', 'VERSION_CODE', Utils['getVersionCode']()
 
         externalNativeBuild {
             cmake {
