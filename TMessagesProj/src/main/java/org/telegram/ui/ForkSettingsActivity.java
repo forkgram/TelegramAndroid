@@ -62,6 +62,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_SQUARE_AVATARS = 14;
 
     public static final int ID_INAPP_CAMERA = 50;
+    public static final int ID_PHOTO_HAS_STICKER = 52;
 
     private static final int MENU_SEARCH = 100;
 
@@ -239,6 +240,8 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionMedia)));
         items.add(UItem.asButtonCheck(ID_INAPP_CAMERA, LocaleController.getString(R.string.InAppCamera), LocaleController.getString(R.string.InAppCameraInfo))
             .setChecked(pref("inappCamera", true)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_PHOTO_HAS_STICKER, LocaleController.getString(R.string.PhotoHasSticker), LocaleController.getString(R.string.PhotoHasStickerInfo))
+            .setChecked(pref("photoHasSticker", true)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
     }
@@ -270,6 +273,8 @@ public class ForkSettingsActivity extends BaseFragment {
             SharedConfig.toggleInappCamera();
             setCellChecked(view, SharedConfig.inappCamera);
             listView.adapter.update(true);
+        } else if (id == ID_PHOTO_HAS_STICKER) {
+            toggle("photoHasSticker", item, view);
         }
     }
 
