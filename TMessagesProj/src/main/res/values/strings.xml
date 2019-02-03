@@ -15,6 +15,8 @@
     <string name="InAppCamera">Enable In-App Camera</string>
     <string name="InAppCameraInfo">In Attachments</string>
     <string name="SquareAvatars">Square Avatars</string>
+    <string name="PhotoHasSticker">Send Sticker Info in Photo</string>
+    <string name="PhotoHasStickerInfo">When using Stickers on Photo</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
