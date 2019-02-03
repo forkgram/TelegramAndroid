@@ -16,6 +16,7 @@ TMessagesProj_AppStandalone/afat/
 TMessagesProj_AppHuawei/afat/
 API_KEYS
 *.hprof
+TMessagesProj/jni/cache_keys/
 TMessagesProj/.externalNativeBuild/
 TMessagesProj/jni/ffmpeg/build_android/
 TMessagesProj/jni/ffmpeg/build/
