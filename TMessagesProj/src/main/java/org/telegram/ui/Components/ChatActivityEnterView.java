@@ -12297,7 +12297,14 @@ public class ChatActivityEnterView extends FrameLayout implements
 
                                     SendMessagesHelper.prepareSendingMedia(AccountInstance.getInstance(currentAccount), photos, dialog_id, replyingMessageObject, getThreadMessage(), null, replyingQuote, false, false, editingMessageObject, notify, scheduleDate, scheduleRepeatPeriod, 0, false, null, parentFragment != null ? parentFragment.getMessageChatSendParams() : null, effectId, invertMedia, stars, getSendMonoForumPeerId(),  getSendMessageSuggestionParams());
                                 } else {
-                                    SendMessagesHelper.getInstance(currentAccount).sendSticker(document, query, dialog_id, entry != null ? entry.caption : null, videoEditedInfo, replyingMessageObject, getThreadMessage(), storyItem, replyingQuote, null, notify, scheduleDate, scheduleRepeatPeriod, false, parent, parentFragment != null ? parentFragment.getMessageChatSendParams() : null, stars, getSendMonoForumPeerId(), getSendMessageSuggestionParams(), invertMedia);
+                                    if (entry != null && entry.caption != null) {
+                                        SendMessagesHelper.getInstance(currentAccount).sendSticker(document, query, dialog_id, entry.caption, videoEditedInfo, replyingMessageObject, getThreadMessage(), storyItem, replyingQuote, null, notify, scheduleDate, scheduleRepeatPeriod, false, parent, parentFragment != null ? parentFragment.getMessageChatSendParams() : null, stars, getSendMonoForumPeerId(), getSendMessageSuggestionParams(), invertMedia, null);
+                                    } else if (storyItem == null) {
+                                    SendMessagesHelper.getInstance(currentAccount).sendGifWithCaption(document, query, dialog_id, replyingMessageObject, getThreadMessage(), storyItem, replyingQuote, null, notify, scheduleDate, false, parent, parentFragment != null ? parentFragment.getMessageChatSendParams() : null, messageEditText.getText().toString());
+                                    messageEditText.setText("");
+                                    } else {
+                                    SendMessagesHelper.getInstance(currentAccount).sendSticker(document, query, dialog_id, null, videoEditedInfo, replyingMessageObject, getThreadMessage(), storyItem, replyingQuote, null, notify, scheduleDate, scheduleRepeatPeriod, false, parent, parentFragment != null ? parentFragment.getMessageChatSendParams() : null, stars, getSendMonoForumPeerId(), getSendMessageSuggestionParams(), invertMedia, null);
+                                    }
                                     MediaDataController.getInstance(currentAccount).addRecentGif(document, (int) (System.currentTimeMillis() / 1000), true);
                                     if (DialogObject.isEncryptedDialog(dialog_id)) {
                                         accountInstance.getMessagesController().saveGif(parent, document);
