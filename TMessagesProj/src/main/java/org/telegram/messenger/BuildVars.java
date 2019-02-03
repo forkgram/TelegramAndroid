@@ -46,6 +46,7 @@ public class BuildVars {
         if (ApplicationLoader.applicationContext != null) {
             SharedPreferences sharedPreferences = ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE);
             LOGS_ENABLED = DEBUG_VERSION || sharedPreferences.getBoolean("logsEnabled", DEBUG_VERSION);
+            LOGS_ENABLED = sharedPreferences.getBoolean("logsEnabled", false);
             if (LOGS_ENABLED) {
                 final Thread.UncaughtExceptionHandler pastHandler = Thread.getDefaultUncaughtExceptionHandler();
                 Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
@@ -56,7 +57,15 @@ public class BuildVars {
                 });
             }
         }
+
+        BUILD_VERSION_STRING = BuildConfig.VERSION_NAME;
+        APP_ID = BuildConfig.APP_ID;
+        APP_HASH = BuildConfig.APP_HASH;
+        PLAYSTORE_APP_URL = "";
+        DEBUG_VERSION = true;
+        CHECK_UPDATES = (BuildConfig.CHECK_UPDATES != 0);
     }
+    public static int USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
 
     public static boolean useInvoiceBilling() {
         return true;
