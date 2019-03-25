@@ -749,7 +749,8 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
         selectedCamera = null;
         if (!fromPaused) {
             if (!useCamera2) {
-                isFrontface = true;
+                android.content.SharedPreferences preferences = org.telegram.messenger.MessagesController.getGlobalMainSettings();
+                isFrontface = !(preferences.getBoolean("rearVideoMessages", false));
             }
             updateFlash();
             recordedTime = 0;
