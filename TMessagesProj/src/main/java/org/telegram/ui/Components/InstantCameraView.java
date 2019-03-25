@@ -137,6 +137,7 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
     private RectF rect;
     private final FlashViews.ImageViewInvertable switchCameraButton;
     private final FlashViews.ImageViewInvertable flashButton;
+    private final FlashViews.ImageViewInvertable optionsButton;
     private final FlashViews flashViews;
     private RLottieDrawable flashOnDrawable, flashOffDrawable;
     private RLottieDrawable switchCameraDrawable;
@@ -391,12 +392,22 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
         });
         updateFlash();
 
+        optionsButton = new FlashViews.ImageViewInvertable(context);
+        optionsButton.setScaleType(ImageView.ScaleType.CENTER);
+        optionsButton.setImageResource(R.drawable.media_more);
+        optionsButton.setContentDescription(LocaleController.getString(R.string.AccDescrMoreOptions));
+        addView(optionsButton, LayoutHelper.createFrame(56, 56, Gravity.RIGHT | Gravity.TOP, 0, 0, 1, 0));
+        ((LayoutParams) optionsButton.getLayoutParams()).topMargin = AndroidUtilities.statusBarHeight + dp(8);
+        optionsButton.setOnClickListener(v -> showOptions());
+
         if (!isNewDesign) {
             flashViews.add(switchCameraButton);
             flashViews.add(flashButton);
+            flashViews.add(optionsButton);
         } else if (!resourcesProvider.isDark()) {
             switchCameraButton.setInvert(0.6f);
             flashButton.setInvert(0.6f);
+            optionsButton.setInvert(0.6f);
         }
 
         muteImageView = new ImageView(context);
@@ -436,6 +447,27 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
         drawable.setPadding(dp(6));
         drawable.setRadius(dp(21));
         buttonsLayout.setBackground(drawable);
+
+        BlurredBackgroundDrawable optionsDrawable = factory.create(optionsButton, colorProvider);
+        optionsDrawable.setPadding(dp(6));
+        optionsDrawable.setRadius(dp(21));
+        optionsButton.setBackground(optionsDrawable);
+    }
+
+    private void showOptions() {
+        if (parentView == null) {
+            return;
+        }
+        final android.content.SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        final boolean rearVideoMessages = preferences.getBoolean("rearVideoMessages", false);
+        ItemOptions.makeOptions((ViewGroup) parentView, resourcesProvider, optionsButton)
+            .setDimAlpha(0)
+            .setDrawScrim(false)
+            .addChecked(rearVideoMessages, LocaleController.getString(R.string.RearVideoMessages), () -> {
+                preferences.edit().putBoolean("rearVideoMessages", !rearVideoMessages).apply();
+            })
+            .setGravity(Gravity.RIGHT)
+            .show();
     }
 
     private Boolean wasFlashing;
@@ -731,7 +763,8 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
         selectedCamera = null;
         if (!fromPaused) {
             if (!useCamera2) {
-                isFrontface = true;
+                android.content.SharedPreferences preferences = org.telegram.messenger.MessagesController.getGlobalMainSettings();
+                isFrontface = !(preferences.getBoolean("rearVideoMessages", false));
             }
             updateFlash();
             recordedTime = 0;
