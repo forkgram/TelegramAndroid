@@ -45,6 +45,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int inappCameraRow;
     private int photoHasStickerRow;
     private int unmutedOnTopRow;
+    private int rearVideoMessages;
     private int replaceForward;
 
     private int emptyRow;
@@ -60,6 +61,7 @@ public class ForkSettingsActivity extends BaseFragment {
         inappCameraRow = rowCount++;
         photoHasStickerRow = rowCount++;
         unmutedOnTopRow = rowCount++;
+        rearVideoMessages = rowCount++;
         replaceForward = rowCount++;
 
         return true;
@@ -126,6 +128,8 @@ public class ForkSettingsActivity extends BaseFragment {
             } else if (position == unmutedOnTopRow) {
                 toggleGlobalMainSetting("unmutedOnTop", view, false);
                 MessagesController.getInstance(currentAccount).sortDialogs(null);
+            } else if (position == rearVideoMessages) {
+                toggleGlobalMainSetting("rearVideoMessages", view, false);
             } else if (position == replaceForward) {
                 toggleGlobalMainSetting("replaceForward", view, true);
             }
@@ -181,6 +185,9 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("UnmutedOnTop", R.string.UnmutedOnTop);
                         String info = LocaleController.getString("UnmutedOnTopInfo", R.string.UnmutedOnTopInfo);
                         textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("unmutedOnTop", false), true, false);
+                    } else if (position == rearVideoMessages) {
+                        String t = LocaleController.getString("RearVideoMessages", R.string.RearVideoMessages);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("rearVideoMessages", false), false);
                     } else if (position == replaceForward) {
                         String t = LocaleController.getString("ReplaceForward", R.string.ReplaceForward);
                         textCell.setTextAndCheck(t, preferences.getBoolean("replaceForward", true), false);
@@ -202,6 +209,8 @@ public class ForkSettingsActivity extends BaseFragment {
             int position = holder.getAdapterPosition();
             boolean fork = position == squareAvatarsRow
                         || position == inappCameraRow
+                        || position == unmutedOnTopRow
+                        || position == rearVideoMessages
                         || position == replaceForward
                         || position == photoHasStickerRow;
             return fork;
@@ -248,6 +257,7 @@ public class ForkSettingsActivity extends BaseFragment {
             } else if (position == squareAvatarsRow
                 || position == inappCameraRow
                 || position == unmutedOnTopRow
+                || position == rearVideoMessages
                 || position == replaceForward
                 || position == photoHasStickerRow) {
                 return 3;
