@@ -9820,4 +9820,6 @@
     <string name="DateOfBirthHideYear">Hide Year</string>
     <string name="DateOfBirthAddToProfile">Add to My Profile</string>
     <string name="SuggestedDateOfBirthView">View</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
