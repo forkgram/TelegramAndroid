@@ -7971,4 +7971,6 @@
     <string name="VoiceSetOnceHintEnabled">The recipient will be able to listen to it only once.</string>
     <string name="VoiceOnceCloseTitle">Close Voice Message</string>
     <string name="VoiceOnceCloseMessage">Are you sure you want to stop listening and delete voice message?</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
