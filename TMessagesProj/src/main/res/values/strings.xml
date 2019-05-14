@@ -9741,4 +9741,6 @@
     <string name="GiftThemesSetByOther">**%1$s** set **%2$s** as a new theme for this chat.</string>
     <string name="GiftThemesSetActionView">View</string>
     <string name="GiftLocked">Gift Locked</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
