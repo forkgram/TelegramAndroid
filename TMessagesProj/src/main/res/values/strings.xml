@@ -10226,4 +10226,6 @@
     <string name="StakeDiceActionYouLost">You lost 💎 %s</string>
     <string name="StakeDiceActionWon">un1 won 💎 %s</string>
     <string name="StakeDiceActionLost">un1 lost 💎 %s</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
