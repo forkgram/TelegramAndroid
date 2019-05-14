@@ -8941,4 +8941,6 @@
     <string name="ContactInfoUserUpdatedName">User updated name %s</string>
     <string name="StarsTransactionPremiumGift">Telegram Premium</string>
     <string name="StarsTransactionPremiumGiftDuration">Duration</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
