@@ -9118,4 +9118,6 @@
     <string name="VoipAudioSwitchedToHeadset">Audio switched to Headset.</string>
     <string name="VoipAudioSwitchedToPhone">Audio switched to Phone.</string>
     <string name="VoipAudioSwitchedToSpeaker">Audio switched to Speaker.</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
