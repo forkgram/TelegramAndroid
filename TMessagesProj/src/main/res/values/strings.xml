@@ -7809,4 +7809,6 @@
     <string name="UnlockSimilar">Unlock more channels</string>
     <string name="MoreSimilarButton">Show More Channels</string>
     <string name="MoreSimilarText">Subscribe to **Telegram Premium**\nto unlock up to %s similar channels.</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
