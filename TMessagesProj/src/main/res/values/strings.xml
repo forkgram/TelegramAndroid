@@ -7606,4 +7606,6 @@
     <string name="OpenGift">OPEN</string>
     <string name="UserColorApplied">Your name color has been updated!</string>
     <string name="ChannelColorApplied">Your channel color has been updated!</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
