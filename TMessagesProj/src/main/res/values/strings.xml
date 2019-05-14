@@ -8057,4 +8057,6 @@
     <string name="UserBlockedRepliesNonPremium">You need a **Premium** Subscription to reply to **%s**’s stories.</string>
     <string name="MessagePremiumErrorTitle">Unable to send</string>
     <string name="MessagePremiumErrorMessage">Only Premium users can message %s</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
