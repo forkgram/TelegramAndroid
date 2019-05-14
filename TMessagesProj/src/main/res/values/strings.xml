@@ -8784,4 +8784,6 @@
     <string name="VideoShareAddTimestamp">Start at %s</string>
     <string name="VideoStartsAt">Starts at %s</string>
     <string name="Gift2InBlockchain">This gift is in TON Blockchain. **View >**</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
