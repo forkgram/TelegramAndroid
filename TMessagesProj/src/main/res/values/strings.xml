@@ -10653,4 +10653,7 @@
     <string name="AIEditorEmojify">emojify</string>
     <string name="TranslateCopy">Copy Translation</string>
     <string name="TranslateEntireChat">Translate Entire Chat</string>
+
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
