@@ -9337,4 +9337,6 @@
     <string name="StarsSubscriptionCancelledToastText">You will still have access to the channel until **%s**.</string>
     <string name="StarsSubscriptionRenewedToast">Subscription renewed</string>
     <string name="StarsSubscriptionRenewedToastText">You renewed your subscription to **%s**.</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
