@@ -1023,8 +1023,10 @@ public class ContactsActivity extends BaseFragment implements NotificationCenter
         RLottieImageView previousFab = dialogsActivity.getFloatingButton();
         View previousFabContainer = previousFab.getParent() != null ? (View) previousFab.getParent() : null;
         if (floatingButtonContainer == null || previousFabContainer == null || previousFab.getVisibility() != View.VISIBLE || Math.abs(previousFabContainer.getTranslationY()) > AndroidUtilities.dp(4) || Math.abs(floatingButtonContainer.getTranslationY()) > AndroidUtilities.dp(4)) {
+        if (floatingButton != null) {
             floatingButton.setAnimation(R.raw.write_contacts_fab_icon, 52, 52);
             floatingButton.getAnimatedDrawable().setCurrentFrame(floatingButton.getAnimatedDrawable().getFramesCount() - 1);
+        }
             return null;
         }
         previousFabContainer.setVisibility(View.GONE);

@@ -832,15 +832,15 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
             }
             case VIEW_TYPE_NEW_CHAT_HINT: {
                 TextInfoPrivacyCell cell = (TextInfoPrivacyCell) holder.itemView;
-                cell.setText(LocaleController.getString("TapOnThePencil", R.string.TapOnThePencil));
-                if (arrowDrawable == null) {
-                    arrowDrawable = mContext.getResources().getDrawable(R.drawable.arrow_newchat);
-                    arrowDrawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText4), PorterDuff.Mode.MULTIPLY));
-                }
-                TextView textView = cell.getTextView();
-                textView.setCompoundDrawablePadding(AndroidUtilities.dp(4));
-                textView.setCompoundDrawablesWithIntrinsicBounds(null, null, arrowDrawable, null);
-                textView.getLayoutParams().width = LayoutHelper.WRAP_CONTENT;
+                TextView textView = new TextView(mContext);
+                cell.setText(LocaleController.getString("BottomDialogs", R.string.BottomDialogs));
+                cell.addView(textView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.TOP, 17, 15, 17, 0));
+                textView.setOnClickListener(view1 -> {
+                    android.os.Bundle args = new android.os.Bundle();
+                    args.putBoolean("destroyAfterSelect", true);
+                    parentFragment.presentFragment(new org.telegram.ui.ContactsActivity(args));
+                });
+
                 break;
             }
             case VIEW_TYPE_TEXT: {

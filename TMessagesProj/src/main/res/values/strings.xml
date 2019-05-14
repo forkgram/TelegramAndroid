@@ -6358,4 +6358,6 @@
     <string name="AccDescrLiteBatteryLevelAnnounce">%s%%</string>
     <string name="AccDescrRateTranscriptionUp">Rate up</string>
     <string name="AccDescrRateTranscriptionDown">Rate down</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>

@@ -3875,31 +3875,31 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
         floatingButtonContainer = new FrameLayout(context);
         floatingButtonContainer.setVisibility(onlySelect && initialDialogsType != 10 || folderId != 0 ? View.GONE : View.VISIBLE);
-        contentView.addView(floatingButtonContainer, LayoutHelper.createFrame((Build.VERSION.SDK_INT >= 21 ? 56 : 60), (Build.VERSION.SDK_INT >= 21 ? 56 : 60), (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.BOTTOM, LocaleController.isRTL ? 14 : 0, 0, LocaleController.isRTL ? 0 : 14, 14));
-        floatingButtonContainer.setOnClickListener(v -> {
-            if (parentLayout != null && parentLayout.isInPreviewMode()) {
-                finishPreviewFragment();
-                return;
-            }
-            if (initialDialogsType == DIALOGS_TYPE_WIDGET) {
-                if (delegate == null || selectedDialogs.isEmpty()) {
-                    return;
-                }
-                ArrayList<MessagesStorage.TopicKey> topicKeys = new ArrayList<>();
-                for (int i = 0; i < selectedDialogs.size(); i++) {
-                    topicKeys.add(MessagesStorage.TopicKey.of(selectedDialogs.get(i), 0));
-                }
-                delegate.didSelectDialogs(DialogsActivity.this, topicKeys, null, false, null);
-            } else {
-                if (floatingButton.getVisibility() != View.VISIBLE) {
-                    return;
-                }
+        // contentView.addView(floatingButtonContainer, LayoutHelper.createFrame((Build.VERSION.SDK_INT >= 21 ? 56 : 60), (Build.VERSION.SDK_INT >= 21 ? 56 : 60), (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.BOTTOM, LocaleController.isRTL ? 14 : 0, 0, LocaleController.isRTL ? 0 : 14, 14));
+        // floatingButtonContainer.setOnClickListener(v -> {
+        //     if (parentLayout != null && parentLayout.isInPreviewMode()) {
+        //         finishPreviewFragment();
+        //         return;
+        //     }
+        //     if (initialDialogsType == DIALOGS_TYPE_WIDGET) {
+        //         if (delegate == null || selectedDialogs.isEmpty()) {
+        //             return;
+        //         }
+        //         ArrayList<MessagesStorage.TopicKey> topicKeys = new ArrayList<>();
+        //         for (int i = 0; i < selectedDialogs.size(); i++) {
+        //             topicKeys.add(MessagesStorage.TopicKey.of(selectedDialogs.get(i), 0));
+        //         }
+        //         delegate.didSelectDialogs(DialogsActivity.this, topicKeys, null, false, null);
+        //     } else {
+        //         if (floatingButton.getVisibility() != View.VISIBLE) {
+        //             return;
+        //         }
 
-                Bundle args = new Bundle();
-                args.putBoolean("destroyAfterSelect", true);
-                presentFragment(new ContactsActivity(args));
-            }
-        });
+        //         Bundle args = new Bundle();
+        //         args.putBoolean("destroyAfterSelect", true);
+        //         presentFragment(new ContactsActivity(args));
+        //     }
+        // });
 
         floatingButton = new RLottieImageView(context);
         floatingButton.setScaleType(ImageView.ScaleType.CENTER);
@@ -3933,7 +3933,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             drawable = combinedDrawable;
         }
         updateFloatingButtonColor();
-        floatingButtonContainer.addView(floatingButton, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        // floatingButtonContainer.addView(floatingButton, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
         floatingProgressView = new RadialProgressView(context);
         floatingProgressView.setProgressColor(Theme.getColor(Theme.key_chats_actionIcon));
@@ -3942,7 +3942,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         floatingProgressView.setAlpha(0f);
         floatingProgressView.setVisibility(View.GONE);
         floatingProgressView.setSize(AndroidUtilities.dp(22));
-        floatingButtonContainer.addView(floatingProgressView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        // floatingButtonContainer.addView(floatingProgressView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
         searchTabsView = null;
 
