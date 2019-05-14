@@ -9065,4 +9065,6 @@
     <string name="StarsConfirmPurchaseMedia1">Do you want to unlock %1$s in **%2$s** for **%3$s**?</string>
     <string name="StarsConfirmPurchaseMedia2">Do you want to unlock %1$s and %2$s in **%3$s** for **%4$s**?</string>
     <string name="AttachPaidMedia">⭐️ %s</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
