@@ -8386,4 +8386,6 @@
     <string name="BotFileDownloaded">File saved to Downloads</string>
     <string name="BotFileDownloadOpen">Open</string>
     <string name="BotFileDownloadCancel">Cancel</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
