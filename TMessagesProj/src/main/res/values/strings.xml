@@ -8869,4 +8869,6 @@
     <string name="EventLogExpandMore_other">Show %d More Messages</string>
     <string name="NoLogFound">**No results found**</string>
     <string name="NoLogFoundFiltered">**No results matching your filters**</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
