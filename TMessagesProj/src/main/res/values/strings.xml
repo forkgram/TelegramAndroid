@@ -8959,4 +8959,6 @@
     <string name="StarsRefunded">Refund</string>
     <string name="ChromeCrashTitle">Aw, Snap!</string>
     <string name="ChromeCrashMessage">Something went wrong while displaying this webpage.\n\nIf it occurs frequently, consider updating **Android WebView**.</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
