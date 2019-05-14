@@ -9029,4 +9029,6 @@
     <string name="Gift2ReplacedPinTitle">%s pinned</string>
     <string name="Gift2ReplacedPinSubtitle">replacing %s</string>
     <string name="SearchAd">Ad</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
