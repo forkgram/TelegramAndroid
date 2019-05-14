@@ -10397,4 +10397,6 @@
     <string name="ChannelAdmins">Channel admins</string>
     <string name="ChannelSubscribers2">Channel subscribers</string>
     <string name="MembersSearch">Search people</string>
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
 </resources>
