@@ -86,6 +86,7 @@ import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
+import org.telegram.messenger.forkgram.AsCopy;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.NativeByteBuffer;
 import org.telegram.tgnet.TLObject;
@@ -138,11 +139,25 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ShareAlert extends BottomSheet implements NotificationCenter.NotificationCenterDelegate {
 
+    public class UndoInfo extends Object {
+        public int count = 0;
+        public boolean asAlbum = false;
+        public boolean asCopy = false;
+        public boolean noText = false;
+        public boolean silent = false;
+        public boolean replyTo = false;
+    }
+
+    private int sizeButton = 46;
+    private int btnContainerW = 60;
+
     private FrameLayout frameLayout;
     private FrameLayout frameLayout2;
     private EditTextEmoji commentTextView;
     private ChatActivityEnterView.SendButton writeButton;
     private FrameLayout writeButtonContainer;
+    private FrameLayout anonymButtonContainer;
+    private FrameLayout nonTextButtonContainer;
     private FrameLayout pickerBottom;
     private View bottomFadeView;
     private FrameLayout pickerBottomLayout;
@@ -185,6 +200,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
 
     private ChatActivity parentFragment;
     private Activity parentActivity;
+    private boolean isNeedToSkipAnon = false;
 
     private boolean darkTheme;
     public boolean forceDarkThemeForHint;
@@ -369,19 +385,27 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         return new ShareAlert(context, null, arrayList, text, null, channel, copyLink, null, fullScreen, false);
     }
 
+    private boolean checkSlowMode() {
+        for (int a = 0; a < selectedDialogs.size(); a++) {
+            long key = selectedDialogs.keyAt(a);
+            return AlertsCreator.checkSlowMode(getContext(), currentAccount, key, frameLayout2.getTag() != null && commentTextView.length() > 0);
+        }
+        return false;
+    }
+
     public ShareAlert(final Context context, ArrayList<MessageObject> messages, final String text, boolean channel, final String copyLink, boolean fullScreen) {
         this(context, messages, text, channel, copyLink, fullScreen, null);
     }
 
     public ShareAlert(final Context context, ArrayList<MessageObject> messages, final String text, boolean channel, final String copyLink, boolean fullScreen, Theme.ResourcesProvider resourcesProvider) {
-        this(context, null, messages, text, null, channel, copyLink, null, fullScreen, false, false, null, resourcesProvider);
+        this(context, null, messages, text, null, channel, copyLink, null, fullScreen, false, false, null, resourcesProvider, false);
     }
 
     public ShareAlert(final Context context, ChatActivity fragment, ArrayList<MessageObject> messages, final String text, final String text2, boolean channel, final String copyLink, final String copyLink2, boolean fullScreen, boolean forCall) {
-        this(context, fragment, messages, text, text2, channel, copyLink, copyLink2, fullScreen, forCall, false, null, null);
+        this(context, fragment, messages, text, text2, channel, copyLink, copyLink2, fullScreen, forCall, false, null, null, false);
     }
 
-    public ShareAlert(final Context context, ChatActivity fragment, ArrayList<MessageObject> messages, final String text, final String text2, boolean channel, final String copyLink, final String copyLink2, boolean fullScreen, boolean forCall, boolean includeStory, Integer video_timestamp, Theme.ResourcesProvider theme) {
+    public ShareAlert(final Context context, ChatActivity fragment, ArrayList<MessageObject> messages, final String text, final String text2, boolean channel, final String copyLink, final String copyLink2, boolean fullScreen, boolean forCall, boolean includeStory, Integer video_timestamp, Theme.ResourcesProvider theme, boolean groupAnyItems) {
         super(context, true, theme);
 
         iBlur3SourceColor = new BlurredBackgroundSourceColor();
@@ -503,10 +527,16 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                         break;
                     }
                 }
+                if (messageObject.isDice()) {
+                    isNeedToSkipAnon = true;
+                }
             }
         }
+        if (hasPoll > 0) {
+            isNeedToSkipAnon = true;
+        }
 
-        if (channel) {
+        if (channel && messages.size() == 1) {
             loadingLink = true;
             TLRPC.TL_channels_exportMessageLink req = new TLRPC.TL_channels_exportMessageLink();
             req.id = messages.get(0).getId();
@@ -594,7 +624,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                         super.onPanTranslationUpdate(y, progress, keyboardVisible);
                         for (int i = 0; i < containerView.getChildCount(); i++) {
                             final View child = containerView.getChildAt(i);
-                            if (child != pickerBottom && child != bulletinContainer && child != shadow[1] && child != sharesCountLayout && child != frameLayout2 && child != timestampFrameLayout && child != writeButtonContainer) {
+                            if (child != pickerBottom && child != bulletinContainer && child != shadow[1] && child != sharesCountLayout && child != frameLayout2 && child != timestampFrameLayout && child != writeButtonContainer && child != anonymButtonContainer && child != nonTextButtonContainer) {
                                 child.setTranslationY(y);
                             }
                         }
@@ -1693,11 +1723,21 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             commentTextView.getEditText().setCursorColor(getThemedColor(Theme.key_voipgroup_nameText));
         }
 //        commentTextView.setBackgroundColor(backgroundColor);
-        commentTextView.setHint(LocaleController.getString(R.string.ShareComment));
+        commentTextView.getEditText().setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+        commentTextView.getEditText().setPadding(0, dp(6), 0, dp(7));
+        SpannableStringBuilder hintSpan = new SpannableStringBuilder(LocaleController.getString(R.string.ShareComment));
+        hintSpan.setSpan(new android.text.style.AbsoluteSizeSpan(dp(13)), 0, hintSpan.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        commentTextView.setHint(hintSpan);
         commentTextView.onResume();
-        commentTextView.setPadding(0, 0, dp(84), 0);
-        frameLayout2.addView(commentTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.LEFT));
+        final int sizeFrameLayout = isNeedToSkipAnon
+            ? 84 - 84
+            : groupAnyItems
+            ? 110 - 84
+            : 200 - 84;
+        // commentTextView.setPadding(0, 0, sizeFrameLayout, 0);
+        frameLayout2.addView(commentTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.LEFT, 0, 0, sizeFrameLayout, 0));
         frameLayout2.setClipChildren(false);
+        frameLayout2.setBackgroundColor(backgroundColor);
         frameLayout2.setClipToPadding(false);
         commentTextView.setClipChildren(false);
         commentTextView.getEditText().addTextChangedListener(new TextWatcher() {
@@ -1719,6 +1759,27 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             }
         });
 
+        Runnable withSendingText = () -> {
+            int num;
+            if (switchView != null) {
+                num = switchView.currentTab;
+            } else {
+                num = 0;
+            }
+            if (sendingText[num] != null) {
+                for (int a = 0; a < selectedDialogs.size(); a++) {
+                    long key = selectedDialogs.keyAt(a);
+                    if (frameLayout2.getTag() != null && commentTextView.length() > 0) {
+                        SendMessagesHelper.getInstance(currentAccount).sendMessage(
+                            SendMessagesHelper.SendMessageParams.of(commentTextView.getText().toString(), key, null, null, null, true, null, null, null, true, 0, 0, null, false));
+                    }
+                    SendMessagesHelper.getInstance(currentAccount).sendMessage(
+                        SendMessagesHelper.SendMessageParams.of(sendingText[num], key, null, null, null, true, null, null, null, true, 0, 0, null, false));
+                }
+            }
+            onSend(selectedDialogs, 1, selectedDialogTopics.get(selectedDialogs.valueAt(0)), true);
+        };
+
         writeButtonContainer = new FrameLayout(context) {
             @Override
             public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
@@ -1735,7 +1796,9 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         writeButtonContainer.setScaleX(0.2f);
         writeButtonContainer.setScaleY(0.2f);
         writeButtonContainer.setAlpha(0.0f);
+        if (!groupAnyItems) {
         containerView.addView(writeButtonContainer, LayoutHelper.createFrame(110, 50, Gravity.RIGHT | Gravity.BOTTOM));
+        }
 
         writeButton = new ChatActivityEnterView.SendButton(context, R.drawable.send_plane_24, resourcesProvider) {
             @Override
@@ -1771,6 +1834,161 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         writeButton.setOnLongClickListener(v -> {
             return onSendLongClick(writeButton);
         });
+
+        // ANONYM FORWARD BUTTON.
+        java.util.function.BiConsumer<Boolean, Boolean> performAsCopySend = (
+                Boolean notify,
+                Boolean nonText) -> {
+            if (checkSlowMode()) {
+                return;
+            }
+            if (sendingMessageObjects != null) {
+                UndoInfo info = new UndoInfo();
+                info.count = sendingMessageObjects.size();
+                info.silent = !notify;
+                info.asAlbum = groupAnyItems;
+                info.noText = nonText;
+                info.asCopy = !nonText;
+   
+                final int account = currentAccount;
+                for (int a = 0; a < selectedDialogs.size(); a++) {
+                    long key = selectedDialogs.keyAt(a);
+                    TLRPC.TL_forumTopic keyTopic = selectedDialogTopics.get(selectedDialogs.valueAt(a));
+   
+                    if (!info.replyTo) {
+                        info.replyTo = (AsCopy.TakeReplyToDraft(key, keyTopic, account, false) != 0);
+                    }
+   
+                    final boolean hasComment = (frameLayout2.getTag() != null
+                        && commentTextView.length() > 0);
+                    final String maybeReplaceText = nonText
+                        ? (hasComment
+                            ? commentTextView.getText().toString()
+                            : "")
+                        : null;
+                    if (hasComment && !nonText) {
+                        boolean isMonoForum = MessagesController.getInstance(account).isMonoForum(key);
+                        long monoForumPeerId = keyTopic != null && isMonoForum ? DialogObject.getPeerDialogId(keyTopic.from_id) : 0;
+                        MessageObject replyTopMsg = keyTopic != null && !isMonoForum ? new MessageObject(account, keyTopic.topicStartMessage, false, false) : null;
+                        if (replyTopMsg != null) {
+                            replyTopMsg.isTopicMainMessage = true;
+                        }
+                        SendMessagesHelper.SendMessageParams params = SendMessagesHelper.SendMessageParams.of(
+                            commentTextView.getText().toString(),
+                            key,
+                            replyTopMsg,
+                            replyTopMsg,
+                            null,
+                            true,
+                            null,
+                            null,
+                            null,
+                            notify,
+                            0,
+                            0,
+                            null,
+                            false);
+                        params.monoForumPeer = monoForumPeerId;
+                        SendMessagesHelper.getInstance(account).sendMessage(params);
+                    }
+                    if (groupAnyItems) {
+                        boolean isMonoForum = MessagesController.getInstance(account).isMonoForum(key);
+                        long monoForumPeerId = keyTopic != null && isMonoForum ? DialogObject.getPeerDialogId(keyTopic.from_id) : 0;
+                        int replyId = AsCopy.TakeReplyToDraft(key, keyTopic, account, true);
+                        if (replyId == 0 && keyTopic != null && !isMonoForum) {
+                            replyId = keyTopic.id;
+                        }
+                        AsCopy.GroupItemsIntoAlbum(
+                            key,
+                            replyId,
+                            maybeReplaceText,
+                            sendingMessageObjects,
+                            account,
+                            parentFragment,
+                            notify,
+                            monoForumPeerId);
+                        onSend(selectedDialogs, selectedDialogs.size(), keyTopic, info);
+                        dismiss();
+                        return;
+                    }
+                    boolean isMonoForum = MessagesController.getInstance(account).isMonoForum(key);
+                    long monoForumPeerId = keyTopic != null && isMonoForum ? DialogObject.getPeerDialogId(keyTopic.from_id) : 0;
+                    AsCopy.PerformForwardFromMyName(
+                        key,
+                        keyTopic,
+                        maybeReplaceText,
+                        sendingMessageObjects,
+                        account,
+                        parentFragment,
+                        notify,
+                        monoForumPeerId);
+                }
+                onSend(selectedDialogs, selectedDialogs.size(), selectedDialogTopics.get(selectedDialogs.valueAt(0)), info);
+            } else {
+                withSendingText.run();
+            }
+            if (delegate != null) {
+                delegate.didShare();
+            }
+            dismiss();
+        };
+   
+        int anonRightMargin = groupAnyItems ? 8 : 60;
+
+        anonymButtonContainer = new FrameLayout(context);
+        anonymButtonContainer.setVisibility(View.INVISIBLE);
+        anonymButtonContainer.setScaleX(0.2f);
+        anonymButtonContainer.setScaleY(0.2f);
+        anonymButtonContainer.setAlpha(0.0f);
+        anonymButtonContainer.setContentDescription(LocaleController.getString("Send", R.string.Send));
+        containerView.addView(
+            anonymButtonContainer,
+            LayoutHelper.createFrame(
+                btnContainerW,
+                50,
+                Gravity.RIGHT | Gravity.BOTTOM,
+                0,
+                0,
+                anonRightMargin,
+                0));
+        anonymButtonContainer.setOnClickListener(v -> {
+            performAsCopySend.accept(true, false);
+        });
+        anonymButtonContainer.setLongClickable(true);
+        anonymButtonContainer.setOnLongClickListener(v -> {
+            performAsCopySend.accept(false, false);
+            return true;
+        });
+
+        anonymButtonContainer.addView(createSendButton(R.drawable.anon_forward, context), LayoutHelper.createFrameMatchParent());
+
+        // ANONYM FORWARD WITHOUT TEXT BUTTON.
+        nonTextButtonContainer = new FrameLayout(context);
+        nonTextButtonContainer.setVisibility(View.INVISIBLE);
+        nonTextButtonContainer.setScaleX(0.2f);
+        nonTextButtonContainer.setScaleY(0.2f);
+        nonTextButtonContainer.setAlpha(0.0f);
+        nonTextButtonContainer.setContentDescription(LocaleController.getString("Send", R.string.Send));
+        containerView.addView(
+            nonTextButtonContainer,
+            LayoutHelper.createFrame(
+                btnContainerW,
+                50,
+                Gravity.RIGHT | Gravity.BOTTOM,
+                0,
+                0,
+                anonRightMargin + btnContainerW,
+                0));
+        nonTextButtonContainer.setOnClickListener(v -> {
+            performAsCopySend.accept(true, true);
+        });
+        nonTextButtonContainer.setLongClickable(true);
+        nonTextButtonContainer.setOnLongClickListener(v -> {
+            performAsCopySend.accept(false, true);
+            return true;
+        });
+
+        nonTextButtonContainer.addView(createSendButton(R.drawable.nontext_forward, context), LayoutHelper.createFrameMatchParent());
 
         textPaint.setTextSize(dp(12));
         textPaint.setTypeface(AndroidUtilities.bold());
@@ -1890,6 +2108,39 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
 
         AndroidUtilities.updateViewVisibilityAnimated(gridView, true, 1f, false);
         AndroidUtilities.updateViewVisibilityAnimated(searchGridView, false, 1f, false);
+    }
+
+    private ChatActivityEnterView.SendButton createSendButton(int resId, Context context) {
+        ChatActivityEnterView.SendButton btn = new ChatActivityEnterView.SendButton(context, resId, resourcesProvider) {
+            @Override
+            public boolean isOpen() {
+                return true;
+            }
+
+            @Override
+            public boolean isInScheduleMode() {
+                return false;
+            }
+
+            @Override
+            public boolean isInactive() {
+                return false;
+            }
+
+            @Override
+            public boolean shouldDrawBackground() {
+                return true;
+            }
+
+            @Override
+            public int getFillColor() {
+                return getThemedColor(Theme.key_dialogFloatingButton);
+            }
+        };
+        btn.setCircleSize(dp(52), dp(38));
+        btn.setCirclePadding(dp(1), dp(6));
+        btn.newCounterPos = true;
+        return btn;
     }
 
     protected void onShareStory(View cell) {
@@ -2572,6 +2823,9 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         });
     }
 
+    protected void onSend(LongSparseArray<TLRPC.Dialog> dids, int count, TLRPC.TL_forumTopic topic, UndoInfo info) {
+    }
+
     protected void onSend(LongSparseArray<TLRPC.Dialog> dids, int count, TLRPC.TL_forumTopic topic, boolean showToast) {
 
     }
@@ -2776,11 +3030,15 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                 timestampFrameLayout.setVisibility(View.VISIBLE);
             }
             writeButtonContainer.setVisibility(View.VISIBLE);
+            anonymButtonContainer.setVisibility(View.VISIBLE);
+            nonTextButtonContainer.setVisibility(View.VISIBLE);
         } else {
             if (pickerBottom != null) {
                 pickerBottom.setVisibility(View.VISIBLE);
             }
         }
+        final float anonScale = (!isNeedToSkipAnon && show) ? 1.0f : 0.2f;
+        final float anonAlpha = (!isNeedToSkipAnon && show) ? 1.0f : 0.0f;
         if (pickerBottom != null) {
             ViewCompat.setImportantForAccessibility(pickerBottom, show ? ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
         }
@@ -2796,6 +3054,12 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         animators.add(ObjectAnimator.ofFloat(writeButtonContainer, View.SCALE_X, show ? 1.0f : 0.2f));
         animators.add(ObjectAnimator.ofFloat(writeButtonContainer, View.SCALE_Y, show ? 1.0f : 0.2f));
         animators.add(ObjectAnimator.ofFloat(writeButtonContainer, View.ALPHA, show ? 1.0f : 0.0f));
+        animators.add(ObjectAnimator.ofFloat(anonymButtonContainer, View.SCALE_X, anonScale));
+        animators.add(ObjectAnimator.ofFloat(anonymButtonContainer, View.SCALE_Y, anonScale));
+        animators.add(ObjectAnimator.ofFloat(anonymButtonContainer, View.ALPHA, anonAlpha));
+        animators.add(ObjectAnimator.ofFloat(nonTextButtonContainer, View.SCALE_X, anonScale));
+        animators.add(ObjectAnimator.ofFloat(nonTextButtonContainer, View.SCALE_Y, anonScale));
+        animators.add(ObjectAnimator.ofFloat(nonTextButtonContainer, View.ALPHA, anonAlpha));
         if (pickerBottom == null || pickerBottom.getVisibility() != View.VISIBLE) {
             animators.add(ObjectAnimator.ofFloat(shadow[1], View.ALPHA, show ? 1.0f : 0.0f));
         }
@@ -2816,6 +3080,8 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                             timestampFrameLayout.setVisibility(View.INVISIBLE);
                         }
                         writeButtonContainer.setVisibility(View.INVISIBLE);
+                        anonymButtonContainer.setVisibility(View.INVISIBLE);
+                        nonTextButtonContainer.setVisibility(View.INVISIBLE);
                     } else {
                         if (pickerBottom != null) {
                             pickerBottom.setVisibility(View.INVISIBLE);
@@ -2995,7 +3261,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                 case 1:
                 default: {
                     view = new View(context);
-                    view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, dp(darkTheme && linkToCopy[1] != null ? 109 : 56)));
+                    view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, dp(darkTheme && linkToCopy[1] != null ? 109 : sizeButton)));
                     break;
                 }
             }
@@ -3541,7 +3807,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                 default:
                 case 1: {
                     view = new View(context);
-                    view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, dp(darkTheme && linkToCopy[1] != null ? 109 : 56)));
+                    view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, dp(darkTheme && linkToCopy[1] != null ? 109 : sizeButton)));
                     break;
                 }
                 case 2: {
@@ -3868,6 +4134,8 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         }
         frameLayout2.setTranslationY(-bottomMargin);
         writeButtonContainer.setTranslationY(-bottomMargin);
+        anonymButtonContainer.setTranslationY(-bottomMargin);
+        nonTextButtonContainer.setTranslationY(-bottomMargin);
     }
 
     private void onTopicCellClick(TLRPC.TL_forumTopic topic) {
