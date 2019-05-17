@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">Apariencia</string>
     <string name="ForkSectionMedia">Fotos y vídeos</string>
+    <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="ForkRestartRequired">Reinicio requerido</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

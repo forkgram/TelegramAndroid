@@ -18758,7 +18758,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             if (currentMessageObject == null) {
                 return;
             }
-            org.telegram.messenger.forkgram.ForkApi.TLRPCMessages(
+            org.telegram.messenger.forkgram.ForkApi.tlrpcMessages(
                 currentAccount,
                 new ArrayList<>(Arrays.asList(currentMessageObject)),
                 (ArrayList<TLRPC.Message> msgs, org.telegram.tgnet.TLRPC.TL_error e) -> {
