@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">모양</string>
     <string name="ForkSectionMedia">사진 및 동영상</string>
+    <string name="ReplaceForwardInfo">전달하면 채팅 선택 대신 공유 시트가 열립니다.</string>
     <string name="ForkRestartRequired">재시작 필요</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

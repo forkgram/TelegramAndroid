@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">Weergave</string>
     <string name="ForkSectionMedia">Foto\'s en video</string>
+    <string name="ReplaceForwardInfo">Doorsturen opent het deelvenster in plaats van de chatkiezer.</string>
     <string name="ForkRestartRequired">Herstart vereist</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
