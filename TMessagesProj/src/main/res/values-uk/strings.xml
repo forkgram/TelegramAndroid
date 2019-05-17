@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">Зовнішній вигляд</string>
     <string name="ForkSectionMedia">Фото та відео</string>
+    <string name="ReplaceForwardInfo">Пересилання відкриває панель «Поділитися» замість вибору чату.</string>
     <string name="ForkRestartRequired">Потрібен перезапуск</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

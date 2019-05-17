@@ -63,6 +63,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_UNMUTED_ON_TOP = 21;
 
+    public static final int ID_REPLACE_FORWARD = 30;
+
     public static final int ID_INAPP_CAMERA = 50;
     public static final int ID_PHOTO_HAS_STICKER = 52;
 
@@ -244,6 +246,11 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("unmutedOnTop", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
+        items.add(UItem.asHeader(LocaleController.getString(R.string.FilterChats)));
+        items.add(UItem.asButtonCheck(ID_REPLACE_FORWARD, LocaleController.getString(R.string.ReplaceForward), LocaleController.getString(R.string.ReplaceForwardInfo))
+            .setChecked(pref("replaceForward", true)).setMultiline(true));
+        items.add(UItem.asShadow(null));
+
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionMedia)));
         items.add(UItem.asButtonCheck(ID_INAPP_CAMERA, LocaleController.getString(R.string.InAppCamera), LocaleController.getString(R.string.InAppCameraInfo))
             .setChecked(pref("inappCamera", true)).setMultiline(true));
@@ -279,6 +286,8 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_UNMUTED_ON_TOP) {
             toggle("unmutedOnTop", item, view);
             MessagesController.getInstance(currentAccount).sortDialogs(null);
+        } else if (id == ID_REPLACE_FORWARD) {
+            toggle("replaceForward", item, view);
         } else if (id == ID_INAPP_CAMERA) {
             SharedConfig.toggleInappCamera();
             setCellChecked(view, SharedConfig.inappCamera);
