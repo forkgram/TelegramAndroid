@@ -10030,7 +10030,8 @@
     <string name="Gift2AuctionsChangeRecipient2">You’ve already placed a bid on this gift for **%s.** Do you want to raise your bid and change the recipient to **%s?**</string>
     <!--FORK CLIENT-->
     <string name="BottomDialogs">Tap here to start a new chat.</string>
-    <string name="AnonymousForward">Anonymous Forward</string>
+    <string name="FastForward">Fast Forward</string>
+    <string name="ForwardAsAlbum">As Album</string>
     <string name="DateForward">Date</string>
     <string name="ShowTitle">Show title</string>
     <string name="HideTitle">Hide title</string>
