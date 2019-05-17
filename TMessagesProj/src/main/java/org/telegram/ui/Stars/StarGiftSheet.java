@@ -843,7 +843,7 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
             shareAlert.dismiss();
         }
         final String link = getLink();
-        shareAlert = new ShareAlert(getContext(), null, null, link, null, false, link, null, false, false, true, null, resourcesProvider) {
+        shareAlert = new ShareAlert(getContext(), null, null, link, null, false, link, null, false, false, true, null, resourcesProvider, false) {
             { includeStoryFromMessage = true; }
 
             @Override
