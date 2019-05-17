@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">Aspetto</string>
     <string name="ForkSectionMedia">Foto e video</string>
+    <string name="ReplaceForwardInfo">Inoltra apre il pannello di condivisione invece del selettore di chat.</string>
     <string name="ForkRestartRequired">Riavvio richiesto</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

@@ -39,6 +39,9 @@ public class ChatActivityActionsButtonsLayout extends LinearLayout {
     private final ButtonHolder replyButton = new ButtonHolder();
     private final ButtonHolder forwardButton = new ButtonHolder();
 
+    private View.OnClickListener forwardListener;
+    private View.OnClickListener groupMediaListener;
+
     public ChatActivityActionsButtonsLayout(@NonNull Context context,
                                             Theme.ResourcesProvider resourcesProvider,
                                             BlurredBackgroundColorProvider colorProvider,
@@ -73,6 +76,7 @@ public class ChatActivityActionsButtonsLayout extends LinearLayout {
     }
 
     public void setForwardButtonOnClickListener(View.OnClickListener listener) {
+        forwardListener = listener;
         forwardButton.button.setOnClickListener(listener);
     }
 
@@ -117,6 +121,20 @@ public class ChatActivityActionsButtonsLayout extends LinearLayout {
     public void setForwardButtonEnabled(boolean enabled, boolean animated) {
         forwardButton.enabledAnimator.setValue(enabled, animated);
         forwardButton.button.setEnabled(enabled);
+    }
+
+    public void setGroupMediaButtonEnabled(boolean enabled) {
+        if (enabled) {
+            forwardButton.textView.setText(LocaleController.getString("ForwardAsAlbum", R.string.ForwardAsAlbum));
+            forwardButton.button.setOnClickListener(groupMediaListener);
+        } else {
+            forwardButton.textView.setText(LocaleController.getString(R.string.Forward));
+            forwardButton.button.setOnClickListener(forwardListener);
+        }
+    }
+
+    public void setGroupMediaButtonOnClickListener(View.OnClickListener listener) {
+        groupMediaListener = listener;
     }
 
 
