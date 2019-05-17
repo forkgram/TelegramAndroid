@@ -8786,7 +8786,8 @@
     <string name="Gift2InBlockchain">This gift is in TON Blockchain. **View >**</string>
     <!--FORK CLIENT-->
     <string name="BottomDialogs">Tap here to start a new chat.</string>
-    <string name="AnonymousForward">Anonymous Forward</string>
+    <string name="FastForward">Fast Forward</string>
+    <string name="ForwardAsAlbum">Forward As Album</string>
     <string name="DateForward">Date</string>
     <string name="ShowTitle">Show title</string>
     <string name="HideTitle">Hide title</string>
