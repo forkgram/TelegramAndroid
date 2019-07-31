@@ -3304,6 +3304,14 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
             canvas.translate(0, collapseOffset);
         }
 
+        // 11 + 12 = 23 = height of item.
+        // We move drawCount up to half its height
+        // and move dialogs_reorderDrawable down
+        // so that everything could fit and would not have to hide the drawCount.
+        final boolean isCount = (drawCount || drawMention) && drawCount2 || countChangeProgress != 1f || drawReactionMention || reactionsMentionsChangeProgress != 1f;
+        final int newTop = countTop - (int)(AndroidUtilities.dp(11) * reorderIconProgress);
+        final int newPinTop = isCount ? (pinTop + (int)(AndroidUtilities.dp(12) * reorderIconProgress)) : pinTop;
+
         if (rightFragmentOpenedProgress != 1) {
             int restoreToCount = -1;
             if (rightFragmentOpenedProgress != 0) {
@@ -3690,7 +3698,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
 
             if (drawReorder || reorderIconProgress != 0) {
                 Theme.dialogs_reorderDrawable.setAlpha((int) (reorderIconProgress * 255));
-                setDrawableBounds(Theme.dialogs_reorderDrawable, pinLeft, pinTop);
+                setDrawableBounds(Theme.dialogs_reorderDrawable, pinLeft, newPinTop);
                 Theme.dialogs_reorderDrawable.draw(canvas);
             }
             if (drawError) {
@@ -3699,32 +3707,32 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 canvas.drawRoundRect(rect, 11.5f * AndroidUtilities.density, 11.5f * AndroidUtilities.density, Theme.dialogs_errorPaint);
                 setDrawableBounds(Theme.dialogs_errorDrawable, errorLeft + AndroidUtilities.dp(5.5f), errorTop + AndroidUtilities.dp(5));
                 Theme.dialogs_errorDrawable.draw(canvas);
-            } else if ((drawCount || drawMention) && drawCount2 || countChangeProgress != 1f || drawReactionMention || reactionsMentionsChangeProgress != 1f) {
+            } else if (isCount) {
                 boolean drawCounterMuted;
                 if (isTopic) {
                     drawCounterMuted = topicMuted;
                 } else {
                     drawCounterMuted = chat != null && chat.forum && forumTopic == null ? !hasUnmutedTopics : dialogMuted;
                 }
-                drawCounter(canvas, drawCounterMuted, countTop, countLeft, countLeftOld, 1f, false);
+                drawCounter(canvas, drawCounterMuted, newTop, countLeft, countLeftOld, 1f, false);
                 if (drawMention) {
-                    Theme.dialogs_countPaint.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
+                    // Theme.dialogs_countPaint.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
 
                     int x = mentionLeft - AndroidUtilities.dp(5.5f);
-                    rect.set(x, countTop, x + mentionWidth + AndroidUtilities.dp(11), countTop + AndroidUtilities.dp(23));
+                    rect.set(x, newTop, x + mentionWidth + AndroidUtilities.dp(11), newTop + AndroidUtilities.dp(23));
                     Paint paint = drawCounterMuted && folderId != 0 ? Theme.dialogs_countGrayPaint : Theme.dialogs_countPaint;
                     canvas.drawRoundRect(rect, 11.5f * AndroidUtilities.density, 11.5f * AndroidUtilities.density, paint);
                     if (mentionLayout != null) {
                         Theme.dialogs_countTextPaint.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
 
                         canvas.save();
-                        canvas.translate(mentionLeft, countTop + AndroidUtilities.dp(4));
+                        canvas.translate(mentionLeft, newTop + AndroidUtilities.dp(4));
                         mentionLayout.draw(canvas);
                         canvas.restore();
                     } else {
-                        Theme.dialogs_mentionDrawable.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
+                        // Theme.dialogs_mentionDrawable.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
 
-                        setDrawableBounds(Theme.dialogs_mentionDrawable, mentionLeft - AndroidUtilities.dp(2), countTop + AndroidUtilities.dp(3.2f), AndroidUtilities.dp(16), AndroidUtilities.dp(16));
+                        setDrawableBounds(Theme.dialogs_mentionDrawable, mentionLeft - AndroidUtilities.dp(2), newTop + AndroidUtilities.dp(3.2f), AndroidUtilities.dp(16), AndroidUtilities.dp(16));
                         Theme.dialogs_mentionDrawable.draw(canvas);
                     }
                 }
@@ -3857,7 +3865,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
             int countLeftLocal = (int) (storyParams.originalAvatarRect.left + storyParams.originalAvatarRect.width() - countWidth - AndroidUtilities.dp(5f));
             int countLeftOld =  (int) (storyParams.originalAvatarRect.left + storyParams.originalAvatarRect.width() - countWidthOld - AndroidUtilities.dp(5f));
             int countTop = (int) (avatarImage.getImageY() + storyParams.originalAvatarRect.height() - AndroidUtilities.dp(22));
-            drawCounter(canvas, drawCounterMuted, countTop, countLeftLocal, countLeftOld, rightFragmentOpenedProgress, true);
+            drawCounter(canvas, drawCounterMuted, newTop, countLeftLocal, countLeftOld, rightFragmentOpenedProgress, true);
         }
 
         if (collapseOffset != 0) {
@@ -4245,8 +4253,8 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
 
             if (countOldLayout == null || unreadCount == 0) {
                 StaticLayout drawLayout = unreadCount == 0 ? countOldLayout : countLayout;
-                paint.setAlpha((int) ((1.0f - reorderIconProgress) * fillPaintAlpha));
-                Theme.dialogs_countTextPaint.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
+                // paint.setAlpha((int) ((1.0f - reorderIconProgress) * fillPaintAlpha));
+                // Theme.dialogs_countTextPaint.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
 
                 int x = countLeftLocal - AndroidUtilities.dp(5.5f);
                 rect.set(x, countTop, x + countWidth + AndroidUtilities.dp(11), countTop + AndroidUtilities.dp(23));
@@ -4298,8 +4306,8 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
 
                 canvas.restoreToCount(restoreToCount);
             } else {
-                paint.setAlpha((int) ((1.0f - reorderIconProgress) * fillPaintAlpha));
-                Theme.dialogs_countTextPaint.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
+                // paint.setAlpha((int) ((1.0f - reorderIconProgress) * fillPaintAlpha));
+                // Theme.dialogs_countTextPaint.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
 
                 float progressHalf = progressFinal * 2;
                 if (progressHalf > 1f) {
