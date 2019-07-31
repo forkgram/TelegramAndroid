@@ -3862,6 +3862,14 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
             gty += collapseOffset;
         }
 
+        // 11 + 12 = 23 = height of item.
+        // We move drawCount up to half its height
+        // and move dialogs_reorderDrawable down
+        // so that everything could fit and would not have to hide the drawCount.
+        final boolean isCount = (drawCount || drawMention) && drawCount2 || countChangeProgress != 1f || drawReactionMention || reactionsMentionsChangeProgress != 1f;
+        final int newTop = countTop - (int)(AndroidUtilities.dp(11) * reorderIconProgress);
+        final int newPinTop = isCount ? (pinTop + (int)(AndroidUtilities.dp(12) * reorderIconProgress)) : pinTop;
+
         if (rightFragmentOpenedProgress != 1) {
             int restoreToCount = -1;
             if (rightFragmentOpenedProgress != 0) {
@@ -4351,7 +4359,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 }
 
                 Theme.dialogs_reorderDrawable.setAlpha((int) (reorderIconProgress * 255));
-                setDrawableBounds(Theme.dialogs_reorderDrawable, pinLeft, pinTop);
+                setDrawableBounds(Theme.dialogs_reorderDrawable, pinLeft, newPinTop);
                 Theme.dialogs_reorderDrawable.draw(canvas);
             }
             final float pollVotesMentionsVisibility = animatorPollVotesMentionVisible.getFloatValue();
@@ -4381,7 +4389,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                     } else {
                         final Drawable drawable = Theme.dialogs_mentionDrawable;
 
-                        drawable.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
+                        //drawable.setAlpha((int) ((1.0f - reorderIconProgress) * 255));
                         DrawableUtils.setBounds(drawable,
                             mentionLeft + dp(BADGE_DRAWABLE_OFFSET + BADGE_DRAWABLE_SIZE / 2f),
                             countTop + dp(BADGE_DRAWABLE_OFFSET + BADGE_DRAWABLE_SIZE / 2f),
@@ -4563,7 +4571,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
             int countLeftLocal = (int) (storyParams.originalAvatarRect.left + storyParams.originalAvatarRect.width() - countWidth - dp(5f));
             int countLeftOld =  (int) (storyParams.originalAvatarRect.left + storyParams.originalAvatarRect.width() - countWidthOld - dp(5f));
             int countTop = (int) (avatarImage.getImageY() + storyParams.originalAvatarRect.height() - dp(22));
-            drawCounter(canvas, drawCounterMuted, countTop, countLeftLocal, countLeftOld, rightFragmentOpenedProgress, true);
+            drawCounter(canvas, drawCounterMuted, newTop, countLeftLocal, countLeftOld, rightFragmentOpenedProgress, true);
         }
 
         if (collapseOffset != 0) {
