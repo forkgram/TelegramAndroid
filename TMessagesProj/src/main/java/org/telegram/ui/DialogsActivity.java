@@ -241,6 +241,8 @@ import org.telegram.ui.Stories.UserListPoller;
 import org.telegram.ui.Stories.recorder.HintView2;
 import org.telegram.ui.Stories.recorder.StoryRecorder;
 
+import org.telegram.ui.ProfileActivity;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -490,6 +492,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private ActionBarMenuSubItem readItem;
     @Nullable
     private ActionBarMenuSubItem blockItem;
+    private ActionBarMenuSubItem profileInfoItem;
 
     private float additionalFloatingTranslation;
     private float additionalFloatingTranslation2;
@@ -612,6 +615,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private final static int pin2 = 108;
     private final static int add_to_folder = 109;
     private final static int remove_from_folder = 110;
+    private final static int profileInfo = 111;
 
     private final static int ARCHIVE_ITEM_STATE_PINNED = 0;
     private final static int ARCHIVE_ITEM_STATE_SHOWED = 1;
@@ -3806,7 +3810,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         undoView.showWithAction(did, UndoView.ACTION_REMOVED_FROM_FOLDER, neverShow.size(), filter, null, null);
                     }
                     hideActionMode(false);
-                } else if (id == pin || id == read || id == delete || id == clear || id == mute || id == archive || id == block || id == archive2 || id == pin2) {
+                } else if (id == pin || id == read || id == delete || id == clear || id == mute || id == archive || id == block || id == archive2 || id == pin2 || id == profileInfo) {
                     performSelectedDialogsAction(selectedDialogs, id, true, false);
                 }
             }
@@ -6610,6 +6614,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         readItem = otherItem.addSubItem(read, R.drawable.msg_markread, LocaleController.getString(R.string.MarkAsRead));
         clearItem = otherItem.addSubItem(clear, R.drawable.msg_clear, LocaleController.getString(R.string.ClearHistory));
         blockItem = otherItem.addSubItem(block, R.drawable.msg_block, LocaleController.getString(R.string.BlockUser));
+        profileInfoItem = otherItem.addSubItem(profileInfo, R.drawable.msg_message, LocaleController.getString(R.string.Info));
 
         muteItem.setOnLongClickListener(e -> {
             performSelectedDialogsAction(selectedDialogs, mute, true, true);
@@ -9382,6 +9387,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         getNotificationsController().setDialogNotificationsSettings(selectedDialog, 0, NotificationsController.SETTING_MUTE_FOREVER);
                     }
                 }
+            } else if (action == profileInfo) {
+                Bundle args = new Bundle();
+                final boolean isChat = (chat != null);
+                args.putLong(isChat ? "chat_id" : "user_id", isChat ? chat.id : user.id);
+                presentFragment(new ProfileActivity(args));
             }
         }
         if (action == mute && !(count == 1 && canMuteCount == 1)) {
@@ -9842,6 +9852,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 pinItem.setContentDescription(LocaleController.getString(R.string.UnpinFromTop));
                 pin2Item.setText(LocaleController.getString(R.string.DialogUnpin));
             }
+        }
+        if (profileInfoItem != null) {
+            profileInfoItem.setVisibility(count > 1 ? View.GONE : View.VISIBLE);
         }
     }
 
