@@ -7013,6 +7013,15 @@ public class ChatActivity extends BaseFragment implements
             pendingRequestsDelegate.setLeftMargin(getSideMenuWidth());
         }
 
+        floatingDateView.setOnLongClickListener(view -> {
+            if (getParentActivity() == null) {
+                return false;
+            }
+            AndroidUtilities.hideKeyboard(searchItem.getSearchField());
+            showDialog(AlertsCreator.createCalendarPickerDialog(getParentActivity(), 1375315200000L, this::jumpToDate, themeDelegate).create());
+            return true;
+        });
+
         pinnedMessageView = null;
 
         undoView = null;
