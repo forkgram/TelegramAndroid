@@ -26,6 +26,7 @@ import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.MessagesStorage;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.NotificationsController;
+import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.tgnet.ConnectionsManager;
@@ -144,8 +145,12 @@ public class DrawerUserCell extends FrameLayout implements NotificationCenter.No
             return;
         }
         avatarDrawable.setInfo(account, user);
-        CharSequence text = ContactsController.formatName(user.first_name, user.last_name);
-        text = "...";
+        CharSequence text;
+        if (SharedConfig.hideSensitiveData()) {
+            text = "...";
+        } else {
+            text = ContactsController.formatName(user.first_name, user.last_name);
+        }
         try {
             text = Emoji.replaceEmoji(text, textView.getPaint().getFontMetricsInt(), false);
         } catch (Exception ignore) {}
