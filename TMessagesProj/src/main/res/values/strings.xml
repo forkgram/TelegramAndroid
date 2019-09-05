@@ -26,6 +26,7 @@
     <string name="SyncPinsInfo">Sync off allows to pin unlimited amount of dialogs</string>
     <string name="PinDialogsOrder">Pin Dialogs Order</string>
     <string name="RearVideoMessages">Rear camera in Video Messages</string>
+    <string name="ReplaceForward">Replace original Forward</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
