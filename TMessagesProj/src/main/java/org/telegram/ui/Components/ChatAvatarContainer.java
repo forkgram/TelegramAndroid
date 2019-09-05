@@ -47,6 +47,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
+import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.tgnet.ConnectionsManager;
@@ -1482,7 +1483,9 @@ public class ChatAvatarContainer extends FrameLayout implements NotificationCent
         } else if (currentConnectionState == ConnectionsManager.ConnectionStateUpdating) {
             title = LocaleController.getString(R.string.Updating);
         } else if (currentConnectionState == ConnectionsManager.ConnectionStateConnectingToProxy) {
-            title = "...";
+            title = SharedConfig.hideSensitiveData()
+                ? "..."
+                : LocaleController.getString("ConnectingToProxy", R.string.ConnectingToProxy);
         }
         if (title == null) {
             if (lastSubtitle != null) {
