@@ -686,6 +686,12 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         items.add(SettingCell.Factory.of(9, 0xFFF28B31, 0xFFE26314, R.drawable.settings_power, getString(R.string.SettingsPowerSaving), getString(R.string.SettingsPowerSavingInfo)));
         items.add(SettingCell.Factory.of(10, 0xFFC46EF4, 0xFF9F55DF, R.drawable.settings_language, getString(R.string.SettingsLanguage), LocaleController.getCurrentLanguageName()));
 
+        {
+            items.add(UItem.asShadow(null));
+            items.add(UItem.asHeader("Fork"));
+            items.add(SettingCell.Factory.of(98, 0xFF55CA47, 0xFF27B434, 0, getString(R.string.ForkSettingsTitle)));
+        }
+
         items.add(UItem.asShadow(null));
 
         if (!getMessagesController().premiumFeaturesBlocked()) {
@@ -792,6 +798,10 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 break;
             case 16:
                 UserSelectorBottomSheet.open(0, BirthdayController.getInstance(UserConfig.selectedAccount).getState());
+                break;
+
+            case 98:
+                presentFragment(new ForkSettingsActivity());
                 break;
 
             case 17:
