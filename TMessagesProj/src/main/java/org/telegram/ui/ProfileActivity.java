@@ -648,6 +648,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private int userInfoRow;
     private int channelInfoRow;
     private int usernameRow;
+    private int idRow;
     private int notificationsDividerRow;
     private int notificationsRow;
     private int bizHoursRow;
@@ -4208,6 +4209,17 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT));
         listView.setOnItemClickListener((view, position, x, y) -> {
             if (getParentActivity() == null) {
+                return;
+            }
+            if (position == idRow && did != 0) {
+                try {
+                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) ApplicationLoader.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                    android.content.ClipData clip = android.content.ClipData.newPlainText("label", did + "");
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getParentActivity(), LocaleController.getString("TextCopied", R.string.TextCopied), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    FileLog.e(e);
+                }
                 return;
             }
             listView.stopScroll();
@@ -10525,6 +10537,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         locationRow = -1;
         channelInfoRow = -1;
         usernameRow = -1;
+        idRow = -1;
         settingsTimerRow = -1;
         settingsKeyRow = -1;
         notificationsDividerRow = -1;
@@ -10629,6 +10642,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     numberSectionRow = rowCount++;
                     numberRow = rowCount++;
                     setUsernameRow = rowCount++;
+                    idRow = rowCount++;
                     bioRow = rowCount++;
                 }
 
@@ -10739,6 +10753,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         noteRow = rowCount++;
                     }
                 }
+                idRow = rowCount++;
 //                if (phoneRow != -1 || userInfoRow != -1 || usernameRow != -1 || bizHoursRow != -1 || bizLocationRow != -1) {
 //                    notificationsDividerRow = rowCount++;
 //                }
@@ -10882,6 +10897,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 notificationsRow = rowCount++;
             }
+            idRow = rowCount++;
             infoSectionRow = rowCount++;
 
             if (ChatObject.isChannel(currentChat) && !currentChat.megagroup) {
@@ -13451,6 +13467,15 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             getString(R.string.ProfileNotesInfo),
                             false
                         );
+                    } else if (position == idRow) {
+                        final long did = (dialogId != 0)
+                            ? dialogId
+                            : (userId != 0)
+                            ? userId
+                            : chatId;
+                        if (did != 0) {
+                            detailCell.setTextAndValue(did + "", "ID", false);
+                        }
                     } else if (position == usernameRow) {
                         String username = null;
                         CharSequence text;
@@ -14215,7 +14240,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             if (position == infoHeaderRow || position == membersHeaderRow || position == settingsSectionRow2 ||
                     position == numberSectionRow || position == helpHeaderRow || position == debugHeaderRow || position == botPermissionsHeader) {
                 return VIEW_TYPE_HEADER;
-            } else if (position == phoneRow || position == locationRow || position == numberRow || position == birthdayRow) {
+            } else if (position == idRow || position == phoneRow || position == locationRow || position == numberRow || position == birthdayRow) {
                 return VIEW_TYPE_TEXT_DETAIL;
             } else if (position == usernameRow || position == setUsernameRow) {
                 return VIEW_TYPE_TEXT_DETAIL_MULTILINE;
