@@ -9472,6 +9472,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         selectedMessagesCountTextView.setOnTouchListener((v, event) -> true);
         actionMode.addView(selectedMessagesCountTextView, LayoutHelper.createLinear(0, LayoutHelper.MATCH_PARENT, 1.0f, 65, 0, 0, 0));
 
+        boolean replaceForward = MessagesController.getGlobalMainSettings().getBoolean("replaceForward", true);
+
         if (currentEncryptedChat == null) {
             final boolean isSavedMessages = getDialogId() == getUserConfig().getClientUserId() && (chatMode == 0 || chatMode == MODE_SAVED);
             actionModeViews.add(actionMode.addItemWithWidth(save_to, R.drawable.msg_download, AndroidUtilities.dp(54), LocaleController.getString(R.string.SaveToMusic)));
@@ -9481,8 +9483,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
             actionModeViews.add(actionMode.addItemWithWidth(star, R.drawable.msg_fave, AndroidUtilities.dp(54), LocaleController.getString(R.string.AddToFavorites)));
             actionModeViews.add(actionMode.addItemWithWidth(copy, R.drawable.msg_copy, AndroidUtilities.dp(54), LocaleController.getString(R.string.Copy)));
-            if (!isSavedMessages) {
-                actionModeViews.add(actionMode.addItemWithWidth(forward, R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString(R.string.Forward)));
+            if (!replaceForward) {
+                actionModeViews.add(actionMode.addItemWithWidth(forward, R.drawable.msg_forward, AndroidUtilities.dp(54), LocaleController.getString("Forward", R.string.Forward)));
+            } else {
                 actionModeViews.add(actionMode.addItemWithWidth(forward_anonym, R.drawable.ic_ab_forward_anonym, AndroidUtilities.dp(54), LocaleController.getString("Forward", R.string.Forward)));
             }
             actionModeViews.add(actionMode.addItemWithWidth(share, R.drawable.msg_shareout, AndroidUtilities.dp(54), LocaleController.getString(R.string.ShareFile)));
