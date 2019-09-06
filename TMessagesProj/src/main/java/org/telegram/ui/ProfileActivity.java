@@ -4493,6 +4493,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             } else if (position == addMemberRow) {
                 openAddMember();
             } else if (position == usernameRow) {
+                if (!processCopyUsername())
                 processOnClickOrPress(position, view, x, y);
             } else if (position == linkedCommunityRow) {
                 if (currentChat != null) {
@@ -7306,8 +7307,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         presentFragment(fragment);
     }
 
-    private boolean processOnClickOrPress(final int position, final View view, final float x, final float y) {
-        if (position == usernameRow || position == setUsernameRow) {
+    private boolean processCopyUsername() {
             final String username;
             final TLRPC.TL_username usernameObj;
             if (userId != 0) {
@@ -7419,8 +7419,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
             }
             return true;
-        } else if (position == noteRow) {
+    }
 
+    private boolean processOnClickOrPress(final int position, final View view, final float x, final float y) {
+        if (position == noteRow) {
+        } else if (position == usernameRow || position == setUsernameRow) {
+            processCopyUsername();
         } else if (position == phoneRow || position == numberRow) {
             if (editRow(view, position)) return true;
 
