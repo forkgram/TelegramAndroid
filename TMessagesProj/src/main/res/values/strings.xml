@@ -5,6 +5,7 @@
     <string name="ForkSectionAppearance">Appearance</string>
     <string name="ForkSectionMedia">Photos and video</string>
     <string name="ReplaceForwardInfo">Forward opens the share sheet instead of the chat picker.</string>
+    <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
     <string name="RearVideoMessagesInfo">Start recording video messages with the rear camera.</string>
     <string name="ForkRestartRequired">Restart required</string>
     <string name="BottomDialogs">Tap here to start a new chat.</string>
@@ -34,6 +35,7 @@
     <string name="HideSensitiveData">Hide Sensitive Data</string>
     <string name="SystemCamera">Use System Camera for Photo</string>
     <string name="SystemCameraInfo">Only in Attachment Dialog</string>
+    <string name="MentionByName">Mention User by Name</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
