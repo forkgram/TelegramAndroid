@@ -67,6 +67,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_UNMUTED_ON_TOP = 21;
 
     public static final int ID_REPLACE_FORWARD = 30;
+    public static final int ID_MENTION_BY_NAME = 31;
 
     public static final int ID_INAPP_CAMERA = 50;
     public static final int ID_SYSTEM_CAMERA = 51;
@@ -263,6 +264,8 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asHeader(LocaleController.getString(R.string.FilterChats)));
         items.add(UItem.asButtonCheck(ID_REPLACE_FORWARD, LocaleController.getString(R.string.ReplaceForward), LocaleController.getString(R.string.ReplaceForwardInfo))
             .setChecked(pref("replaceForward", true)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_MENTION_BY_NAME, LocaleController.getString(R.string.MentionByName), LocaleController.getString(R.string.MentionByNameInfo))
+            .setChecked(pref("mentionByName", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionMedia)));
@@ -312,6 +315,8 @@ public class ForkSettingsActivity extends BaseFragment {
             MessagesController.getInstance(currentAccount).sortDialogs(null);
         } else if (id == ID_REPLACE_FORWARD) {
             toggle("replaceForward", item, view);
+        } else if (id == ID_MENTION_BY_NAME) {
+            toggle("mentionByName", item, view);
         } else if (id == ID_INAPP_CAMERA) {
             SharedConfig.toggleInappCamera();
             setCellChecked(view, SharedConfig.inappCamera);
