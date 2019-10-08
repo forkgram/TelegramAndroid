@@ -3,6 +3,7 @@
     <string name="ForkSectionAppearance">المظهر</string>
     <string name="ForkSectionMedia">الصور والفيديو</string>
     <string name="ReplaceForwardInfo">إعادة التوجيه تفتح لوحة المشاركة بدلاً من محدد الدردشة.</string>
+    <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
     <string name="RearVideoMessagesInfo">تسجيل رسائل الفيديو بالكاميرا الخلفية.</string>
     <string name="ForkRestartRequired">إعادة التشغيل مطلوبة</string>
     <string name="AppName">Fork Client</string>
