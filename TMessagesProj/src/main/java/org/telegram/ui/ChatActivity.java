@@ -8786,6 +8786,9 @@ public class ChatActivity extends BaseFragment implements
             if (getParentActivity() == null || pullingDownOffset != 0) {
                 return;
             }
+            if (MessagesController.getGlobalMainSettings().getBoolean("hideBottomButton", false)) {
+                return;
+            }
             if (chatMode == MODE_SAVED) {
                 Bundle args = new Bundle();
                 long dialogId = getSavedDialogId();
@@ -29047,6 +29050,9 @@ public class ChatActivity extends BaseFragment implements
             } else {
                 bottomOverlayChatText.setText(LocaleController.getString(R.string.DeleteThisChat));
             }
+        }
+        if (MessagesController.getGlobalMainSettings().getBoolean("hideBottomButton", false)) {
+            bottomOverlayChatText.setText("");
         }
 
         if (currentChat != null && currentChat.gigagroup && !isReport() && chatMode == 0) {
