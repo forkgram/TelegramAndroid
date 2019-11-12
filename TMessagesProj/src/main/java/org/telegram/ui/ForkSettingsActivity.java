@@ -61,6 +61,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_HIDE_SENSITIVE_DATA = 1;
 
+    public static final int ID_HIDE_BOTTOM_BUTTON = 11;
     public static final int ID_SQUARE_AVATARS = 14;
 
     public static final int ID_SYNC_PINS = 20;
@@ -252,6 +253,10 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionAppearance)));
         items.add(UItem.asButtonCheck(ID_SQUARE_AVATARS, LocaleController.getString(R.string.SquareAvatars), LocaleController.getString(R.string.ForkRestartRequired))
             .setChecked(pref("squareAvatars", false)).setMultiline(true));
+        if (SharedConfig.isUserOwner()) {
+            items.add(UItem.asButtonCheck(ID_HIDE_BOTTOM_BUTTON, LocaleController.getString(R.string.HideBottomButton), LocaleController.getString(R.string.HideBottomButtonInfo))
+                .setChecked(pref("hideBottomButton", false)).setMultiline(true));
+        }
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ChatList)));
@@ -308,6 +313,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideSensitiveData", item, view);
         } else if (id == ID_SQUARE_AVATARS) {
             toggle("squareAvatars", item, view);
+        } else if (id == ID_HIDE_BOTTOM_BUTTON) {
+            toggle("hideBottomButton", item, view);
         } else if (id == ID_SYNC_PINS) {
             toggle("syncPins", item, view);
         } else if (id == ID_UNMUTED_ON_TOP) {
