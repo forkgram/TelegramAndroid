@@ -270,6 +270,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
     private final static int STICKER_STATUS_OFFSET = 6;
     private final static float EPHEMERAL_HINT_HEIGHT = 25f;
 
+    public static float MAX_STICKER_SIZE = 14.0f;
     public boolean clipToGroupBounds;
     public boolean drawForBlur;
     private boolean flipImage;
@@ -9672,11 +9673,10 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                     }
                     float maxHeight;
                     int maxWidth;
-                    if (AndroidUtilities.isTablet()) {
-                        maxHeight = maxWidth = (int) (AndroidUtilities.getMinTabletSide() * 0.4f);
-                    } else {
-                        maxHeight = maxWidth = (int) (Math.min(getParentWidth(), AndroidUtilities.displaySize.y) * 0.5f);
-                    }
+                    float size = MessagesController.getGlobalMainSettings().getFloat("stickerSize", MAX_STICKER_SIZE) - MAX_STICKER_SIZE;
+                    maxHeight = maxWidth = AndroidUtilities.isTablet()
+                        ? (int) (AndroidUtilities.getMinTabletSide() * (0.4f + size / 40))
+                        : (int) (Math.min(getParentWidth(), AndroidUtilities.displaySize.y) * (0.5f + size / 30));
                     String filter;
                     if (messageObject.isAnimatedEmoji() || messageObject.isDice()) {
                         float zoom = MessagesController.getInstance(currentAccount).animatedEmojisZoom;
