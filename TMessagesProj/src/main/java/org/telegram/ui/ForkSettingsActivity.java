@@ -71,6 +71,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_REPLACE_FORWARD = 30;
     public static final int ID_MENTION_BY_NAME = 31;
 
+    public static final int ID_STICKER_SIZE = 46;
+
     public static final int ID_INAPP_CAMERA = 50;
     public static final int ID_SYSTEM_CAMERA = 51;
     public static final int ID_PHOTO_HAS_STICKER = 52;
@@ -87,6 +89,89 @@ public class ForkSettingsActivity extends BaseFragment {
         highlightItemId = itemId;
         return this;
     }
+
+    private class StickerSizeCell extends FrameLayout {
+
+        private final SeekBarView sizeBar;
+        private final TextPaint textPaint;
+
+        private final int startStickerSize = 2;
+        private final int endStickerSize = (int) ChatMessageCell.MAX_STICKER_SIZE;
+        private final String option = "stickerSize";
+
+        private float diff() {
+            return (float) (endStickerSize - startStickerSize);
+        }
+
+        private float stickerSize() {
+            return MessagesController.getGlobalMainSettings().getFloat(option, endStickerSize);
+        }
+
+        private void setStickerSize(float size) {
+            SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
+            editor.putFloat(option, size);
+            editor.commit();
+        }
+
+        public StickerSizeCell(Context context) {
+            super(context);
+
+            setWillNotDraw(false);
+
+            textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            textPaint.setTextSize(AndroidUtilities.dp(16));
+
+            sizeBar = new SeekBarView(context);
+            sizeBar.setReportChanges(true);
+            sizeBar.setDelegate(new SeekBarView.SeekBarViewDelegate() {
+                @Override
+                public void onSeekBarDrag(boolean stop, float progress) {
+                    setStickerSize(startStickerSize + diff() * progress);
+                    invalidate();
+                }
+
+                @Override
+                public void onSeekBarPressed(boolean pressed) {
+
+                }
+            });
+            addView(
+                sizeBar,
+                LayoutHelper.createFrame(
+                    LayoutHelper.MATCH_PARENT,
+                    38,
+                    Gravity.LEFT | Gravity.TOP,
+                    9,
+                    5,
+                    43,
+                    11));
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            canvas.drawColor(Theme.getColor(Theme.key_windowBackgroundWhite));
+            textPaint.setColor(Theme.getColor(Theme.key_windowBackgroundWhiteValueText));
+            canvas.drawText(
+                "" + Math.round(stickerSize()),
+                getMeasuredWidth() - AndroidUtilities.dp(39),
+                AndroidUtilities.dp(28),
+                textPaint);
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            sizeBar.setProgress((stickerSize() - startStickerSize) / diff());
+        }
+
+        @Override
+        public void invalidate() {
+            super.invalidate();
+            sizeBar.invalidate();
+        }
+    }
+
+    private StickerSizeCell stickerSizeCell;
 
     private static SharedPreferences prefs() {
         return MessagesController.getGlobalMainSettings();
@@ -274,6 +359,13 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("replaceForward", true)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_MENTION_BY_NAME, LocaleController.getString(R.string.MentionByName), LocaleController.getString(R.string.MentionByNameInfo))
             .setChecked(pref("mentionByName", false)).setMultiline(true));
+        items.add(UItem.asShadow(null));
+
+        items.add(UItem.asHeader(LocaleController.getString(R.string.StickerSize)));
+        if (stickerSizeCell == null) {
+            stickerSizeCell = new StickerSizeCell(getContext());
+        }
+        items.add(searchable(UItem.asCustom(ID_STICKER_SIZE, stickerSizeCell), R.string.StickerSize));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionMedia)));
