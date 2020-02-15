@@ -76,6 +76,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_INAPP_CAMERA = 50;
     public static final int ID_SYSTEM_CAMERA = 51;
     public static final int ID_PHOTO_HAS_STICKER = 52;
+    public static final int ID_DISABLE_FLIP_PHOTOS = 54;
     public static final int ID_REAR_VIDEO_MESSAGES = 55;
 
     private static final int MENU_SEARCH = 100;
@@ -377,6 +378,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setMultiline(true));
         items.add(UItem.asButtonCheck(ID_PHOTO_HAS_STICKER, LocaleController.getString(R.string.PhotoHasSticker), LocaleController.getString(R.string.PhotoHasStickerInfo))
             .setChecked(pref("photoHasSticker", true)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_DISABLE_FLIP_PHOTOS, LocaleController.getString(R.string.DisableFlipPhotos), LocaleController.getString(R.string.DisableFlipPhotosInfo))
+            .setChecked(pref("disableFlipPhotos", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_REAR_VIDEO_MESSAGES, LocaleController.getString(R.string.RearVideoMessages), LocaleController.getString(R.string.RearVideoMessagesInfo))
             .setChecked(pref("rearVideoMessages", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -431,6 +434,8 @@ public class ForkSettingsActivity extends BaseFragment {
             }
         } else if (id == ID_PHOTO_HAS_STICKER) {
             toggle("photoHasSticker", item, view);
+        } else if (id == ID_DISABLE_FLIP_PHOTOS) {
+            toggle("disableFlipPhotos", item, view);
         } else if (id == ID_REAR_VIDEO_MESSAGES) {
             toggle("rearVideoMessages", item, view);
         }
