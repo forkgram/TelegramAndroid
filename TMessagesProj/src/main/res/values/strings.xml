@@ -8,6 +8,7 @@
     <string name="OpenArchiveOnPullInfo">Open the Archive folder when the chat list is pulled down.</string>
     <string name="ReplaceForwardInfo">Forward opens the share sheet instead of the chat picker.</string>
     <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
+    <string name="DisableFlipPhotosInfo">Do not switch to the next photo when the screen edges are tapped.</string>
     <string name="RearVideoMessagesInfo">Start recording video messages with the rear camera.</string>
     <string name="ForkRestartRequired">Restart required</string>
     <string name="BottomDialogs">Tap here to start a new chat.</string>
@@ -41,6 +42,7 @@
     <string name="HideBottomButton">Hide Bottom Button</string>
     <string name="OpenArchiveOnPull">Open Archive on Pulldown</string>
     <string name="StickerSize">Sticker Size</string>
+    <string name="DisableFlipPhotos">Disable Flip Photos by Tapping</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
