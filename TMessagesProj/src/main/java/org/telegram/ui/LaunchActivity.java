@@ -145,6 +145,7 @@ import org.telegram.messenger.voip.VoIPGroupNotification;
 import org.telegram.messenger.voip.VoIPPendingCall;
 import org.telegram.messenger.voip.VoIPPreNotificationService;
 import org.telegram.messenger.voip.VoIPService;
+import org.telegram.messenger.forkgram.AppUpdater;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLParseException;
@@ -267,6 +268,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
     private static final String EXTRA_ACTION_TOKEN = "actions.fulfillment.extra.ACTION_TOKEN";
     public ArrayList<INavigationLayout> sheetFragmentsStack = new ArrayList<>();
+
+    private static boolean clearedCachedInstallers = false;
 
     private boolean finished;
     final private Pattern locationRegex = Pattern.compile("geo: ?(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)(,|\\?z=)(-?\\d+)");
@@ -1044,104 +1047,109 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         BackupAgent.requestBackup(this);
 
         RestrictedLanguagesSelectActivity.checkRestrictedLanguages(false);
-        if (Build.VERSION.SDK_INT >= 34) {
-            if (onBackAnimationCallback == null) {
-                onBackAnimationCallback =  new OnBackAnimationCallback() {
-                    private boolean started = false;
-                    private boolean invoked = false;
+//        if (Build.VERSION.SDK_INT >= 34) {
+//            if (onBackAnimationCallback == null) {
+//                onBackAnimationCallback =  new OnBackAnimationCallback() {
+//                    private boolean started = false;
+//                    private boolean invoked = false;
+//
+//                    @Override
+//                    public void onBackInvoked() {
+//                        invoked = true;
+//
+//                        if (AndroidUtilities.isTablet()) {
+//                            onBackPressed();
+//                            return;
+//                        }
+//                        if (!onBackPressed(true))
+//                            return;
+//                        if (actionBarLayout != null) {
+//                            actionBarLayout.onBackInvoked();
+//                        } else {
+//                            onBackPressed();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onBackStarted(@NonNull BackEvent backEvent) {
+//                        started = true;
+//                        invoked = false;
+//                        predictiveBackStarted = false;
+//                    }
+//
+//                    private void onBackStartedInternal(BackEvent backEvent) {
+//                        if (AndroidUtilities.isTablet()) return;
+//                        if (!onBackPressed(false)) return;
+//                        if (actionBarLayout != null) {
+//                            actionBarLayout.onBackStarted(backEvent.getTouchX(), backEvent.getTouchY());
+//                        }
+//                    }
+//
+//                    private static final float LAZY_START = 0.015f;
+//                    private boolean predictiveBackStarted;
+//                    private boolean predictiveBackInvoked;
+//
+//                    @Override
+//                    public void onBackProgressed(@NonNull BackEvent backEvent) {
+//                        if (started && invoked) return;
+//
+//                        final float progress = backEvent.getProgress();
+//                        if (!predictiveBackStarted && progress > LAZY_START) {
+//                            predictiveBackStarted = true;
+//                            onBackStartedInternal(backEvent);
+//                        }
+//
+//                        final float fixedProgress = Math.max(0, progress - LAZY_START) / (1 - LAZY_START);
+//                        if (AndroidUtilities.isTablet()) return;
+//                        if (actionBarLayout != null) {
+//                            actionBarLayout.onBackProgress(backEvent.getProgress());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onBackCancelled() {
+//                        started = false;
+//                        invoked = false;
+//
+//                        if (AndroidUtilities.isTablet()) return;
+//                        if (actionBarLayout != null) {
+//                            actionBarLayout.onBackCancelled();
+//                        }
+//                    }
+//                };
+//            }
+//            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+//                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+//                (OnBackAnimationCallback) onBackAnimationCallback
+//            );
+//        } else if (Build.VERSION.SDK_INT >= 33) {
+//            if (onBackInvokedCallback == null) {
+//                onBackInvokedCallback = new OnBackInvokedCallback() {
+//                    @Override
+//                    public void onBackInvoked() {
+//                        if (AndroidUtilities.isTablet()) {
+//                            onBackPressed();
+//                            return;
+//                        }
+//                        if (!onBackPressed(true))
+//                            return;
+//                        if (actionBarLayout != null) {
+//                            actionBarLayout.onBackInvoked();
+//                        } else {
+//                            onBackPressed();
+//                        }
+//                    }
+//                };
+//            }
+//            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+//                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+//                (OnBackInvokedCallback) onBackInvokedCallback
+//            );
+//        }
 
-                    @Override
-                    public void onBackInvoked() {
-                        invoked = true;
-
-                        if (AndroidUtilities.isTablet()) {
-                            onBackPressed();
-                            return;
-                        }
-                        if (!onBackPressed(true))
-                            return;
-                        if (actionBarLayout != null) {
-                            actionBarLayout.onBackInvoked();
-                        } else {
-                            onBackPressed();
-                        }
-                    }
-
-                    @Override
-                    public void onBackStarted(@NonNull BackEvent backEvent) {
-                        started = true;
-                        invoked = false;
-                        predictiveBackStarted = false;
-                    }
-
-                    private void onBackStartedInternal(BackEvent backEvent) {
-                        if (AndroidUtilities.isTablet()) return;
-                        if (!onBackPressed(false)) return;
-                        if (actionBarLayout != null) {
-                            actionBarLayout.onBackStarted(backEvent.getTouchX(), backEvent.getTouchY());
-                        }
-                    }
-
-                    private static final float LAZY_START = 0.015f;
-                    private boolean predictiveBackStarted;
-                    private boolean predictiveBackInvoked;
-
-                    @Override
-                    public void onBackProgressed(@NonNull BackEvent backEvent) {
-                        if (started && invoked) return;
-
-                        final float progress = backEvent.getProgress();
-                        if (!predictiveBackStarted && progress > LAZY_START) {
-                            predictiveBackStarted = true;
-                            onBackStartedInternal(backEvent);
-                        }
-
-                        final float fixedProgress = Math.max(0, progress - LAZY_START) / (1 - LAZY_START);
-                        if (AndroidUtilities.isTablet()) return;
-                        if (actionBarLayout != null) {
-                            actionBarLayout.onBackProgress(backEvent.getProgress());
-                        }
-                    }
-
-                    @Override
-                    public void onBackCancelled() {
-                        started = false;
-                        invoked = false;
-
-                        if (AndroidUtilities.isTablet()) return;
-                        if (actionBarLayout != null) {
-                            actionBarLayout.onBackCancelled();
-                        }
-                    }
-                };
-            }
-            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
-                (OnBackAnimationCallback) onBackAnimationCallback
-            );
-        } else if (Build.VERSION.SDK_INT >= 33) {
-            if (onBackInvokedCallback == null) {
-                onBackInvokedCallback = new OnBackInvokedCallback() {
-                    @Override
-                    public void onBackInvoked() {
-                        if (AndroidUtilities.isTablet()) {
-                            onBackPressed();
-                            return;
-                        }
-                        if (!onBackPressed(true))
-                            return;
-                        if (actionBarLayout != null) {
-                            actionBarLayout.onBackInvoked();
-                        } else {
-                            onBackPressed();
-                        }
-                    }
-                };
-            }
-            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
-                (OnBackInvokedCallback) onBackInvokedCallback
-            );
+        if (!clearedCachedInstallers) {
+            clearedCachedInstallers = true;
+            AppUpdater.clearCachedInstallers(getBaseContext());
         }
     }
 
@@ -6340,31 +6348,15 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
     private boolean firstAppUpdateCheck = true;
     public void checkAppUpdate(boolean force, Browser.Progress progress) {
-        if (!ApplicationLoader.isStandaloneBuild() && !ApplicationLoader.isBetaBuild()) {
-            return;
-        }
-        if (!force && !BuildVars.CHECK_UPDATES) {
-            return;
-        }
-        if (ApplicationLoader.applicationLoaderInstance.isCustomUpdate()) {
-            final BetaUpdate prevUpdate = ApplicationLoader.applicationLoaderInstance.getUpdate();
-            final boolean first = firstAppUpdateCheck;
-            firstAppUpdateCheck = false;
-            ApplicationLoader.applicationLoaderInstance.checkUpdate(force, () -> {
-                final BetaUpdate pendingUpdate = ApplicationLoader.applicationLoaderInstance.getUpdate();
-                if (progress != null) {
-                    progress.end();
-                    if (pendingUpdate == null) {
-                        BaseFragment fragment = getLastFragment();
-                        if (fragment != null) {
-                            BulletinFactory.of(fragment).createSimpleBulletin(R.raw.chats_infotip, LocaleController.getString(R.string.YourVersionIsLatest)).show();
-                        }
-                    }
-                }
-                if (pendingUpdate != null && !ApplicationLoader.applicationLoaderInstance.isDownloadingUpdate() && (first || prevUpdate == null || pendingUpdate.higherThan(prevUpdate))) {
-                    ApplicationLoader.applicationLoaderInstance.showCustomUpdateAppPopup(LaunchActivity.this, pendingUpdate, currentAccount);
-                }
-            });
+        AppUpdater.checkNewVersion(this, getBaseContext(), (builder) -> {
+            showAlertDialog(builder);
+            return 0;
+        }, force);
+    }
+
+    // Never be called.
+    public void checkAppUpdate(boolean force, Browser.Progress progress, int dummy) {
+        if (!force && BuildVars.DEBUG_VERSION || !force && !BuildVars.CHECK_UPDATES) {
             return;
         }
         if (!force && Math.abs(System.currentTimeMillis() - SharedConfig.lastUpdateCheckTime) < MessagesController.getInstance(0).updateCheckDelay * 1000) {
