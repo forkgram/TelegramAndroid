@@ -40,6 +40,7 @@ jobs:
           result=$((ADDITIONAL_BUILD / 10000))
           echo "ADDITIONAL_BUILD_NUMBER = $result should be between 0 and 10!"
           echo "ADDITIONAL_BUILD_NUMBER=$result" >> $GITHUB_ENV
+          echo "USER_REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
           echo "CHECK_UPDATES=1" >> $GITHUB_ENV
       - name: Build.
         run: |
@@ -54,8 +55,10 @@ jobs:
           echo "RELEASE_KEY_ALIAS=${{ secrets.ALIAS_NAME }}" >> $vars
           echo "RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASS }}" >> $vars
           echo "ADDITIONAL_BUILD_NUMBER=$ADDITIONAL_BUILD_NUMBER" >> $vars
+          echo "USER_REPO=$USER_REPO" >> $vars
           echo "CHECK_UPDATES=1" >> $vars
           echo "USER_ID_OWNER=${{ secrets.USER_ID_OWNER }}" >> $vars
+          echo "UPDATE_CHANNEL_USERNAME=${{ secrets.UPDATE_CHANNEL_USERNAME }}" >> $vars
 
           ###
           echo $ADDITIONAL_BUILD_NUMBER
