@@ -2,6 +2,7 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 apply plugin: 'com.android.library'
 apply from: '../utils.gradle'
+apply plugin: 'kotlin-android'
 
 repositories {
     mavenCentral()
@@ -26,9 +27,10 @@ dependencies {
     implementation 'androidx.interpolator:interpolator:1.0.0'
     implementation 'androidx.biometric:biometric:1.1.0'
 
-    implementation 'com.google.android.gms:play-services-cast-framework:21.4.0'
     implementation "androidx.mediarouter:mediarouter:1.7.0"
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
+    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     compileOnly 'org.checkerframework:checker-qual:2.5.2'
     compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
