@@ -54,6 +54,7 @@ public class BuildVars {
         CHECK_UPDATES = (BuildConfig.CHECK_UPDATES != 0);
     }
     public static int USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
+    public static String USER_REPO = BuildConfig.USER_REPO;
 
     public static boolean useInvoiceBilling() {
         return BillingController.billingClientEmpty || DEBUG_VERSION || ApplicationLoader.isStandaloneBuild() || isBetaApp() || isHuaweiStoreApp() || hasDirectCurrency();
