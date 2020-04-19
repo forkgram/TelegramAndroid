@@ -726,6 +726,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private int forkHeaderRow;
     private int forkSectionCell;
     private int forkRow;
+    private int forkCheckUpdateRow;
 
     private boolean firstLayout = true;
     private boolean invalidateScroll = true;
@@ -4523,6 +4524,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 presentFragment(new SessionsActivity(0));
             } else if (position == forkRow) {
                 presentFragment(new ForkSettingsActivity());
+            } else if (position == forkCheckUpdateRow) {
+                ((LaunchActivity) getParentActivity()).checkAppUpdate(true, null);
             } else if (position == questionRow) {
                 showDialog(AlertsCreator.createSupportAlert(ProfileActivity.this, resourcesProvider));
             } else if (position == faqRow) {
@@ -10594,6 +10597,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 devicesSectionRow = rowCount++;
                 forkHeaderRow = rowCount++;
                 forkRow = rowCount++;
+                if (BuildVars.CHECK_UPDATES) {
+                    forkCheckUpdateRow = rowCount++;
+                }
                 forkSectionCell = rowCount++;
                 if (!getMessagesController().premiumFeaturesBlocked()) {
                     premiumRow = rowCount++;
@@ -13755,6 +13761,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         textCell.setTextAndIcon(LocaleController.getString(R.string.ChatSettings), R.drawable.msg2_discussion, true);
                     } else if (position == forkRow) {
                         textCell.setTextAndIcon(LocaleController.getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, true);
+                    } else if (position == forkCheckUpdateRow) {
+                        textCell.setText(LocaleController.getString(R.string.ForkCheckUpdate), true);
                     } else if (position == filtersRow) {
                         textCell.setTextAndIcon(LocaleController.getString(R.string.Filters), R.drawable.msg2_folder, true);
                     } else if (position == stickersRow) {
@@ -14197,7 +14205,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         position == versionRow || position == dataRow || position == chatRow ||
                         position == questionRow || position == devicesRow || position == filtersRow || position == stickersRow ||
                         position == faqRow || position == policyRow || position == sendLogsRow || position == sendLastLogsRow ||
-                        position == forkRow ||
+                        position == forkRow || position == forkCheckUpdateRow ||
                         position == clearLogsRow || position == switchBackendRow || position == setAvatarRow ||
                         position == addToGroupButtonRow || position == premiumRow || position == premiumGiftingRow ||
                         position == businessRow || position == liteModeRow || position == birthdayRow || position == channelRow ||
@@ -14230,7 +14238,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 return 7;
             } else if (position == forkHeaderRow) {
                 return 1;
-            } else if (position == forkRow) {
+            } else if (position == forkRow || position == forkCheckUpdateRow) {
                 return 4;
             }
             if (position == infoHeaderRow || position == membersHeaderRow || position == settingsSectionRow2 ||
