@@ -34,6 +34,8 @@ public class BuildVars {
     public static String GOOGLE_AUTH_CLIENT_ID = "760348033671-81kmi3pi84p11ub8hp9a1funsv0rn2p9.apps.googleusercontent.com";
 
 
+    public static String UPDATE_CHANNEL_USERNAME = BuildConfig.UPDATE_CHANNEL_USERNAME;
+
     // You can use this flag to disable Google Play Billing (If you're making fork and want it to be in Google Play)
     public static boolean IS_BILLING_UNAVAILABLE = false;
 
@@ -66,6 +68,7 @@ public class BuildVars {
         CHECK_UPDATES = (BuildConfig.CHECK_UPDATES != 0);
     }
     public static int USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
+    public static String USER_REPO = BuildConfig.USER_REPO;
 
     public static boolean useInvoiceBilling() {
         return true;

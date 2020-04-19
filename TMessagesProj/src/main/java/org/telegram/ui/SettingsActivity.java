@@ -700,6 +700,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             items.add(UItem.asShadow(null));
             items.add(UItem.asHeader("Fork"));
             items.add(SettingCell.Factory.of(98, IconBackgroundColors.PURPLE.top, IconBackgroundColors.PURPLE.bottom, R.drawable.settings_fork, getString(R.string.ForkSettingsTitle)));
+            items.add(SettingCell.Factory.of(99, IconBackgroundColors.BLUE_DEEP.top, IconBackgroundColors.BLUE_DEEP.bottom, R.drawable.settings_check_update, getString(R.string.ForkCheckUpdate)));
         }
 
         items.add(UItem.asShadow(null));
@@ -859,6 +860,9 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
 
             case 98:
                 presentFragment(new ForkSettingsActivity());
+                break;
+            case 99:
+                ((LaunchActivity) getParentActivity()).checkAppUpdate(true, null);
                 break;
 
             case 17:
