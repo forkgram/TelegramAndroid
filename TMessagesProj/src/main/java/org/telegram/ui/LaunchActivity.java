@@ -125,6 +125,7 @@ import org.telegram.messenger.browser.Browser;
 import org.telegram.messenger.voip.VideoCapturerDevice;
 import org.telegram.messenger.voip.VoIPPendingCall;
 import org.telegram.messenger.voip.VoIPService;
+import org.telegram.messenger.forkgram.AppUpdater;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
@@ -207,6 +208,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     public static Runnable onResumeStaticCallback;
 
     private static final String EXTRA_ACTION_TOKEN = "actions.fulfillment.extra.ACTION_TOKEN";
+
+    private static boolean clearedCachedInstallers = false;
 
     private boolean finished;
     final private Pattern locationRegex = Pattern.compile("geo: ?(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)(,|\\?z=)(-?\\d+)");
@@ -897,6 +900,11 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         BackupAgent.requestBackup(this);
 
         RestrictedLanguagesSelectActivity.checkRestrictedLanguages(false);
+
+        if (!clearedCachedInstallers) {
+            clearedCachedInstallers = true;
+            AppUpdater.clearCachedInstallers(getBaseContext());
+        }
     }
 
     @Override
@@ -4913,6 +4921,14 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     }
 
     public void checkAppUpdate(boolean force) {
+        AppUpdater.checkNewVersion(this, getBaseContext(), (builder) -> {
+            showAlertDialog(builder);
+            return 0;
+        }, force);
+    }
+
+    // Never be called.
+    public void checkAppUpdate(boolean force, int dummy) {
         if (!force && BuildVars.DEBUG_VERSION || !force && !BuildVars.CHECK_UPDATES) {
             return;
         }

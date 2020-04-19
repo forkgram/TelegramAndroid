@@ -57,6 +57,7 @@ public class BuildVars {
         BUILD_VERSION = BuildConfig.VERSION_CODE;
     }
     public static int USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
+    public static String USER_REPO = BuildConfig.USER_REPO;
 
     public static boolean useInvoiceBilling() {
         return DEBUG_VERSION || isStandaloneApp() || isBetaApp() || isHuaweiStoreApp() || hasDirectCurrency();
