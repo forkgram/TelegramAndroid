@@ -594,6 +594,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private ActionBarMenuSubItem blockItem;
     private ActionBarMenuSubItem profileInfoItem;
 
+    private ActionBarMenuItem forkItemRead;
+    private ActionBarMenuSubItem forkItemDelete;
+
     private float additionalFloatingTranslation;
     private float floatingButtonPanOffset;
 
@@ -6756,7 +6759,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         pinItem = actionMode.addItemWithWidth(pin, R.drawable.msg_pin, dp(48));
         muteItem = actionMode.addItemWithWidth(mute, R.drawable.msg_mute, dp(48));
         archive2Item = actionMode.addItemWithWidth(archive2, R.drawable.msg_archive, dp(48));
-        deleteItem = actionMode.addItemWithWidth(delete, R.drawable.msg_delete, dp(48), LocaleController.getString(R.string.Delete));
+        // deleteItem = actionMode.addItemWithWidth(delete, R.drawable.msg_delete, dp(48), LocaleController.getString(R.string.Delete));
+        forkItemRead = actionMode.addItemWithWidth(read, R.drawable.msg_markread, dp(48), LocaleController.getString(R.string.MarkAsRead));
 
         ActionBarMenuItem otherItem = actionMode.addItemWithWidth(0, R.drawable.ic_ab_other, dp(48), LocaleController.getString(R.string.AccDescrMoreOptions));
         actionMode.addView(new View(getContext()), LayoutHelper.createLinear(5, LayoutHelper.MATCH_PARENT));
@@ -6764,7 +6768,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         pin2Item = otherItem.addSubItem(pin2, R.drawable.msg_pin, LocaleController.getString(R.string.DialogPin));
         addToFolderItem = otherItem.addSubItem(add_to_folder, R.drawable.msg_addfolder, LocaleController.getString(R.string.FilterAddTo));
         removeFromFolderItem = otherItem.addSubItem(remove_from_folder, R.drawable.msg_removefolder, LocaleController.getString(R.string.FilterRemoveFrom));
-        readItem = otherItem.addSubItem(read, R.drawable.msg_markread, LocaleController.getString(R.string.MarkAsRead));
+        // readItem = otherItem.addSubItem(read, R.drawable.msg_markread, LocaleController.getString(R.string.MarkAsRead));
+        forkItemDelete = otherItem.addSubItem(delete, R.drawable.msg_delete, LocaleController.getString(R.string.Delete));
         clearItem = otherItem.addSubItem(clear, R.drawable.msg_clear, LocaleController.getString(R.string.ClearHistory));
         blockItem = otherItem.addSubItem(block, R.drawable.msg_block, LocaleController.getString(R.string.BlockUser));
         profileInfoItem = otherItem.addSubItem(profileInfo, R.drawable.msg_message, LocaleController.getString(R.string.Info));
@@ -6777,7 +6782,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         actionModeViews.add(pinItem);
         actionModeViews.add(archive2Item);
         actionModeViews.add(muteItem);
-        actionModeViews.add(deleteItem);
+        // actionModeViews.add(deleteItem);
+        actionModeViews.add(forkItemRead);
         actionModeViews.add(otherItem);
 
         updateCounters(false);
@@ -10013,6 +10019,17 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         }
         if (profileInfoItem != null) {
             profileInfoItem.setVisibility(count > 1 ? View.GONE : View.VISIBLE);
+        }
+
+        if (forkItemRead != null) {
+            forkItemRead.setIcon((canReadCount != 0)
+                ? R.drawable.msg_markread
+                : R.drawable.msg_markunread);
+        }
+        if (forkItemDelete != null) {
+            forkItemDelete.setVisibility((canDeleteCount != count)
+                ? View.GONE
+                : View.VISIBLE);
         }
     }
 
