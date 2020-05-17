@@ -4184,14 +4184,12 @@ public class AlertsCreator {
                 c.add(Calendar.DAY_OF_YEAR, value);
                 final long date = c.getTimeInMillis();
                 final int year = c.get(Calendar.YEAR);
+                final LocaleController loc = LocaleController.getInstance();
+                final String week = loc.getFormatterWeek().format(date) + ", ";
                 if (year == nowYear) {
-                    return (
-                        LocaleController.getInstance().getFormatterWeek().format(date) +
-                        ", " +
-                        LocaleController.getInstance().getFormatterScheduleDay().format(date)
-                    );
+                    return week + loc.getFormatterScheduleDay().format(date);
                 } else {
-                    return LocaleController.getInstance().getFormatterScheduleYear().format(date);
+                    return week + loc.getFormatterScheduleYear().format(date);
                 }
             }
         });
