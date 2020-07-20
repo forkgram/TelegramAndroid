@@ -4,6 +4,7 @@
     <string name="ForkSectionMedia">Fotos y vídeos</string>
     <string name="HideBottomButtonInfo">Vaciar el botón de la barra inferior (Silenciar, Unirse) e ignorar los toques en él.</string>
     <string name="OpenArchiveOnPullInfo">Abrir la carpeta Archivados al deslizar hacia abajo la lista de chats.</string>
+    <string name="DisableThumbsInDialogListInfo">Ocultar las miniaturas del último mensaje en la lista de chats.</string>
     <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="MentionByNameInfo">El autocompletado inserta el nombre de la persona en lugar del nombre de usuario.</string>
     <string name="FormatWithSecondsInfo">Mostrar los segundos en la hora de los mensajes y otras horas.</string>
