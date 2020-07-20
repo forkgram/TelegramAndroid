@@ -6,6 +6,7 @@
     <string name="ForkSectionMedia">Photos and video</string>
     <string name="HideBottomButtonInfo">Blank the bottom bar button (Mute, Join) and ignore taps on it.</string>
     <string name="OpenArchiveOnPullInfo">Open the Archive folder when the chat list is pulled down.</string>
+    <string name="DisableThumbsInDialogListInfo">Hide media thumbnails of the last message in the chat list.</string>
     <string name="ReplaceForwardInfo">Forward opens the share sheet instead of the chat picker.</string>
     <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
     <string name="FormatWithSecondsInfo">Show seconds in message timestamps and other times.</string>
@@ -48,6 +49,7 @@
     <string name="StickerSize">Sticker Size</string>
     <string name="DisableFlipPhotos">Disable Flip Photos by Tapping</string>
     <string name="FormatWithSeconds">Format Message Time with Seconds</string>
+    <string name="DisableThumbsInDialogList">Disable Thumbs in Dialog List</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
