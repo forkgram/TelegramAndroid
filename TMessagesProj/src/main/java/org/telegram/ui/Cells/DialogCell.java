@@ -1349,6 +1349,10 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                             }
                         }
                     } else {
+                        final boolean disableThumbs = MessagesController
+                            .getGlobalMainSettings()
+                            .getBoolean("disableThumbsInDialogList", false);
+
                         String restrictionReason = MessagesController.getRestrictionReason(message.messageOwner.restriction_reason);
                         TLRPC.User fromUser = null;
                         TLRPC.Chat fromChat = null;
@@ -1477,6 +1481,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                                         messageString = new SpannableStringBuilder(messageString);
                                     }
                                     checkMessage = false;
+                                    if (!disableThumbs) {
                                     SpannableStringBuilder builder = (SpannableStringBuilder) messageString;
                                     if (thumbInsertIndex >= builder.length()) {
                                         builder.append(" ");
@@ -1484,6 +1489,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                                     } else {
                                         builder.insert(thumbInsertIndex, " ");
                                         builder.setSpan(new FixedWidthSpan(AndroidUtilities.dp(thumbsCount * (thumbSize + 2) - 2 + 5)), thumbInsertIndex, thumbInsertIndex + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                    }
                                     }
                                 }
                             } else {
@@ -1637,6 +1643,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                                         messageString = new SpannableStringBuilder(messageString);
                                     }
                                     checkMessage = false;
+                                    if (!disableThumbs) {
                                     SpannableStringBuilder builder = (SpannableStringBuilder) messageString;
                                     builder.insert(0, " ");
                                     builder.setSpan(new FixedWidthSpan(AndroidUtilities.dp((thumbSize + 2) * thumbsCount - 2 + 5)), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -1646,6 +1653,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                                         if (s != null) {
                                             messageString = s;
                                         }
+                                    }
                                     }
                                 }
                                 if (message.isForwarded() && message.needDrawForwarded()) {
@@ -3825,7 +3833,10 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 Theme.dialogs_pinnedDrawable.draw(canvas);
             }
 
-            if (thumbsCount > 0 && updateHelper.typingProgres != 1f) {
+            if (thumbsCount > 0 && updateHelper.typingProgres != 1f
+                && !MessagesController
+                    .getGlobalMainSettings()
+                    .getBoolean("disableThumbsInDialogList", false)) {
                 float alpha = 1f;
                 if (updateHelper.typingProgres > 0) {
                     alpha = (1f - updateHelper.typingProgres);
@@ -4759,6 +4770,12 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
 
     public void updateMessageThumbs() {
         if (message == null) {
+            return;
+        }
+        final boolean disableThumbs = MessagesController
+            .getGlobalMainSettings()
+            .getBoolean("disableThumbsInDialogList", false);
+        if (disableThumbs) {
             return;
         }
         String restrictionReason = MessagesController.getRestrictionReason(message.messageOwner.restriction_reason);
