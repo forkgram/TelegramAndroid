@@ -4,6 +4,7 @@
     <string name="ForkSectionMedia">Fotos und Videos</string>
     <string name="HideBottomButtonInfo">Die untere Leistenschaltfläche (Stumm, Beitreten) leeren und Tippen darauf ignorieren.</string>
     <string name="OpenArchiveOnPullInfo">Den Archivordner öffnen, wenn die Chatliste nach unten gezogen wird.</string>
+    <string name="DisableThumbsInDialogListInfo">Medien-Vorschaubilder der letzten Nachricht in der Chatliste ausblenden.</string>
     <string name="ReplaceForwardInfo">Weiterleiten öffnet das Teilen-Fenster statt der Chat-Auswahl.</string>
     <string name="MentionByNameInfo">Autovervollständigung fügt den Namen der Person statt des Benutzernamens ein.</string>
     <string name="FormatWithSecondsInfo">Sekunden in Nachrichtenzeiten und anderen Zeitangaben anzeigen.</string>

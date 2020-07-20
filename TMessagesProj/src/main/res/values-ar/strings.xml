@@ -4,6 +4,7 @@
     <string name="ForkSectionMedia">الصور والفيديو</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>
     <string name="OpenArchiveOnPullInfo">فتح مجلد الأرشيف عند سحب قائمة الدردشات للأسفل.</string>
+    <string name="DisableThumbsInDialogListInfo">إخفاء الصور المصغرة لآخر رسالة في قائمة الدردشات.</string>
     <string name="ReplaceForwardInfo">إعادة التوجيه تفتح لوحة المشاركة بدلاً من محدد الدردشة.</string>
     <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
     <string name="FormatWithSecondsInfo">إظهار الثواني في أوقات الرسائل والأوقات الأخرى.</string>
