@@ -6,6 +6,7 @@
     <string name="OpenArchiveOnPullInfo">Abrir a pasta Arquivadas ao puxar a lista de conversas para baixo.</string>
     <string name="ReplaceForwardInfo">Encaminhar abre o painel de compartilhamento em vez do seletor de conversas.</string>
     <string name="MentionByNameInfo">O preenchimento automático insere o nome da pessoa em vez do nome de usuário.</string>
+    <string name="FormatWithSecondsInfo">Mostrar os segundos nos horários das mensagens e em outros horários.</string>
     <string name="DisableFlipPhotosInfo">Não passar para a próxima foto ao tocar nas bordas da tela.</string>
     <string name="RearVideoMessagesInfo">Gravar as mensagens de vídeo com a câmera traseira.</string>
     <string name="ForkRestartRequired">Reinício necessário</string>

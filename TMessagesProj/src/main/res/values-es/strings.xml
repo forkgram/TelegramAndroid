@@ -6,6 +6,7 @@
     <string name="OpenArchiveOnPullInfo">Abrir la carpeta Archivados al deslizar hacia abajo la lista de chats.</string>
     <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="MentionByNameInfo">El autocompletado inserta el nombre de la persona en lugar del nombre de usuario.</string>
+    <string name="FormatWithSecondsInfo">Mostrar los segundos en la hora de los mensajes y otras horas.</string>
     <string name="DisableFlipPhotosInfo">No pasar a la siguiente foto al tocar los bordes de la pantalla.</string>
     <string name="RearVideoMessagesInfo">Grabar los mensajes de vídeo con la cámara trasera.</string>
     <string name="ForkRestartRequired">Reinicio requerido</string>
