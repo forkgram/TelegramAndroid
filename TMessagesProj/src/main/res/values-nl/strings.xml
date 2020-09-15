@@ -8,6 +8,7 @@
     <string name="ReplaceForwardInfo">Doorsturen opent het deelvenster in plaats van de chatkiezer.</string>
     <string name="MentionByNameInfo">Automatisch aanvullen voegt de naam van de persoon in in plaats van de gebruikersnaam.</string>
     <string name="FormatWithSecondsInfo">Seconden tonen in berichttijden en andere tijden.</string>
+    <string name="FullRecentStickersInfo">Alle recente stickers tonen in plaats van de laatste 20.</string>
     <string name="DisableFlipPhotosInfo">Niet naar de volgende foto gaan bij tikken op de schermranden.</string>
     <string name="RearVideoMessagesInfo">Videoberichten opnemen met de camera aan de achterkant.</string>
     <string name="ForkRestartRequired">Herstart vereist</string>
