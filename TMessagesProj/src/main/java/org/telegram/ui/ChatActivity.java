@@ -39581,6 +39581,10 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
         });
 
+        options.add(R.drawable.msg_copy, getString(R.string.CopyWithoutProtocol), () -> {
+            AndroidUtilities.addToClipboard(str.replace("http://", "").replace("https://", ""));
+        });
+
         dialog.setItemOptions(options);
         if (span instanceof URLSpanReplacement) {
             String formattedUrl = ((URLSpanReplacement) span).getURL();
