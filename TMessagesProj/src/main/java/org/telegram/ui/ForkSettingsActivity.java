@@ -73,6 +73,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_MENTION_BY_NAME = 31;
     public static final int ID_FORMAT_WITH_SECONDS = 36;
 
+    public static final int ID_FULL_RECENT_STICKERS = 44;
     public static final int ID_STICKER_SIZE = 46;
 
     public static final int ID_INAPP_CAMERA = 50;
@@ -368,6 +369,11 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("formatWithSeconds", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
+        items.add(UItem.asHeader(LocaleController.getString(R.string.StickersName)));
+        items.add(UItem.asButtonCheck(ID_FULL_RECENT_STICKERS, LocaleController.getString(R.string.FullRecentStickers), LocaleController.getString(R.string.FullRecentStickersInfo))
+            .setChecked(pref("fullRecentStickers", true)).setMultiline(true));
+        items.add(UItem.asShadow(null));
+
         items.add(UItem.asHeader(LocaleController.getString(R.string.StickerSize)));
         if (stickerSizeCell == null) {
             stickerSizeCell = new StickerSizeCell(getContext());
@@ -434,6 +440,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("mentionByName", item, view);
         } else if (id == ID_FORMAT_WITH_SECONDS) {
             toggle("formatWithSeconds", item, view);
+        } else if (id == ID_FULL_RECENT_STICKERS) {
+            toggle("fullRecentStickers", item, view);
         } else if (id == ID_INAPP_CAMERA) {
             SharedConfig.toggleInappCamera();
             setCellChecked(view, SharedConfig.inappCamera);

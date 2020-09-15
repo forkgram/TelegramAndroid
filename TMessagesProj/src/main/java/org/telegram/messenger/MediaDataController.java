@@ -907,7 +907,8 @@ public class MediaDataController extends BaseController {
         if (type == TYPE_PREMIUM_STICKERS) {
             return new ArrayList<>(recentStickers[type]);
         }
-        ArrayList<TLRPC.Document> result = new ArrayList<>(arrayList.subList(0, Math.min(arrayList.size(), 20)));
+        final int limit = MessagesController.getGlobalMainSettings().getBoolean("fullRecentStickers", true) ? Integer.MAX_VALUE : 20;
+        ArrayList<TLRPC.Document> result = new ArrayList<>(arrayList.subList(0, Math.min(arrayList.size(), limit)));
         if (firstEmpty && !result.isEmpty() && !StickersAlert.DISABLE_STICKER_EDITOR) {
             result.add(0, new TLRPC.TL_documentEmpty());
         }
