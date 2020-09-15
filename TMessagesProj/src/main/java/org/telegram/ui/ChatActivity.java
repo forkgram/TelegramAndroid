@@ -43832,6 +43832,10 @@ public class ChatActivity extends BaseFragment implements
             }
         });
 
+        options.add(R.drawable.msg_copy, getString(R.string.CopyWithoutProtocol), () -> {
+            AndroidUtilities.addToClipboard(str.replace("http://", "").replace("https://", ""));
+        });
+
         dialog.setItemOptions(options);
         if (str != null && str.startsWith("mailto:")) {
             SpannableString s = new SpannableString(str.substring(7));
