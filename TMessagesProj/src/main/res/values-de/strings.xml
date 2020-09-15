@@ -8,6 +8,7 @@
     <string name="ReplaceForwardInfo">Weiterleiten öffnet das Teilen-Fenster statt der Chat-Auswahl.</string>
     <string name="MentionByNameInfo">Autovervollständigung fügt den Namen der Person statt des Benutzernamens ein.</string>
     <string name="FormatWithSecondsInfo">Sekunden in Nachrichtenzeiten und anderen Zeitangaben anzeigen.</string>
+    <string name="FullRecentStickersInfo">Alle zuletzt verwendeten Sticker anzeigen statt nur der letzten 20.</string>
     <string name="DisableFlipPhotosInfo">Beim Tippen auf die Bildschirmränder nicht zum nächsten Foto wechseln.</string>
     <string name="RearVideoMessagesInfo">Videonachrichten mit der Rückkamera aufnehmen.</string>
     <string name="ForkRestartRequired">Neustart erforderlich</string>
