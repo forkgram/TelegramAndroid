@@ -28,3 +28,6 @@
 [submodule "TMessagesProj/jni/third_party/libyuv"]
 	path = TMessagesProj/jni/third_party/libyuv
 	url = https://chromium.googlesource.com/libyuv/libyuv
+[submodule "TMessagesProj/jni/libwebp"]
+	path = TMessagesProj/jni/libwebp
+	url = https://github.com/webmproject/libwebp
