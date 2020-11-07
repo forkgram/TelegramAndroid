@@ -55,3 +55,6 @@
 [submodule "TMessagesProj/jni/third_party/libprisma"]
 	path = TMessagesProj/jni/third_party/libprisma
 	url = https://github.com/TelegramMessenger/libprisma.git
+[submodule "TMessagesProj/jni/libwebp"]
+	path = TMessagesProj/jni/libwebp
+	url = https://github.com/webmproject/libwebp
