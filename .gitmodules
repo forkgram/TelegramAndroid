@@ -37,3 +37,6 @@
 [submodule "TMessagesProj_Modules/media"]
 	path = TMessagesProj_Modules/media
 	url = https://github.com/Arseny271/media.git
+[submodule "TMessagesProj/jni/libwebp"]
+	path = TMessagesProj/jni/libwebp
+	url = https://github.com/webmproject/libwebp
