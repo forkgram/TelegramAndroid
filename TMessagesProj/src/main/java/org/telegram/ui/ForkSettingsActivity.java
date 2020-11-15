@@ -60,6 +60,7 @@ import java.util.ArrayList;
 public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_HIDE_SENSITIVE_DATA = 1;
+    public static final int ID_SHOW_NOTIFICATION_CONTENT = 3;
 
     public static final int ID_HIDE_BOTTOM_BUTTON = 11;
     public static final int ID_SQUARE_AVATARS = 14;
@@ -338,6 +339,8 @@ public class ForkSettingsActivity extends BaseFragment {
             items.add(UItem.asButtonCheck(ID_HIDE_SENSITIVE_DATA, LocaleController.getString(R.string.HideSensitiveData), LocaleController.getString(R.string.ForkRestartRequired))
                 .setChecked(pref("hideSensitiveData", false)).setMultiline(true));
         }
+        items.add(UItem.asButtonCheck(ID_SHOW_NOTIFICATION_CONTENT, LocaleController.getString(R.string.ShowNotificationContent), LocaleController.getString(R.string.ShowNotificationContentInfo))
+            .setChecked(pref("showNotificationContent", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionAppearance)));
@@ -421,6 +424,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
         if (id == ID_HIDE_SENSITIVE_DATA) {
             toggle("hideSensitiveData", item, view);
+        } else if (id == ID_SHOW_NOTIFICATION_CONTENT) {
+            toggle("showNotificationContent", item, view);
         } else if (id == ID_SQUARE_AVATARS) {
             toggle("squareAvatars", item, view);
         } else if (id == ID_HIDE_BOTTOM_BUTTON) {
