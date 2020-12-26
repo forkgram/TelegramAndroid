@@ -41,7 +41,7 @@ jobs:
           echo $ADDITIONAL_BUILD_NUMBER
           sudo apt update
           sudo apt install openjdk-8-jdk openjdk-11-jre
-          ./gradlew assembleAfatDebug
+          ./gradlew assembleAfatRelease
           
           #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
           grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/afat/debug/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
