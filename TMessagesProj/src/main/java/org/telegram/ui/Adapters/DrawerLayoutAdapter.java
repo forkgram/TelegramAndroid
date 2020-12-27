@@ -260,8 +260,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
         int helpIcon;
         if (eventType == 0) {
             newGroupIcon = R.drawable.msg_groups_ny;
-            //newSecretIcon = R.drawable.msg_secret_ny;
-            //newChannelIcon = R.drawable.msg_channel_ny;
+            newSecretIcon = R.drawable.msg_secret_ny;
+            newChannelIcon = R.drawable.msg_channel;
             contactsIcon = R.drawable.msg_contacts_ny;
             callsIcon = R.drawable.msg_calls_ny;
             savedIcon = R.drawable.msg_saved_ny;
@@ -270,8 +270,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             helpIcon = R.drawable.msg_help_ny;
         } else if (eventType == 1) {
             newGroupIcon = R.drawable.msg_groups_14;
-            //newSecretIcon = R.drawable.msg_secret_14;
-            //newChannelIcon = R.drawable.msg_channel_14;
+            newSecretIcon = R.drawable.msg_secret_14;
+            newChannelIcon = R.drawable.msg_channel;
             contactsIcon = R.drawable.msg_contacts_14;
             callsIcon = R.drawable.msg_calls_14;
             savedIcon = R.drawable.msg_saved_14;
@@ -280,8 +280,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             helpIcon = R.drawable.msg_help;
         } else if (eventType == 2) {
             newGroupIcon = R.drawable.msg_groups_hw;
-            //newSecretIcon = R.drawable.msg_secret_hw;
-            //newChannelIcon = R.drawable.msg_channel_hw;
+            newSecretIcon = R.drawable.msg_secret_hw;
+            newChannelIcon = R.drawable.msg_channel;
             contactsIcon = R.drawable.msg_contacts_hw;
             callsIcon = R.drawable.msg_calls_hw;
             savedIcon = R.drawable.msg_saved_hw;
@@ -290,8 +290,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             helpIcon = R.drawable.msg_help_hw;
         } else {
             newGroupIcon = R.drawable.msg_groups;
-            //newSecretIcon = R.drawable.msg_secret;
-            //newChannelIcon = R.drawable.msg_channel;
+            newSecretIcon = R.drawable.msg_secret;
+            newChannelIcon = R.drawable.msg_channel;
             contactsIcon = R.drawable.msg_contacts;
             callsIcon = R.drawable.msg_calls;
             savedIcon = R.drawable.msg_saved;
@@ -334,8 +334,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             items.add(null); // divider
         }
         items.add(new Item(2, LocaleController.getString(R.string.NewGroup), newGroupIcon));
-        //items.add(new Item(3, LocaleController.getString(R.string.NewSecretChat), newSecretIcon));
-        //items.add(new Item(4, LocaleController.getString(R.string.NewChannel), newChannelIcon));
+        items.add(new Item(3, LocaleController.getString(R.string.NewSecretChat), newSecretIcon));
+        items.add(new Item(4, LocaleController.getString(R.string.NewChannel), newChannelIcon));
         items.add(new Item(6, LocaleController.getString(R.string.Contacts), contactsIcon));
         items.add(new Item(10, LocaleController.getString(R.string.Calls), callsIcon));
         items.add(new Item(11, LocaleController.getString(R.string.SavedMessages), savedIcon));
