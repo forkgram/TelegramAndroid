@@ -1049,6 +1049,52 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         return false;
     }
 
+    private ShareAlert createShareAlert(
+            final Context context,
+            ArrayList<MessageObject> messages,
+            final String text,
+            boolean groupAnyItems) {
+
+        return new ShareAlert(
+            context,
+            ChatActivity.this,
+            messages,
+            text,
+            null,
+            ChatObject.isChannel(currentChat),
+            null,
+            null,
+            false,
+            false,
+            themeDelegate,
+            groupAnyItems) {
+                @Override
+                public void dismissInternal() {
+                    super.dismissInternal();
+                    AndroidUtilities.requestAdjustResize(getParentActivity(), classGuid);
+                    if (chatActivityEnterView.getVisibility() == View.VISIBLE) {
+                        fragmentView.requestLayout();
+                    }
+                }
+                @Override
+                protected void onSend(LongSparseArray<TLRPC.Dialog> dids, UndoInfo info) {
+                    if (dids.size() == 1) {
+                        getUndoView().showWithAction(dids.valueAt(0).id, UndoView.ACTION_FWD_MESSAGES, info);
+                    } else {
+                        getUndoView().showWithAction(0, UndoView.ACTION_FWD_MESSAGES, info, dids.size(), null, null);
+                    }
+                }
+                @Override
+                protected void onSend(LongSparseArray<TLRPC.Dialog> dids, int count, TLRPC.TL_forumTopic topic) {
+                    if (dids.size() == 1) {
+                        getUndoView().showWithAction(dids.valueAt(0).id, UndoView.ACTION_FWD_MESSAGES, count, topic, null, null);
+                    } else {
+                        getUndoView().showWithAction(0, UndoView.ACTION_FWD_MESSAGES, count, dids.size(), null, null);
+                    }
+                }
+        };
+    }
+
     private void showAnonymShareAlert(boolean groupMedia) {
         ArrayList<MessageObject> messages = new ArrayList<MessageObject>();
         for (int a = 1; a >= 0; a--) {
@@ -1071,20 +1117,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         hideActionMode();
         updatePinnedMessageView(true);
         updateVisibleRows();
-        ShareAlert alert = new ShareAlert(
-            getParentActivity(),
-            null,
-            messages,
-            "",
-            null,
-            ChatObject.isChannel(currentChat),
-            null,
-            null,
-            true,
-            false,
-            themeDelegate,
-            groupMedia);
-        showDialog(alert);
+        showDialog(createShareAlert(getParentActivity(), messages, "", groupMedia));
     }
 
     private void createGroupMediaButton(Context context) {
@@ -25577,19 +25610,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     messages.add(selectedObject);
                 }
 
-                ShareAlert alert = new ShareAlert(
-                    getParentActivity(),
-                    null,
-                    messages,
-                    "",
-                    null,
-                    ChatObject.isChannel(currentChat),
-                    null,
-                    null,
-                    true,
-                    themeDelegate,
-                    false);
-                showDialog(alert);
+                showDialog(createShareAlert(getParentActivity(), messages, "", false));
                 break;
             }
             case OPTION_FORWARD: {
@@ -29183,29 +29204,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     arrayList = new ArrayList<>();
                     arrayList.add(messageObject);
                 }
-                showDialog(new ShareAlert(getContext(), ChatActivity.this, arrayList, null, null, ChatObject.isChannel(currentChat), null, null, false, false, themeDelegate) {
-                    @Override
-                    public void dismissInternal() {
-                        super.dismissInternal();
-                        AndroidUtilities.requestAdjustResize(getParentActivity(), classGuid);
-                        if (chatActivityEnterView.getVisibility() == View.VISIBLE) {
-                            fragmentView.requestLayout();
-                        }
-                    }
-
-                    @Override
-                    protected void onSend(LongSparseArray<TLRPC.Dialog> dids, int count, TLRPC.TL_forumTopic topic) {
-                        createUndoView();
-                        if (undoView == null) {
-                            return;
-                        }
-                        if (dids.size() == 1) {
-                            undoView.showWithAction(dids.valueAt(0).id, UndoView.ACTION_FWD_MESSAGES, count, topic, null, null);
-                        } else {
-                            undoView.showWithAction(0, UndoView.ACTION_FWD_MESSAGES, count, dids.size(), null, null);
-                        }
-                    }
-                });
+                showDialog(createShareAlert(getParentActivity(), arrayList, null, false));
                 AndroidUtilities.setAdjustResizeToNothing(getParentActivity(), classGuid);
                 fragmentView.requestLayout();
             }
