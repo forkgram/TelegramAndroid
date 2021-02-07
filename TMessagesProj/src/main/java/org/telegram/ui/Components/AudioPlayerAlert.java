@@ -260,7 +260,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
             }
             rewindingProgress = currentProgress;
             MessageObject messageObject = MediaController.getInstance().getPlayingMessageObject();
-            if (messageObject != null && messageObject.isMusic()) {
+            if (messageObject != null && (messageObject.isMusic() || messageObject.isVoice())) {
                 if (!MediaController.getInstance().isMessagePaused()) {
                     MediaController.getInstance().getPlayingMessageObject().audioProgress = rewindingProgress;
                 }
@@ -640,7 +640,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
                     MediaController.getInstance().seekToProgress(MediaController.getInstance().getPlayingMessageObject(), progress);
                 }
                 MessageObject messageObject = MediaController.getInstance().getPlayingMessageObject();
-                if (messageObject != null && messageObject.isMusic()) {
+                if (messageObject != null && (messageObject.isMusic() || messageObject.isVoice())) {
                     updateProgress(messageObject);
                 }
             }
@@ -767,7 +767,9 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         repeatButton.setShowSubmenuByMove(false);
         repeatButton.setAdditionalYOffset(-dp(166));
         repeatButton.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), 1, dp(18)));
+        if (!messageObject.isVoice()) {
         bottomView.addView(repeatButton, LayoutHelper.createFrame(48, 48, Gravity.LEFT | Gravity.TOP));
+        }
         repeatButton.setOnClickListener(v -> {
             updateSubMenu();
             repeatButton.toggleSubMenu();
@@ -867,7 +869,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
                     }
                     rewindingProgress = currentProgress;
                     MessageObject messageObject = MediaController.getInstance().getPlayingMessageObject();
-                    if (messageObject != null && messageObject.isMusic()) {
+                    if (messageObject != null && (messageObject.isMusic() || messageObject.isVoice())) {
                         updateProgress(messageObject);
                     }
                     if (rewindingState == -1 && pressedCount > 0) {
@@ -953,7 +955,9 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         prevButton.setLayerColor("Triangle 4.**", iconColor);
         prevButton.setLayerColor("Rectangle 4.**", iconColor);
         prevButton.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), 1, dp(22)));
+        if (!messageObject.isVoice()) {
         bottomView.addView(prevButton, LayoutHelper.createFrame(48, 48, Gravity.LEFT | Gravity.TOP));
+        }
         prevButton.setContentDescription(LocaleController.getString(R.string.AccDescrPrevious));
 
         buttons[2] = playButton = new ImageView(context);
@@ -1073,7 +1077,9 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         nextButton.setLayerColor("Rectangle 4.**", iconColor);
         nextButton.setRotation(180f);
         nextButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), 1, dp(22)));
+        if (!messageObject.isVoice()) {
         bottomView.addView(nextButton, LayoutHelper.createFrame(48, 48, Gravity.LEFT | Gravity.TOP));
+        }
         nextButton.setContentDescription(LocaleController.getString(R.string.Next));
 
         buttons[4] = optionsButton = new ActionBarMenuItem(context, null, 0, iconColor, false, resourcesProvider);
@@ -1888,7 +1894,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
             }
         } else if (id == NotificationCenter.messagePlayingProgressDidChanged) {
             MessageObject messageObject = MediaController.getInstance().getPlayingMessageObject();
-            if (messageObject != null && messageObject.isMusic()) {
+            if (messageObject != null && (messageObject.isMusic() || messageObject.isVoice())) {
                 updateProgress(messageObject);
             }
         } else if (id == NotificationCenter.messagePlayingSpeedChanged) {
@@ -2242,7 +2248,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
 
     private void updateTitle(boolean shutdown) {
         MessageObject messageObject = MediaController.getInstance().getPlayingMessageObject();
-        if (messageObject == null && shutdown || messageObject != null && !messageObject.isMusic()) {
+        if (messageObject == null && shutdown || messageObject != null && !(messageObject.isMusic() || messageObject.isVoice())) {
             dismiss();
         } else {
             if (messageObject == null) {
