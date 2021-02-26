@@ -664,6 +664,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
     private boolean allowGifs;
 
     private boolean skipDotAtEnd = false;
+    private String voiceCaption = null;
 
     private int lastSizeChangeValue1;
     private boolean lastSizeChangeValue2;
@@ -6704,6 +6705,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                 }
                 applyStoryToSendMessageParams(params);
                 SendMessagesHelper.getInstance(currentAccount).sendMessage(params);
+            voiceCaption = null;
                 if (delegate != null) {
                     delegate.onMessageSend(null, notify, scheduleDate, payStars);
                 }
@@ -8978,6 +8980,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         recordTimeContainer.addView(recordTimerView = new TimerView(getContext()), LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER_VERTICAL, 6, 0, 0, 0));
 
         recordPanel.addView(recordTimeContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER_VERTICAL));
+        slideText.bringToFront();
     }
 
     @Override
@@ -12585,8 +12588,19 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         final float replaceDistance = dp(15);
         float left;
 
+        public ArrayList<String> timestamps = new ArrayList<String>();
+
         public TimerView(Context context) {
             super(context);
+
+            setOnClickListener((v) -> {
+                final String current = oldString.substring(0, oldString.indexOf(','));
+                timestamps.add(current);
+                android.widget.Toast.makeText(
+                        parentActivity,
+                        "Saved timestamp at " + current + ".",
+                        android.widget.Toast.LENGTH_SHORT).show();
+            });
         }
 
         public void start(long milliseconds) {
@@ -12594,6 +12608,8 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             startTime = System.currentTimeMillis() - milliseconds;
             lastSendTypingTime = startTime;
             invalidate();
+            timestamps.clear();
+            timestamps.add("0:00");
         }
 
         public void stop() {
