@@ -714,6 +714,7 @@ public class ChatActivityEnterView extends FrameLayout implements
     private boolean allowGifs;
 
     private boolean skipDotAtEnd = false;
+    private String voiceCaption = null;
 
     private int lastSizeChangeValue1;
     private boolean lastSizeChangeValue2;
@@ -7100,6 +7101,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 }
                 applyStoryToSendMessageParams(params);
                 SendMessagesHelper.getInstance(currentAccount).sendMessage(params);
+            voiceCaption = null;
                 if (delegate != null) {
                     delegate.onMessageSend(null, notify, scheduleDate, scheduleRepeatPeriod, payStars);
                 }
@@ -9535,6 +9537,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         recordTimeContainer.addView(recordTimerView = new TimerView(getContext()), LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER_VERTICAL, 6, 0, 0, 0));
 
         recordPanel.addView(recordTimeContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER_VERTICAL));
+        slideText.bringToFront();
     }
 
     @Override
@@ -13711,8 +13714,28 @@ public class ChatActivityEnterView extends FrameLayout implements
         final float replaceDistance = dp(15);
         float left;
 
+        public ArrayList<String> timestamps = new ArrayList<String>();
+
         public TimerView(Context context) {
             super(context);
+            
+            setOnClickListener((v) -> {
+                final String current = oldString.substring(0, oldString.indexOf(','));
+                timestamps.add(current);
+                
+                android.widget.Toast.makeText(
+                        parentActivity,
+                        "Saved timestamp at " + current + ".",
+                        android.widget.Toast.LENGTH_SHORT).show();
+                
+                android.content.ClipboardManager clipboard
+                    = (android.content.ClipboardManager) context.getSystemService(
+                        android.content.Context.CLIPBOARD_SERVICE);
+                String timestampsText = String.join("\n", timestamps);
+                android.content.ClipData clip
+                    = android.content.ClipData.newPlainText("Timestamps", timestampsText);
+                clipboard.setPrimaryClip(clip);
+            });
         }
 
         public void start(long milliseconds) {
@@ -13720,6 +13743,8 @@ public class ChatActivityEnterView extends FrameLayout implements
             startTime = System.currentTimeMillis() - milliseconds;
             lastSendTypingTime = startTime;
             invalidate();
+            timestamps.clear();
+            timestamps.add("0:00");
         }
 
         public void stop() {
