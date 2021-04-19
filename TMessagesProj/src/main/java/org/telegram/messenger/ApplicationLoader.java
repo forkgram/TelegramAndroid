@@ -134,7 +134,7 @@ public class ApplicationLoader extends Application {
     }
 
     public static boolean isStandaloneBuild() {
-        return applicationLoaderInstance.isStandalone();
+        return true;
     }
 
     public static boolean isBetaBuild() {
@@ -150,7 +150,7 @@ public class ApplicationLoader extends Application {
     }
 
     protected boolean isStandalone() {
-        return false;
+        return true;
     }
 
     protected boolean isBeta() {
