@@ -67,6 +67,11 @@ public class BuildVars {
         return false;
     }
 
+    private static Boolean standaloneApp;
+    public static boolean isStandaloneApp() {
+        return true;
+    }
+
     private static Boolean betaApp;
     public static boolean isBetaApp() {
         if (betaApp == null) {
