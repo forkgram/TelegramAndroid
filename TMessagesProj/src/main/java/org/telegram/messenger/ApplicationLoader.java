@@ -139,7 +139,7 @@ public class ApplicationLoader extends Application {
     }
 
     public static boolean isStandaloneBuild() {
-        return applicationLoaderInstance.isStandalone();
+        return true;
     }
 
     protected boolean isHuaweiBuild() {
@@ -147,7 +147,7 @@ public class ApplicationLoader extends Application {
     }
 
     protected boolean isStandalone() {
-        return false;
+        return true;
     }
 
     public static File getFilesDirFixed() {
