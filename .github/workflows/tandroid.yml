@@ -6,6 +6,18 @@ jobs:
   linux:
     name: Build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type: [debug, release]
+        include:
+          - type: debug
+            afat: assembleAfatDebug
+            name: ""
+            updates: 1
+          - type: release
+            afat: assembleAfatRelease
+            name: " compressed"
+            updates: 0
     steps:
       - uses: actions/checkout@v3.1.0
         with:
@@ -18,6 +30,7 @@ jobs:
           echo "ADDITIONAL_BUILD_NUMBER = $result should be between 0 and 10!"
           echo "ADDITIONAL_BUILD_NUMBER=$result" >> $GITHUB_ENV
           echo "USER_REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+          echo "CHECK_UPDATES=${{ matrix.updates }}" >> $GITHUB_ENV
       - name: Add language.
         env:
           URL_LANG: ${{ secrets.URL_LANG }}
@@ -51,22 +64,23 @@ jobs:
           echo "RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASS }}" >> $vars
           echo "ADDITIONAL_BUILD_NUMBER=$ADDITIONAL_BUILD_NUMBER" >> $vars
           echo "USER_REPO=$USER_REPO" >> $vars
+          echo "CHECK_UPDATES=${{ matrix.updates }}" >> $vars
           echo "USER_ID_OWNER=${{ secrets.USER_ID_OWNER }}" >> $vars
 
           ###
           echo $ADDITIONAL_BUILD_NUMBER
           sudo apt update
           sudo apt install openjdk-17-jdk openjdk-17-jre ninja-build
-          ./gradlew :TMessagesProj_AppFork:assembleAfatDebug
+          ./gradlew :TMessagesProj_AppFork:${{ matrix.afat }}
 
           #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
-          grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/debug/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
+          grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/${{ matrix.type }}/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
 
           mkdir artifact
-          mv TMessagesProj_AppFork/build/outputs/apk/afat/debug/app.apk app.apk
-          cp app.apk "artifact/ForkClient $(cat ver.txt).apk"
+          mv TMessagesProj_AppFork/build/outputs/apk/afat/${{ matrix.type }}/app.apk app.apk
+          cp app.apk "artifact/ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
           mkdir tag_asset
-          cp app.apk "tag_asset/ForkClient_$(cat ver.txt).apk"
+          cp app.apk "tag_asset/ForkClient_$(cat ver.txt)${{ matrix.name }}.apk"
 
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
 
@@ -87,5 +101,5 @@ jobs:
       - uses: actions/upload-artifact@master
         name: Upload artifact.
         with:
-          name: ForkClient
+          name: ForkClient-${{ matrix.type }}
           path: artifact/
