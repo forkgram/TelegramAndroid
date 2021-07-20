@@ -6,6 +6,22 @@ jobs:
   linux:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    strategy:
+      matrix:
+        type: [debug, release]
+        include:
+          - type: debug
+            afat: assembleAfatDebug
+            name: ""
+            updates: 1
+          - type: release
+            afat: assembleAfatRelease
+            name: " compressed"
+            updates: 1
     steps:
       - uses: actions/checkout@v3.1.0
         with:
@@ -27,6 +43,7 @@ jobs:
           echo "ADDITIONAL_BUILD_NUMBER = $result should be between 0 and 10!"
           echo "ADDITIONAL_BUILD_NUMBER=$result" >> $GITHUB_ENV
           echo "USER_REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+          echo "CHECK_UPDATES=${{ matrix.updates }}" >> $GITHUB_ENV
       - name: Build.
         run: |
           ###
@@ -41,6 +58,7 @@ jobs:
           echo "RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASS }}" >> $vars
           echo "ADDITIONAL_BUILD_NUMBER=$ADDITIONAL_BUILD_NUMBER" >> $vars
           echo "USER_REPO=$USER_REPO" >> $vars
+          echo "CHECK_UPDATES=${{ matrix.updates }}" >> $vars
           echo "USER_ID_OWNER=${{ secrets.USER_ID_OWNER }}" >> $vars
           echo "UPDATE_CHANNEL_USERNAME=${{ secrets.UPDATE_CHANNEL_USERNAME }}" >> $vars
 
@@ -48,35 +66,66 @@ jobs:
           echo $ADDITIONAL_BUILD_NUMBER
           sudo apt update
           sudo apt -y install ninja-build meson
-          ./gradlew :TMessagesProj_App:assembleAfatDebug
+          ./gradlew :TMessagesProj_App:${{ matrix.afat }}
 
           #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
-          grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/debug/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
+          grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/${{ matrix.type }}/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
 
-          mkdir artifact
-          mv TMessagesProj_App/build/outputs/apk/afat/debug/app.apk app.apk
-          cp app.apk "artifact/ForkClient $(cat ver.txt).apk"
-          mkdir tag_asset
-          cp app.apk "tag_asset/ForkClient_$(cat ver.txt).apk"
+          mkdir -p artifact
+          mv TMessagesProj_App/build/outputs/apk/afat/${{ matrix.type }}/app.apk app.apk
+          cp app.apk "artifact/ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
+          mkdir -p tag_asset
+          cp app.apk "tag_asset/ForkClient_$(cat ver.txt)${{ matrix.name }}.apk"
 
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
 
           tempVer=$(cat ver.txt)
           tempVer=${tempVer::-2}
           echo "NEW_OFFICIAL_TAG_TEXT=$tempVer" >> $GITHUB_ENV
-      - name: Draft release.
+      - name: Attest build provenance
+        if: ${{ contains(github.event.head_commit.message, '[Release]') }}
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'artifact/*.apk'
+
+      - uses: actions/upload-artifact@master
+        name: Upload artifact
+        if: ${{ contains(github.event.head_commit.message, '[Release]') }}
+        with:
+          name: ForkClient-${{ matrix.type }}
+          path: artifact/
+
+  release:
+    name: Create Release.
+    needs: linux
+    if: ${{ contains(github.event.head_commit.message, '[Release]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Download debug artifact
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: ForkClient-debug
+          path: debug_asset
+      - name: Download release artifact
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: ForkClient-release
+          path: release_asset
+      - name: Get version info
+        run: |
+          find debug_asset -name "*.apk" | head -1 | sed 's/.*ForkClient //;s/\.apk//' > version.txt
+          echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
+          echo "OFFICIAL_VERSION=$(cat version.txt | sed 's/..$//')" >> $GITHUB_ENV
+      - name: Create Release
         uses: softprops/action-gh-release@v0.1.15
-        if: ${{ matrix.type == 'debug' }}
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
         with:
           draft: true
-          files: tag_asset/*
-          tag_name: ${{ env.NEW_TAG_TEXT }}
-          name: "ForkClient ${{ env.NEW_TAG_TEXT }}"
-          body: "— Updated to ${{ env.NEW_OFFICIAL_TAG_TEXT }} build of the official Telegram."
-      - uses: actions/upload-artifact@master
-        name: Upload artifact.
-        with:
-          name: ForkClient
-          path: artifact/
+          files: |
+            debug_asset/*
+            release_asset/*
+          tag_name: ${{ env.VERSION }}
+          name: "ForkClient ${{ env.VERSION }}"
+          body: "— Updated to ${{ env.OFFICIAL_VERSION }} build of the official Telegram."
