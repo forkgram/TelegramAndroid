@@ -232,6 +232,18 @@ def getProps(String propName) {
     }
 }
 
+task buildNativeDeps(description: 'Build native dependencies.') {
+    doFirst {
+        exec {
+            def ndkDir = android.ndkDirectory
+            println "NDK Directory: ${ndkDir}"
+            println "Working Directory: ${projectDir}/jni"
+            workingDir "${projectDir}/jni"
+            commandLine 'python3', 'prepare.py', 'silent', 'ndk=' + ndkDir, 'arm', 'arm64'
+        }
+    }
+}
+
 task checkVisibility {
     doFirst {
         def isPrivateBuild = project.gradle.startParameter.taskNames.find {
@@ -252,4 +264,5 @@ task checkVisibility {
     }
 }
 
+preBuild.dependsOn buildNativeDeps
 preBuild.dependsOn checkVisibility
