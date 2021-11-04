@@ -289,4 +289,5 @@
     <string name="RemindDayAt">\'Нагадати\' d MMM\',\' HH:mm</string>
     <string name="RemindDayYearAt">\'Нагадати\' d MMM yyyy\',\' HH:mm</string>
     <string name="AppIconAdaptive">Адаптивна</string>
+    <string name="AppNameFdroid">Forkgram</string>
 </resources>

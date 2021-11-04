@@ -57,6 +57,7 @@
     <string name="ShowNotificationContentInfo">When app is locked. Can be cause of privacy leaks.</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
+    <string name="AppNameFdroid">Forkgram</string>
     <string name="LanguageName">English</string>
     <string name="English">English</string>
     <string name="LanguageNameInEnglish">English</string>
