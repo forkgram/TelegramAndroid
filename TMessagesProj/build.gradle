@@ -160,6 +160,7 @@ android {
         buildConfigField 'String', 'VERSION_NAME', getStringForConfig(versionName)
         buildConfigField 'int', 'VERSION_CODE', Utils['getVersionCode']()
 
+        manifestPlaceholders = [appLabel: Utils['isFdroid']() ? "@string/AppNameFdroid" : "@string/AppName"]
         externalNativeBuild {
             cmake {
                 version '3.22.1'
@@ -259,6 +260,22 @@ def getProps(String propName) {
     }
 }
 
+task buildNativeDeps(description: 'Build native dependencies.') {
+    doFirst {
+        exec {
+            def depsNdk = getProps('NATIVE_DEPS_NDK_DIR')
+            if (depsNdk == null || depsNdk.toString().isEmpty()) {
+                depsNdk = project.hasProperty('NATIVE_DEPS_NDK_DIR') ? project.property('NATIVE_DEPS_NDK_DIR') : System.getenv('NATIVE_DEPS_NDK_DIR')
+            }
+            def ndkDir = (depsNdk != null && !depsNdk.toString().isEmpty()) ? depsNdk : android.ndkDirectory
+            println "NDK Directory: ${ndkDir}"
+            println "Working Directory: ${projectDir}/jni"
+            workingDir "${projectDir}/jni"
+            commandLine 'python3', 'prepare.py', 'silent', 'ndk=' + ndkDir, 'arm', 'arm64'
+        }
+    }
+}
+
 task checkVisibility {
     doFirst {
         def isPrivateBuild = project.gradle.startParameter.taskNames.find {
@@ -279,4 +296,5 @@ task checkVisibility {
     }
 }
 
+preBuild.dependsOn buildNativeDeps
 preBuild.dependsOn checkVisibility

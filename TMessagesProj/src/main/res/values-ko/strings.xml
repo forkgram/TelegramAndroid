@@ -1149,4 +1149,5 @@
     <string name="RemindDayYearAt">yyyy\'년\' M\'월\' d\'일\' HH:mm\'에 알림\'</string>
     <string name="BotsMenuTitle">메뉴</string>
     <string name="AppIconAdaptive">적응형</string>
+    <string name="AppNameFdroid">Forkgram</string>
 </resources>
