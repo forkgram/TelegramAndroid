@@ -1550,4 +1550,5 @@
     <string name="RemindDayYearAt">\'Ricorda il\' d MMM yyyy \'alle\' HH:mm</string>
     <string name="BotsMenuTitle">Menu</string>
     <string name="AppIconAdaptive">Adattiva</string>
+    <string name="AppNameFdroid">Forkgram</string>
 </resources>

@@ -1329,4 +1329,5 @@
     <string name="BotsMenuTitle">Menu</string>
     <string name="Understood">👍 Entendido</string>
     <string name="AppIconAdaptive">Adaptativo</string>
+    <string name="AppNameFdroid">Forkgram</string>
 </resources>
