@@ -359,9 +359,19 @@ public class SessionCell extends FrameLayout {
             colorKey = Theme.key_avatar_backgroundCyan;
             colorKey2 = Theme.key_avatar_background2Cyan;
         } else {
-            iconId = R.drawable.device_web_other;
-            colorKey = Theme.key_avatar_backgroundPink;
-            colorKey2 = Theme.key_avatar_background2Pink;
+            if (session.app_name.toLowerCase().contains("desktop")) {
+                iconId = R.drawable.device_desktop_other;
+                colorKey = Theme.key_avatar_backgroundCyan;
+                colorKey2 = Theme.key_avatar_background2Cyan;
+            } else if (session.app_name.contains("Forkgram")) {
+                iconId = R.drawable.menu_fork;
+                colorKey = Theme.key_avatar_backgroundViolet;
+                colorKey2 = Theme.key_avatar_background2Violet;
+            } else {
+                iconId = R.drawable.device_web_other;
+                colorKey = Theme.key_avatar_backgroundPink;
+                colorKey2 = Theme.key_avatar_background2Pink;
+            }
         }
         Drawable iconDrawable = ContextCompat.getDrawable(ApplicationLoader.applicationContext, iconId).mutate();
         iconDrawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_avatar_text), PorterDuff.Mode.SRC_IN));
