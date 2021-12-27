@@ -72,6 +72,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_REPLACE_FORWARD = 30;
     public static final int ID_MENTION_BY_NAME = 31;
+    public static final int ID_HIDE_SEND_AS = 32;
     public static final int ID_FORMAT_WITH_SECONDS = 36;
 
     public static final int ID_FULL_RECENT_STICKERS = 44;
@@ -368,6 +369,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("replaceForward", true)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_MENTION_BY_NAME, LocaleController.getString(R.string.MentionByName), LocaleController.getString(R.string.MentionByNameInfo))
             .setChecked(pref("mentionByName", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_HIDE_SEND_AS, LocaleController.getString(R.string.HideSendAs), LocaleController.getString(R.string.HideSendAsInfo))
+            .setChecked(pref("hideSendAs", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_FORMAT_WITH_SECONDS, LocaleController.getString(R.string.FormatWithSeconds), LocaleController.getString(R.string.FormatWithSecondsInfo))
             .setChecked(pref("formatWithSeconds", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -443,6 +446,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("replaceForward", item, view);
         } else if (id == ID_MENTION_BY_NAME) {
             toggle("mentionByName", item, view);
+        } else if (id == ID_HIDE_SEND_AS) {
+            toggle("hideSendAs", item, view);
         } else if (id == ID_FORMAT_WITH_SECONDS) {
             toggle("formatWithSeconds", item, view);
         } else if (id == ID_FULL_RECENT_STICKERS) {
