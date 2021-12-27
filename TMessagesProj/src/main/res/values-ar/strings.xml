@@ -7,6 +7,7 @@
     <string name="DisableThumbsInDialogListInfo">إخفاء الصور المصغرة لآخر رسالة في قائمة الدردشات.</string>
     <string name="ReplaceForwardInfo">إعادة التوجيه تفتح لوحة المشاركة بدلاً من محدد الدردشة.</string>
     <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
+    <string name="HideSendAsInfo">إخفاء زر الإرسال باسم في حقل الرسالة.</string>
     <string name="FormatWithSecondsInfo">إظهار الثواني في أوقات الرسائل والأوقات الأخرى.</string>
     <string name="FullRecentStickersInfo">إظهار جميع الملصقات الأخيرة بدلاً من آخر 20 فقط.</string>
     <string name="DisableFlipPhotosInfo">عدم الانتقال إلى الصورة التالية عند النقر على حواف الشاشة.</string>
