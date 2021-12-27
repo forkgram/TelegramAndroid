@@ -7,6 +7,7 @@
     <string name="DisableThumbsInDialogListInfo">채팅 목록에서 마지막 메시지의 미디어 미리보기를 숨깁니다.</string>
     <string name="ReplaceForwardInfo">전달하면 채팅 선택 대신 공유 시트가 열립니다.</string>
     <string name="MentionByNameInfo">자동 완성이 사용자 이름 대신 사람 이름을 삽입합니다.</string>
+    <string name="HideSendAsInfo">메시지 입력란의 보낸 사람 선택 버튼을 숨깁니다.</string>
     <string name="FormatWithSecondsInfo">메시지 시간과 기타 시간에 초를 표시합니다.</string>
     <string name="FullRecentStickersInfo">최근 스티커를 20개가 아니라 전부 표시합니다.</string>
     <string name="DisableFlipPhotosInfo">화면 가장자리를 탭해도 다음 사진으로 넘어가지 않습니다.</string>
