@@ -7,6 +7,7 @@
     <string name="DisableThumbsInDialogListInfo">Скрывать миниатюры медиа последнего сообщения в списке чатов.</string>
     <string name="ReplaceForwardInfo">Пересылка открывает панель «Поделиться» вместо выбора чата.</string>
     <string name="MentionByNameInfo">Автодополнение вставляет имя человека вместо имени пользователя.</string>
+    <string name="HideSendAsInfo">Скрывать кнопку выбора отправителя в поле сообщения.</string>
     <string name="FormatWithSecondsInfo">Показывать секунды во времени сообщений и других отметках времени.</string>
     <string name="FullRecentStickersInfo">Показывать все недавние стикеры вместо последних 20.</string>
     <string name="DisableFlipPhotosInfo">Не переключать фото при нажатии на края экрана.</string>
