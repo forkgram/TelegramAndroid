@@ -7,6 +7,7 @@
     <string name="DisableThumbsInDialogListInfo">Ocultar las miniaturas del último mensaje en la lista de chats.</string>
     <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="MentionByNameInfo">El autocompletado inserta el nombre de la persona en lugar del nombre de usuario.</string>
+    <string name="HideSendAsInfo">Ocultar el botón de enviar como en el campo de mensaje.</string>
     <string name="FormatWithSecondsInfo">Mostrar los segundos en la hora de los mensajes y otras horas.</string>
     <string name="FullRecentStickersInfo">Mostrar todos los stickers recientes en lugar de los últimos 20.</string>
     <string name="DisableFlipPhotosInfo">No pasar a la siguiente foto al tocar los bordes de la pantalla.</string>
