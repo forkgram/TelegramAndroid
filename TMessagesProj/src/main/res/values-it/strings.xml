@@ -7,6 +7,7 @@
     <string name="DisableThumbsInDialogListInfo">Nascondere le miniature dei media dell\'ultimo messaggio nella lista chat.</string>
     <string name="ReplaceForwardInfo">Inoltra apre il pannello di condivisione invece del selettore di chat.</string>
     <string name="MentionByNameInfo">Il completamento automatico inserisce il nome della persona invece del nome utente.</string>
+    <string name="HideSendAsInfo">Nascondere il pulsante invia come nel campo del messaggio.</string>
     <string name="FormatWithSecondsInfo">Mostrare i secondi negli orari dei messaggi e in altri orari.</string>
     <string name="FullRecentStickersInfo">Mostrare tutti gli sticker recenti invece degli ultimi 20.</string>
     <string name="DisableFlipPhotosInfo">Non passare alla foto successiva toccando i bordi dello schermo.</string>
