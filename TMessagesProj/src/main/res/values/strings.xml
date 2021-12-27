@@ -9,6 +9,7 @@
     <string name="DisableThumbsInDialogListInfo">Hide media thumbnails of the last message in the chat list.</string>
     <string name="ReplaceForwardInfo">Forward opens the share sheet instead of the chat picker.</string>
     <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
+    <string name="HideSendAsInfo">Hide the send-as avatar button in the message field.</string>
     <string name="FormatWithSecondsInfo">Show seconds in message timestamps and other times.</string>
     <string name="FullRecentStickersInfo">Show all recent stickers instead of the last 20.</string>
     <string name="DisableFlipPhotosInfo">Do not switch to the next photo when the screen edges are tapped.</string>
@@ -53,6 +54,7 @@
     <string name="FormatWithSeconds">Format Message Time with Seconds</string>
     <string name="DisableThumbsInDialogList">Disable Thumbs in Dialog List</string>
     <string name="FullRecentStickers">Show Full List of Recent Stickers</string>
+    <string name="HideSendAs">Hide \"Send as\" button</string>
     <string name="ShowNotificationContent">Show Notifications content</string>
     <string name="ShowNotificationContentInfo">When app is locked. Can be cause of privacy leaks.</string>
     <string name="DeleteAllYourMessages">Delete all your messages</string>
