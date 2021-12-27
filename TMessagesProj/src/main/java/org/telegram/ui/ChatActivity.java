@@ -2036,6 +2036,9 @@ public class ChatActivity extends BaseFragment implements
 
         @Override
         public TLRPC.TL_channels_sendAsPeers getSendAsPeers() {
+            if (MessagesController.getGlobalMainSettings().getBoolean("hideSendAs", false)) {
+                return null;
+            }
             return sendAsPeersObj;
         }
 
