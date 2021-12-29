@@ -159,6 +159,7 @@ public class PrivacyControlActivity extends BaseFragment implements Notification
             messageObject.resetLayout();
 
             cell = new ChatMessageCell(context);
+            cell.isFake = true;
             cell.setDelegate(new ChatMessageCell.ChatMessageCellDelegate() {
 
             });

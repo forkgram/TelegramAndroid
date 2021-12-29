@@ -608,6 +608,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
 
     private boolean invalidatesParent;
 
+    public boolean isFake;
     public boolean isChat;
     public boolean isBot;
     public boolean isMegagroup;
@@ -9937,7 +9938,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 try {
                     forwardedNameLayout[0] = new StaticLayout(lastLine, Theme.chat_forwardNamePaint, forwardedNameWidth + AndroidUtilities.dp(2), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
                     lastLine = TextUtils.ellipsize(timeOfFwdMsg, Theme.chat_forwardNamePaint, forwardedNameWidth, TextUtils.TruncateAt.END);
-                    if (messageObject.messageOwner.fwd_from.date == 0) {
+                    if (messageObject.messageOwner.fwd_from.date == 0 && !isFake) {
                         ensureForwardDateTime();
                     }
                     forwardedNameLayout[1] = new StaticLayout(lastLine, Theme.chat_forwardNamePaint, forwardedNameWidth + AndroidUtilities.dp(2), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
