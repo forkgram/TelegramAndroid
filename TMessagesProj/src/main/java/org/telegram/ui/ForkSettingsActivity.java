@@ -63,6 +63,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_SHOW_NOTIFICATION_CONTENT = 3;
 
     public static final int ID_HIDE_BOTTOM_BUTTON = 11;
+    public static final int ID_CUSTOM_TITLE = 12;
     public static final int ID_SQUARE_AVATARS = 14;
 
     public static final int ID_SYNC_PINS = 20;
@@ -351,6 +352,7 @@ public class ForkSettingsActivity extends BaseFragment {
             items.add(UItem.asButtonCheck(ID_HIDE_BOTTOM_BUTTON, LocaleController.getString(R.string.HideBottomButton), LocaleController.getString(R.string.HideBottomButtonInfo))
                 .setChecked(pref("hideBottomButton", false)).setMultiline(true));
         }
+        items.add(UItem.asSettingsCell(ID_CUSTOM_TITLE, LocaleController.getString(R.string.EditAdminRank), prefs().getString("forkCustomTitle", "Fork Client")));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ChatList)));
@@ -433,6 +435,9 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("squareAvatars", item, view);
         } else if (id == ID_HIDE_BOTTOM_BUTTON) {
             toggle("hideBottomButton", item, view);
+        } else if (id == ID_CUSTOM_TITLE) {
+            showCustomTitleDialog(view);
+
         } else if (id == ID_SYNC_PINS) {
             toggle("syncPins", item, view);
         } else if (id == ID_UNMUTED_ON_TOP) {
@@ -467,6 +472,31 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_REAR_VIDEO_MESSAGES) {
             toggle("rearVideoMessages", item, view);
         }
+    }
+
+    private void showCustomTitleDialog(View view) {
+        final String defaultValue = "Fork Client";
+        org.telegram.messenger.forkgram.ForkDialogs.createFieldAlert(
+            getContext(),
+            LocaleController.getString(R.string.EditAdminRank),
+            prefs().getString("forkCustomTitle", defaultValue),
+            (result) -> {
+                if (result.isEmpty()) {
+                    result = defaultValue;
+                }
+                SharedPreferences.Editor editor = prefs().edit();
+                editor.putString("forkCustomTitle", result);
+                editor.commit();
+                listView.adapter.update(false);
+
+                BaseFragment previousFragment = parentLayout.getFragmentStack().size() > 2
+                    ? parentLayout.getFragmentStack().get(parentLayout.getFragmentStack().size() - 3)
+                    : null;
+                if (previousFragment instanceof DialogsActivity) {
+                    ((DialogsActivity) previousFragment).getActionBar().setTitle(result);
+                }
+                return null;
+            });
     }
 
     private void showRadioDialog(CharSequence title, String[] options, int selectedIndex, Utilities.Callback<Integer> onSelected) {
