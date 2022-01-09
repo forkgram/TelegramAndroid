@@ -7,6 +7,7 @@
     <string name="HideBottomButtonInfo">Blank the bottom bar button (Mute, Join) and ignore taps on it.</string>
     <string name="OpenArchiveOnPullInfo">Open the Archive folder when the chat list is pulled down.</string>
     <string name="DisableThumbsInDialogListInfo">Hide media thumbnails of the last message in the chat list.</string>
+    <string name="DisableGlobalSearchInfo">Show only your chats and contacts in search, no global results.</string>
     <string name="ReplaceForwardInfo">Forward opens the share sheet instead of the chat picker.</string>
     <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
     <string name="HideSendAsInfo">Hide the send-as avatar button in the message field.</string>
@@ -60,6 +61,7 @@
     <string name="DeleteAllYourMessages">Delete all your messages</string>
     <string name="DeleteAllYourMessagesInfo">Are you sure you want **delete all your messages** from this chat?</string>
     <string name="ReallySure">Are you **really sure**?</string>
+    <string name="DisableGlobalSearch">Disable Global Search</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
