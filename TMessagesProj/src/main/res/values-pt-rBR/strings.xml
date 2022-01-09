@@ -5,6 +5,7 @@
     <string name="HideBottomButtonInfo">Esvaziar o botão da barra inferior (Silenciar, Entrar) e ignorar toques nele.</string>
     <string name="OpenArchiveOnPullInfo">Abrir a pasta Arquivadas ao puxar a lista de conversas para baixo.</string>
     <string name="DisableThumbsInDialogListInfo">Ocultar as miniaturas de mídia da última mensagem na lista de conversas.</string>
+    <string name="DisableGlobalSearchInfo">Mostrar na busca apenas suas conversas e contatos, sem resultados globais.</string>
     <string name="ReplaceForwardInfo">Encaminhar abre o painel de compartilhamento em vez do seletor de conversas.</string>
     <string name="MentionByNameInfo">O preenchimento automático insere o nome da pessoa em vez do nome de usuário.</string>
     <string name="HideSendAsInfo">Ocultar o botão de enviar como no campo de mensagem.</string>

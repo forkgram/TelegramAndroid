@@ -5,6 +5,7 @@
     <string name="HideBottomButtonInfo">하단 막대 버튼(음소거, 참여)을 비우고 탭을 무시합니다.</string>
     <string name="OpenArchiveOnPullInfo">채팅 목록을 아래로 당기면 보관함 폴더를 엽니다.</string>
     <string name="DisableThumbsInDialogListInfo">채팅 목록에서 마지막 메시지의 미디어 미리보기를 숨깁니다.</string>
+    <string name="DisableGlobalSearchInfo">검색에서 내 채팅과 연락처만 표시하고 전체 결과는 표시하지 않습니다.</string>
     <string name="ReplaceForwardInfo">전달하면 채팅 선택 대신 공유 시트가 열립니다.</string>
     <string name="MentionByNameInfo">자동 완성이 사용자 이름 대신 사람 이름을 삽입합니다.</string>
     <string name="HideSendAsInfo">메시지 입력란의 보낸 사람 선택 버튼을 숨깁니다.</string>
