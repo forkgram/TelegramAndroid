@@ -70,6 +70,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_UNMUTED_ON_TOP = 21;
     public static final int ID_OPEN_ARCHIVE_ON_PULL = 22;
     public static final int ID_DISABLE_THUMBS_IN_DIALOG_LIST = 24;
+    public static final int ID_DISABLE_GLOBAL_SEARCH = 25;
 
     public static final int ID_REPLACE_FORWARD = 30;
     public static final int ID_MENTION_BY_NAME = 31;
@@ -364,6 +365,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("openArchiveOnPull", true)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_THUMBS_IN_DIALOG_LIST, LocaleController.getString(R.string.DisableThumbsInDialogList), LocaleController.getString(R.string.DisableThumbsInDialogListInfo))
             .setChecked(pref("disableThumbsInDialogList", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_DISABLE_GLOBAL_SEARCH, LocaleController.getString(R.string.DisableGlobalSearch), LocaleController.getString(R.string.DisableGlobalSearchInfo))
+            .setChecked(pref("disableGlobalSearch", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.FilterChats)));
@@ -447,6 +450,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("openArchiveOnPull", item, view);
         } else if (id == ID_DISABLE_THUMBS_IN_DIALOG_LIST) {
             toggle("disableThumbsInDialogList", item, view);
+        } else if (id == ID_DISABLE_GLOBAL_SEARCH) {
+            toggle("disableGlobalSearch", item, view);
         } else if (id == ID_REPLACE_FORWARD) {
             toggle("replaceForward", item, view);
         } else if (id == ID_MENTION_BY_NAME) {
