@@ -5,6 +5,7 @@
     <string name="HideBottomButtonInfo">Очищати нижню кнопку (Вимкнути звук, Приєднатися) та ігнорувати натискання на неї.</string>
     <string name="OpenArchiveOnPullInfo">Відкривати теку «Архів» під час потягування списку чатів униз.</string>
     <string name="DisableThumbsInDialogListInfo">Приховувати мініатюри медіа останнього повідомлення у списку чатів.</string>
+    <string name="DisableGlobalSearchInfo">Показувати в пошуку лише ваші чати та контакти, без глобальних результатів.</string>
     <string name="ReplaceForwardInfo">Пересилання відкриває панель «Поділитися» замість вибору чату.</string>
     <string name="MentionByNameInfo">Автодоповнення вставляє ім\'я людини замість імені користувача.</string>
     <string name="HideSendAsInfo">Приховувати кнопку вибору відправника в полі повідомлення.</string>
