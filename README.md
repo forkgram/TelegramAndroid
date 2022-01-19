@@ -5,6 +5,10 @@ Fork Client is a fork of the official Telegram for Android application.
 ![Build Status](https://travis-ci.org//Forkgram/TelegramAndroid.svg?branch=dev)
 [![Github All Releases](https://img.shields.io/github/downloads/Forkgram/TelegramAndroid/total.svg)](https://github.com/Forkgram/TelegramAndroid/releases)
 
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/packages/org.forkgram.messenger/)
+
 ## Features:
 
 - `Delete for everyone` option enabled by default.
@@ -43,7 +47,5 @@ Fork Client is a fork of the official Telegram for Android application.
 - Option to not send stickers information in photos.
 - Some features are taken from the [Telegram FOSS](https://github.com/Telegram-FOSS-Team/Telegram-FOSS).
 
-
-
 ## Downloads:
-You can download binaries from Releases or from my [Telegram channel Forkgram](https://t.me/forkgram).
+You can download binaries from Releases, from [F-Droid](https://f-droid.org/packages/org.forkgram.messenger/) or from my [Telegram channel Forkgram](https://t.me/forkgram).
