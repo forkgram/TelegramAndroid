@@ -788,6 +788,9 @@ public class ConnectionsManager extends BaseController {
         Utilities.globalQueue.postRunnable(() -> {
             boolean networkOnline = ApplicationLoader.isNetworkOnline();
             Utilities.stageQueue.postRunnable(() -> {
+                if (org.telegram.messenger.BuildConfig.SKIP_DNS_RESOLVER) {
+                    return;
+                }
                 FileLog.d("13. currentTask == " + currentTask);
                 if (currentTask != null || second == 0 && Math.abs(lastDnsRequestTime - System.currentTimeMillis()) < 10000 || !networkOnline) {
                     if (BuildVars.LOGS_ENABLED) {
