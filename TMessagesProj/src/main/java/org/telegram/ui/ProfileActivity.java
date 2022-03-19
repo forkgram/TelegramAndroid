@@ -3288,7 +3288,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             } else if (position == devicesRow) {
                 presentFragment(new SessionsActivity(0));
             } else if (position == forkRow) {
-                presentFragment(new ForkSettingsActivity());
+                presentFragment(new ForkSettingsActivity(false));
             } else if (position == forkCheckUpdateRow) {
                 ((LaunchActivity) getParentActivity()).checkAppUpdate(true);
             } else if (position == questionRow) {
@@ -3343,6 +3343,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
             @Override
             public boolean onItemClick(View view, int position) {
+                if (position == forkRow) {
+                    presentFragment(new ForkSettingsActivity(true));
+                    return true;
+                }
                 if (position == versionRow) {
                     pressCount++;
                     if (pressCount >= 2 || BuildVars.DEBUG_PRIVATE_VERSION) {
