@@ -42,9 +42,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
@@ -287,20 +284,8 @@ public final class QrScanOverlay extends FrameLayout {
     /** The first code in a picture that {@code accept} takes, or null; not on the UI thread. */
     @Nullable
     public static String readQr(Bitmap bitmap, Utilities.CallbackReturn<String, Boolean> accept) {
-        BarcodeDetector vision = null;
-        try {
-            vision = new BarcodeDetector.Builder(ApplicationLoader.applicationContext).setBarcodeFormats(Barcode.QR_CODE).build();
-        } catch (Throwable e) {
-            FileLog.e(e);
-        }
-        try {
-            final Scanned scanned = decode(bitmap, vision, new QRCodeReader(), accept);
-            return scanned != null ? scanned.link : null;
-        } finally {
-            if (vision != null) {
-                vision.release();
-            }
-        }
+        final Scanned scanned = decode(bitmap, new QRCodeReader(), accept);
+        return scanned != null ? scanned.link : null;
     }
 
     private @Nullable StaticLayout titleLayout;
@@ -321,7 +306,6 @@ public final class QrScanOverlay extends FrameLayout {
     private final HandlerThread scanThread = new HandlerThread("QrScan");
     private final Handler scanHandler;
     private volatile boolean scanning;
-    private @Nullable BarcodeDetector visionReader;
     private @Nullable QRCodeReader zxingReader;
     private @Nullable Bitmap frameBitmap;
     private boolean found;
@@ -358,11 +342,6 @@ public final class QrScanOverlay extends FrameLayout {
         scanThread.start();
         scanHandler = new Handler(scanThread.getLooper());
         scanHandler.post(() -> {
-            try {
-                visionReader = new BarcodeDetector.Builder(ApplicationLoader.applicationContext).setBarcodeFormats(Barcode.QR_CODE).build();
-            } catch (Throwable e) {
-                FileLog.e(e);
-            }
             zxingReader = new QRCodeReader();
         });
 
@@ -413,10 +392,6 @@ public final class QrScanOverlay extends FrameLayout {
         releaseCamera();
         scanHandler.removeCallbacksAndMessages(null);
         scanHandler.post(() -> {
-            if (visionReader != null) {
-                visionReader.release();
-                visionReader = null;
-            }
             if (frameBitmap != null) {
                 frameBitmap.recycle();
                 frameBitmap = null;
@@ -951,7 +926,7 @@ public final class QrScanOverlay extends FrameLayout {
                 }
                 try {
                     tv.getBitmap(frameBitmap);
-                    final Scanned scanned = decode(frameBitmap, visionReader, zxingReader, accept);
+                    final Scanned scanned = decode(frameBitmap, zxingReader, accept);
                     if (scanned != null) {
                         AndroidUtilities.runOnUIThread(() -> onFound(scanned));
                         return;
@@ -978,27 +953,11 @@ public final class QrScanOverlay extends FrameLayout {
 
     /** The first Telegram link in the frame; other codes are ignored and the scan goes on. */
     @Nullable
-    private static Scanned decode(Bitmap bitmap, @Nullable BarcodeDetector visionReader, @Nullable QRCodeReader zxingReader, Utilities.CallbackReturn<String, Boolean> accept) {
-        final int w = bitmap.getWidth(), h = bitmap.getHeight();
-        if (visionReader != null && visionReader.isOperational()) {
-            final SparseArray<Barcode> codes = visionReader.detect(new Frame.Builder().setBitmap(bitmap).build());
-            for (int i = 0; codes != null && i < codes.size(); i++) {
-                final Barcode code = codes.valueAt(i);
-                final String text = code.rawValue != null ? code.rawValue.trim() : null;
-                if (!accepts(accept, text)) {
-                    continue;
-                }
-                final PointF[] points = new PointF[code.cornerPoints != null ? code.cornerPoints.length : 0];
-                for (int k = 0; k < points.length; k++) {
-                    points[k] = new PointF(code.cornerPoints[k].x / (float) w, code.cornerPoints[k].y / (float) h);
-                }
-                return new Scanned(text, points);
-            }
-            return null;
-        }
+    private static Scanned decode(Bitmap bitmap, @Nullable QRCodeReader zxingReader, Utilities.CallbackReturn<String, Boolean> accept) {
         if (zxingReader == null) {
             return null;
         }
+        final int w = bitmap.getWidth(), h = bitmap.getHeight();
         final int[] pixels = new int[w * h];
         bitmap.getPixels(pixels, 0, w, 0, 0, w, h);
         try {
