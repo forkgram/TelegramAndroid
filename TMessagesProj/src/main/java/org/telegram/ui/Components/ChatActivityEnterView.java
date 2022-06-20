@@ -5689,6 +5689,9 @@ public class ChatActivityEnterView extends FrameLayout implements
 
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (keyEvent != null && keyEvent.isCtrlPressed()) {
+                    return false;
+                } else
                 if (i == EditorInfo.IME_ACTION_SEND) {
                     sendMessage();
                     return true;
