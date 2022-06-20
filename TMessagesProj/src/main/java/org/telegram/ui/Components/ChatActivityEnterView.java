@@ -4394,6 +4394,9 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
 
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (keyEvent != null && keyEvent.isCtrlPressed()) {
+                    return false;
+                } else
                 if (i == EditorInfo.IME_ACTION_SEND) {
                     sendMessage();
                     return true;
