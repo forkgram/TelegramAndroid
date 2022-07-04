@@ -8225,7 +8225,7 @@ public class Theme {
                                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && (param.startsWith("a") || param.startsWith("n"))) {
                                     value = MonetHelper.getColor(param.trim());
                                 } else {
-                                    value = Utilities.parseInt(param);
+                                    value = Utilities.parseInt(param.trim());
                                 }
                                 int keyFromString = ThemeColors.stringKeyToInt(key);
                                 if (keyFromString >= 0) {
