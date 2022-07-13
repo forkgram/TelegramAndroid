@@ -127,6 +127,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.NotificationCenterDelegate, DownloadController.FileDownloadProgressListener {
+    
+    private static final int SEEK_REPEAT_DELAY_MS = 300;
+
+    private TextView forwardButton;
+    private TextView backwardButton;
+    private Runnable seekRepeatRunnable;
 
     public static AudioPlayerAlert instance;
 
@@ -754,14 +760,58 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         FrameLayout bottomView = new FrameLayout(context) {
             @Override
             protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-                int dist = ((right - left) - dp(8 + 48 * 5)) / 4;
-                for (int a = 0; a < 5; a++) {
+                int dist = ((right - left) - dp(8 + 48 * 7)) / 4;
+                int forkButtonsLayouted = 0;
+                for (int a = 0; a < 7; a++) {
                     int l = dp(4 + 48 * a) + dist * a;
                     int t = dp(9);
-                    buttons[a].layout(l, t, l + buttons[a].getMeasuredWidth(), t + buttons[a].getMeasuredHeight());
+                    if (a == 1) {
+                        backwardButton.layout(l, t, l + backwardButton.getMeasuredWidth(), t + backwardButton.getMeasuredHeight());
+                        forkButtonsLayouted++;
+                    } else if (a == 5) {
+                        forwardButton.layout(l, t, l + forwardButton.getMeasuredWidth(), t + forwardButton.getMeasuredHeight());
+                        forkButtonsLayouted++;
+                    } else {
+                        int i = a - forkButtonsLayouted;
+                        buttons[i].layout(l, t, l + buttons[i].getMeasuredWidth(), t + buttons[i].getMeasuredHeight());
+                    }
                 }
             }
         };
+
+        {
+            final int s = 5;
+            final int color = getThemedColor(Theme.key_listSelector);
+            final int textColor = getThemedColor(Theme.key_player_button);
+            final FrameLayout.LayoutParams frame = LayoutHelper.createFrame(48, 48, Gravity.LEFT | Gravity.TOP);
+            forwardButton = new TextView(context);
+            forwardButton.setText("+" + s + "s");
+            forwardButton.setGravity(Gravity.CENTER);
+            forwardButton.setTextColor(textColor);
+            bottomView.addView(forwardButton, frame);
+
+            backwardButton = new TextView(context);
+            backwardButton.setText("–" + s + "s");
+            backwardButton.setGravity(Gravity.CENTER);
+            backwardButton.setTextColor(textColor);
+            bottomView.addView(backwardButton, frame);
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                forwardButton.setBackgroundDrawable(Theme.createSelectorDrawable(color, 1, AndroidUtilities.dp(24)));
+                backwardButton.setBackgroundDrawable(Theme.createSelectorDrawable(color, 1, AndroidUtilities.dp(24)));
+            }
+
+            forwardButton.setOnClickListener(view -> {
+                MediaController.getInstance().seekShift(s * 1000);
+            });
+            backwardButton.setOnClickListener(view -> {
+                MediaController.getInstance().seekShift(-s * 1000);
+            });
+
+            setupSeekRepeatOnHold(forwardButton, s * 1000);
+            setupSeekRepeatOnHold(backwardButton, -s * 1000);
+        }
+
         playerLayout.addView(bottomView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 66, Gravity.TOP | Gravity.LEFT, 0, 111, 0, 0));
 
         buttons[0] = repeatButton = new ActionBarMenuItem(context, null, 0, 0, false, resourcesProvider);
@@ -1509,6 +1559,43 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         }
     }
 
+    private void setupSeekRepeatOnHold(View button, int shiftMs) {
+        button.setOnLongClickListener(view -> {
+            final MessageObject pressedObject = MediaController.getInstance().getPlayingMessageObject();
+            if (pressedObject == null) {
+                return false;
+            }
+            cancelSeekRepeat();
+            seekRepeatRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (MediaController.getInstance().getPlayingMessageObject() != pressedObject) {
+                        cancelSeekRepeat();
+                        return;
+                    }
+                    MediaController.getInstance().seekShift(shiftMs);
+                    AndroidUtilities.runOnUIThread(this, SEEK_REPEAT_DELAY_MS);
+                }
+            };
+            seekRepeatRunnable.run();
+            return true;
+        });
+        button.setOnTouchListener((view, event) -> {
+            final int action = event.getActionMasked();
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                cancelSeekRepeat();
+            }
+            return false;
+        });
+    }
+
+    private void cancelSeekRepeat() {
+        if (seekRepeatRunnable != null) {
+            AndroidUtilities.cancelRunOnUIThread(seekRepeatRunnable);
+            seekRepeatRunnable = null;
+        }
+    }
+
     private void startForwardRewindingSeek() {
         if (rewindingState == 1) {
             lastRewindingTime = System.currentTimeMillis();
@@ -2064,6 +2151,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
     @Override
     public void dismiss() {
         super.dismiss();
+        cancelSeekRepeat();
         NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.messagePlayingDidReset);
         NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.messagePlayingPlayStateChanged);
         NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.messagePlayingDidStart);
