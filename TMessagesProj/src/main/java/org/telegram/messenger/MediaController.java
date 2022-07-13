@@ -2642,6 +2642,12 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         return true;
     }
 
+    public void seekShift(int ms) {
+        if (audioPlayer != null) {
+            audioPlayer.seekTo(Math.max(0, audioPlayer.getCurrentPosition() + ms));
+        }
+    }
+
     public boolean seekToProgressMs(MessageObject messageObject, long progressMs) {
         final MessageObject playingMessageObject = this.playingMessageObject;
         if (audioPlayer == null && videoPlayer == null || messageObject == null || playingMessageObject == null || !isSamePlayingMessage(messageObject)) {
