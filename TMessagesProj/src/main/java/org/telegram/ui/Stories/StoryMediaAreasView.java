@@ -236,9 +236,9 @@ public class StoryMediaAreasView extends FrameLayout implements View.OnClickList
                     return true;
                 }
             };
-            fragment.fromStories = true;
-            fragment.searchStories(selectedArea.mediaArea);
-            fragment.setResourceProvider(resourcesProvider);
+//            fragment.fromStories = true;
+//            fragment.searchStories(selectedArea.mediaArea);
+//            fragment.setResourceProvider(resourcesProvider);
             TLRPC.TL_message message = new TLRPC.TL_message();
             if (selectedArea.mediaArea instanceof TL_stories.TL_mediaAreaVenue) {
                 TL_stories.TL_mediaAreaVenue areaVenue = (TL_stories.TL_mediaAreaVenue) selectedArea.mediaArea;
