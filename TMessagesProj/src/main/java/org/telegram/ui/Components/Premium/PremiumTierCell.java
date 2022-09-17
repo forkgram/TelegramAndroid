@@ -263,7 +263,7 @@ public class PremiumTierCell extends ViewGroup {
                 break;
         }
 
-        isDrawingGradient = !BuildVars.useInvoiceBilling() && (!BillingController.getInstance().isReady() || tier.getOfferDetails() == null);
+        isDrawingGradient = !BuildVars.useInvoiceBilling()/* && (!BillingController.getInstance().isReady() || tier.getOfferDetails() == null)*/;
         if (!isDrawingGradient) {
             if (tier.getDiscount() <= 0) {
                 discountView.setVisibility(GONE);
