@@ -87,14 +87,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.safetynet.SafetyNet;
-import com.google.zxing.common.detector.MathUtils;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.telegram.PhoneFormat.PhoneFormat;
@@ -5341,6 +5333,16 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         }
     }
 
+    // Fake.
+    public final class GoogleSignInAccount {
+        public String getEmail() {
+            return "";
+        }
+        public String getIdToken() {
+            return "";
+        }
+    }
+
     public class LoginActivitySetupEmail extends SlideView {
         private OutlineTextContainerView emailOutlineView;
         private EditTextBoldCursor emailField;
@@ -5415,6 +5417,8 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             addView(emailOutlineView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 58, 16, 24, 16, 0));
 
             signInWithGoogleView = new TextView(context);
+            loginOrView = new LoginOrView(context);
+            /* Google Account.
             signInWithGoogleView.setGravity(Gravity.LEFT);
             signInWithGoogleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             signInWithGoogleView.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
@@ -5475,6 +5479,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                         .build());
                 googleClient.signOut().addOnCompleteListener(command -> getParentActivity().startActivityForResult(googleClient.getSignInIntent(), BasePermissionsActivity.REQUEST_CODE_SIGN_IN_WITH_GOOGLE));
             });
+            */
         }
 
         @Override
@@ -5755,6 +5760,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             addView(codeFieldContainer, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, 42, Gravity.CENTER_HORIZONTAL, 0, setup ? 48 : 32, 0, 0));
 
             signInWithGoogleView = new TextView(context);
+            /* Google Account
             signInWithGoogleView.setGravity(Gravity.CENTER);
             signInWithGoogleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             signInWithGoogleView.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
@@ -5808,6 +5814,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                     getParentActivity().startActivityForResult(googleClient.getSignInIntent(), BasePermissionsActivity.REQUEST_CODE_SIGN_IN_WITH_GOOGLE);
                 });
             });
+            */
 
             cantAccessEmailFrameLayout = new FrameLayout(context);
             AndroidUtilities.updateViewVisibilityAnimated(cantAccessEmailFrameLayout, activityMode != MODE_CHANGE_LOGIN_EMAIL && !isSetup, 1f, false);
