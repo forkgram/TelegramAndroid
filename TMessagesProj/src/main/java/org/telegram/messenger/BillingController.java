@@ -52,10 +52,10 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
 
     public static boolean billingClientEmpty;
 
-    private final Map<String, Consumer<BillingResult>> resultListeners = new HashMap<>();
+    // private final Map<String, Consumer<BillingResult>> resultListeners = new HashMap<>();
     private final List<String> requestingTokens = Collections.synchronizedList(new ArrayList<>());
     private final Map<String, Integer> currencyExpMap = new HashMap<>();
-    private final BillingClient billingClient;
+    // private final BillingClient billingClient;
     private String lastPremiumTransaction;
     private String lastPremiumToken;
     private boolean isDisconnected;
