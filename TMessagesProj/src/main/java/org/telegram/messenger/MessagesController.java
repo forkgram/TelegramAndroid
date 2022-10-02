@@ -1550,7 +1550,6 @@ public class MessagesController extends BaseController implements NotificationCe
         canEditFactcheck = mainPreferences.getBoolean("canEditFactcheck", false);
         factcheckLengthLimit = mainPreferences.getInt("factcheckLengthLimit", 1024);
         scheduleTranscriptionUpdate();
-        BuildVars.GOOGLE_AUTH_CLIENT_ID = mainPreferences.getString("googleAuthClientId", BuildVars.GOOGLE_AUTH_CLIENT_ID);
         if (mainPreferences.contains("dcDomainName2")) {
             dcDomainName = mainPreferences.getString("dcDomainName2", "apv3.stel.com");
         } else {
@@ -2499,11 +2498,11 @@ public class MessagesController extends BaseController implements NotificationCe
                 case "login_google_oauth_client_id": {
                     if (value.value instanceof TLRPC.TL_jsonString) {
                         String str = ((TLRPC.TL_jsonString) value.value).value;
-                        if (!Objects.equals(BuildVars.GOOGLE_AUTH_CLIENT_ID, str)) {
+                        /*if (!Objects.equals(BuildVars.GOOGLE_AUTH_CLIENT_ID, str)) {
                             BuildVars.GOOGLE_AUTH_CLIENT_ID = str;
                             editor.putString("googleAuthClientId", BuildVars.GOOGLE_AUTH_CLIENT_ID);
                             changed = true;
-                        }
+                        }*/
                     }
                     break;
                 }
