@@ -5,8 +5,8 @@ import android.util.Base64;
 
 import androidx.core.util.Pair;
 
-import com.android.billingclient.api.AccountIdentifiers;
-import com.android.billingclient.api.Purchase;
+//import com.android.billingclient.api.AccountIdentifiers;
+//import com.android.billingclient.api.Purchase;
 import com.google.android.exoplayer2.util.Util;
 import com.google.common.base.Charsets;
 
@@ -50,7 +50,7 @@ public class BillingUtilities {
             FileLog.e(e);
         }
     }
-
+/*
     public static Pair<String, String> createDeveloperPayload(TLRPC.InputStorePaymentPurpose paymentPurpose, AccountInstance accountInstance) {
         long currentAccountId = accountInstance.getUserConfig().getClientUserId();
         byte[] currentAccountIdBytes = String.valueOf(currentAccountId).getBytes(Charsets.UTF_8);
@@ -120,4 +120,5 @@ public class BillingUtilities {
             return null;
         }
     }
+*/
 }
