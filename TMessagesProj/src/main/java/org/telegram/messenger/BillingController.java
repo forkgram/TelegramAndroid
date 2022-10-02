@@ -11,24 +11,15 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import androidx.core.util.Pair;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.ProductDetailsResponseListener;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.QueryProductDetailsParams;
-import com.android.billingclient.api.QueryPurchasesParams;
+import com.google.android.exoplayer2.util.Util;
 
+import org.json.JSONObject;
 import org.telegram.messenger.utils.BillingUtilities;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.PremiumPreviewFragment;
 
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,15 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BillingController implements PurchasesUpdatedListener, BillingClientStateListener {
+public class BillingController {
     public final static String PREMIUM_PRODUCT_ID = "telegram_premium";
-    public final static QueryProductDetailsParams.Product PREMIUM_PRODUCT = QueryProductDetailsParams.Product.newBuilder()
-            .setProductType(BillingClient.ProductType.SUBS)
-            .setProductId(PREMIUM_PRODUCT_ID)
-            .build();
-
-    @Nullable
-    public static ProductDetails PREMIUM_PRODUCT_DETAILS;
 
     private static BillingController instance;
 
@@ -69,10 +53,6 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
     }
 
     private BillingController(Context ctx) {
-        billingClient = BillingClient.newBuilder(ctx)
-                .enablePendingPurchases()
-                .setListener(this)
-                .build();
     }
 
     public void setOnCanceled(Runnable onCanceled) {
@@ -118,13 +98,15 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
     }
 
     public void startConnection() {
-        if (isReady()) {
+//        if (isReady()) {
+//            return;
+//        }
+        if (!currencyExpMap.isEmpty()) {
             return;
         }
         BillingUtilities.extractCurrencyExp(currencyExpMap);
-        if (!BuildVars.useInvoiceBilling()) {
-            billingClient.startConnection(this);
-        }
+//        if (!BuildVars.useInvoiceBilling()) {
+//            billingClient.startConnection(this);
     }
 
     private void switchToInvoice() {
@@ -135,6 +117,7 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.billingProductDetailsUpdated);
     }
 
+	/*
     public boolean isReady() {
         return billingClient.isReady();
     }
@@ -148,7 +131,7 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
 
     /**
      * {@link BillingClient#queryPurchasesAsync} returns only active subscriptions and not consumed purchases.
-     */
+     
     public void queryPurchases(String productType, PurchasesResponseListener responseListener) {
         billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(productType).build(), responseListener);
     }
@@ -302,7 +285,7 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
     /**
      * All consumable purchases must be consumed. For us it is a gift.
      * Without confirmation the user will not be able to buy the product again.
-     */
+     
     private void consumeGiftPurchase(Purchase purchase, TLRPC.InputStorePaymentPurpose purpose) {
         if (purpose instanceof TLRPC.TL_inputStorePaymentGiftPremium
                 || purpose instanceof TLRPC.TL_inputStorePaymentPremiumGiftCode
@@ -318,7 +301,7 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
     /**
      * May occur in extremely rare cases.
      * For example when Google Play decides to update.
-     */
+     
     @SuppressWarnings("Convert2MethodRef")
     @Override
     public void onBillingServiceDisconnected() {
@@ -358,4 +341,5 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
             }
         }
     }
+    */
 }
