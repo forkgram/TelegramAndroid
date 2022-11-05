@@ -6415,4 +6415,5 @@
     <string name="PasscodeBadInfo">Sorry, firstly you have to turn on your local passcode in Privacy Settings.</string>
     <string name="PasscodeClear">Clear all passcodes</string>
     <string name="PasscodeCleared">Cleared</string>
+    <string name="DisableQuickReaction">Disable quick reaction</string>
 </resources>
