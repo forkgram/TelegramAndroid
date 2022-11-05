@@ -10,6 +10,7 @@
     <string name="MentionByNameInfo">Il completamento automatico inserisce il nome della persona invece del nome utente.</string>
     <string name="HideSendAsInfo">Nascondere il pulsante invia come nel campo del messaggio.</string>
     <string name="FormatWithSecondsInfo">Mostrare i secondi negli orari dei messaggi e in altri orari.</string>
+    <string name="DisableQuickReactionInfo">Non inviare una reazione al doppio tocco su un messaggio.</string>
     <string name="FullRecentStickersInfo">Mostrare tutti gli sticker recenti invece degli ultimi 20.</string>
     <string name="DisableFlipPhotosInfo">Non passare alla foto successiva toccando i bordi dello schermo.</string>
     <string name="RearVideoMessagesInfo">Registrare i messaggi video con la fotocamera posteriore.</string>
