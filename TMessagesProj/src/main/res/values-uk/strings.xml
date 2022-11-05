@@ -10,6 +10,7 @@
     <string name="MentionByNameInfo">Автодоповнення вставляє ім\'я людини замість імені користувача.</string>
     <string name="HideSendAsInfo">Приховувати кнопку вибору відправника в полі повідомлення.</string>
     <string name="FormatWithSecondsInfo">Показувати секунди в часі повідомлень та інших позначках часу.</string>
+    <string name="DisableQuickReactionInfo">Не надсилати реакцію під час подвійного натискання на повідомлення.</string>
     <string name="FullRecentStickersInfo">Показувати всі нещодавні стікери замість останніх 20.</string>
     <string name="DisableFlipPhotosInfo">Не перемикати фото під час натискання на краї екрана.</string>
     <string name="RearVideoMessagesInfo">Починати запис відеоповідомлень з основної камери.</string>
