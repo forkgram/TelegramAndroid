@@ -10,6 +10,7 @@
     <string name="MentionByNameInfo">O preenchimento automático insere o nome da pessoa em vez do nome de usuário.</string>
     <string name="HideSendAsInfo">Ocultar o botão de enviar como no campo de mensagem.</string>
     <string name="FormatWithSecondsInfo">Mostrar os segundos nos horários das mensagens e em outros horários.</string>
+    <string name="DisableQuickReactionInfo">Não enviar uma reação ao tocar duas vezes em uma mensagem.</string>
     <string name="FullRecentStickersInfo">Mostrar todas as figurinhas recentes em vez das últimas 20.</string>
     <string name="DisableFlipPhotosInfo">Não passar para a próxima foto ao tocar nas bordas da tela.</string>
     <string name="RearVideoMessagesInfo">Gravar as mensagens de vídeo com a câmera traseira.</string>
