@@ -193,6 +193,8 @@ public class ActionBarMenuSubItem extends FrameLayout implements Theme.Colorable
             rightIcon.setVisibility(View.VISIBLE);
             rightIcon.setImageResource(icon);
         }
+        int iconWidth = dp(24 + 5);
+        ((FrameLayout.LayoutParams) textView.getLayoutParams()).setMargins(LocaleController.isRTL ? iconWidth : 0, 0, LocaleController.isRTL ? 0:iconWidth, 0);
     }
 
     public void setTextAndIcon(CharSequence text, int icon) {
