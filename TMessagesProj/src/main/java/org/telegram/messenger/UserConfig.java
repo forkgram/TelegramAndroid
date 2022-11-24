@@ -59,7 +59,7 @@ public class UserConfig extends BaseController {
 
     public boolean notificationsSettingsLoaded;
     public boolean notificationsSignUpSettingsLoaded;
-    public boolean syncContacts = true;
+    public boolean syncContacts = false;
     public boolean suggestContacts = true;
     public boolean showCallsTab;
     public boolean hasSecureData;
@@ -311,7 +311,7 @@ public class UserConfig extends BaseController {
             botGuestRatingLoadTime = preferences.getInt("botGuestRatingLoadTime", 0);
             webappRatingLoadTime = preferences.getInt("webappRatingLoadTime", 0);
             loginTime = preferences.getInt("loginTime", currentAccount);
-            syncContacts = preferences.getBoolean("syncContacts", true);
+            syncContacts = preferences.getBoolean("syncContacts", false);
             showCallsTab = preferences.getBoolean("showCallsTab", false);
             suggestContacts = preferences.getBoolean("suggestContacts", true);
             hasSecureData = preferences.getBoolean("hasSecureData", false);
@@ -483,7 +483,7 @@ public class UserConfig extends BaseController {
         webappRatingLoadTime = 0;
         draftsLoaded = false;
         contactsReimported = true;
-        syncContacts = true;
+        syncContacts = false;
         showCallsTab = false;
         suggestContacts = true;
         unreadDialogsLoaded = true;
