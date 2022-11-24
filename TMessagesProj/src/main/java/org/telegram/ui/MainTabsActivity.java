@@ -296,7 +296,11 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         tabs[INDEX_CALLS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.CALLS, R.string.MainTabsCalls);
         tabs[INDEX_PROFILE] = GlassTabView.createAvatar(context, resourceProvider, currentAccount, R.string.MainTabsProfile);
         tabs[INDEX_CHATS].setOnLongClickListener(this::openFoldersSelector);
-        tabs[INDEX_CONTACTS].setOnLongClickListener(this::openContactsSelector);
+        tabs[INDEX_CONTACTS].setOnLongClickListener(v -> {
+            presentFragment(new PrivacySettingsActivity());
+            AndroidUtilities.scrollToFragmentRow(getParentLayout(), "contactsSyncRow");
+            return true;
+        });
         tabs[INDEX_CALLS].setOnLongClickListener(this::openCallsSelector);
         tabs[INDEX_PROFILE].setOnLongClickListener(this::openAccountSelector);
 
