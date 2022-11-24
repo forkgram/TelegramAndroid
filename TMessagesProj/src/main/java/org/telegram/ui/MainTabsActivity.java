@@ -259,6 +259,11 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             openAccountSelector(v);
             return true;
         });
+        tabs[INDEX_CONTACTS].setOnLongClickListener(v -> {
+            presentFragment(new PrivacySettingsActivity());
+            AndroidUtilities.scrollToFragmentRow(getParentLayout(), "contactsSyncRow");
+            return true;
+        });
 
         for (int index = 0; index < tabs.length; index++) {
             final GlassTabView view = tabs[index];
