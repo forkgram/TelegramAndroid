@@ -11,6 +11,7 @@
     <string name="HideSendAsInfo">메시지 입력란의 보낸 사람 선택 버튼을 숨깁니다.</string>
     <string name="FormatWithSecondsInfo">메시지 시간과 기타 시간에 초를 표시합니다.</string>
     <string name="DisableQuickReactionInfo">메시지를 두 번 탭해도 리액션을 보내지 않습니다.</string>
+    <string name="DisableLockedAnimatedEmojiInfo">잠긴 프리미엄 이모지 팩을 숨깁니다. Premium이 아닌 계정에만 적용됩니다.</string>
     <string name="FullRecentStickersInfo">최근 스티커를 20개가 아니라 전부 표시합니다.</string>
     <string name="DisableFlipPhotosInfo">화면 가장자리를 탭해도 다음 사진으로 넘어가지 않습니다.</string>
     <string name="RearVideoMessagesInfo">동영상 메시지를 후면 카메라로 녹화합니다.</string>
