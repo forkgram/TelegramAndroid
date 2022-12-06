@@ -78,6 +78,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_FORMAT_WITH_SECONDS = 36;
 
     public static final int ID_DISABLE_QUICK_REACTION = 40;
+    public static final int ID_DISABLE_LOCKED_ANIMATED_EMOJI = 43;
     public static final int ID_FULL_RECENT_STICKERS = 44;
     public static final int ID_STICKER_SIZE = 46;
 
@@ -384,6 +385,8 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asHeader(LocaleController.getString(R.string.Reactions)));
         items.add(UItem.asButtonCheck(ID_DISABLE_QUICK_REACTION, LocaleController.getString(R.string.DisableQuickReaction), LocaleController.getString(R.string.DisableQuickReactionInfo))
             .setChecked(pref("disableQuickReaction", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_DISABLE_LOCKED_ANIMATED_EMOJI, LocaleController.getString(R.string.DisableLockedAnimatedEmoji), LocaleController.getString(R.string.DisableLockedAnimatedEmojiInfo))
+            .setChecked(pref("disableLockedAnimatedEmoji", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.StickersName)));
@@ -468,6 +471,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("formatWithSeconds", item, view);
         } else if (id == ID_DISABLE_QUICK_REACTION) {
             toggle("disableQuickReaction", item, view);
+        } else if (id == ID_DISABLE_LOCKED_ANIMATED_EMOJI) {
+            toggle("disableLockedAnimatedEmoji", item, view);
         } else if (id == ID_FULL_RECENT_STICKERS) {
             toggle("fullRecentStickers", item, view);
         } else if (id == ID_INAPP_CAMERA) {
