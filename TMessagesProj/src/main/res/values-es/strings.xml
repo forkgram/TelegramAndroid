@@ -11,6 +11,7 @@
     <string name="HideSendAsInfo">Ocultar el botón de enviar como en el campo de mensaje.</string>
     <string name="FormatWithSecondsInfo">Mostrar los segundos en la hora de los mensajes y otras horas.</string>
     <string name="DisableQuickReactionInfo">No enviar una reacción al tocar dos veces un mensaje.</string>
+    <string name="DisableLockedAnimatedEmojiInfo">Ocultar los paquetes de emojis premium bloqueados. Solo afecta a cuentas sin Premium.</string>
     <string name="FullRecentStickersInfo">Mostrar todos los stickers recientes en lugar de los últimos 20.</string>
     <string name="DisableFlipPhotosInfo">No pasar a la siguiente foto al tocar los bordes de la pantalla.</string>
     <string name="RearVideoMessagesInfo">Grabar los mensajes de vídeo con la cámara trasera.</string>
