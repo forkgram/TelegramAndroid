@@ -11,6 +11,7 @@
     <string name="HideSendAsInfo">Скрывать кнопку выбора отправителя в поле сообщения.</string>
     <string name="FormatWithSecondsInfo">Показывать секунды во времени сообщений и других отметках времени.</string>
     <string name="DisableQuickReactionInfo">Не отправлять реакцию при двойном нажатии на сообщение.</string>
+    <string name="DisableLockedAnimatedEmojiInfo">Скрывать заблокированные премиум-наборы эмодзи. Только для аккаунтов без Premium.</string>
     <string name="FullRecentStickersInfo">Показывать все недавние стикеры вместо последних 20.</string>
     <string name="DisableFlipPhotosInfo">Не переключать фото при нажатии на края экрана.</string>
     <string name="RearVideoMessagesInfo">Начинать запись видеосообщений с основной камеры.</string>
