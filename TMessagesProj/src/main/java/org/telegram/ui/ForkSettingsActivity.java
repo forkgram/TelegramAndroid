@@ -157,6 +157,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int fullRecentStickersRow;
     private int hideSendAsRow;
     private int disableQuickReactionRow;
+    private int disableLockedAnimatedEmoji;
 
     private int stickerSizeRow;
 
@@ -226,6 +227,7 @@ public class ForkSettingsActivity extends BaseFragment {
         fullRecentStickersRow = rowCount++;
         hideSendAsRow = rowCount++;
         disableQuickReactionRow = rowCount++;
+        disableLockedAnimatedEmoji = rowCount++;
     
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
@@ -334,6 +336,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("hideSendAs", view, false);
             } else if (position == disableQuickReactionRow) {
                 toggleGlobalMainSetting("disableQuickReaction", view, false);
+            } else if (position == disableLockedAnimatedEmoji) {
+                toggleGlobalMainSetting("disableLockedAnimatedEmoji", view, false);
             } else if (position == replaceForward) {
                 toggleGlobalMainSetting("replaceForward", view, true);
             } else if (position == mentionByName) {
@@ -463,6 +467,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableQuickReactionRow) {
                         String t = LocaleController.getString("DisableQuickReaction", R.string.DisableQuickReaction);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableQuickReaction", false), false);
+                    } else if (position == disableLockedAnimatedEmoji) {
+                        String t = LocaleController.getString("DisableLockedAnimatedEmoji", R.string.DisableLockedAnimatedEmoji);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("disableLockedAnimatedEmoji", false), false);
                     } else if (position == replaceForward) {
                         String t = LocaleController.getString("ReplaceForward", R.string.ReplaceForward);
                         textCell.setTextAndCheck(t, preferences.getBoolean("replaceForward", true), false);
@@ -522,6 +529,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == fullRecentStickersRow
                         || position == hideSendAsRow
                         || position == disableQuickReactionRow
+                        || position == disableLockedAnimatedEmoji
                         || position == replaceForward
                         || position == mentionByName
                         || position == openArchiveOnPull
@@ -585,6 +593,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == fullRecentStickersRow
                 || position == hideSendAsRow
                 || position == disableQuickReactionRow
+                || position == disableLockedAnimatedEmoji
                 || position == replaceForward
                 || position == mentionByName
                 || position == openArchiveOnPull
