@@ -131,7 +131,10 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
             boolean includeAnimated, int type, Runnable onSettingsOpen, int accentColor, boolean isGlassDesign
     ) {
         super(context);
-        this.includeAnimated = includeAnimated;
+        final boolean disableLockedAnimatedEmoji = true
+            && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("disableLockedAnimatedEmoji", false)
+            && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium();
+        this.includeAnimated = includeAnimated && !disableLockedAnimatedEmoji;
         this.resourcesProvider = resourcesProvider;
         this.onSettingsOpenRunnable = onSettingsOpen;
         this.currentType = type;
@@ -145,8 +148,8 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
             @Override
             protected void onLayout(boolean changed, int l, int t, int r, int b) {
                 int cy = (b - t) / 2;
-                if (includeAnimated) {
-                    int x = getPaddingLeft();
+                if (includeAnimated && !disableLockedAnimatedEmoji) {
+                    int x = getPaddingLeft() - (!recentIsShown ? AndroidUtilities.dp(30 + 3) : 0);
                     for (int i = 0; i < getChildCount(); ++i) {
                         View child = getChildAt(i);
                         if (child == settingsTab || removingViews.containsKey(child)) {
@@ -216,7 +219,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
                         width += child.getMeasuredWidth() + (i + 1 < getChildCount() ? AndroidUtilities.dp(3) : 0);
                     }
                 }
-                if (!includeAnimated) {
+                if (!includeAnimated || disableLockedAnimatedEmoji) {
                     setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
                     return;
                 }
@@ -343,7 +346,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
             giftsTab.setAlpha(0.0f);
             giftsTab.id = (long) "gifts".hashCode();
         }
-        if (!includeAnimated) {
+        if (!includeAnimated || disableLockedAnimatedEmoji) {
             for (int i = 0; i < emojiTabsDrawableIds.length; ++i) {
                 EmojiTabButton categoryTab = new EmojiTabButton(context, emojiTabsDrawableIds[i], false, i == 0);
                 categoryTab.setContentDescription(getEmojiCategoryName(i));
@@ -351,7 +354,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
             }
             updateClickListeners();
         } else {
-            if (includeStandard) {
+            if (includeStandard || disableLockedAnimatedEmoji) {
                 contentView.addView(emojiTabs = new EmojiTabsView(context));
                 emojiTabs.id = (long) "tabs".hashCode();
             }
