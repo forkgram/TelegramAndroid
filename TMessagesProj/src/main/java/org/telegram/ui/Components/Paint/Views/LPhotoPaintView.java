@@ -48,10 +48,6 @@ import androidx.dynamicanimation.animation.FloatValueHolder;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.face.Face;
-import com.google.android.gms.vision.face.FaceDetector;
-
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.Bitmaps;
@@ -93,7 +89,7 @@ import org.telegram.ui.Components.Paint.ColorPickerBottomSheet;
 import org.telegram.ui.Components.Paint.PaintTypeface;
 import org.telegram.ui.Components.Paint.Painting;
 import org.telegram.ui.Components.Paint.PersistColorPalette;
-import org.telegram.ui.Components.Paint.PhotoFace;
+//import org.telegram.ui.Components.Paint.PhotoFace;
 import org.telegram.ui.Components.Paint.RenderView;
 import org.telegram.ui.Components.Paint.Swatch;
 import org.telegram.ui.Components.Paint.UndoStore;
@@ -179,7 +175,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         }
     };
 
-    private ArrayList<PhotoFace> faces;
+    // private ArrayList<PhotoFace> faces;
     private int originalBitmapRotation;
     private BigInteger lcm;
 
@@ -1709,6 +1705,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         renderInputView.setVisibility(View.VISIBLE);
     }
 
+    /*
     private int getFrameRotation() {
         switch (originalBitmapRotation) {
             case 90: return Frame.ROTATION_90;
@@ -1717,12 +1714,14 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
             default: return Frame.ROTATION_0;
         }
     }
+    */
 
     private boolean isSidewardOrientation() {
         return originalBitmapRotation % 360 == 90 || originalBitmapRotation % 360 == 270;
     }
 
     private void detectFaces() {
+        /*
         queue.postRunnable(() -> {
             FaceDetector faceDetector = null;
             try {
@@ -1764,6 +1763,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
                 }
             }
         }, 200);
+        */
     }
 
     @Override
@@ -2965,12 +2965,13 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
             baseScale = 0.75f;
         }
         StickerPosition defaultPosition = new StickerPosition(centerPositionForEntity(), baseScale, rotation);
-        if (maskCoords == null || faces == null || faces.size() == 0) {
+        if (maskCoords == null/* || faces == null || faces.size() == 0*/) {
             return defaultPosition;
         } else {
             int anchor = maskCoords.n;
 
-            PhotoFace face = getRandomFaceWithVacantAnchor(anchor, document.id, maskCoords);
+            return defaultPosition;
+            /*PhotoFace face = getRandomFaceWithVacantAnchor(anchor, document.id, maskCoords);
             if (face == null) {
                 return defaultPosition;
             }
@@ -2992,10 +2993,10 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
             float x = referencePoint.x + xCompX + yCompX;
             float y = referencePoint.y + xCompY + yCompY;
 
-            return new StickerPosition(new Point(x, y), scale, angle);
+            return new StickerPosition(new Point(x, y), scale, angle);*/
         }
     }
-
+/*
     private PhotoFace getRandomFaceWithVacantAnchor(int anchor, long documentId, TLRPC.TL_maskCoords maskCoords) {
         if (anchor < 0 || anchor > 3 || faces.isEmpty()) {
             return null;
@@ -3017,6 +3018,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
     }
 
     private boolean isFaceAnchorOccupied(PhotoFace face, int anchor, long documentId, TLRPC.TL_maskCoords maskCoords) {
+        return false;
         Point anchorPoint = face.getPointForAnchor(anchor);
         if (anchorPoint == null) {
             return true;
@@ -3044,6 +3046,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
 
         return false;
     }
+ */
 
     private StickerView createSticker(Object parentObject, TLRPC.Document sticker, boolean select) {
         StickerPosition position = calculateStickerPosition(sticker);
