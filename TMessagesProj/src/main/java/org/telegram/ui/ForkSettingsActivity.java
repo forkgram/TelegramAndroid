@@ -88,6 +88,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_FLIP_PHOTOS = 54;
     public static final int ID_REAR_VIDEO_MESSAGES = 55;
 
+    public static final int ID_DISABLE_PARAMETERS_FROM_BOT_LINKS = 72;
+
     private static final int MENU_SEARCH = 100;
 
     private UniversalRecyclerView listView;
@@ -416,6 +418,11 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("rearVideoMessages", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
+        items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionBots)));
+        items.add(UItem.asButtonCheck(ID_DISABLE_PARAMETERS_FROM_BOT_LINKS, LocaleController.getString(R.string.DisableParametersFromBotLinks), LocaleController.getString(R.string.DisableParametersFromBotLinksInfo))
+            .setChecked(pref("disableParametersFromBotLinks", false)).setMultiline(true));
+        items.add(UItem.asShadow(null));
+
     }
 
     private boolean toggle(String option, UItem item, View view) {
@@ -489,6 +496,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("disableFlipPhotos", item, view);
         } else if (id == ID_REAR_VIDEO_MESSAGES) {
             toggle("rearVideoMessages", item, view);
+        } else if (id == ID_DISABLE_PARAMETERS_FROM_BOT_LINKS) {
+            toggle("disableParametersFromBotLinks", item, view);
         }
     }
 
