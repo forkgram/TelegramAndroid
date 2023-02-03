@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">Зовнішній вигляд</string>
     <string name="ForkSectionMedia">Фото та відео</string>
+    <string name="ForkSectionBots">Боти та браузер</string>
     <string name="HideBottomButtonInfo">Очищати нижню кнопку (Вимкнути звук, Приєднатися) та ігнорувати натискання на неї.</string>
     <string name="OpenArchiveOnPullInfo">Відкривати теку «Архів» під час потягування списку чатів униз.</string>
     <string name="DisableThumbsInDialogListInfo">Приховувати мініатюри медіа останнього повідомлення у списку чатів.</string>
@@ -15,6 +16,7 @@
     <string name="FullRecentStickersInfo">Показувати всі нещодавні стікери замість останніх 20.</string>
     <string name="DisableFlipPhotosInfo">Не перемикати фото під час натискання на краї екрана.</string>
     <string name="RearVideoMessagesInfo">Починати запис відеоповідомлень з основної камери.</string>
+    <string name="DisableParametersFromBotLinksInfo">Прибирати start-параметри з посилань на ботів перед відкриттям.</string>
     <string name="ForkRestartRequired">Потрібен перезапуск</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
