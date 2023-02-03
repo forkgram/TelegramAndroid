@@ -1527,6 +1527,11 @@ public class MessagesController extends BaseController implements NotificationCe
         premiumInvoiceSlug = mainPreferences.getString("premiumInvoiceSlug", null);
         premiumBotUsername = mainPreferences.getString("premiumBotUsername", null);
         premiumLocked = mainPreferences.getBoolean("premiumLocked", false);
+        AndroidUtilities.runOnUIThread(() -> {
+            if (getGlobalMainSettings().getBoolean("lockPremium", false)) {
+                premiumLocked = true;
+            }
+        }, 10);
         starsLocked = mainPreferences.getBoolean("starsLocked", true);
         transcribeButtonPressed = mainPreferences.getInt("transcribeButtonPressed", 0);
         forumUpgradeParticipantsMin = mainPreferences.getInt("forumUpgradeParticipantsMin", 200);
