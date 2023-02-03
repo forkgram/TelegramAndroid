@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">Weergave</string>
     <string name="ForkSectionMedia">Foto\'s en video</string>
+    <string name="ForkSectionBots">Bots en browser</string>
     <string name="HideBottomButtonInfo">De knop in de onderste balk (Dempen, Deelnemen) leegmaken en tikken negeren.</string>
     <string name="OpenArchiveOnPullInfo">De map Archief openen wanneer de chatlijst omlaag wordt getrokken.</string>
     <string name="DisableThumbsInDialogListInfo">Mediaminiaturen van het laatste bericht in de chatlijst verbergen.</string>
@@ -15,6 +16,7 @@
     <string name="FullRecentStickersInfo">Alle recente stickers tonen in plaats van de laatste 20.</string>
     <string name="DisableFlipPhotosInfo">Niet naar de volgende foto gaan bij tikken op de schermranden.</string>
     <string name="RearVideoMessagesInfo">Videoberichten opnemen met de camera aan de achterkant.</string>
+    <string name="DisableParametersFromBotLinksInfo">Startparameters uit botlinks verwijderen voordat ze worden geopend.</string>
     <string name="ForkRestartRequired">Herstart vereist</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

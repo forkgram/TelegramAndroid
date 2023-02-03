@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">Apariencia</string>
     <string name="ForkSectionMedia">Fotos y vídeos</string>
+    <string name="ForkSectionBots">Bots y navegador</string>
     <string name="HideBottomButtonInfo">Vaciar el botón de la barra inferior (Silenciar, Unirse) e ignorar los toques en él.</string>
     <string name="OpenArchiveOnPullInfo">Abrir la carpeta Archivados al deslizar hacia abajo la lista de chats.</string>
     <string name="DisableThumbsInDialogListInfo">Ocultar las miniaturas del último mensaje en la lista de chats.</string>
@@ -15,6 +16,7 @@
     <string name="FullRecentStickersInfo">Mostrar todos los stickers recientes en lugar de los últimos 20.</string>
     <string name="DisableFlipPhotosInfo">No pasar a la siguiente foto al tocar los bordes de la pantalla.</string>
     <string name="RearVideoMessagesInfo">Grabar los mensajes de vídeo con la cámara trasera.</string>
+    <string name="DisableParametersFromBotLinksInfo">Eliminar los parámetros de inicio de los enlaces de bots antes de abrirlos.</string>
     <string name="ForkRestartRequired">Reinicio requerido</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
