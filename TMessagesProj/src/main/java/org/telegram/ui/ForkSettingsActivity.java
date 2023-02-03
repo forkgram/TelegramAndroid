@@ -90,6 +90,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_DISABLE_PARAMETERS_FROM_BOT_LINKS = 72;
 
+    public static final int ID_LOCK_PREMIUM = 83;
+
     private static final int MENU_SEARCH = 100;
 
     private UniversalRecyclerView listView;
@@ -423,6 +425,11 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("disableParametersFromBotLinks", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
+        items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionSystem)));
+        items.add(UItem.asButtonCheck(ID_LOCK_PREMIUM, LocaleController.getString(R.string.LockPremium), LocaleController.getString(R.string.LockPremiumInfo))
+            .setChecked(pref("lockPremium", false)).setMultiline(true));
+        items.add(UItem.asShadow(null));
+
     }
 
     private boolean toggle(String option, UItem item, View view) {
@@ -498,6 +505,9 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("rearVideoMessages", item, view);
         } else if (id == ID_DISABLE_PARAMETERS_FROM_BOT_LINKS) {
             toggle("disableParametersFromBotLinks", item, view);
+        } else if (id == ID_LOCK_PREMIUM) {
+            toggle("lockPremium", item, view);
+
         }
     }
 
