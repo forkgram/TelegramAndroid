@@ -2,6 +2,7 @@
 <resources>
     <string name="ForkSectionAppearance">المظهر</string>
     <string name="ForkSectionMedia">الصور والفيديو</string>
+    <string name="ForkSectionBots">البوتات والمتصفح</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>
     <string name="OpenArchiveOnPullInfo">فتح مجلد الأرشيف عند سحب قائمة الدردشات للأسفل.</string>
     <string name="DisableThumbsInDialogListInfo">إخفاء الصور المصغرة لآخر رسالة في قائمة الدردشات.</string>
@@ -15,6 +16,7 @@
     <string name="FullRecentStickersInfo">إظهار جميع الملصقات الأخيرة بدلاً من آخر 20 فقط.</string>
     <string name="DisableFlipPhotosInfo">عدم الانتقال إلى الصورة التالية عند النقر على حواف الشاشة.</string>
     <string name="RearVideoMessagesInfo">تسجيل رسائل الفيديو بالكاميرا الخلفية.</string>
+    <string name="DisableParametersFromBotLinksInfo">إزالة معاملات البدء من روابط البوتات قبل فتحها.</string>
     <string name="ForkRestartRequired">إعادة التشغيل مطلوبة</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
