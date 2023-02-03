@@ -5,6 +5,7 @@
     <string name="ForkSectionAppearance">Appearance</string>
     <string name="ForkSectionMedia">Photos and video</string>
     <string name="ForkSectionBots">Bots and browser</string>
+    <string name="ForkSectionSystem">System and updates</string>
     <string name="HideBottomButtonInfo">Blank the bottom bar button (Mute, Join) and ignore taps on it.</string>
     <string name="OpenArchiveOnPullInfo">Open the Archive folder when the chat list is pulled down.</string>
     <string name="DisableThumbsInDialogListInfo">Hide media thumbnails of the last message in the chat list.</string>
@@ -19,6 +20,7 @@
     <string name="DisableFlipPhotosInfo">Do not switch to the next photo when the screen edges are tapped.</string>
     <string name="RearVideoMessagesInfo">Start recording video messages with the rear camera.</string>
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
+    <string name="LockPremiumInfo">Hide Telegram Premium ads and the subscribe button. Restart required.</string>
     <string name="ForkRestartRequired">Restart required</string>
     <string name="BottomDialogs">Tap here to start a new chat.</string>
     <string name="FastForward">Fast Forward</string>
@@ -69,6 +71,7 @@
     <string name="DisableQuickReaction">Disable quick reaction</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
     <string name="DisableParametersFromBotLinks">Disable parameters from bot links</string>
+    <string name="LockPremium">Lock premium features</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>

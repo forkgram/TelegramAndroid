@@ -3,6 +3,7 @@
     <string name="ForkSectionAppearance">Внешний вид</string>
     <string name="ForkSectionMedia">Фото и видео</string>
     <string name="ForkSectionBots">Боты и браузер</string>
+    <string name="ForkSectionSystem">Система и обновления</string>
     <string name="HideBottomButtonInfo">Очищать нижнюю кнопку (Выключить звук, Вступить) и игнорировать нажатия по ней.</string>
     <string name="OpenArchiveOnPullInfo">Открывать папку «Архив» при потягивании списка чатов вниз.</string>
     <string name="DisableThumbsInDialogListInfo">Скрывать миниатюры медиа последнего сообщения в списке чатов.</string>
@@ -17,6 +18,7 @@
     <string name="DisableFlipPhotosInfo">Не переключать фото при нажатии на края экрана.</string>
     <string name="RearVideoMessagesInfo">Начинать запись видеосообщений с основной камеры.</string>
     <string name="DisableParametersFromBotLinksInfo">Убирать start-параметры из ссылок на ботов перед открытием.</string>
+    <string name="LockPremiumInfo">Скрывать рекламу Telegram Premium и кнопку подписки. Требуется перезапуск.</string>
     <string name="ForkRestartRequired">Требуется перезапуск</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
