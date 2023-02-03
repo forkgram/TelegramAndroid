@@ -3,6 +3,7 @@
     <string name="ForkSectionAppearance">Aparência</string>
     <string name="ForkSectionMedia">Fotos e vídeos</string>
     <string name="ForkSectionBots">Bots e navegador</string>
+    <string name="ForkSectionSystem">Sistema e atualizações</string>
     <string name="HideBottomButtonInfo">Esvaziar o botão da barra inferior (Silenciar, Entrar) e ignorar toques nele.</string>
     <string name="OpenArchiveOnPullInfo">Abrir a pasta Arquivadas ao puxar a lista de conversas para baixo.</string>
     <string name="DisableThumbsInDialogListInfo">Ocultar as miniaturas de mídia da última mensagem na lista de conversas.</string>
@@ -17,6 +18,7 @@
     <string name="DisableFlipPhotosInfo">Não passar para a próxima foto ao tocar nas bordas da tela.</string>
     <string name="RearVideoMessagesInfo">Gravar as mensagens de vídeo com a câmera traseira.</string>
     <string name="DisableParametersFromBotLinksInfo">Remover os parâmetros de início dos links de bots antes de abri-los.</string>
+    <string name="LockPremiumInfo">Ocultar os anúncios do Telegram Premium e o botão de assinatura. Reinício necessário.</string>
     <string name="ForkRestartRequired">Reinício necessário</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
