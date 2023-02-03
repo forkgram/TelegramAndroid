@@ -3,6 +3,7 @@
     <string name="ForkSectionAppearance">Erscheinungsbild</string>
     <string name="ForkSectionMedia">Fotos und Videos</string>
     <string name="ForkSectionBots">Bots und Browser</string>
+    <string name="ForkSectionSystem">System und Updates</string>
     <string name="HideBottomButtonInfo">Die untere Leistenschaltfläche (Stumm, Beitreten) leeren und Tippen darauf ignorieren.</string>
     <string name="OpenArchiveOnPullInfo">Den Archivordner öffnen, wenn die Chatliste nach unten gezogen wird.</string>
     <string name="DisableThumbsInDialogListInfo">Medien-Vorschaubilder der letzten Nachricht in der Chatliste ausblenden.</string>
@@ -17,6 +18,7 @@
     <string name="DisableFlipPhotosInfo">Beim Tippen auf die Bildschirmränder nicht zum nächsten Foto wechseln.</string>
     <string name="RearVideoMessagesInfo">Videonachrichten mit der Rückkamera aufnehmen.</string>
     <string name="DisableParametersFromBotLinksInfo">Start-Parameter aus Bot-Links vor dem Öffnen entfernen.</string>
+    <string name="LockPremiumInfo">Telegram-Premium-Werbung und die Abo-Schaltfläche ausblenden. Neustart erforderlich.</string>
     <string name="ForkRestartRequired">Neustart erforderlich</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
