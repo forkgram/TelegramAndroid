@@ -14919,6 +14919,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     new SearchResult(1037, getString(R.string.DisableFlipPhotos), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_DISABLE_FLIP_PHOTOS))),
                     new SearchResult(1038, getString(R.string.RearVideoMessages), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_REAR_VIDEO_MESSAGES))),
                     new SearchResult(1049, getString(R.string.DisableParametersFromBotLinks), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_DISABLE_PARAMETERS_FROM_BOT_LINKS))),
+                    new SearchResult(1054, getString(R.string.LockPremium), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_LOCK_PREMIUM))),
             };
         }
 
