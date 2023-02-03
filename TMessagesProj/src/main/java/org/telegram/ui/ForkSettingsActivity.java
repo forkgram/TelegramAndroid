@@ -158,6 +158,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int hideSendAsRow;
     private int disableQuickReactionRow;
     private int disableLockedAnimatedEmoji;
+    private int disableParametersFromBotLinks;
 
     private int stickerSizeRow;
 
@@ -228,6 +229,7 @@ public class ForkSettingsActivity extends BaseFragment {
         hideSendAsRow = rowCount++;
         disableQuickReactionRow = rowCount++;
         disableLockedAnimatedEmoji = rowCount++;
+        disableParametersFromBotLinks = rowCount++;
     
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
@@ -338,6 +340,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("disableQuickReaction", view, false);
             } else if (position == disableLockedAnimatedEmoji) {
                 toggleGlobalMainSetting("disableLockedAnimatedEmoji", view, false);
+            } else if (position == disableParametersFromBotLinks) {
+                toggleGlobalMainSetting("disableParametersFromBotLinks", view, false);
             } else if (position == replaceForward) {
                 toggleGlobalMainSetting("replaceForward", view, true);
             } else if (position == mentionByName) {
@@ -470,6 +474,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableLockedAnimatedEmoji) {
                         String t = LocaleController.getString("DisableLockedAnimatedEmoji", R.string.DisableLockedAnimatedEmoji);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableLockedAnimatedEmoji", false), false);
+                    } else if (position == disableParametersFromBotLinks) {
+                        String t = LocaleController.getString("DisableParametersFromBotLinks", R.string.DisableParametersFromBotLinks);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("disableParametersFromBotLinks", false), false);
                     } else if (position == replaceForward) {
                         String t = LocaleController.getString("ReplaceForward", R.string.ReplaceForward);
                         textCell.setTextAndCheck(t, preferences.getBoolean("replaceForward", true), false);
@@ -530,6 +537,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == hideSendAsRow
                         || position == disableQuickReactionRow
                         || position == disableLockedAnimatedEmoji
+                        || position == disableParametersFromBotLinks
                         || position == replaceForward
                         || position == mentionByName
                         || position == openArchiveOnPull
@@ -594,6 +602,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == hideSendAsRow
                 || position == disableQuickReactionRow
                 || position == disableLockedAnimatedEmoji
+                || position == disableParametersFromBotLinks
                 || position == replaceForward
                 || position == mentionByName
                 || position == openArchiveOnPull
