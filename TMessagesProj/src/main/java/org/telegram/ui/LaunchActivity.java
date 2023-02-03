@@ -2317,10 +2317,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                                 if (messageId != null) {
                                                     videoTimestamp = getTimestampFromLink(data);
                                                 }
+                                                if (!org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("disableParametersFromBotLinks", false)) {
                                                 botUser = data.getQueryParameter("start");
                                                 botChat = data.getQueryParameter("startgroup");
                                                 botChannel = data.getQueryParameter("startchannel");
                                                 botChatAdminParams = data.getQueryParameter("admin");
+                                                }
                                                 game = data.getQueryParameter("game");
                                                 voicechat = data.getQueryParameter("voicechat");
                                                 livestream = data.getQueryParameter("livestream");
@@ -2390,10 +2392,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             auth.put("public_key", data.getQueryParameter("public_key"));
                                             auth.put("callback_url", data.getQueryParameter("callback_url"));
                                         } else {
+                                            if (!org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("disableParametersFromBotLinks", false)) {
                                             botUser = data.getQueryParameter("start");
                                             botChat = data.getQueryParameter("startgroup");
                                             botChannel = data.getQueryParameter("startchannel");
                                             botChatAdminParams = data.getQueryParameter("admin");
+                                            }
                                             game = data.getQueryParameter("game");
                                             voicechat = data.getQueryParameter("voicechat");
                                             livestream = data.getQueryParameter("livestream");
