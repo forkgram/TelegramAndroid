@@ -2515,6 +2515,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                                 if (messageId != null) {
                                                     videoTimestamp = getTimestampFromLink(data);
                                                 }
+                                                if (!org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("disableParametersFromBotLinks", false)) {
                                                 botUser = data.getQueryParameter("start");
                                                 botChat = data.getQueryParameter("startgroup");
                                                 if (!TextUtils.isEmpty(username)) {
@@ -2537,6 +2538,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                                 }
                                                 botChannel = data.getQueryParameter("startchannel");
                                                 botChatAdminParams = data.getQueryParameter("admin");
+                                                }
                                                 game = data.getQueryParameter("game");
                                                 voicechat = data.getQueryParameter("voicechat");
                                                 videochat = data.getBooleanQueryParameter("videochat", false);
@@ -2618,10 +2620,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                             auth.put("public_key", data.getQueryParameter("public_key"));
                                             auth.put("callback_url", data.getQueryParameter("callback_url"));
                                         } else {
+                                            if (!org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("disableParametersFromBotLinks", false)) {
                                             botUser = data.getQueryParameter("start");
                                             botChat = data.getQueryParameter("startgroup");
                                             botChannel = data.getQueryParameter("startchannel");
                                             botChatAdminParams = data.getQueryParameter("admin");
+                                            }
                                             if (data.getQueryParameter("task") != null) {
                                                 taskId = Utilities.parseInt(data.getQueryParameter("task"));
                                             }
