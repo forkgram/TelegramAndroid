@@ -3251,8 +3251,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 optionsItem.toggleSubMenu();
             });
         }
-        searchItem.setSearchFieldHint(getString(R.string.Search));
-        searchItem.setContentDescription(getString(R.string.Search));
+        searchItem.setOnLongClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putLong("user_id", getUserConfig().getClientUserId());
+            presentFragment(new ChatActivity(args));
+            return true;
+        });
+        searchItem.setSearchFieldHint(LocaleController.getString(R.string.Search));
+        searchItem.setContentDescription(LocaleController.getString(R.string.Search));
         if (onlySelect) {
             actionBar.setBackButtonImage(R.drawable.ic_ab_back);
             if (isReplyTo) {
