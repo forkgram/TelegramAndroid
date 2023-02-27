@@ -2710,6 +2710,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (initialDialogsType == DIALOGS_TYPE_ADD_USERS_TO || initialDialogsType == DIALOGS_TYPE_START_ATTACH_BOT) {
             searchItem.setVisibility(View.GONE);
         }
+        searchItem.setOnLongClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putLong("user_id", getUserConfig().getClientUserId());
+            presentFragment(new ChatActivity(args));
+            return true;
+        });
         searchItem.setSearchFieldHint(LocaleController.getString("Search", R.string.Search));
         searchItem.setContentDescription(LocaleController.getString("Search", R.string.Search));
         if (onlySelect) {
