@@ -20,9 +20,15 @@ function build_one {
 	export CXX=${CC_PREFIX}clang++
 	export AS=${CC_PREFIX}clang++
 	export CROSS_PREFIX=${PREBUILT}/bin/${ARCH_NAME}-linux-${BIN_MIDDLE}-
-	
-	
+		
+	export ISYSTEM="-isystem ${LLVM_PREFIX}/sysroot/usr/include/${ARCH_NAME}-linux-${BIN_MIDDLE} -isystem ${LLVM_PREFIX}/sysroot/usr/include"
+	export EXTRA_CFLAGS="--extra-cflags=${ISYSTEM}"
+
 	export CFLAGS="-DANDROID -fpic -fpie ${OPTIMIZE_CFLAGS}"
+	if [ "no" = ${SUPPORT_EXTRA_FLAGS} ]; then
+		export CFLAGS="-DANDROID -fpic -fpie ${OPTIMIZE_CFLAGS} ${ISYSTEM}"
+		export EXTRA_CFLAGS=""
+	fi
 	export CPPFLAGS="${CFLAGS}"
 	export CXXFLAGS="${CFLAGS} -std=c++11"
 	export ASFLAGS="-D__ANDROID__"
@@ -40,7 +46,7 @@ function build_one {
 
 
 	./configure \
-	--extra-cflags="-isystem ${LLVM_PREFIX}/sysroot/usr/include/${ARCH_NAME}-linux-${BIN_MIDDLE} -isystem ${LLVM_PREFIX}/sysroot/usr/include" \
+	${EXTRA_CFLAGS} \
 	--libc="${LLVM_PREFIX}/sysroot" \
 	--prefix=${PREFIX} \
 	--target=${TARGET} \
@@ -81,15 +87,18 @@ function setCurrentPlatform {
 		Darwin*)
 			BUILD_PLATFORM=darwin-x86_64
 			COMPILATION_PROC_COUNT=`sysctl -n hw.physicalcpu`
+			SUPPORT_EXTRA_FLAGS=no
 			;;
 		Linux*)
 			BUILD_PLATFORM=linux-x86_64
 			COMPILATION_PROC_COUNT=$(nproc)
+			SUPPORT_EXTRA_FLAGS=yes
 			;;
 		*)
 			echo -e "\033[33mWarning! Unknown platform ${CURRENT_PLATFORM}! falling back to linux-x86_64\033[0m"
 			BUILD_PLATFORM=linux-x86_64
 			COMPILATION_PROC_COUNT=1
+			SUPPORT_EXTRA_FLAGS=yes
 			;;
 	esac
 
@@ -118,7 +127,7 @@ checkPreRequisites
 cd libvpx
 
 ## common
-LLVM_PREFIX="${NDK}/toolchains/llvm/prebuilt/linux-x86_64"
+LLVM_PREFIX="${NDK}/toolchains/llvm/prebuilt/${BUILD_PLATFORM}"
 LLVM_BIN="${LLVM_PREFIX}/bin"
 VERSION="4.9"
 ANDROID_API=21
