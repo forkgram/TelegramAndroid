@@ -5852,6 +5852,16 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (dialogsHintCell == null || fragmentView == null || getContext() == null) {
             return;
         }
+        dialogsHintCell.setOnLongClickListener(v -> {
+            if (dialogsHintCell != null) {
+                dialogsHintCell.setVisibility(View.VISIBLE);
+                if (fragmentView != null) {
+                    ((ContentView)fragmentView).removeView(dialogsHintCell);
+                }
+                dialogsHintCell = null;
+            }
+            return true;
+        });
         if (dialogsHintCell != null) {
             dialogsHintCell.setCompact(false);
             dialogsHintCell.setAvatars(currentAccount, null);
