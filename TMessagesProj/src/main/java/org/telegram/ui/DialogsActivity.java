@@ -5884,6 +5884,16 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (topPanelLayout == null || dialogsHintCell == null || fragmentView == null || getContext() == null) {
             return;
         }
+        dialogsHintCell.setOnLongClickListener(v -> {
+            if (dialogsHintCell != null) {
+                dialogsHintCell.setVisibility(View.VISIBLE);
+                if (fragmentView != null) {
+                    ((ContentView)fragmentView).removeView(dialogsHintCell);
+                }
+                dialogsHintCell = null;
+            }
+            return true;
+        });
 
         boolean dialogsHintCellVisible;
 
