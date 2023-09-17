@@ -49,7 +49,6 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLog;
-import org.telegram.messenger.LanguageDetector;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.R;
@@ -1583,7 +1582,7 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
                 if (pasteItem != null) {
                     pasteItem.setVisible(canPaste() && clipboardHasContent());
                 }
-                if (onTranslateListener != null && LanguageDetector.hasSupport() && getSelectedText() != null) {
+                /*if (onTranslateListener != null && LanguageDetector.hasSupport() && getSelectedText() != null) {
                     LanguageDetector.detectLanguage(getSelectedText().toString(), lng -> {
                         translateFromLanguage = lng;
                         updateTranslateButton(menu);
@@ -1593,10 +1592,10 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
                         translateFromLanguage = null;
                         updateTranslateButton(menu);
                     });
-                } else {
+                } else {*/
                     translateFromLanguage = null;
                     updateTranslateButton(menu);
-                }
+                //}
                 return true;
             }
 
@@ -1612,7 +1611,7 @@ public abstract class TextSelectionHelper<Cell extends TextSelectionHelper.Selec
                         (
                             translateFromLanguage != null &&
                             !RestrictedLanguagesSelectActivity.getRestrictedLanguages().contains(translateFromLanguage)
-                        ) || !LanguageDetector.hasSupport()
+                        ) //|| !LanguageDetector.hasSupport()
                     )
                 );
             }
