@@ -35,14 +35,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.google.mlkit.common.MlKitException;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.label.ImageLabeling;
-import com.google.mlkit.vision.label.defaults.ImageLabelerOptions;
-import com.google.mlkit.vision.segmentation.subject.Subject;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmentation;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmenter;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.Emoji;
@@ -827,6 +819,8 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
         sourceBitmap = source;
         this.orientation = orientation;
         detectedEmoji = null;
+        segmentWholeImage(orientation, whenEmpty);
+        /*
         segment(source, orientation, subjects -> {
             final ArrayList<SegmentedObject> finalObjects = new ArrayList<>();
 
@@ -902,13 +896,56 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
                 });
 
             });
-        }, whenEmpty);
+        }, whenEmpty);*/
+    }
+
+    private void segmentWholeImage(int orientation, Utilities.Callback<SegmentedObject> whenEmpty) {
+        segmentingLoading = true;
+        Utilities.themeQueue.postRunnable(() -> {
+            if (sourceBitmap == null || segmentingLoaded) {
+                segmentingLoading = false;
+                return;
+            }
+            Matrix matrix = new Matrix();
+            matrix.postScale(1f / sourceBitmap.getWidth(), 1f / sourceBitmap.getHeight());
+            matrix.postTranslate(-.5f, -.5f);
+            matrix.postRotate(orientation);
+            matrix.postTranslate(.5f, .5f);
+            if (orientation / 90 % 2 != 0) {
+                matrix.postScale(sourceBitmap.getHeight(), sourceBitmap.getWidth());
+            } else {
+                matrix.postScale(sourceBitmap.getWidth(), sourceBitmap.getHeight());
+            }
+            SegmentedObject object = new SegmentedObject();
+            object.bounds.set(0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight());
+            object.rotatedBounds.set(object.bounds);
+            matrix.mapRect(object.rotatedBounds);
+            object.orientation = orientation;
+            object.image = createSmoothEdgesSegmentedImage(0, 0, sourceBitmap, false);
+            if (object.image == null) {
+                FileLog.e(new RuntimeException("createSmoothEdgesSegmentedImage failed on empty image"));
+                segmentingLoading = false;
+                return;
+            }
+            object.darkMaskImage = object.makeDarkMaskImage();
+            createSegmentImagePath(object, this.containerWidth, this.containerHeight);
+            segmentBorderImageWidth = object.borderImageWidth;
+            segmentBorderImageHeight = object.borderImageHeight;
+            selectedObject = object;
+            segmentingLoaded = true;
+            segmentingLoading = false;
+            AndroidUtilities.runOnUIThread(() -> {
+                empty = true;
+                objects = new SegmentedObject[] { object };
+                whenEmpty.run(object);
+            });
+        });
     }
 
     private static class SubjectMock {
         public Bitmap bitmap;
         public int startX, startY, width, height;
-        public static SubjectMock of(Subject subject) {
+        /*public static SubjectMock of(Subject subject) {
             SubjectMock m = new SubjectMock();
             m.bitmap = subject.getBitmap();
             m.startX = subject.getStartX();
@@ -916,7 +953,7 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
             m.width = subject.getWidth();
             m.height = subject.getHeight();
             return m;
-        }
+        }*/
         public static SubjectMock mock(Bitmap source) {
             SubjectMock m = new SubjectMock();
             m.width = m.height = (int) (Math.min(source.getWidth(), source.getHeight()) * .4f);
@@ -928,7 +965,7 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
         }
     }
 
-    private void segment(Bitmap bitmap, int orientation, Utilities.Callback<List<SubjectMock>> whenDone, Utilities.Callback<SegmentedObject> whenEmpty) {
+    /*private void segment(Bitmap bitmap, int orientation, Utilities.Callback<List<SubjectMock>> whenDone, Utilities.Callback<SegmentedObject> whenEmpty) {
         segmentingLoading = true;
         SubjectSegmenter segmenter = SubjectSegmentation.getClient(
             new SubjectSegmenterOptions.Builder()
@@ -987,7 +1024,7 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
             Emoji.getEmojiDrawable(defaultReactions.get(i).reaction);
         }
     }
-
+    */
     private void createSegmentImagePath(SegmentedObject object, int containerWidth, int containerHeight) {
         int imageWidth = object.getImage().getWidth();
         int imageHeight = object.getImage().getHeight();
@@ -1233,9 +1270,6 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
         isThanosInProgress = false;
     }
 
-    public static boolean isWaitingMlKitError(Exception e) {
-        return e instanceof MlKitException && e.getMessage() != null && e.getMessage().contains("segmentation optional module to be downloaded");
-    }
 
     public void setCurrentAccount(int account) {
         if (currentAccount != account) {
