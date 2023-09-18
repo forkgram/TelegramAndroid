@@ -59,6 +59,8 @@ import java.util.ArrayList;
 
 public class ForkSettingsActivity extends BaseFragment {
 
+    public static final int ID_SQUARE_AVATARS = 14;
+
     public static final int ID_INAPP_CAMERA = 50;
 
     private static final int MENU_SEARCH = 100;
@@ -229,6 +231,11 @@ public class ForkSettingsActivity extends BaseFragment {
     }
 
     private void fillSettings(ArrayList<UItem> items) {
+        items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionAppearance)));
+        items.add(UItem.asButtonCheck(ID_SQUARE_AVATARS, LocaleController.getString(R.string.SquareAvatars), LocaleController.getString(R.string.ForkRestartRequired))
+            .setChecked(pref("squareAvatars", false)).setMultiline(true));
+        items.add(UItem.asShadow(null));
+
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionMedia)));
         items.add(UItem.asButtonCheck(ID_INAPP_CAMERA, LocaleController.getString(R.string.InAppCamera), LocaleController.getString(R.string.InAppCameraInfo))
             .setChecked(pref("inappCamera", true)).setMultiline(true));
@@ -257,7 +264,9 @@ public class ForkSettingsActivity extends BaseFragment {
     private void onClick(UItem item, View view, int position, float x, float y) {
         final int id = item.id;
 
-        if (id == ID_INAPP_CAMERA) {
+        if (id == ID_SQUARE_AVATARS) {
+            toggle("squareAvatars", item, view);
+        } else if (id == ID_INAPP_CAMERA) {
             SharedConfig.toggleInappCamera();
             setCellChecked(view, SharedConfig.inappCamera);
             listView.adapter.update(true);

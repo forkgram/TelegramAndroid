@@ -94,6 +94,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
     private BlurredBackgroundDrawable glassDrawable;
     private BlurredBackgroundDrawable glassDrawableBack;
     private BlurredBackgroundDrawable glassDrawableMenu;
+    private boolean glassAvatarSquare;
     private INavigationLayout.BackButtonState backButtonState = INavigationLayout.BackButtonState.BACK;
     public ImageView backButtonImageView;
     private BackupImageView avatarSearchImageView;
@@ -249,6 +250,23 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         }
         if (backButtonImageView != null) {
             backButtonImageView.setTranslationX(dp(2));
+        }
+        applyGlassAvatarSquare();
+    }
+
+    public void setGlassAvatarSquare(boolean square) {
+        if (glassAvatarSquare == square) {
+            return;
+        }
+        glassAvatarSquare = square;
+        applyGlassAvatarSquare();
+        invalidate();
+    }
+
+    private void applyGlassAvatarSquare() {
+        if (glassDrawable instanceof BlurredBackgroundDrawable) {
+            final float r = dp(23);
+            ((BlurredBackgroundDrawable) glassDrawable).setRadius(glassAvatarSquare ? 0 : r, r, r, glassAvatarSquare ? 0 : r, false);
         }
     }
 
