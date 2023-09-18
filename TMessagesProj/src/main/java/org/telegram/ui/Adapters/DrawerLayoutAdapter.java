@@ -39,6 +39,8 @@ import java.util.Collections;
 
 public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
 
+    public static int FORK_NEW_STORY_ITEM = 96;
+
     private Context mContext;
     private DrawerLayoutContainer mDrawerLayoutContainer;
     private ArrayList<Item> items = new ArrayList<>(11);
@@ -320,10 +322,11 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             }
             showDivider = true;
         }
-//        if (MessagesController.getInstance(UserConfig.selectedAccount).storiesEnabled()) {
-//            items.add(new Item(17, LocaleController.getString(R.string.ProfileStories), R.drawable.msg_menu_stories));
-//            showDivider = true;
-//        }
+        if (MessagesController.getInstance(UserConfig.selectedAccount).storiesEnabled()) {
+            // items.add(new Item(17, LocaleController.getString("ProfileMyStories", R.string.ProfileMyStories), R.drawable.msg_menu_stories));
+            items.add(new Item(FORK_NEW_STORY_ITEM, LocaleController.getString("NewMyStory", R.string.NewMyStory), R.drawable.msg_menu_stories));
+            showDivider = true;
+        }
         showDivider = true;
         if (ApplicationLoader.applicationLoaderInstance != null) {
             if (ApplicationLoader.applicationLoaderInstance.extendDrawer(items)) {
