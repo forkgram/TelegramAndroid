@@ -444,13 +444,16 @@ public class ShareDialogCell extends FrameLayout implements NotificationCenter.N
 
     @Override
     protected void onDraw(Canvas canvas) {
+        android.content.SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        final boolean sqA = preferences.getBoolean("squareAvatars", false);
+
         int cx = imageView.getLeft() + imageView.getMeasuredWidth() / 2;
         int cy = imageView.getTop() + imageView.getMeasuredHeight() / 2;
         Theme.checkboxSquare_checkPaint.setColor(getThemedColor(Theme.key_dialogRoundCheckBox));
         Theme.checkboxSquare_checkPaint.setAlpha((int) (checkBox.getProgress() * 255));
         int radius = dp(currentType == TYPE_CREATE ? 24 : 28);
         AndroidUtilities.rectTmp.set(cx - radius, cy - radius, cx + radius, cy + radius);
-        canvas.drawRoundRect(AndroidUtilities.rectTmp, imageView.getRoundRadius()[0], imageView.getRoundRadius()[0], Theme.checkboxSquare_checkPaint);
+        canvas.drawRoundRect(AndroidUtilities.rectTmp, sqA ? 0 : imageView.getRoundRadius()[0], sqA ? 0 : imageView.getRoundRadius()[0], Theme.checkboxSquare_checkPaint);
         super.onDraw(canvas);
     }
 
@@ -509,6 +512,9 @@ public class ShareDialogCell extends FrameLayout implements NotificationCenter.N
             AndroidUtilities.rectTmp.set(0, 0, getBounds().width(), getBounds().height());
             paint.setAlpha(alpha);
             float r2 = Math.min(getBounds().width(), getBounds().height()) / 2f * ((float) alpha / 0xFF);
+            if (MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
+                r2 = 0;
+            }
             canvas.drawRoundRect(AndroidUtilities.rectTmp, r2, r2, paint);
             canvas.restore();
 
