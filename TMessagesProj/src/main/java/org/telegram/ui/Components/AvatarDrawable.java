@@ -40,6 +40,9 @@ import org.telegram.ui.ActionBar.Theme;
 
 import java.util.ArrayList;
 
+import org.telegram.messenger.MessagesController;
+import android.content.SharedPreferences;
+
 public class AvatarDrawable extends Drawable {
 
     private TextPaint namePaint;
@@ -419,9 +422,13 @@ public class AvatarDrawable extends Drawable {
         canvas.translate(bounds.left, bounds.top);
 
         if (drawAvatarBackground) {
+            SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+            final boolean squareAvatars = preferences.getBoolean("squareAvatars", false);
             if (roundRadius > 0) {
                 AndroidUtilities.rectTmp.set(0, 0, size, size);
                 canvas.drawRoundRect(AndroidUtilities.rectTmp, roundRadius, roundRadius, Theme.avatar_backgroundPaint);
+            } else if (squareAvatars) {
+                canvas.drawRect(0f, 0f, size, size, Theme.avatar_backgroundPaint);
             } else {
                 canvas.drawCircle(size / 2.0f, size / 2.0f, size / 2.0f, Theme.avatar_backgroundPaint);
             }

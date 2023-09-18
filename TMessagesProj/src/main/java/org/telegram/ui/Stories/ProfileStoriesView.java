@@ -803,6 +803,9 @@ public class ProfileStoriesView extends View implements NotificationCenter.Notif
     }
 
     private void drawArcs(Canvas canvas, StoryCircle A, StoryCircle B, StoryCircle C, Paint paint) {
+        if (MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
+            return;
+        }
         if (A == null && C == null) {
             canvas.drawArc(B.borderRect, 0, 360, false, paint);
         } else if (A != null && C != null) {
