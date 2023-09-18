@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="ForkSectionAppearance">Aparência</string>
     <string name="ForkSectionMedia">Fotos e vídeos</string>
+    <string name="ForkRestartRequired">Reinício necessário</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Português (Brasil)</string>
