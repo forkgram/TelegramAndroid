@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="ForkSectionAppearance">Зовнішній вигляд</string>
     <string name="ForkSectionMedia">Фото та відео</string>
+    <string name="ForkRestartRequired">Потрібен перезапуск</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Українська</string>

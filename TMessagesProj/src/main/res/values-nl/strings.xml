@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="ForkSectionAppearance">Weergave</string>
     <string name="ForkSectionMedia">Foto\'s en video</string>
+    <string name="ForkRestartRequired">Herstart vereist</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Nederlands</string>
