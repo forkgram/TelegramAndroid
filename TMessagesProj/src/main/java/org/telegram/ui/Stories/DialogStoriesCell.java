@@ -1245,7 +1245,7 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
                 break;
             }
         }
-        if (cell == null) {
+        if (cell == null && dialogId != 0) {
             return;
         }
         final StoryCell finalCell = cell;
