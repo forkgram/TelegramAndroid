@@ -1300,7 +1300,8 @@ public class ReactionsLayoutInBubble {
                     avatarsDrawable = new AvatarsDrawable(parentView, false);
                     avatarsDrawable.transitionDuration = ChatListItemAnimator.DEFAULT_DURATION;
                     avatarsDrawable.transitionInterpolator = ChatListItemAnimator.DEFAULT_INTERPOLATOR;
-                    avatarsDrawable.setSize(dp(20));
+                    boolean squareAvatars = MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false);
+                    avatarsDrawable.setSize(dp(squareAvatars ? 18 : 20));
                     avatarsDrawable.width = dp(100);
                     avatarsDrawable.height = height;
                     avatarsDrawable.setAvatarsTextSize(dp(22));

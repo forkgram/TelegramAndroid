@@ -552,7 +552,13 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
                     selectedPaint.setStyle(Paint.Style.STROKE);
                     selectedPaint.setStrokeWidth(dp(1.33f));
                     selectedPaint.setColor(getThemedColor(Theme.key_featuredStickers_addButton));
-                    canvas.drawCircle(getWidth() / 2.0f, getHeight() / 2.0f, dp(16), selectedPaint);
+                    final float cx = getWidth() / 2.0f;
+                    final float cy = getHeight() / 2.0f;
+                    if (MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
+                        canvas.drawRect(cx - dp(16), cy - dp(16), cx + dp(16), cy + dp(16), selectedPaint);
+                    } else {
+                        canvas.drawCircle(cx, cy, dp(16), selectedPaint);
+                    }
                 }
                 super.dispatchDraw(canvas);
             }
