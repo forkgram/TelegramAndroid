@@ -8683,17 +8683,16 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void updateFloatingButtonOffset() {
-        final float top = -navigationBarHeight - additionFloatingButtonOffset - additionalFloatingTranslation;
-        final float baseTranslationY = top
-            - floatingButtonPanOffset;
+        final float top = Integer.MAX_VALUE;
+        final float baseTranslationY = top;
 
         if (floatingButton3 != null) {
             floatingButton3.setTranslationY(baseTranslationY);
         }
         if (floatingButtonStories != null) {
-            floatingButtonStories.setTranslationY(baseTranslationY - dp(52));
+            floatingButtonStories.setTranslationY(baseTranslationY);
             if (storyHint != null) {
-                storyHint.setTranslationY(baseTranslationY - dp(52));
+                storyHint.setTranslationY(baseTranslationY);
             }
         }
     }
@@ -10943,6 +10942,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     boolean floatingButtonHidden;
 
     private void hideFloatingButton(boolean hide) {
+        hide = true;
         if (rightSlidingDialogContainer.hasFragment()) {
             hide = true;
         }
