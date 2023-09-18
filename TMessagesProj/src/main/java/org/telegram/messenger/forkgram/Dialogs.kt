@@ -152,6 +152,85 @@ object ForkDialogs {
     }
 
     @JvmStatic
+    // Copy of CreateDeleteAllYourMessagesAlert.
+    fun createDeleteAllUnpinnedMessagesAlert(
+        currentAccount: Int,
+        dialogId: Long,
+        context: Context
+    ) {
+
+        fun create(text: String, callback: () -> Unit) {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle(LocaleController.getString(R.string.DeleteAllUnpinnedMessages))
+            builder.setMessage(AndroidUtilities.replaceTags(text))
+
+            builder.setPositiveButton(
+                LocaleController.getString(R.string.OK),
+                { _: DialogInterface?, _: Int -> callback() })
+            builder.setNegativeButton(
+                LocaleController.getString(R.string.Cancel),
+                null)
+            val dialog = builder.show()
+            val button = dialog.getButton(DialogInterface.BUTTON_POSITIVE) as TextView
+            button.setTextColor(Theme.getColor(Theme.key_text_RedBold))
+        }
+
+        val messagesController = AccountInstance.getInstance(currentAccount).messagesController
+        val meId = UserConfig.getInstance(UserConfig.selectedAccount).clientUserId
+
+        fun deleteFor(to: Long, found: ArrayList<TLRPC.Message>) {
+            val messages: java.util.ArrayList<Int> = ArrayList(found.filter { !it.pinned && it !is TLRPC.TL_messageService }.map { it.id })
+            AndroidUtilities.runOnUIThread {
+                messagesController.deleteMessages(
+                    messages,
+                    null,
+                    null,
+                    to,
+                    0,
+                    true,
+                    0)
+            }
+        }
+
+        create(
+            LocaleController.getString(R.string.DeleteAllUnpinnedMessagesInfo)
+        ) {
+            create(LocaleController.getString(R.string.ReallySure)) {
+                val dialogPeer = messagesController.getInputPeer(dialogId)
+                val emptyPeer = TLRPC.TL_inputPeerEmpty()
+                ForkApi.searchAllMessages(
+                    currentAccount,
+                    dialogPeer,
+                    emptyPeer,
+                    { found: ArrayList<TLRPC.Message> -> deleteFor(dialogId, found) },
+                    {
+                        // Check migrated.
+                        if (dialogPeer.channel_id != 0L) {
+                            ForkApi.fullChannel(
+                                currentAccount,
+                                dialogPeer.channel_id
+                            ) { full: TLRPC.TL_messages_chatFull ->
+                                val migratedFrom = full.full_chat.migrated_from_chat_id
+                                if (migratedFrom == 0L) {
+                                    return@fullChannel
+                                }
+                                ForkApi.searchAllMessages(
+                                    currentAccount,
+                                    messagesController.getInputPeer(-migratedFrom),
+                                    emptyPeer,
+                                    { found: ArrayList<TLRPC.Message> -> deleteFor(-migratedFrom, found) },
+                                    {}
+                                )
+                            }
+                        }
+                    }
+                )
+
+            }
+        }
+    }
+
+    @JvmStatic
     fun createFieldAlert(
         context: Context,
         title: String,
