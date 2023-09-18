@@ -68,6 +68,7 @@ import org.telegram.ui.Components.SectionsScrollView;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.SnowflakesEffect;
 import org.telegram.ui.Components.blur3.BlurredBackgroundDrawableViewFactory;
+import org.telegram.ui.Components.blur3.drawable.BlurredBackgroundDrawable;
 import org.telegram.ui.Components.blur3.drawable.color.BlurredBackgroundColorProvider;
 
 import java.util.ArrayList;
@@ -91,6 +92,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
     private Drawable glassDrawable;
     private Drawable glassDrawableBack;
     private Drawable glassDrawableMenu;
+    private boolean glassAvatarSquare;
     private INavigationLayout.BackButtonState backButtonState = INavigationLayout.BackButtonState.BACK;
     public ImageView backButtonImageView;
     private BackupImageView avatarSearchImageView;
@@ -227,6 +229,23 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         }
         if (backButtonImageView != null) {
             backButtonImageView.setTranslationX(dp(2));
+        }
+        applyGlassAvatarSquare();
+    }
+
+    public void setGlassAvatarSquare(boolean square) {
+        if (glassAvatarSquare == square) {
+            return;
+        }
+        glassAvatarSquare = square;
+        applyGlassAvatarSquare();
+        invalidate();
+    }
+
+    private void applyGlassAvatarSquare() {
+        if (glassDrawable instanceof BlurredBackgroundDrawable) {
+            final float r = dp(23);
+            ((BlurredBackgroundDrawable) glassDrawable).setRadius(glassAvatarSquare ? 0 : r, r, r, glassAvatarSquare ? 0 : r, false);
         }
     }
 
