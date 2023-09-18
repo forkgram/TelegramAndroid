@@ -5455,6 +5455,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         contentView.addView(rightSlidingDialogContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
         contentView.addView(dialogStoriesCell, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, DialogStoriesCell.HEIGHT_IN_DP));
         updateStoriesVisibility(false);
+        hideFloatingButton(true);
         return fragmentView;
     }
 
@@ -11224,6 +11225,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void hideFloatingButton(boolean hide) {
+        hide = true;
         if (rightSlidingDialogContainer.hasFragment()) {
             hide = true;
         }
