@@ -1733,6 +1733,7 @@ public class ChatActivity extends BaseFragment implements
     private final static int hideTitle = 34;
     private final static int goToFirstMessage = 35;
     private final static int deleteAllYourMessages = 36;
+    private final static int deleteAllUnpinnedMessages = 37;
 
     private final static int attach_photo = 0;
     private final static int attach_gallery = 1;
@@ -4290,6 +4291,11 @@ public class ChatActivity extends BaseFragment implements
                         currentAccount,
                         dialog_id,
                         getParentActivity());
+                } else if (id == deleteAllUnpinnedMessages) {
+                    org.telegram.messenger.forkgram.ForkDialogs.CreateDeleteAllUnpinnedMessagesAlert(
+                        currentAccount,
+                        dialog_id,
+                        getParentActivity());
                 }
             }
         });
@@ -4642,6 +4648,14 @@ public class ChatActivity extends BaseFragment implements
                     deleteAllYourMessages,
                     R.drawable.msg_delete,
                     LocaleController.getString("DeleteAllYourMessages", R.string.DeleteAllYourMessages),
+                    themeDelegate);
+            }
+            if (MessagesController.getGlobalMainSettings().getBoolean("addItemToDeleteAllUnpinnedMessages", false)
+                && ((currentUser != null && currentEncryptedChat == null) || currentChat != null)) {
+                headerItem.addSubItem(
+                    deleteAllUnpinnedMessages,
+                    R.drawable.msg_delete,
+                    LocaleController.getString("DeleteAllUnpinnedMessages", R.string.DeleteAllUnpinnedMessages),
                     themeDelegate);
             }
             if (ChatObject.isMonoForum(currentChat) && ChatObject.canManageMonoForum(currentAccount, currentChat)) {
