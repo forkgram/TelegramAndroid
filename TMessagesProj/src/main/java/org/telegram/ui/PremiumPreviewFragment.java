@@ -1855,7 +1855,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
                 return BillingController.getInstance().formatCurrency(getPricePerMonth(), getCurrency(), BillingController.getInstance().getCurrencyExp(getCurrency()), true);
             }
 
-            return googlePlayProductDetails == null ? "" : BillingController.getInstance().formatCurrency(getPricePerMonth(), getCurrency(), 6, true);
+            return /*googlePlayProductDetails == null ? "" : */BillingController.getInstance().formatCurrency(getPricePerMonth(), getCurrency(), 6, true);
         }
 
         public String getFormattedPricePerMonth() {
