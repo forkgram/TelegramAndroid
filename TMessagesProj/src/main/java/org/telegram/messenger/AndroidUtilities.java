@@ -2871,7 +2871,7 @@ public class AndroidUtilities {
     }
 
     public static int getPhotoSize() {
-        return getPhotoSize(false);
+        return getPhotoSize(SharedConfig.photoSizeFactor > 1);
     }
 
     public static int getPhotoSize(boolean highQuality) {
