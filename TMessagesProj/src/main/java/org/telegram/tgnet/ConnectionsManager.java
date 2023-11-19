@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.SparseArray;
 
 import com.google.android.exoplayer2.util.Log;
 
@@ -168,14 +169,14 @@ public class ConnectionsManager extends BaseController {
 
     private static int lastClassGuid = 1;
     
-    private static final ConnectionsManager[] Instance = new ConnectionsManager[UserConfig.MAX_ACCOUNT_COUNT];
+    private static SparseArray<ConnectionsManager> Instance = new SparseArray<>();
     public static ConnectionsManager getInstance(int num) {
-        ConnectionsManager localInstance = Instance[num];
+        ConnectionsManager localInstance = Instance.get(num);
         if (localInstance == null) {
             synchronized (ConnectionsManager.class) {
-                localInstance = Instance[num];
+                localInstance = Instance.get(num);
                 if (localInstance == null) {
-                    Instance[num] = localInstance = new ConnectionsManager(num);
+                    Instance.put(num, localInstance = new ConnectionsManager(num));
                 }
             }
         }
@@ -184,6 +185,7 @@ public class ConnectionsManager extends BaseController {
 
     public ConnectionsManager(int instance) {
         super(instance);
+        ConnectionsManager.native_setJava(instance);
         connectionState = native_getConnectionState(currentAccount);
         String deviceModel;
         String systemLangCode;
@@ -487,7 +489,7 @@ public class ConnectionsManager extends BaseController {
 
     public static void setLangCode(String langCode) {
         langCode = langCode.replace('_', '-').toLowerCase();
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+        for (int a : SharedConfig.activeAccounts) {
             native_setLangCode(a, langCode);
         }
     }
@@ -504,14 +506,14 @@ public class ConnectionsManager extends BaseController {
             String tag = type == PushListenerController.PUSH_TYPE_FIREBASE ? "FIREBASE" : "HUAWEI";
             pushString = SharedConfig.pushStringStatus = "__" + tag + "_GENERATING_SINCE_" + getInstance(0).getCurrentTime() + "__";
         }
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+        for (int a : SharedConfig.activeAccounts) {
             native_setRegId(a, pushString);
         }
     }
 
     public static void setSystemLangCode(String langCode) {
         langCode = langCode.replace('_', '-').toLowerCase();
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+        for (int a : SharedConfig.activeAccounts) {
             native_setSystemLangCode(a, langCode);
         }
     }
@@ -776,7 +778,7 @@ public class ConnectionsManager extends BaseController {
             secret = "";
         }
 
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+        for (int a : SharedConfig.activeAccounts) {
             if (enabled && !TextUtils.isEmpty(address)) {
                 native_setProxySettings(a, address, port, username, password, secret);
             } else {
@@ -815,6 +817,7 @@ public class ConnectionsManager extends BaseController {
     public static native void native_setSystemLangCode(int currentAccount, String langCode);
     public static native void native_seSystemLangCode(int currentAccount, String langCode);
     public static native void native_setJava(boolean useJavaByteBuffers);
+    public static native void native_setJava(int instanceNum);
     public static native void native_setPushConnectionEnabled(int currentAccount, boolean value);
     public static native void native_applyDnsConfig(int currentAccount, long address, String phone, int date);
     public static native long native_checkProxy(int currentAccount, String address, int port, String username, String password, String secret, RequestTimeDelegate requestTimeDelegate);

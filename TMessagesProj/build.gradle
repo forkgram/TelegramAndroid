@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-android'
 
     implementation 'org.osmdroid:osmdroid-android:6.1.14'
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

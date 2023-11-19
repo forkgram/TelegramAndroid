@@ -176,7 +176,7 @@ public class MessagesController extends BaseController implements NotificationCe
         if (channelBoostsControler != null) {
             return channelBoostsControler;
         }
-        synchronized (lockObjects[currentAccount]) {
+        synchronized (lockObject) {
             if (channelBoostsControler != null) {
                 return channelBoostsControler;
             }
@@ -1240,21 +1240,16 @@ public class MessagesController extends BaseController implements NotificationCe
         return 0;
     };
 
-    private static volatile MessagesController[] Instance = new MessagesController[UserConfig.MAX_ACCOUNT_COUNT];
-    private static final Object[] lockObjects = new Object[UserConfig.MAX_ACCOUNT_COUNT];
-    static {
-        for (int i = 0; i < UserConfig.MAX_ACCOUNT_COUNT; i++) {
-            lockObjects[i] = new Object();
-        }
-    }
+    private static SparseArray<MessagesController> Instance = new SparseArray<>();
+    private static final Object lockObject = new Object();
 
     public static MessagesController getInstance(int num) {
-        MessagesController localInstance = Instance[num];
+        MessagesController localInstance = Instance.get(num);
         if (localInstance == null) {
-            synchronized (lockObjects[num]) {
-                localInstance = Instance[num];
+            synchronized (lockObject) {
+                localInstance = Instance.get(num);
                 if (localInstance == null) {
-                    Instance[num] = localInstance = new MessagesController(num);
+                    Instance.put(num, localInstance = new MessagesController(num));
                 }
             }
         }
@@ -4512,7 +4507,7 @@ public class MessagesController extends BaseController implements NotificationCe
 
         showFiltersTooltip = false;
 
-        DialogsActivity.dialogsLoaded[currentAccount] = false;
+        DialogsActivity.dialogsLoaded.put(currentAccount, false);
 
         SharedPreferences.Editor editor = notificationsPreferences.edit();
         editor.clear().commit();
@@ -12671,7 +12666,7 @@ public class MessagesController extends BaseController implements NotificationCe
             TLRPC.TL_account_unregisterDevice req = new TLRPC.TL_account_unregisterDevice();
             req.token = SharedConfig.pushString;
             req.token_type = SharedConfig.pushType;
-            for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            for (int a : SharedConfig.activeAccounts) {
                 UserConfig userConfig = UserConfig.getInstance(a);
                 if (a != currentAccount && userConfig.isClientActivated()) {
                     req.other_uids.add(userConfig.getClientUserId());
@@ -12716,7 +12711,7 @@ public class MessagesController extends BaseController implements NotificationCe
         if (shouldHandle) {
             if (UserConfig.selectedAccount == currentAccount) {
                 int account = -1;
-                for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                for (int a : SharedConfig.activeAccounts) {
                     if (UserConfig.getInstance(a).isClientActivated()) {
                         account = a;
                         break;
@@ -12775,7 +12770,7 @@ public class MessagesController extends BaseController implements NotificationCe
         req.token = regid;
         req.no_muted = false;
         req.secret = SharedConfig.pushAuthKey;
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+        for (int a : SharedConfig.activeAccounts) {
             UserConfig userConfig = UserConfig.getInstance(a);
             if (a != currentAccount && userConfig.isClientActivated()) {
                 long uid = userConfig.getClientUserId();
@@ -19127,7 +19122,7 @@ public class MessagesController extends BaseController implements NotificationCe
         if (storiesController != null) {
             return storiesController;
         }
-        synchronized (lockObjects[currentAccount]) {
+        synchronized (lockObject) {
             if (storiesController != null) {
                 return storiesController;
             }
@@ -19140,7 +19135,7 @@ public class MessagesController extends BaseController implements NotificationCe
         if (unconfirmedAuthController != null) {
             return unconfirmedAuthController;
         }
-        synchronized (lockObjects[currentAccount]) {
+        synchronized (lockObject) {
             if (unconfirmedAuthController != null) {
                 return unconfirmedAuthController;
             }

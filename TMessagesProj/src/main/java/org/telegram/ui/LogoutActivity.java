@@ -70,11 +70,8 @@ public class LogoutActivity extends BaseFragment {
 
         rowCount = 0;
         alternativeHeaderRow = rowCount++;
-        if (UserConfig.getActivatedAccountsCount() < UserConfig.MAX_ACCOUNT_COUNT) {
-            addAccountRow = rowCount++;
-        } else {
-            addAccountRow = -1;
-        }
+        addAccountRow = rowCount++;
+
         if (SharedConfig.passcodeHash.length() <= 0) {
             passcodeRow = rowCount++;
         } else {
@@ -120,24 +117,15 @@ public class LogoutActivity extends BaseFragment {
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener((view, position, x, y) -> {
             if (position == addAccountRow) {
-                int freeAccounts = 0;
-                Integer availableAccount = null;
-                for (int a = UserConfig.MAX_ACCOUNT_COUNT - 1; a >= 0; a--) {
-                    if (!UserConfig.getInstance(a).isClientActivated()) {
-                        freeAccounts++;
-                        if (availableAccount == null) {
-                            availableAccount = a;
-                        }
+                int freeAccount;
+                for (int account = 0;; account++) {
+                    if (!SharedConfig.activeAccounts.contains(account)) {
+                        freeAccount = account;
+                        break;
                     }
                 }
-                if (!UserConfig.hasPremiumOnAccounts()) {
-                    freeAccounts -= (UserConfig.MAX_ACCOUNT_COUNT - UserConfig.MAX_ACCOUNT_DEFAULT_COUNT);
-                }
-                if (freeAccounts > 0 && availableAccount != null) {
-                    presentFragment(new LoginActivity(availableAccount));
-                } else if (!UserConfig.hasPremiumOnAccounts()) {
-                    LimitReachedBottomSheet limitReachedBottomSheet = new LimitReachedBottomSheet(this, getContext(), TYPE_ACCOUNTS, currentAccount, null);
-                    showDialog(limitReachedBottomSheet);
+                if (freeAccount >= 0) {
+                    presentFragment(new LoginActivity(freeAccount));
                 }
             } else if (position == passcodeRow) {
                 presentFragment(PasscodeActivity.determineOpenFragment());

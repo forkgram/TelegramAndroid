@@ -450,6 +450,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 AndroidUtilities.cancelRunOnUIThread(callback);
             }
         }
+        SharedConfig.loginingAccount = -1;
         getNotificationCenter().removeObserver(this, NotificationCenter.didUpdateConnectionState);
     }
 
@@ -1560,6 +1561,8 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
     }
 
     private void needFinishActivity(boolean afterSignup, boolean showSetPasswordConfirm, int otherwiseRelogin) {
+        SharedConfig.activeAccounts.add(currentAccount);
+        SharedConfig.saveAccounts();
         if (getParentActivity() != null) {
             AndroidUtilities.setLightStatusBar(getParentActivity().getWindow(), false);
         }
@@ -2842,7 +2845,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             String phone = PhoneFormat.stripExceptNumbers("" + codeField.getText() + phoneField.getText());
             if (activityMode == MODE_LOGIN) {
                 if (getParentActivity() instanceof LaunchActivity) {
-                    for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                    for (int a : SharedConfig.activeAccounts) {
                         UserConfig userConfig = UserConfig.getInstance(a);
                         if (!userConfig.isClientActivated()) {
                             continue;
@@ -8274,7 +8277,22 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
     }
 
     private int currentConnectionState;
+/*
+    @Override
+    public void didReceivedNotification(int id, int account, Object... args) {
+        if (id == NotificationCenter.updateLoginToken) {
+            regenerateLoginToken(false);
+        }
+    }
 
+    @Override
+    public boolean onFragmentCreate() {
+        SharedConfig.loginingAccount = currentAccount;
+        ApplicationLoader.loadAccount(currentAccount);
+        getNotificationCenter().addObserver(this, NotificationCenter.didUpdateConnectionState);
+        return true;
+    }
+*/
     private void updateProxyButton(boolean animated, boolean force) {
         if (proxyDrawable == null) {
             return;

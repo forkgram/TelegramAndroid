@@ -47,6 +47,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.LongSparseArray;
 import android.util.Property;
+import android.util.SparseArray;
 import android.util.StateSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -518,7 +519,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private String addToGroupAlertString;
     private boolean resetDelegate = true;
 
-    public static boolean[] dialogsLoaded = new boolean[UserConfig.MAX_ACCOUNT_COUNT];
+    public static SparseArray<Boolean> dialogsLoaded = new SparseArray<>();
     private boolean searching;
     private boolean searchWas;
     private boolean onlySelect;
@@ -2734,7 +2735,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
     public static void loadDialogs(AccountInstance accountInstance) {
         int currentAccount = accountInstance.getCurrentAccount();
-        if (!dialogsLoaded[currentAccount]) {
+        if (!dialogsLoaded.get(currentAccount, false)) {
             MessagesController messagesController = accountInstance.getMessagesController();
             messagesController.loadGlobalNotificationsSettings();
             messagesController.loadDialogs(0, 0, 100, true);
@@ -2746,7 +2747,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             for (String emoji : messagesController.diceEmojies) {
                 accountInstance.getMediaDataController().loadStickersByEmojiOrName(emoji, true, true);
             }
-            dialogsLoaded[currentAccount] = true;
+            dialogsLoaded.put(currentAccount, true);
         }
     }
 
@@ -2931,6 +2932,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         }
         return actionBar;
     }
+
+    private int accounts;
 
     @Override
     public View createView(final Context context) {
@@ -3526,14 +3529,17 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             Drawable thumb = user != null && user.photo != null && user.photo.strippedBitmap != null ? user.photo.strippedBitmap : avatarDrawable;
             imageView.setImage(ImageLocation.getForUserOrChat(user, ImageLocation.TYPE_SMALL), "50_50", ImageLocation.getForUserOrChat(user, ImageLocation.TYPE_STRIPPED), "50_50", thumb, user);
 
-            for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            int accounts = 0;
+            for (int a : SharedConfig.activeAccounts) {
                 TLRPC.User u = AccountInstance.getInstance(a).getUserConfig().getCurrentUser();
                 if (u != null) {
                     AccountSelectCell cell = new AccountSelectCell(context, false);
                     cell.setAccount(a, true);
                     switchItem.addSubItem(10 + a, cell, AndroidUtilities.dp(230), AndroidUtilities.dp(48));
+                    accounts = a > accounts + 1 ? a + 1 : accounts + 1;
                 }
             }
+            this.accounts = accounts;
         }
         actionBar.setAllowOverlayTitle(true);
 
@@ -6267,7 +6273,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         presentFragment(new ArchiveSettingsActivity());
                     } else if (id == 6) {
                         showArchiveHelp();
-                    } else if (id >= 10 && id < 10 + UserConfig.MAX_ACCOUNT_COUNT) {
+                    } else if (id >= 10 && id < 10 + accounts) {
                         if (getParentActivity() == null) {
                             return;
                         }
@@ -10118,7 +10124,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
             updateStatus(UserConfig.getInstance(account).getCurrentUser(), true);
         } else if (id == NotificationCenter.appDidLogout) {
-            dialogsLoaded[currentAccount] = false;
+            dialogsLoaded.put(currentAccount, false);
         } else if (id == NotificationCenter.encryptedChatUpdated) {
             updateVisibleRows(0);
         } else if (id == NotificationCenter.contactsDidLoad) {
@@ -10320,7 +10326,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             updateStatus(UserConfig.getInstance(account).getCurrentUser(), true);
             updateStoriesPosting();
         } else if (id == NotificationCenter.onDatabaseReset) {
-            dialogsLoaded[currentAccount] = false;
+            dialogsLoaded.set(currentAccount, false);
             loadDialogs(getAccountInstance());
             getMessagesController().loadPinnedDialogs(folderId, 0, null);
         } else if (id == NotificationCenter.chatlistFolderUpdate) {

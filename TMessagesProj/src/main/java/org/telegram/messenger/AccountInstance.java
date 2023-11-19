@@ -1,6 +1,7 @@
 package org.telegram.messenger;
 
 import android.content.SharedPreferences;
+import android.util.SparseArray;
 
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.ui.Components.Paint.PersistColorPalette;
@@ -8,14 +9,14 @@ import org.telegram.ui.Components.Paint.PersistColorPalette;
 public class AccountInstance {
 
     private int currentAccount;
-    private static volatile AccountInstance[] Instance = new AccountInstance[UserConfig.MAX_ACCOUNT_COUNT];
+    private static SparseArray<AccountInstance> Instance = new SparseArray<>();
     public static AccountInstance getInstance(int num) {
-        AccountInstance localInstance = Instance[num];
+        AccountInstance localInstance = Instance.get(num);
         if (localInstance == null) {
             synchronized (AccountInstance.class) {
-                localInstance = Instance[num];
+                localInstance = Instance.get(num);
                 if (localInstance == null) {
-                    Instance[num] = localInstance = new AccountInstance(num);
+                    Instance.put(num, localInstance = new AccountInstance(num));
                 }
             }
         }

@@ -49,7 +49,7 @@ public class PushListenerController {
             }
             SharedConfig.pushString = token;
             SharedConfig.pushType = pushType;
-            for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            for (int a : SharedConfig.activeAccounts) {
                 UserConfig userConfig = UserConfig.getInstance(a);
                 userConfig.registeredForPush = false;
                 userConfig.saveConfig(false);
@@ -184,7 +184,7 @@ public class PushListenerController {
                     }
                     int account = UserConfig.selectedAccount;
                     boolean foundAccount = false;
-                    for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                    for (int a : SharedConfig.activeAccounts) {
                         if (UserConfig.getInstance(a).getClientUserId() == accountUserId) {
                             account = a;
                             foundAccount = true;
@@ -1386,7 +1386,7 @@ public class PushListenerController {
     }
 
     private static void onDecryptError() {
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+        for (int a : SharedConfig.activeAccounts) {
             if (UserConfig.getInstance(a).isClientActivated()) {
                 ConnectionsManager.onInternalPushReceived(a);
                 ConnectionsManager.getInstance(a).resumeNetworkMaybe();
