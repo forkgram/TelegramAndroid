@@ -28,6 +28,8 @@ import androidx.annotation.IntDef;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.pm.ShortcutManagerCompat;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.json.JSONObject;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.SerializedData;
@@ -44,12 +46,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.stream.Collectors;
 
 public class SharedConfig {
     /**
@@ -338,6 +343,9 @@ public class SharedConfig {
 
     public static boolean translateChats = true;
 
+    public static CopyOnWriteArraySet<Integer> activeAccounts;
+    public static int loginingAccount = -1;
+
     public static boolean isFloatingDebugActive;
     public static LiteMode liteMode;
 
@@ -492,6 +500,13 @@ public class SharedConfig {
             value = lastLocalId--;
         }
         return value;
+    }
+
+    public static void saveAccounts() {
+        FileLog.e("Save accounts: " + activeAccounts, new Exception());
+        ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE).edit()
+                .putString("active_accounts", StringUtils.join(activeAccounts, ","))
+                .apply();
     }
 
     public static void loadConfig() {
@@ -652,6 +667,39 @@ public class SharedConfig {
             useSurfaceInStories = preferences.getBoolean("useSurfaceInStories", Build.VERSION.SDK_INT >= 30);
             payByInvoice = preferences.getBoolean("payByInvoice", false);
             photoViewerBlur = preferences.getBoolean("photoViewerBlur", true);
+
+            activeAccounts = Arrays.stream(preferences.getString("active_accounts", "").split(",")).filter(SharedConfig::isNotBlank).map(Integer::parseInt).collect(Collectors.toCollection(CopyOnWriteArraySet::new));
+
+            if (!preferences.contains("activeAccountsLoaded")) {
+                int maxAccounts;
+
+                File filesDir = ApplicationLoader.applicationContext.getFilesDir();
+                if (new File(filesDir, "account31").isDirectory()) {
+                    maxAccounts = 32;
+                } else if (new File(filesDir, "account15").isDirectory()) {
+                    maxAccounts = 16;
+                } else {
+                    maxAccounts = -1;
+                }
+
+                for (int i = 0; i < maxAccounts; i++) {
+                    SharedPreferences perf;
+                    if (i == 0) {
+                        perf = ApplicationLoader.applicationContext.getSharedPreferences("userconfing", Context.MODE_PRIVATE);
+                    } else {
+                        perf = ApplicationLoader.applicationContext.getSharedPreferences("userconfig" + i, Context.MODE_PRIVATE);
+                    }
+                    if (isNotBlank(perf.getString("user", null))) {
+                        activeAccounts.add(i);
+                    }
+                }
+
+                if (!SharedConfig.activeAccounts.isEmpty()) {
+                    preferences.edit().putString("active_accounts", StringUtils.join(activeAccounts, ",")).apply();
+                }
+
+                preferences.edit().putBoolean("activeAccountsLoaded", true).apply();
+            }
 
             loadDebugConfig(preferences);
 
@@ -1790,6 +1838,39 @@ public class SharedConfig {
         pref.edit().putBoolean("drawActionBarShadow", drawActionBarShadow);
     }
 
+    // copy from cn.hutool.core.util.StrUtil
+    public static boolean isBlankChar(char c) {
+        return isBlankChar((int) c);
+    }
 
+    public static boolean isBlankChar(int c) {
+        return Character.isWhitespace(c)
+                            || Character.isSpaceChar(c)
+                            || c == '\ufeff'
+                            || c == '\u202a'
+                            || c == '\u0000'
+                            || c == '\u3164'
+                            || c == '\u2800'
+                            || c == '\u180e';
+    }
+
+    public static boolean isNotBlank(CharSequence str) {
+        return !isBlank(str);
+    }
+
+    public static boolean isBlank(CharSequence str) {
+        final int length;
+        if ((str == null) || ((length = str.length()) == 0)) {
+            return true;
+        }
+
+        for (int i = 0; i < length; i++) {
+            if (false == isBlankChar(str.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 }
