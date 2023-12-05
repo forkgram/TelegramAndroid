@@ -909,6 +909,7 @@ public class ChatAttachAlertDocumentLayout extends ChatAttachAlert.AttachAlertLa
                 info.coverPath = photoEntry.coverPath;
                 info.videoEditedInfo = photoEntry.editedInfo;
                 info.isVideo = photoEntry.isVideo;
+                info.doNotCompress = info.isVideo;
                 info.caption = photoEntry.caption != null ? photoEntry.caption.toString() : null;
                 info.entities = photoEntry.entities;
                 info.masks = photoEntry.stickers;
