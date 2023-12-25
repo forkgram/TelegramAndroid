@@ -210,8 +210,10 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
         notificationsServiceConnectionRow = rowCount++;
         androidAutoAlertRow = -1;
         repeatRow = rowCount++;
-        unifiedPushDistributorRow = rowCount++;
-        unifiedPushGatewayRow = rowCount++;
+        if (!SharedConfig.disableUnifiedPush) {
+            unifiedPushDistributorRow = rowCount++;
+            unifiedPushGatewayRow = rowCount++;
+        }
         resetSection2Row = rowCount++;
         resetSectionRow = rowCount++;
         resetNotificationsRow = rowCount++;

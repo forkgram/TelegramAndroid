@@ -270,6 +270,7 @@ public class SharedConfig {
     public static boolean useSurfaceInStories;
     public static boolean photoViewerBlur = true;
     public static boolean payByInvoice;
+    public static boolean disableUnifiedPush;
     public static String unifiedPushGateway;
     public static int stealthModeSendMessageConfirm = 2;
     private static int lastLocalId = -210000;
@@ -683,6 +684,7 @@ public class SharedConfig {
             multipleReactionsPromoShowed = preferences.getBoolean("multipleReactionsPromoShowed", false);
             callEncryptionHintDisplayedCount = preferences.getInt("callEncryptionHintDisplayedCount", 0);
             debugVideoQualities = preferences.getBoolean("debugVideoQualities", false);
+            disableUnifiedPush = preferences.getBoolean("disableUnifiedPush", false);
             unifiedPushGateway = preferences.getString("unifiedPushGateway", "https://p2p.belloworld.it/");
 
             loadDebugConfig(preferences);

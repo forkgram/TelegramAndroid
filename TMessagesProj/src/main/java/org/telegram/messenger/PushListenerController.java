@@ -1696,6 +1696,7 @@ public class PushListenerController {
     }
     public final static class UnifiedPushListenerServiceProvider implements IPushListenerServiceProvider {
         public final static UnifiedPushListenerServiceProvider INSTANCE = new UnifiedPushListenerServiceProvider();
+        private final static UnifiedPushReceiver mReceiver = new UnifiedPushReceiver();
 
         private UnifiedPushListenerServiceProvider(){};
 
@@ -1711,37 +1712,41 @@ public class PushListenerController {
 
         @Override
         public void onRequestPushToken() {
-            String currentPushString = SharedConfig.pushString;
-            if (!TextUtils.isEmpty(currentPushString)) {
-                if (BuildVars.DEBUG_PRIVATE_VERSION && BuildVars.LOGS_ENABLED) {
-                    FileLog.d("UnifiedPush endpoint = " + currentPushString);
-                }
+            if (SharedConfig.disableUnifiedPush) {
+                UnifiedPush.unregisterApp(ApplicationLoader.applicationContext, "default");
             } else {
-                if (BuildVars.LOGS_ENABLED) {
-                    FileLog.d("No UnifiedPush string found");
-                }
-            }
-            Utilities.globalQueue.postRunnable(() -> {
-                try {
-                    SharedConfig.pushStringGetTimeStart = SystemClock.elapsedRealtime();
-                    SharedConfig.saveConfig();
-                    if (UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext) == null) {
-                        List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext, new ArrayList<>());
-                        if (distributors.size() > 0) {
-                            String distributor =  distributors.get(0);
-                            UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, distributor);
-                        }
+                String currentPushString = SharedConfig.pushString;
+                if (!TextUtils.isEmpty(currentPushString)) {
+                    if (BuildVars.DEBUG_PRIVATE_VERSION && BuildVars.LOGS_ENABLED) {
+                        FileLog.d("UnifiedPush endpoint = " + currentPushString);
                     }
-                    UnifiedPush.registerApp(
-                            ApplicationLoader.applicationContext,
-                            "default",
-                            new ArrayList<>(),
-                            "Telegram Simple Push"
-                            );
-                } catch (Throwable e) {
-                    FileLog.e(e);
+                } else {
+                    if (BuildVars.LOGS_ENABLED) {
+                        FileLog.d("No UnifiedPush string found");
+                    }
                 }
-            });
+                Utilities.globalQueue.postRunnable(() -> {
+                    try {
+                        SharedConfig.pushStringGetTimeStart = SystemClock.elapsedRealtime();
+                        SharedConfig.saveConfig();
+                        if (UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext) == null) {
+                            List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext, new ArrayList<>());
+                            if (distributors.size() > 0) {
+                                String distributor = distributors.get(0);
+                                UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, distributor);
+                            }
+                        }
+                        UnifiedPush.registerApp(
+                                ApplicationLoader.applicationContext,
+                                "default",
+                                new ArrayList<>(),
+                                "Telegram Simple Push"
+                        );
+                    } catch (Throwable e) {
+                        FileLog.e(e);
+                    }
+                });
+            }
         }
 
         @Override

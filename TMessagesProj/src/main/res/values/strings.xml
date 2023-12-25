@@ -2637,6 +2637,8 @@
     <string name="UnifiedPushDistributor">UnifiedPush Distributors</string>
     <string name="UnifiedPushGateway">UnifiedPush PUT to POST gateway</string>
     <string name="UnifiedPushGatewayInfo">Since Telegram Simple push uses PUT, but UnifiedPush only supports POST, a "PUT to POST" gateway is needed.\n\nPlease insert your gateway (or just keep the default value to use my proxy):</string>
+    <string name="DisableUnifiedPush">Disable UnifiedPush</string>
+    <string name="DisableUnifiedPushInfo">Restart required</string>
     <string name="AuthAnotherClient">Scan QR Code</string>
     <string name="AuthAnotherClientScan">Scan QR Code</string>
     <string name="AuthAnotherClientNotFound">No auth token found</string>
