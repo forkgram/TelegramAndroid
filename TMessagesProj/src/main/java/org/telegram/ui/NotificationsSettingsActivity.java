@@ -20,6 +20,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.LongSparseArray;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.telegram.messenger.UnifiedPushReceiver;
 import org.unifiedpush.android.connector.UnifiedPush;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -808,6 +810,31 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(!enabled);
             }
+        });
+        listView.setOnItemLongClickListener((view, position, x, y) -> {
+            if (getParentActivity() == null) {
+                return false;
+            }
+            if (position == unifiedPushDistributorRow) {
+                String txt;
+                if (UnifiedPushReceiver.getNumOfReceivedNotifications() == 0) {
+                    txt = "You never received notifications with UnifiedPush since Mercurygram was started.";
+                } else {
+                    txt = String.format("The last received notification with UnifiedPush was %d seconds ago.\n" +
+                                        "You received %d notifications since Mercurygram was started.",
+                                        (SystemClock.elapsedRealtime() - UnifiedPushReceiver.getLastReceivedNotification()) / 1000,
+                                        UnifiedPushReceiver.getNumOfReceivedNotifications());
+                }
+                txt += String.format("\n\nThe current UnifiedPush endpoint is: %s", SharedConfig.pushString);
+                Dialog dialog = new AlertDialog.Builder(getParentActivity())
+                        .setTitle("UnifiedPush Notifications")
+                        .setMessage(txt)
+                        .setNegativeButton(LocaleController.getString("OK", R.string.OK), null)
+                        .create();
+                showDialog(dialog);
+                return true;
+            }
+            return false;
         });
 
         return fragmentView;
