@@ -3,12 +3,12 @@ package org.telegram.messenger;
 import android.content.Context;
 import android.os.SystemClock;
 
-import androidx.annotation.NonNull;
-
 import org.telegram.tgnet.ConnectionsManager;
 import org.unifiedpush.android.connector.MessagingReceiver;
 import org.unifiedpush.android.connector.UnifiedPush;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.concurrent.CountDownLatch;
 
 public class UnifiedPushReceiver extends MessagingReceiver {
@@ -33,10 +33,13 @@ public class UnifiedPushReceiver extends MessagingReceiver {
 
             if (savedDistributor.equals("io.heckel.ntfy")) {
                 PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, endpoint);
-                return;
+            } else {
+                try {
+                    PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, "https://p2p.belloworld.it/" + URLEncoder.encode(endpoint, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    FileLog.e(e);
+                }
             }
-
-            PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, endpoint);
         });
     }
 
