@@ -35,7 +35,7 @@ public class UnifiedPushReceiver extends MessagingReceiver {
                 PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, endpoint);
             } else {
                 try {
-                    PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, "https://p2p.belloworld.it/" + URLEncoder.encode(endpoint, "UTF-8"));
+                    PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, SharedConfig.unifiedPushGateway + URLEncoder.encode(endpoint, "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     FileLog.e(e);
                 }
