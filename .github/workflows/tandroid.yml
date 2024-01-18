@@ -23,8 +23,13 @@ jobs:
         with:
           submodules: true
       - uses: nttld/setup-ndk@v1.4.2
+        id: setup-ndk
         with:
-          ndk-version: 21.4.7075529
+          ndk-version: r21e
+          add-to-path: false
+      - run: ./build.sh
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: Prepare additional build number.
         env:
           ADDITIONAL_BUILD: ${{ secrets.ADDITIONAL_BUILD_NUMBER }}
