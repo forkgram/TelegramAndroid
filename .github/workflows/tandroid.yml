@@ -24,7 +24,7 @@ jobs:
           submodules: true
       - uses: nttld/setup-ndk@v1.4.2
         with:
-          ndk-version: r21e
+          ndk-version: 21.4.7075529
       - name: Prepare additional build number.
         env:
           ADDITIONAL_BUILD: ${{ secrets.ADDITIONAL_BUILD_NUMBER }}
