@@ -49,9 +49,6 @@ jobs:
           ln -sfn $ANDROID_SDK_ROOT/ndk/21.4.7075529 $ANDROID_NDK_ROOT
 
           ###
-          yes | $ANDROID_HOME/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
-
-          ###
           vars=gradle.properties
 
           echo "DUMMY_CONST=0" >> $vars
