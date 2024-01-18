@@ -22,6 +22,9 @@ jobs:
       - uses: actions/checkout@v3.1.0
         with:
           submodules: true
+      - uses: nttld/setup-ndk@v1.4.2
+        with:
+          ndk-version: r21e
       - name: Prepare additional build number.
         env:
           ADDITIONAL_BUILD: ${{ secrets.ADDITIONAL_BUILD_NUMBER }}
