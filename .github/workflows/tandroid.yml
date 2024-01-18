@@ -49,7 +49,12 @@ jobs:
       - name: Build.
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
+          ANDROID_SDK_ROOT=${ANDROID_ROOT}/sdk
+          SDKMANAGER=${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager
+          echo "y" | $SDKMANAGER "ndk;21.4.7075529"
+        
           ###
           vars=gradle.properties
 
