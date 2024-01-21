@@ -12,18 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import androidx.core.util.Pair;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.ProductDetailsResponseListener;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.QueryProductDetailsParams;
-import com.android.billingclient.api.QueryPurchasesParams;
+
+import com.google.android.exoplayer2.util.Util;
 
 import org.telegram.messenger.utils.BillingUtilities;
 import org.telegram.tgnet.ConnectionsManager;
@@ -41,24 +31,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BillingController implements PurchasesUpdatedListener, BillingClientStateListener {
+public class BillingController {
     public final static String PREMIUM_PRODUCT_ID = "telegram_premium";
-    public final static QueryProductDetailsParams.Product PREMIUM_PRODUCT = QueryProductDetailsParams.Product.newBuilder()
-            .setProductType(BillingClient.ProductType.SUBS)
-            .setProductId(PREMIUM_PRODUCT_ID)
-            .build();
-
-    @Nullable
-    public static ProductDetails PREMIUM_PRODUCT_DETAILS;
 
     private static BillingController instance;
 
     public static boolean billingClientEmpty;
 
-    private final Map<String, Consumer<BillingResult>> resultListeners = new HashMap<>();
     private final List<String> requestingTokens = Collections.synchronizedList(new ArrayList<>());
     private final Map<String, Integer> currencyExpMap = new HashMap<>();
-    private final BillingClient billingClient;
+
     private String lastPremiumTransaction;
     private String lastPremiumToken;
     private boolean isDisconnected;
@@ -72,10 +54,6 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
     }
 
     private BillingController(Context ctx) {
-        billingClient = BillingClient.newBuilder(ctx)
-                .enablePendingPurchases()
-                .setListener(this)
-                .build();
     }
 
     public void setOnCanceled(Runnable onCanceled) {
@@ -126,15 +104,6 @@ public class BillingController implements PurchasesUpdatedListener, BillingClien
         return currencyExpMap.getOrDefault(currency, 0);
     }
 
-    public void startConnection() {
-        if (isReady()) {
-            return;
-        }
-        BillingUtilities.extractCurrencyExp(currencyExpMap);
-        if (!BuildVars.useInvoiceBilling()) {
-            billingClient.startConnection(this);
-        }
-    }
 
     private void switchToInvoice() {
         if (billingClientEmpty) {
