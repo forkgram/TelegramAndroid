@@ -462,7 +462,7 @@ public class UserSelectorBottomSheet extends BottomSheetWithRecyclerListView imp
         initHints(false);
         updateList(false, true);
         fixNavigationBar();
-        if (type == TYPE_PREMIUM || type == TYPE_STAR_GIFT) {
+        /*if (type == TYPE_PREMIUM || type == TYPE_STAR_GIFT) {
             BoostRepository.loadGiftOptions(currentAccount, null, arg -> {
                 paymentOptions.clear();
                 paymentOptions.addAll(arg);
@@ -473,7 +473,7 @@ public class UserSelectorBottomSheet extends BottomSheetWithRecyclerListView imp
                     }
                 }
             });
-        }
+        }*/
         if (type == TYPE_PREMIUM || type == TYPE_STAR_GIFT) {
             StarsController.getInstance(currentAccount).loadStarGifts();
         }
