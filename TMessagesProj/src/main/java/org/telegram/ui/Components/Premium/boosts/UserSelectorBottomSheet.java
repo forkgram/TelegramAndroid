@@ -394,12 +394,12 @@ public class UserSelectorBottomSheet extends BottomSheetWithRecyclerListView imp
         initHints(false);
         updateList(false, true);
         fixNavigationBar();
-        if (type == TYPE_PREMIUM) {
+        /*if (type == TYPE_PREMIUM) {
             BoostRepository.loadGiftOptions(null, arg -> {
                 paymentOptions.clear();
                 paymentOptions.addAll(arg);
             });
-        }
+        }*/
     }
 
     private void initContacts(boolean needUpdate) {
