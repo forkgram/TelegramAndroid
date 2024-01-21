@@ -19,11 +19,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.QueryProductDetailsParams;
-
 import org.json.JSONObject;
 import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.SQLite.SQLiteDatabase;
@@ -306,7 +301,7 @@ public class StarsController {
             options = loadedOptions;
             optionsLoading = false;
             NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.starOptionsLoaded);
-            if (!toLoadStorePrice.isEmpty()) {
+            /*if (!toLoadStorePrice.isEmpty()) {
                 Runnable fetchStorePrices = () -> {
                     ArrayList<QueryProductDetailsParams.Product> productQueries = new ArrayList<>();
                     for (int i = 0; i < toLoadStorePrice.size(); ++i) {
@@ -358,7 +353,7 @@ public class StarsController {
                 } else {
                     fetchStorePrices.run();
                 }
-            }
+            }*/
         }));
         return options;
     }
@@ -763,7 +758,7 @@ public class StarsController {
             return;
         }
 
-        if (BuildVars.useInvoiceBilling() || !BillingController.getInstance().isReady()) {
+        if (BuildVars.useInvoiceBilling()) {
             final TLRPC.TL_inputStorePaymentStarsTopup purpose = new TLRPC.TL_inputStorePaymentStarsTopup();
             purpose.stars = option.stars;
             purpose.amount = option.amount;
@@ -834,47 +829,6 @@ public class StarsController {
         payload.stars = option.stars;
         payload.currency = option.currency;
         payload.amount = option.amount;
-        QueryProductDetailsParams.Product product = QueryProductDetailsParams.Product.newBuilder()
-                .setProductType(BillingClient.ProductType.INAPP)
-                .setProductId(option.store_product)
-                .build();
-        FileLog.d("StarsController.buy starts queryProductDetails");
-        BillingController.getInstance().queryProductDetails(Arrays.asList(product), (billingResult, list) -> AndroidUtilities.runOnUIThread(() -> {
-            if (list.isEmpty()) {
-                FileLog.d("StarsController.buy queryProductDetails done: no products");
-                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NOT_FOUND"));
-                return;
-            }
-
-            ProductDetails productDetails = list.get(0);
-            ProductDetails.OneTimePurchaseOfferDetails offerDetails = productDetails.getOneTimePurchaseOfferDetails();
-            if (offerDetails == null) {
-                FileLog.d("StarsController.buy queryProductDetails done: no details");
-                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NO_ONETIME_OFFER_DETAILS"));
-                return;
-            }
-
-            payload.currency = offerDetails.getPriceCurrencyCode();
-            payload.amount = (long) ((offerDetails.getPriceAmountMicros() / Math.pow(10, 6)) * Math.pow(10, BillingController.getInstance().getCurrencyExp(option.currency)));
-
-            BillingController.getInstance().addResultListener(productDetails.getProductId(), billingResult1 -> {
-                final boolean success = billingResult1.getResponseCode() == BillingClient.BillingResponseCode.OK;
-                final String error = success ? null : BillingController.getResponseCodeString(billingResult1.getResponseCode());
-                FileLog.d("StarsController.buy onResult " + success + " " + error);
-                AndroidUtilities.runOnUIThread(() -> whenDone.run(success, error));
-            });
-            BillingController.getInstance().setOnCanceled(() -> {
-                FileLog.d("StarsController.buy onCanceled");
-                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, null));
-            });
-            FileLog.d("StarsController.buy launchBillingFlow");
-            BillingController.getInstance().launchBillingFlow(
-                    activity, AccountInstance.getInstance(UserConfig.selectedAccount), payload,
-                    Collections.singletonList(BillingFlowParams.ProductDetailsParams.newBuilder()
-                            .setProductDetails(list.get(0))
-                            .build())
-            );
-        }));
     }
 
     public void buyGift(Activity activity, TL_stars.TL_starsGiftOption option, long user_id, Utilities.Callback2<Boolean, String> whenDone) {
