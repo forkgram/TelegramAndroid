@@ -4,11 +4,6 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.QueryProductDetailsParams;
-
 import org.json.JSONObject;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
@@ -109,15 +104,12 @@ public class BoostRepository {
         if (!isGoogleBillingAvailable()) {
             payGiftCodeByInvoice(users, option, chat, message, baseFragment, onSuccess, onError);
         } else {
-            payGiftCodeByGoogle(users, option, chat, message, baseFragment, onSuccess, onError);
+            //payGiftCodeByGoogle(users, option, chat, message, baseFragment, onSuccess, onError);
         }
     }
 
     public static boolean isGoogleBillingAvailable() {
-        if (BuildVars.useInvoiceBilling()) {
             return false;
-        }
-        return BillingController.getInstance().isReady();
     }
 
     public static void payGiftCodeByInvoice(List<TLObject> users, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, TLRPC.TL_textWithEntities message, BaseFragment baseFragment, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError) {
@@ -187,7 +179,7 @@ public class BoostRepository {
         }));
     }
 
-    public static void payGiftCodeByGoogle(List<TLObject> users, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, TLRPC.TL_textWithEntities message, BaseFragment baseFragment, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError) {
+    /*public static void payGiftCodeByGoogle(List<TLObject> users, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, TLRPC.TL_textWithEntities message, BaseFragment baseFragment, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError) {
         MessagesController controller = MessagesController.getInstance(UserConfig.selectedAccount);
         ConnectionsManager connection = ConnectionsManager.getInstance(UserConfig.selectedAccount);
         TLRPC.TL_inputStorePaymentPremiumGiftCode payload = new TLRPC.TL_inputStorePaymentPremiumGiftCode();
@@ -241,7 +233,7 @@ public class BoostRepository {
                 }
             }));
         });
-    }
+    }*/
 
     public static void launchPreparedGiveaway(TL_stories.PrepaidGiveaway prepaidGiveaway, List<TLObject> chats, List<TLObject> selectedCountries,
                                               TLRPC.Chat chat, int date, boolean onlyNewSubscribers, boolean winnersVisible, boolean withAdditionPrize, int users, String prizeDesc,
@@ -336,7 +328,7 @@ public class BoostRepository {
         if (!isGoogleBillingAvailable()) {
             payGiveAwayByInvoice(chats, selectedCountries, option, chat, date, onlyNewSubscribers, baseFragment, winnersVisible, withAdditionPrize, prizeDesc, onSuccess, onError);
         } else {
-            payGiveAwayByGoogle(chats, selectedCountries, option, chat, date, onlyNewSubscribers, baseFragment, winnersVisible, withAdditionPrize, prizeDesc, onSuccess, onError);
+           //payGiveAwayByGoogle(chats, selectedCountries, option, chat, date, onlyNewSubscribers, baseFragment, winnersVisible, withAdditionPrize, prizeDesc, onSuccess, onError);
         }
     }
 
@@ -416,7 +408,7 @@ public class BoostRepository {
             }
         }));
     }
-
+	/*
     public static void payGiveAwayByGoogle(List<TLObject> chats, List<TLObject> selectedCountries, TLRPC.TL_premiumGiftCodeOption option,
                                            TLRPC.Chat chat, int date, boolean onlyNewSubscribers, BaseFragment baseFragment,
                                            boolean winnersVisible, boolean withAdditionPrize, String prizeDesc,
@@ -482,7 +474,7 @@ public class BoostRepository {
             }));
         });
     }
-
+*/
     public static List<TLRPC.TL_premiumGiftCodeOption> filterGiftOptions(List<TLRPC.TL_premiumGiftCodeOption> list, int selected) {
         List<TLRPC.TL_premiumGiftCodeOption> result = new ArrayList<>();
         for (TLRPC.TL_premiumGiftCodeOption item : list) {
@@ -582,7 +574,7 @@ public class BoostRepository {
         }
     }
 
-    public static int loadGiftOptions(int currentAccount, TLRPC.Chat chat, Utilities.Callback<List<TLRPC.TL_premiumGiftCodeOption>> onDone) {
+    /*public static int loadGiftOptions(int currentAccount, TLRPC.Chat chat, Utilities.Callback<List<TLRPC.TL_premiumGiftCodeOption>> onDone) {
         if (chat == null) {
             List<TLRPC.TL_premiumGiftCodeOption> cached = getCachedGiftOptions(currentAccount);
             if (cached != null) {
@@ -643,7 +635,7 @@ public class BoostRepository {
                 });
             }
         });
-    }
+    }*/
 
     public static int searchContacts(int reqId, String query, Utilities.Callback<List<TLRPC.User>> onDone) {
         final int currentAccount = UserConfig.selectedAccount;
