@@ -144,10 +144,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.gms.cast.framework.CastContext;
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.face.Face;
-import com.google.android.gms.vision.face.FaceDetector;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.AnimationNotificationsLocker;
@@ -11562,7 +11558,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         if (key == null || bitmap == null || bitmap.bitmap == null) {
             return;
         }
-        Utilities.globalQueue.postRunnable(() -> {
+        /*Utilities.globalQueue.postRunnable(() -> {
             FaceDetector faceDetector = null;
             try {
                 faceDetector = new FaceDetector.Builder(ApplicationLoader.applicationContext)
@@ -11600,7 +11596,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                     faceDetector.release();
                 }
             }
-        });
+        });*/
     }
 
     private boolean wasCountViewShown;
