@@ -79,24 +79,12 @@ public class ApplicationLoader extends Application {
     public static volatile long mainInterfacePausedStageQueueTime;
 
     private static PushListenerController.IPushListenerServiceProvider pushProvider;
-    private static IMapsProvider mapsProvider;
     private static ILocationServiceProvider locationServiceProvider;
+    private static IMapsProvider mapsProvider;
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-    }
-
-    public static ILocationServiceProvider getLocationServiceProvider() {
-        if (locationServiceProvider == null) {
-            locationServiceProvider = applicationLoaderInstance.onCreateLocationServiceProvider();
-            locationServiceProvider.init(applicationContext);
-        }
-        return locationServiceProvider;
-    }
-
-    protected ILocationServiceProvider onCreateLocationServiceProvider() {
-        return new GoogleLocationProvider();
     }
 
     public static IMapsProvider getMapsProvider() {
@@ -107,7 +95,7 @@ public class ApplicationLoader extends Application {
     }
 
     protected IMapsProvider onCreateMapsProvider() {
-        return new GoogleMapsProvider();
+        return new OsmdroidMapsProvider();
     }
 
     public static PushListenerController.IPushListenerServiceProvider getPushProvider() {

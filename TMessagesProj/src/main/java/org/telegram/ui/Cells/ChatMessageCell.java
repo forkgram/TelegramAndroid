@@ -8871,6 +8871,10 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                         }
                     } else {
                         location.currentMapProvider = MessagesController.getInstance(messageObject.currentAccount).mapProvider;
+                        // default to Telegram
+                        if (location.currentMapProvider != -1) {
+                            location.currentMapProvider = 2;
+                        }
                     }
                     if (location.loadingThumb == null) {
                         SvgHelper.SvgDrawable svgThumb = DocumentObject.getSvgThumb(R.raw.map_placeholder, Theme.key_chat_outLocationIcon, (Theme.isCurrentThemeDark() ? 3 : 6) * .12f);
