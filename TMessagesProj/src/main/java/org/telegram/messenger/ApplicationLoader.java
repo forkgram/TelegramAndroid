@@ -78,35 +78,11 @@ public class ApplicationLoader extends Application {
     public static volatile long mainInterfacePausedStageQueueTime;
 
     private static PushListenerController.IPushListenerServiceProvider pushProvider;
-    private static IMapsProvider mapsProvider;
     private static ILocationServiceProvider locationServiceProvider;
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-    }
-
-    public static ILocationServiceProvider getLocationServiceProvider() {
-        if (locationServiceProvider == null) {
-            locationServiceProvider = applicationLoaderInstance.onCreateLocationServiceProvider();
-            locationServiceProvider.init(applicationContext);
-        }
-        return locationServiceProvider;
-    }
-
-    protected ILocationServiceProvider onCreateLocationServiceProvider() {
-        return new GoogleLocationProvider();
-    }
-
-    public static IMapsProvider getMapsProvider() {
-        if (mapsProvider == null) {
-            mapsProvider = applicationLoaderInstance.onCreateMapsProvider();
-        }
-        return mapsProvider;
-    }
-
-    protected IMapsProvider onCreateMapsProvider() {
-        return new GoogleMapsProvider();
     }
 
     public static PushListenerController.IPushListenerServiceProvider getPushProvider() {
@@ -348,6 +324,17 @@ public class ApplicationLoader extends Application {
 
         LauncherIconController.tryFixLauncherIconIfNeeded();
         ProxyRotationController.init();
+        // SET TFOSS USERAGENT FOR OSM SERVERS
+        PackageInfo pInfo;
+        String VERSIONNAME="";
+        try {
+            pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
+            VERSIONNAME = pInfo.versionName;
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+        org.osmdroid.config.Configuration.getInstance().setUserAgentValue("Telegram-FOSS(F-Droid) "+VERSIONNAME);
+        org.osmdroid.config.Configuration.getInstance().setOsmdroidBasePath(new File(getCacheDir(),"osmdroid"));
     }
 
     public static void startPushService() {
