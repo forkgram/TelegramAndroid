@@ -25,12 +25,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
-import com.google.mlkit.common.MlKitException;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmentation;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmenter;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions;
-
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLoader;
@@ -179,7 +173,7 @@ public class PhotoView extends EntityView {
     private boolean segmentingLoading, segmentingLoaded;
     public Bitmap segmentedImage;
     public void segmentImage(Bitmap source) {
-        if (segmentingLoaded || segmentingLoading || source == null) return;
+        /*if (segmentingLoaded || segmentingLoading || source == null) return;
         if (Build.VERSION.SDK_INT < 24) return;
         SubjectSegmenter segmenter = SubjectSegmentation.getClient(new SubjectSegmenterOptions.Builder().enableForegroundBitmap().build());
         segmentingLoading = true;
@@ -199,17 +193,17 @@ public class PhotoView extends EntityView {
                 } else {
                     segmentingLoaded = true;
                 }
-            });
+            });*/
     }
 
     public boolean hasSegmentedImage() {
         return segmentedImage != null;
     }
 
-    public static boolean isWaitingMlKitError(Exception e) {
+    /*public static boolean isWaitingMlKitError(Exception e) {
         if (Build.VERSION.SDK_INT < 24) return false;
         return e instanceof MlKitException && e.getMessage() != null && e.getMessage().contains("segmentation optional module to be downloaded");
-    }
+    }*/
 
     public File saveSegmentedImage(int currentAccount) {
         if (segmentedImage == null) {
