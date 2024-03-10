@@ -1637,28 +1637,7 @@ public class AndroidUtilities {
     }
 
     public static boolean isMapsInstalled(BaseFragment fragment) {
-        String pkg = ApplicationLoader.getMapsProvider().getMapsAppPackageName();
-        try {
-            ApplicationLoader.applicationContext.getPackageManager().getApplicationInfo(pkg, 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            if (fragment.getParentActivity() == null) {
-                return false;
-            }
-            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getParentActivity());
-            builder.setMessage(getString(ApplicationLoader.getMapsProvider().getInstallMapsString()));
-            builder.setPositiveButton(getString(R.string.OK), (dialogInterface, i) -> {
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + pkg));
-                    fragment.getParentActivity().startActivityForResult(intent, 500);
-                } catch (Exception e1) {
-                    FileLog.e(e1);
-                }
-            });
-            builder.setNegativeButton(getString(R.string.Cancel), null);
-            fragment.showDialog(builder.create());
-            return false;
-        }
+        return true;
     }
 
     public static int[] toIntArray(List<Integer> integers) {
