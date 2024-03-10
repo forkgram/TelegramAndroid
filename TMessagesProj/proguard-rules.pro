@@ -54,3 +54,10 @@
 # Use -keep to explicitly keep any other classes shrinking would remove
 #-dontoptimize
 #-dontobfuscate
+
+-keep class org.telegram.tgnet.** { *; }
+
+# https://github.com/osmdroid/osmdroid/issues/633
+-dontwarn org.osmdroid.tileprovider.modules.NetworkAvailabliltyCheck
+# Osmdroid
+-dontwarn org.osmdroid.**
