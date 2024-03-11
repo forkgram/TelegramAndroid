@@ -1359,6 +1359,7 @@ public class LocationActivity extends BaseFragment implements NotificationCenter
                 }
             });
             searchListView.setOnItemClickListener((view, position) -> {
+/*
                 TLRPC.TL_messageMediaVenue object = searchAdapter.getItem(position);
                 if (object != null && object.icon != null && locationType == ChatAttachAlertLocationLayout.LOCATION_TYPE_BIZ && this.map != null) {
                     userLocationMoved = true;
@@ -1381,6 +1382,7 @@ public class LocationActivity extends BaseFragment implements NotificationCenter
                         finishFragment();
                     }
                 }
+*/
             });
         } else if (messageObject != null && !messageObject.isLiveLocation() || chatLocation != null) {
             if (chatLocation != null) {
