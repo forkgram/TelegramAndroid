@@ -7387,7 +7387,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     getConnectionsManager().bindRequestToGuid(reqId, getClassGuid());
                 }
             } else {
-                if (editRow(view, position)) return true;
+//                if (editRow(view, position)) return true;
 
                 if (usernameObj != null && !usernameObj.editable) {
                     TL_fragment.TL_getCollectibleInfo req = new TL_fragment.TL_getCollectibleInfo();
@@ -10717,7 +10717,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 policyRow = rowCount++;
                 if (BuildVars.LOGS_ENABLED || BuildVars.DEBUG_PRIVATE_VERSION) {
                     helpSectionCell = rowCount++;
-                    debugHeaderRow = rowCount++;
+                    // debugHeaderRow = rowCount++;
                 }
                 if (BuildVars.LOGS_ENABLED) {
                     sendLogsRow = rowCount++;
