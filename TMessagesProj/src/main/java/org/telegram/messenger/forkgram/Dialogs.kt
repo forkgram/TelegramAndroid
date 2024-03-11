@@ -103,9 +103,9 @@ public fun CreateDeleteAllYourMessagesAlert(
                 null,
                 null,
                 to,
+                0,
                 true,
-                false
-            );
+                0);
         };
     };
 
@@ -185,9 +185,9 @@ public fun CreateDeleteAllUnpinnedMessagesAlert(
                 null,
                 null,
                 to,
+                0,
                 true,
-                false
-            );
+                0);
         };
     };
 
