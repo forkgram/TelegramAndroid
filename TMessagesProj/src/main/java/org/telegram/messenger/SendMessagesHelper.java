@@ -1687,7 +1687,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         performSendMessageRequest(req, newMsgObj, null, null, null, null, false);
     }
 
-    public void sendGifWithCaption(TLRPC.Document document, String query, long peer, MessageObject replyToMsg, MessageObject replyToTopMsg, TL_stories.StoryItem storyItem, ChatActivity.ReplyQuote quote, MessageObject.SendAnimationData sendAnimationData, boolean notify, int scheduleDate, boolean updateStickersOrder, Object parentObject, String caption) {
+    public void sendGifWithCaption(TLRPC.Document document, String query, long peer, MessageObject replyToMsg, MessageObject replyToTopMsg, TL_stories.StoryItem storyItem, ChatActivity.ReplyQuote quote, MessageObject.SendAnimationData sendAnimationData, boolean notify, int scheduleDate, boolean updateStickersOrder, Object parentObject, String quick_reply_shortcut, int quick_reply_shortcut_id, String caption) {
         if (caption.startsWith("@gif")) caption = "";
         sendSticker(document, query, peer, replyToMsg, replyToTopMsg, storyItem, quote, sendAnimationData, notify, scheduleDate, updateStickersOrder, parentObject, quick_reply_shortcut, quick_reply_shortcut_id, caption);
     }
