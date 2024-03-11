@@ -9825,6 +9825,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         if (key == null || bitmap == null || bitmap.bitmap == null) {
             return;
         }
+/*
         Utilities.globalQueue.postRunnable(() -> {
             FaceDetector faceDetector = null;
             try {
@@ -9864,6 +9865,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 }
             }
         });
+*/
     }
 
     private boolean wasCountViewShown;
