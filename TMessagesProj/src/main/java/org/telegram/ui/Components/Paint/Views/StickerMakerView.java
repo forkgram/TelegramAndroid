@@ -35,14 +35,14 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.google.mlkit.common.MlKitException;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.label.ImageLabeling;
-import com.google.mlkit.vision.label.defaults.ImageLabelerOptions;
-import com.google.mlkit.vision.segmentation.subject.Subject;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmentation;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmenter;
-import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions;
+//import com.google.mlkit.common.MlKitException;
+//import com.google.mlkit.vision.common.InputImage;
+//import com.google.mlkit.vision.label.ImageLabeling;
+//import com.google.mlkit.vision.label.defaults.ImageLabelerOptions;
+//import com.google.mlkit.vision.segmentation.subject.Subject;
+//import com.google.mlkit.vision.segmentation.subject.SubjectSegmentation;
+//import com.google.mlkit.vision.segmentation.subject.SubjectSegmenter;
+//import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions;
 
 import org.checkerframework.checker.units.qual.A;
 import org.telegram.messenger.AndroidUtilities;
@@ -823,6 +823,8 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
         if (segmentingLoaded) {
             return;
         }
+        return;
+        /*
         if (segmentingLoading || source == null) return;
         if (Build.VERSION.SDK_INT < 24) return;
         sourceBitmap = source;
@@ -986,7 +988,7 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
         List<TLRPC.TL_availableReaction> defaultReactions = MediaDataController.getInstance(currentAccount).getEnabledReactionsList();
         for (int i = 0; i < Math.min(defaultReactions.size(), 9); ++i) {
             Emoji.getEmojiDrawable(defaultReactions.get(i).reaction);
-        }
+        }*/
     }
 
     private void createSegmentImagePath(SegmentedObject object, int containerWidth, int containerHeight) {
@@ -1235,7 +1237,8 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
     }
 
     public static boolean isWaitingMlKitError(Exception e) {
-        return e instanceof MlKitException && e.getMessage() != null && e.getMessage().contains("segmentation optional module to be downloaded");
+        return false;
+//        return e instanceof MlKitException && e.getMessage() != null && e.getMessage().contains("segmentation optional module to be downloaded");
     }
 
     public void setCurrentAccount(int account) {
