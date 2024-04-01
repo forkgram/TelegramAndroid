@@ -3251,19 +3251,19 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             if (user == null) return;
             ArrayList<TLRPC.TL_premiumGiftOption> options = new ArrayList<>(getParentFragment().getCurrentUserInfo().premium_gifts);
             if (options.isEmpty()) {
-                final AlertDialog progressDialog = new AlertDialog(getContext(), AlertDialog.ALERT_TYPE_SPINNER);
-                final int reqId = BoostRepository.loadGiftOptions(null, loadedOptions -> {
-                    progressDialog.dismiss();
-                    loadedOptions = BoostRepository.filterGiftOptions(loadedOptions, 1);
-                    loadedOptions = BoostRepository.filterGiftOptionsByBilling(loadedOptions);
-                    ArrayList<TLRPC.User> users = new ArrayList<>();
-                    users.add(user);
-                    PremiumPreviewGiftToUsersBottomSheet.show(users, loadedOptions);
-                });
-                progressDialog.setOnCancelListener(di -> {
-                    parentFragment.getConnectionsManager().cancelRequest(reqId, true);
-                });
-                progressDialog.showDelayed(200);
+                // final AlertDialog progressDialog = new AlertDialog(getContext(), AlertDialog.ALERT_TYPE_SPINNER);
+                // final int reqId = BoostRepository.loadGiftOptions(null, loadedOptions -> {
+                //     progressDialog.dismiss();
+                //     loadedOptions = BoostRepository.filterGiftOptions(loadedOptions, 1);
+                //     loadedOptions = BoostRepository.filterGiftOptionsByBilling(loadedOptions);
+                //     ArrayList<TLRPC.User> users = new ArrayList<>();
+                //     users.add(user);
+                //     PremiumPreviewGiftToUsersBottomSheet.show(users, loadedOptions);
+                // });
+                // progressDialog.setOnCancelListener(di -> {
+                //     parentFragment.getConnectionsManager().cancelRequest(reqId, true);
+                // });
+                // progressDialog.showDelayed(200);
             } else {
                 new GiftPremiumBottomSheet(getParentFragment(), getParentFragment().getCurrentUser()).show();
             }

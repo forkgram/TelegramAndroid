@@ -503,7 +503,8 @@ public class BoostRepository {
             }
         });
     }
-/*
+
+    /*
     public static int loadGiftOptions(TLRPC.Chat chat, Utilities.Callback<List<TLRPC.TL_premiumGiftCodeOption>> onDone) {
         MessagesController controller = MessagesController.getInstance(UserConfig.selectedAccount);
         ConnectionsManager connection = ConnectionsManager.getInstance(UserConfig.selectedAccount);
