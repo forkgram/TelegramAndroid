@@ -14,8 +14,8 @@ ${CMAKE_HOME_DIRECTORY}/ffmpeg/${ANDROID_ABI}/libavutil.a,
 ${CMAKE_HOME_DIRECTORY}/ffmpeg/${ANDROID_ABI}/libswresample.a,
 ${CMAKE_HOME_DIRECTORY}/ffmpeg/${ANDROID_ABI}/libvpx.a,
 ${CMAKE_HOME_DIRECTORY}/ffmpeg/${ANDROID_ABI}/libdav1d.a,
-${CMAKE_HOME_DIRECTORY}/boringssl/lib/${ANDROID_ABI}/libssl.a,
-${CMAKE_HOME_DIRECTORY}/boringssl/lib/${ANDROID_ABI}/libcrypto.a,
+${CMAKE_HOME_DIRECTORY}/boringssl/build/${ANDROID_ABI}/ssl/libssl.a,
+${CMAKE_HOME_DIRECTORY}/boringssl/build/${ANDROID_ABI}/crypto/libcrypto.a,
 ${CMAKE_HOME_DIRECTORY}/tde2e/${ANDROID_ABI}/libtde2e.a,
 ${CMAKE_HOME_DIRECTORY}/tde2e/${ANDROID_ABI}/libtdutils.a")
 
@@ -44,10 +44,10 @@ add_library(swscale STATIC IMPORTED)
 set_target_properties(swscale PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/ffmpeg/${ANDROID_ABI}/libswscale.a)
 
 add_library(crypto STATIC IMPORTED)
-set_target_properties(crypto PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/boringssl/lib/${ANDROID_ABI}/libcrypto.a)
+set_target_properties(crypto PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/boringssl/build/${ANDROID_ABI}/crypto/libcrypto.a)
 
 add_library(ssl STATIC IMPORTED)
-set_target_properties(ssl PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/boringssl/lib/${ANDROID_ABI}/libssl.a)
+set_target_properties(ssl PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/boringssl/build/${ANDROID_ABI}/ssl/libssl.a)
 
 add_library(libvpx STATIC IMPORTED)
 set_target_properties(libvpx PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/ffmpeg/${ANDROID_ABI}/libvpx.a)
