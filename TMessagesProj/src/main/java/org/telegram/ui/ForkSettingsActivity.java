@@ -153,6 +153,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int formatWithSeconds;
     private int disableThumbsInDialogList;
     private int disableGlobalSearch;
+    private int enableLastSeenDots;
     private int customTitleRow;
     private int fullRecentStickersRow;
     private int hideSendAsRow;
@@ -219,6 +220,7 @@ public class ForkSettingsActivity extends BaseFragment {
         openArchiveOnPull = rowCount++;
         disableThumbsInDialogList = rowCount++;
         disableGlobalSearch = rowCount++;
+        enableLastSeenDots = rowCount++;
         customTitleRow = rowCount++;
     
         emptyRows.add(rowCount++);
@@ -378,6 +380,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("disableThumbsInDialogList", view, false);
             } else if (position == disableGlobalSearch) {
                 toggleGlobalMainSetting("disableGlobalSearch", view, false);
+            } else if (position == enableLastSeenDots) {
+                toggleGlobalMainSetting("enableLastSeenDots", view, true);
             } else if (position == hideBottomButton) {
                 toggleGlobalMainSetting("hideBottomButton", view, false);
             } else if (position == syncPinsRow) {
@@ -542,6 +546,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableGlobalSearch) {
                         String t = LocaleController.getString("DisableGlobalSearch", R.string.DisableGlobalSearch);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableGlobalSearch", false), false);
+                    } else if (position == enableLastSeenDots) {
+                        String t = "Enable last seen colored dots";
+                        textCell.setTextAndCheck(t, preferences.getBoolean("enableLastSeenDots", true), false);
                     } else if (position == hideBottomButton) {
                         String t = LocaleController.getString("HideBottomButton", R.string.HideBottomButton);
                         textCell.setTextAndCheck(t, preferences.getBoolean("hideBottomButton", false), false);
@@ -596,6 +603,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == formatWithSeconds
                         || position == disableThumbsInDialogList
                         || position == disableGlobalSearch
+                        || position == enableLastSeenDots
                         || position == customTitleRow
                         || position == hideBottomButton
                         || position == syncPinsRow
@@ -667,6 +675,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == formatWithSeconds
                 || position == disableThumbsInDialogList
                 || position == disableGlobalSearch
+                || position == enableLastSeenDots
                 || position == hideBottomButton
                 || position == showNotificationContent
                 || position == photoHasStickerRow) {
