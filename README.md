@@ -34,6 +34,10 @@ Fork Client is a fork of the official Telegram for Android application.
 - Added ability to see unread count when you want to mark as read multiple dialogs.
 - Option to directly open the archive on pulldown
 - PiP mode for YouTube's in-app player
+- Added an option to show colored dots to quickly see when a person was last online  
+  - Yellow dot: last seen 15 minutes ago or less  
+  - Orange dot: last seen 30 minutes ago or less  
+  - Red dot: last seen 60 minutes ago or less 
 
 ### Privacy Features:
 
