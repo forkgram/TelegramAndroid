@@ -4291,6 +4291,8 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                     final int diff = user.status.expires - ConnectionsManager.getInstance(currentAccount).getCurrentTime();
                     colorOnline = diff > 0
                         ? Theme.getColor(Theme.key_chats_onlineCircle)
+                        : !MessagesController.getGlobalMainSettings().getBoolean("enableLastSeenDots", true)
+                        ? 0
                         : diff > -15 * 60
                         ? android.graphics.Color.argb(255, 234, 234, 30)
                         : diff > -30 * 60

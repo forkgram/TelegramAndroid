@@ -8732,4 +8732,5 @@
     <string name="AddDeleteAllUnpinnedMessagesInfo">EXPERIMENTAL.</string>
     <string name="NewMyStory">New Story</string>
     <string name="LargePhoto">2560px for sending photos</string>
+    <string name="EnableLastSeenDots">Enable colored last seen dots</string>
 </resources>
