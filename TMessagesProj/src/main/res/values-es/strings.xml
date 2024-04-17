@@ -15,6 +15,7 @@
     <string name="OpenArchiveOnPullInfo">Abrir la carpeta Archivados al deslizar hacia abajo la lista de chats.</string>
     <string name="DisableThumbsInDialogListInfo">Ocultar las miniaturas del último mensaje en la lista de chats.</string>
     <string name="DisableGlobalSearchInfo">Mostrar en la búsqueda solo tus chats y contactos, sin resultados globales.</string>
+    <string name="EnableLastSeenDotsInfo">Colorear el punto del avatar de quienes se conectaron en la última hora.</string>
     <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="MentionByNameInfo">El autocompletado inserta el nombre de la persona en lugar del nombre de usuario.</string>
     <string name="HideSendAsInfo">Ocultar el botón de enviar como en el campo de mensaje.</string>
@@ -99,6 +100,7 @@
     <string name="DisableDefaultInAppBrowser">Abrir enlaces en el navegador del sistema</string>
     <string name="SmsOnlyOfficialWarning">Nota: La verificación por SMS está limitada SOLO a aplicaciones móviles oficiales</string>
     <string name="ThirdParty">De terceros</string>
+    <string name="EnableLastSeenDots">Activar puntos de color de última conexión</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Español</string>

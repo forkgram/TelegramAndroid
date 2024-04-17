@@ -15,6 +15,7 @@
     <string name="OpenArchiveOnPullInfo">De map Archief openen wanneer de chatlijst omlaag wordt getrokken.</string>
     <string name="DisableThumbsInDialogListInfo">Mediaminiaturen van het laatste bericht in de chatlijst verbergen.</string>
     <string name="DisableGlobalSearchInfo">In de zoekresultaten alleen je eigen chats en contacten tonen, geen globale resultaten.</string>
+    <string name="EnableLastSeenDotsInfo">De avatarstip kleuren voor mensen die het afgelopen uur online waren.</string>
     <string name="ReplaceForwardInfo">Doorsturen opent het deelvenster in plaats van de chatkiezer.</string>
     <string name="MentionByNameInfo">Automatisch aanvullen voegt de naam van de persoon in in plaats van de gebruikersnaam.</string>
     <string name="HideSendAsInfo">De knop Verzenden als in het berichtveld verbergen.</string>
@@ -99,6 +100,7 @@
     <string name="DisableDefaultInAppBrowser">Links openen in de systeembrowser</string>
     <string name="SmsOnlyOfficialWarning">Let op: SMS-verificatie is ALLEEN beschikbaar voor officiële mobiele apps</string>
     <string name="ThirdParty">Van derden</string>
+    <string name="EnableLastSeenDots">Gekleurde stippen voor laatst gezien inschakelen</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

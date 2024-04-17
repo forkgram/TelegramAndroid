@@ -15,6 +15,7 @@
     <string name="OpenArchiveOnPullInfo">Відкривати теку «Архів» під час потягування списку чатів униз.</string>
     <string name="DisableThumbsInDialogListInfo">Приховувати мініатюри медіа останнього повідомлення у списку чатів.</string>
     <string name="DisableGlobalSearchInfo">Показувати в пошуку лише ваші чати та контакти, без глобальних результатів.</string>
+    <string name="EnableLastSeenDotsInfo">Підсвічувати крапку на аватарі для тих, хто був у мережі протягом останньої години.</string>
     <string name="ReplaceForwardInfo">Пересилання відкриває панель «Поділитися» замість вибору чату.</string>
     <string name="MentionByNameInfo">Автодоповнення вставляє ім\'я людини замість імені користувача.</string>
     <string name="HideSendAsInfo">Приховувати кнопку вибору відправника в полі повідомлення.</string>
@@ -99,6 +100,7 @@
     <string name="DisableDefaultInAppBrowser">Відкривати посилання в системному браузері</string>
     <string name="SmsOnlyOfficialWarning">Примітка: SMS-підтвердження доступне ЛИШЕ у офіційних мобільних додатках</string>
     <string name="ThirdParty">Сторонні</string>
+    <string name="EnableLastSeenDots">Увімкнути кольорові крапки останнього входу</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
