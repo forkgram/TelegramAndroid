@@ -9,6 +9,7 @@
     <string name="OpenArchiveOnPullInfo">Aprire la cartella Archiviate quando la lista chat viene trascinata verso il basso.</string>
     <string name="DisableThumbsInDialogListInfo">Nascondere le miniature dei media dell\'ultimo messaggio nella lista chat.</string>
     <string name="DisableGlobalSearchInfo">Mostrare nella ricerca solo le tue chat e i tuoi contatti, senza risultati globali.</string>
+    <string name="EnableLastSeenDotsInfo">Colorare il punto sull\'avatar di chi è stato visto nell\'ultima ora.</string>
     <string name="ReplaceForwardInfo">Inoltra apre il pannello di condivisione invece del selettore di chat.</string>
     <string name="MentionByNameInfo">Il completamento automatico inserisce il nome della persona invece del nome utente.</string>
     <string name="HideSendAsInfo">Nascondere il pulsante invia come nel campo del messaggio.</string>
@@ -93,6 +94,7 @@
     <string name="DisableDefaultInAppBrowser">Apri i link nel browser di sistema</string>
     <string name="SmsOnlyOfficialWarning">Nota: la verifica SMS è limitata SOLO alle app mobili ufficiali</string>
     <string name="ThirdParty">Di terze parti</string>
+    <string name="EnableLastSeenDots">Abilita i puntini colorati dell\'ultimo accesso</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
