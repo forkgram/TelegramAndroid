@@ -15,6 +15,7 @@
     <string name="OpenArchiveOnPullInfo">Открывать папку «Архив» при потягивании списка чатов вниз.</string>
     <string name="DisableThumbsInDialogListInfo">Скрывать миниатюры медиа последнего сообщения в списке чатов.</string>
     <string name="DisableGlobalSearchInfo">Показывать в поиске только ваши чаты и контакты, без глобальных результатов.</string>
+    <string name="EnableLastSeenDotsInfo">Подсвечивать точку на аватаре для тех, кто был в сети в течение последнего часа.</string>
     <string name="ReplaceForwardInfo">Пересылка открывает панель «Поделиться» вместо выбора чата.</string>
     <string name="MentionByNameInfo">Автодополнение вставляет имя человека вместо имени пользователя.</string>
     <string name="HideSendAsInfo">Скрывать кнопку выбора отправителя в поле сообщения.</string>
@@ -99,6 +100,7 @@
     <string name="DisableDefaultInAppBrowser">Открывать ссылки в системном браузере</string>
     <string name="SmsOnlyOfficialWarning">Примечание: SMS-подтверждение доступно ТОЛЬКО в официальных мобильных приложениях</string>
     <string name="ThirdParty">Сторонние</string>
+    <string name="EnableLastSeenDots">Включить цветные точки последнего входа</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
