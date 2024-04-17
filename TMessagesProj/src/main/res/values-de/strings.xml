@@ -9,6 +9,7 @@
     <string name="OpenArchiveOnPullInfo">Den Archivordner öffnen, wenn die Chatliste nach unten gezogen wird.</string>
     <string name="DisableThumbsInDialogListInfo">Medien-Vorschaubilder der letzten Nachricht in der Chatliste ausblenden.</string>
     <string name="DisableGlobalSearchInfo">In der Suche nur eigene Chats und Kontakte anzeigen, keine globalen Ergebnisse.</string>
+    <string name="EnableLastSeenDotsInfo">Den Avatar-Punkt für zuletzt innerhalb der letzten Stunde gesehene Personen einfärben.</string>
     <string name="ReplaceForwardInfo">Weiterleiten öffnet das Teilen-Fenster statt der Chat-Auswahl.</string>
     <string name="MentionByNameInfo">Autovervollständigung fügt den Namen der Person statt des Benutzernamens ein.</string>
     <string name="HideSendAsInfo">Die Senden-als-Schaltfläche im Nachrichtenfeld ausblenden.</string>
@@ -93,6 +94,7 @@
     <string name="DisableDefaultInAppBrowser">Links im System-Browser öffnen</string>
     <string name="SmsOnlyOfficialWarning">Hinweis: Die SMS-Verifizierung ist NUR für offizielle mobile Apps verfügbar</string>
     <string name="ThirdParty">Drittanbieter</string>
+    <string name="EnableLastSeenDots">Farbige Punkte für „Zuletzt gesehen“ aktivieren</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
