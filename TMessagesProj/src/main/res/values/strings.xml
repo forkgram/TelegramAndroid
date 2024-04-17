@@ -70,6 +70,7 @@
     <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
     <string name="SmsOnlyOfficialWarning">Note: SMS verification is limited to ONLY official mobile apps</string>
     <string name="ThirdParty">Third-party</string>
+    <string name="EnableLastSeenDots">Enable colored last seen dots</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="AppNameFdroid">Forkgram</string>
