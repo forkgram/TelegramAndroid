@@ -9,6 +9,7 @@
     <string name="OpenArchiveOnPullInfo">فتح مجلد الأرشيف عند سحب قائمة الدردشات للأسفل.</string>
     <string name="DisableThumbsInDialogListInfo">إخفاء الصور المصغرة لآخر رسالة في قائمة الدردشات.</string>
     <string name="DisableGlobalSearchInfo">إظهار محادثاتك وجهات اتصالك فقط في البحث، دون نتائج عامة.</string>
+    <string name="EnableLastSeenDotsInfo">تلوين نقطة الصورة الرمزية لمن ظهروا خلال الساعة الماضية.</string>
     <string name="ReplaceForwardInfo">إعادة التوجيه تفتح لوحة المشاركة بدلاً من محدد الدردشة.</string>
     <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
     <string name="HideSendAsInfo">إخفاء زر الإرسال باسم في حقل الرسالة.</string>
@@ -93,6 +94,7 @@
     <string name="DisableDefaultInAppBrowser">فتح الروابط في متصفح النظام</string>
     <string name="SmsOnlyOfficialWarning">ملاحظة: التحقق عبر الرسائل النصية مقتصر فقط على التطبيقات الرسمية</string>
     <string name="ThirdParty">طرف ثالث</string>
+    <string name="EnableLastSeenDots">تفعيل نقاط ملونة لآخر ظهور</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
