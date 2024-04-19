@@ -18,6 +18,9 @@ jobs:
             afat: assembleAfatRelease
             name: " compressed"
             updates: 0
+    env:
+      URL_LANG: ${{ secrets.URL_LANG }}
+      BASE64_KEYSTORE: ${{ secrets.BASE64_KEYSTORE }}
     steps:
       - uses: actions/checkout@v3.1.0
         with:
@@ -37,8 +40,7 @@ jobs:
           echo "USER_REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
           echo "CHECK_UPDATES=${{ matrix.updates }}" >> $GITHUB_ENV
       - name: Add language.
-        env:
-          URL_LANG: ${{ secrets.URL_LANG }}
+        if: ${{ env.URL_LANG != '' }}
         run: |
           wget -q -O strings.xml $URL_LANG
           ls
@@ -46,6 +48,10 @@ jobs:
           folder=TMessagesProj/src/main/res/values-$lang_code
           mkdir $folder
           mv strings.xml $folder/strings.xml
+      - name: Decode keystore from secret.
+        if: ${{ env.BASE64_KEYSTORE != '' }}
+        run: |
+          echo $BASE64_KEYSTORE | base64 --decode > TMessagesProj/config/release.keystore
       - name: Build.
         run: |
           ###
@@ -61,7 +67,14 @@ jobs:
           echo "ADDITIONAL_BUILD_NUMBER=$ADDITIONAL_BUILD_NUMBER" >> $vars
           echo "USER_REPO=$USER_REPO" >> $vars
           echo "CHECK_UPDATES=${{ matrix.updates }}" >> $vars
-          echo "USER_ID_OWNER=${{ secrets.USER_ID_OWNER }}" >> $vars
+          if [ -z "${{ secrets.USER_ID_OWNER }}" ]
+          then
+            echo "USER_ID_OWNER is not set, defaulting to 0"
+            echo "USER_ID_OWNER=0" >> $vars
+          else
+            echo "USER_ID_OWNER is set"
+            echo "USER_ID_OWNER=${{ secrets.USER_ID_OWNER }}" >> $vars
+          fi
 
           ###
           echo $ADDITIONAL_BUILD_NUMBER
