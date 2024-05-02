@@ -42,7 +42,7 @@ import android.widget.OverScroller;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.google.firebase.encoders.ValueEncoder;
+//import com.google.firebase.encoders.ValueEncoder;
 import com.google.zxing.common.detector.MathUtils;
 
 import org.telegram.messenger.AndroidUtilities;
