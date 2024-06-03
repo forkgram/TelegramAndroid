@@ -24,9 +24,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.ProductDetails;
+//import com.android.billingclient.api.BillingClient;
+//import com.android.billingclient.api.BillingFlowParams;
+//import com.android.billingclient.api.ProductDetails;
 
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
@@ -228,9 +228,9 @@ public class SendGiftSheet extends BottomSheetWithRecyclerListView implements No
             action.flags |= 4;
             action.currency = premiumTier.getCurrency();
             action.amount = premiumTier.getPrice();
-            if (premiumTier.googlePlayProductDetails != null) {
-                action.amount = (long) (action.amount * Math.pow(10, BillingController.getInstance().getCurrencyExp(action.currency) - 6));
-            }
+//            if (premiumTier.googlePlayProductDetails != null) {
+//                action.amount = (long) (action.amount * Math.pow(10, BillingController.getInstance().getCurrencyExp(action.currency) - 6));
+//            }
             action.flags |= 16;
             action.message = new TLRPC.TL_textWithEntities();
             this.action = action;
@@ -239,9 +239,9 @@ public class SendGiftSheet extends BottomSheetWithRecyclerListView implements No
             action.months = premiumTier.getMonths();
             action.currency = premiumTier.getCurrency();
             action.amount = premiumTier.getPrice();
-            if (premiumTier.googlePlayProductDetails != null) {
-                action.amount = (long) (action.amount * Math.pow(10, BillingController.getInstance().getCurrencyExp(action.currency) - 6));
-            }
+//            if (premiumTier.googlePlayProductDetails != null) {
+//                action.amount = (long) (action.amount * Math.pow(10, BillingController.getInstance().getCurrencyExp(action.currency) - 6));
+//            }
             action.flags |= 2;
             action.message = new TLRPC.TL_textWithEntities();
             this.action = action;
@@ -462,9 +462,9 @@ public class SendGiftSheet extends BottomSheetWithRecyclerListView implements No
                     } else {
                         thisAction.currency = premiumTier.getCurrency();
                         thisAction.amount = premiumTier.getPrice();
-                        if (premiumTier.googlePlayProductDetails != null) {
-                            thisAction.amount = (long) (thisAction.amount * Math.pow(10, BillingController.getInstance().getCurrencyExp(thisAction.currency) - 6));
-                        }
+//                        if (premiumTier.googlePlayProductDetails != null) {
+//                            thisAction.amount = (long) (thisAction.amount * Math.pow(10, BillingController.getInstance().getCurrencyExp(thisAction.currency) - 6));
+//                        }
                     }
                 } else if (action instanceof TLRPC.TL_messageActionGiftCode) {
                     final TLRPC.TL_messageActionGiftCode thisAction = (TLRPC.TL_messageActionGiftCode) action;
@@ -474,9 +474,9 @@ public class SendGiftSheet extends BottomSheetWithRecyclerListView implements No
                     } else {
                         thisAction.currency = premiumTier.getCurrency();
                         thisAction.amount = premiumTier.getPrice();
-                        if (premiumTier.googlePlayProductDetails != null) {
-                            thisAction.amount = (long) (thisAction.amount * Math.pow(10, BillingController.getInstance().getCurrencyExp(thisAction.currency) - 6));
-                        }
+//                        if (premiumTier.googlePlayProductDetails != null) {
+//                            thisAction.amount = (long) (thisAction.amount * Math.pow(10, BillingController.getInstance().getCurrencyExp(thisAction.currency) - 6));
+//                        }
                     }
                 }
                 messageObject.updateMessageText();
@@ -678,7 +678,7 @@ public class SendGiftSheet extends BottomSheetWithRecyclerListView implements No
                     dismiss();
                 }
             } else {
-                if (BillingController.getInstance().isReady() && premiumTier.googlePlayProductDetails != null) {
+                /*if (BillingController.getInstance().isReady() && premiumTier.googlePlayProductDetails != null) {
                     TLRPC.TL_inputStorePaymentGiftPremium giftPremium = new TLRPC.TL_inputStorePaymentGiftPremium();
                     giftPremium.user_id = MessagesController.getInstance(currentAccount).getInputUser(user);
                     ProductDetails.OneTimePurchaseOfferDetails offerDetails = premiumTier.googlePlayProductDetails.getOneTimePurchaseOfferDetails();
@@ -702,7 +702,7 @@ public class SendGiftSheet extends BottomSheetWithRecyclerListView implements No
                             AlertsCreator.processError(currentAccount, error, getBaseFragment(), req);
                         }
                     }));
-                }
+                }*/
             }
         }
     }
