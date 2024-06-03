@@ -610,7 +610,7 @@ public class GiftPremiumBottomSheet extends BottomSheetWithRecyclerListView impl
                     return giftCodeOption.currency;
                 }
             }
-            return 0;
+            return "";
             //return googlePlayProductDetails == null ? "" : googlePlayProductDetails.getOneTimePurchaseOfferDetails().getPriceCurrencyCode();
         }
 
