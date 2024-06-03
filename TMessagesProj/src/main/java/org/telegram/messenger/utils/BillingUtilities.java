@@ -58,10 +58,7 @@ public class BillingUtilities {
         paymentPurpose.serializeToStream(serializedData);
         String obfuscatedData = Base64.encodeToString(serializedData.toByteArray(), Base64.DEFAULT);
         serializedData.cleanup();
-        if (
-            paymentPurpose instanceof TLRPC.TL_inputStorePaymentPremiumGiftCode ||
-            paymentPurpose instanceof TLRPC.TL_inputStorePaymentPremiumGiveaway
-        ) {
+        if (paymentPurpose instanceof TLRPC.TL_inputStorePaymentPremiumGiftCode || paymentPurpose instanceof TLRPC.TL_inputStorePaymentPremiumGiveaway) {
             remPaymentPurpose = paymentPurpose;
             return Pair.create(obfuscatedAccountId, obfuscatedAccountId);
         } else {
