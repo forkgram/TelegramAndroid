@@ -3637,7 +3637,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             final boolean birthday = getParentFragment().getCurrentUserInfo() != null && BirthdayController.isToday(getParentFragment().getCurrentUserInfo().birthday);
             final AlertDialog progressDialog = new AlertDialog(getContext(), AlertDialog.ALERT_TYPE_SPINNER);
             progressDialog.showDelayed(200);
-            final int reqId = BoostRepository.loadGiftOptions(currentAccount, null, loadedOptions -> {
+            /*final int reqId = BoostRepository.loadGiftOptions(currentAccount, null, loadedOptions -> {
                 progressDialog.dismiss();
                 loadedOptions = BoostRepository.filterGiftOptions(loadedOptions, 1);
                 loadedOptions = BoostRepository.filterGiftOptionsByBilling(loadedOptions);
@@ -3645,7 +3645,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             });
             progressDialog.setOnCancelListener(di -> {
                 parentFragment.getConnectionsManager().cancelRequest(reqId, true);
-            });
+            });*/
         });
     }
 
