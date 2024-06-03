@@ -210,53 +210,53 @@ public class BillingUtilities {
         return result;
     }
 
-    public static Pair<AccountInstance, TLRPC.InputStorePaymentPurpose> extractDeveloperPayload(Purchase purchase) {
-        AccountIdentifiers identifiers = purchase.getAccountIdentifiers();
-        if (identifiers == null) {
-            FileLog.d("Billing: Extract payload. No AccountIdentifiers");
-            return null;
-        }
-        String obfuscatedAccountId = identifiers.getObfuscatedAccountId();
-        String obfuscatedData = identifiers.getObfuscatedProfileId();
-        if (obfuscatedAccountId == null || obfuscatedAccountId.isEmpty() || obfuscatedData == null || obfuscatedData.isEmpty()) {
-            FileLog.d("Billing: Extract payload. Empty AccountIdentifiers");
-            return null;
-        }
-
-        try {
-            TLRPC.InputStorePaymentPurpose purpose;
-            try {
-                purpose = getPurpose(obfuscatedData);
-            } catch (Exception e) {
-                FileLog.e("Billing: Extract payload, failed to get purpose", e);
-                purpose = null;
-            }
-
-            byte[] obfuscatedAccountIdBytes = Base64.decode(obfuscatedAccountId, Base64.DEFAULT);
-            String obfuscatedAccountIdString = new String(obfuscatedAccountIdBytes, Charsets.UTF_8);
-            FileLog.d("Billing: Extract payload. obfuscatedAccountIdString=" + obfuscatedAccountIdString);
-
-            AccountInstance acc;
-            if (obfuscatedAccountIdString.startsWith("account-")) {
-                int currentAccount = Integer.parseInt(obfuscatedAccountIdString.substring(8));
-                acc = AccountInstance.getInstance(currentAccount);
-            } else {
-                long accountId = Long.parseLong(obfuscatedAccountIdString);
-                acc = findAccountById(accountId);
-                if (acc == null) {
-                    FileLog.d("Billing: Extract payload. AccountInstance not found, accountId=" + accountId);
-                    return null;
-                }
-            }
-            return Pair.create(acc, purpose);
-        } catch (Exception e) {
-            FileLog.e("Billing: Extract Payload", e);
-            return null;
-        }
-    }
-
-    public static void cleanupPurchase(Purchase purchase) {
-        AccountIdentifiers identifiers = purchase.getAccountIdentifiers();
-        clearPurpose(identifiers.getObfuscatedProfileId());
-    }
+//    public static Pair<AccountInstance, TLRPC.InputStorePaymentPurpose> extractDeveloperPayload(Purchase purchase) {
+//        AccountIdentifiers identifiers = purchase.getAccountIdentifiers();
+//        if (identifiers == null) {
+//            FileLog.d("Billing: Extract payload. No AccountIdentifiers");
+//            return null;
+//        }
+//        String obfuscatedAccountId = identifiers.getObfuscatedAccountId();
+//        String obfuscatedData = identifiers.getObfuscatedProfileId();
+//        if (obfuscatedAccountId == null || obfuscatedAccountId.isEmpty() || obfuscatedData == null || obfuscatedData.isEmpty()) {
+//            FileLog.d("Billing: Extract payload. Empty AccountIdentifiers");
+//            return null;
+//        }
+//
+//        try {
+//            TLRPC.InputStorePaymentPurpose purpose;
+//            try {
+//                purpose = getPurpose(obfuscatedData);
+//            } catch (Exception e) {
+//                FileLog.e("Billing: Extract payload, failed to get purpose", e);
+//                purpose = null;
+//            }
+//
+//            byte[] obfuscatedAccountIdBytes = Base64.decode(obfuscatedAccountId, Base64.DEFAULT);
+//            String obfuscatedAccountIdString = new String(obfuscatedAccountIdBytes, Charsets.UTF_8);
+//            FileLog.d("Billing: Extract payload. obfuscatedAccountIdString=" + obfuscatedAccountIdString);
+//
+//            AccountInstance acc;
+//            if (obfuscatedAccountIdString.startsWith("account-")) {
+//                int currentAccount = Integer.parseInt(obfuscatedAccountIdString.substring(8));
+//                acc = AccountInstance.getInstance(currentAccount);
+//            } else {
+//                long accountId = Long.parseLong(obfuscatedAccountIdString);
+//                acc = findAccountById(accountId);
+//                if (acc == null) {
+//                    FileLog.d("Billing: Extract payload. AccountInstance not found, accountId=" + accountId);
+//                    return null;
+//                }
+//            }
+//            return Pair.create(acc, purpose);
+//        } catch (Exception e) {
+//            FileLog.e("Billing: Extract Payload", e);
+//            return null;
+//        }
+//    }
+//
+//    public static void cleanupPurchase(Purchase purchase) {
+//        AccountIdentifiers identifiers = purchase.getAccountIdentifiers();
+//        clearPurpose(identifiers.getObfuscatedProfileId());
+//    }
 }
