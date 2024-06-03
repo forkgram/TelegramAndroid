@@ -389,8 +389,8 @@ public class StarsController {
             giftOptions = loadedOptions;
             giftOptionsLoading = false;
             NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.starGiftOptionsLoaded);
-            /*if (!toLoadStorePrice.isEmpty()) {
-                Runnable fetchStorePrices = () -> {
+            if (!toLoadStorePrice.isEmpty()) {
+                /*Runnable fetchStorePrices = () -> {
                     ArrayList<QueryProductDetailsParams.Product> productQueries = new ArrayList<>();
                     for (int i = 0; i < toLoadStorePrice.size(); ++i) {
                         productQueries.add(
@@ -440,8 +440,8 @@ public class StarsController {
                     BillingController.getInstance().whenSetuped(fetchStorePrices);
                 } else {
                     fetchStorePrices.run();
-                }
-            }*/
+                }*/
+            }
         }));
         return giftOptions;
     }
@@ -1097,53 +1097,54 @@ public class StarsController {
 
             return;
         }
+/*
+        QueryProductDetailsParams.Product product = QueryProductDetailsParams.Product.newBuilder()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .setProductId(option.store_product)
+                .build();
+        BillingController.getInstance().queryProductDetails(Arrays.asList(product), (billingResult, list) -> AndroidUtilities.runOnUIThread(() -> {
+            if (list.isEmpty()) {
+                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NOT_FOUND"));
+                return;
+            }
 
-//        QueryProductDetailsParams.Product product = QueryProductDetailsParams.Product.newBuilder()
-//                .setProductType(BillingClient.ProductType.INAPP)
-//                .setProductId(option.store_product)
-//                .build();
-//        BillingController.getInstance().queryProductDetails(Arrays.asList(product), (billingResult, list) -> AndroidUtilities.runOnUIThread(() -> {
-//            if (list.isEmpty()) {
-//                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NOT_FOUND"));
-//                return;
-//            }
-//
-//            ProductDetails productDetails = list.get(0);
-//            ProductDetails.OneTimePurchaseOfferDetails offerDetails = productDetails.getOneTimePurchaseOfferDetails();
-//            if (offerDetails == null) {
-//                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NO_ONETIME_OFFER_DETAILS"));
-//                return;
-//            }
-//
-//            TLRPC.TL_payments_canPurchaseStore checkReq = new TLRPC.TL_payments_canPurchaseStore();
-//            checkReq.purpose = payload;
-//            ConnectionsManager.getInstance(currentAccount).sendRequest(checkReq, (res, err) -> AndroidUtilities.runOnUIThread(() -> {
-//                if (res instanceof TLRPC.TL_boolTrue) {
-//                    BillingController.getInstance().addResultListener(productDetails.getProductId(), billingResult1 -> {
-//                        final boolean success = billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK;
-//                        final String error = success ? null : BillingController.getResponseCodeString(billingResult.getResponseCode());
-//                        AndroidUtilities.runOnUIThread(() -> whenDone.run(success, error));
-//                    });
-//                    BillingController.getInstance().setOnCanceled(() -> {
-//                        AndroidUtilities.runOnUIThread(() -> whenDone.run(false, null));
-//                    });
-//                    BillingController.getInstance().launchBillingFlow(
-//                            activity, AccountInstance.getInstance(UserConfig.selectedAccount), payload,
-//                            Collections.singletonList(BillingFlowParams.ProductDetailsParams.newBuilder()
-//                                    .setProductDetails(list.get(0))
-//                                    .build())
-//                    );
-//                } else if (res instanceof TLRPC.TL_boolFalse) {
-//                    if (whenDone != null) {
-//                        whenDone.run(false, "PURCHASE_FORBIDDEN");
-//                    }
-//                } else {
-//                    if (whenDone != null) {
-//                        whenDone.run(false, err != null ? err.text : "SERVER_ERROR");
-//                    }
-//                }
-//            }));
-//        }));
+            ProductDetails productDetails = list.get(0);
+            ProductDetails.OneTimePurchaseOfferDetails offerDetails = productDetails.getOneTimePurchaseOfferDetails();
+            if (offerDetails == null) {
+                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NO_ONETIME_OFFER_DETAILS"));
+                return;
+            }
+
+            TLRPC.TL_payments_canPurchaseStore checkReq = new TLRPC.TL_payments_canPurchaseStore();
+            checkReq.purpose = payload;
+            ConnectionsManager.getInstance(currentAccount).sendRequest(checkReq, (res, err) -> AndroidUtilities.runOnUIThread(() -> {
+                if (res instanceof TLRPC.TL_boolTrue) {
+                    BillingController.getInstance().addResultListener(productDetails.getProductId(), billingResult1 -> {
+                        final boolean success = billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK;
+                        final String error = success ? null : BillingController.getResponseCodeString(billingResult.getResponseCode());
+                        AndroidUtilities.runOnUIThread(() -> whenDone.run(success, error));
+                    });
+                    BillingController.getInstance().setOnCanceled(() -> {
+                        AndroidUtilities.runOnUIThread(() -> whenDone.run(false, null));
+                    });
+                    BillingController.getInstance().launchBillingFlow(
+                            activity, AccountInstance.getInstance(UserConfig.selectedAccount), payload,
+                            Collections.singletonList(BillingFlowParams.ProductDetailsParams.newBuilder()
+                                    .setProductDetails(list.get(0))
+                                    .build())
+                    );
+                } else if (res instanceof TLRPC.TL_boolFalse) {
+                    if (whenDone != null) {
+                        whenDone.run(false, "PURCHASE_FORBIDDEN");
+                    }
+                } else {
+                    if (whenDone != null) {
+                        whenDone.run(false, err != null ? err.text : "SERVER_ERROR");
+                    }
+                }
+            }));
+        }));
+*/
     }
 
     public Runnable pay(MessageObject messageObject, Runnable whenShown) {
