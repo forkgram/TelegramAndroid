@@ -1383,6 +1383,136 @@ public class ConnectionsManager extends BaseController {
         }
     }
 
+
+    private static class DnsTxtLoadTask extends AsyncTask<Void, Void, NativeByteBuffer> {
+
+        private int currentAccount;
+        private int responseDate;
+
+        public DnsTxtLoadTask(int instance) {
+            super();
+            currentAccount = instance;
+        }
+
+        protected NativeByteBuffer doInBackground(Void... voids) {
+            ByteArrayOutputStream outbuf = null;
+            InputStream httpConnectionStream = null;
+            for (int i = 0; i < 3; i++) {
+                try {
+                    String googleDomain;
+                    if (i == 0) {
+                        googleDomain = "www.google.com";
+                    } else if (i == 1) {
+                        googleDomain = "www.google.ru";
+                    } else {
+                        googleDomain = "google.com";
+                    }
+                    String domain = native_isTestBackend(currentAccount) != 0 ? "tapv3.stel.com" : AccountInstance.getInstance(currentAccount).getMessagesController().dcDomainName;
+                    int len = Utilities.random.nextInt(116) + 13;
+                    final String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                    StringBuilder padding = new StringBuilder(len);
+                    for (int a = 0; a < len; a++) {
+                        padding.append(characters.charAt(Utilities.random.nextInt(characters.length())));
+                    }
+                    URL downloadUrl = new URL("https://" + googleDomain + "/resolve?name=" + domain + "&type=ANY&random_padding=" + padding);
+                    URLConnection httpConnection = downloadUrl.openConnection();
+                    httpConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0 like Mac OS X) AppleWebKit/602.1.38 (KHTML, like Gecko) Version/10.0 Mobile/14A5297c Safari/602.1");
+                    httpConnection.addRequestProperty("Host", "dns.google.com");
+                    httpConnection.setConnectTimeout(5000);
+                    httpConnection.setReadTimeout(5000);
+                    httpConnection.connect();
+                    httpConnectionStream = httpConnection.getInputStream();
+                    responseDate = (int) (httpConnection.getDate() / 1000);
+
+                    outbuf = new ByteArrayOutputStream();
+
+                    byte[] data = new byte[1024 * 32];
+                    while (true) {
+                        if (isCancelled()) {
+                            break;
+                        }
+                        int read = httpConnectionStream.read(data);
+                        if (read > 0) {
+                            outbuf.write(data, 0, read);
+                        } else if (read == -1) {
+                            break;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    JSONObject jsonObject = new JSONObject(new String(outbuf.toByteArray()));
+                    JSONArray array = jsonObject.getJSONArray("Answer");
+                    len = array.length();
+                    ArrayList<String> arrayList = new ArrayList<>(len);
+                    for (int a = 0; a < len; a++) {
+                        JSONObject object = array.getJSONObject(a);
+                        int type = object.getInt("type");
+                        if (type != 16) {
+                            continue;
+                        }
+                        arrayList.add(object.getString("data"));
+                    }
+                    Collections.sort(arrayList, (o1, o2) -> {
+                        int l1 = o1.length();
+                        int l2 = o2.length();
+                        if (l1 > l2) {
+                            return -1;
+                        } else if (l1 < l2) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                    StringBuilder builder = new StringBuilder();
+                    for (int a = 0; a < arrayList.size(); a++) {
+                        builder.append(arrayList.get(a).replace("\"", ""));
+                    }
+                    byte[] bytes = Base64.decode(builder.toString(), Base64.DEFAULT);
+                    NativeByteBuffer buffer = new NativeByteBuffer(bytes.length);
+                    buffer.writeBytes(bytes);
+                    return buffer;
+                } catch (Throwable e) {
+                    FileLog.e(e, false);
+                } finally {
+                    try {
+                        if (httpConnectionStream != null) {
+                            httpConnectionStream.close();
+                        }
+                    } catch (Throwable e) {
+                        FileLog.e(e, false);
+                    }
+                    try {
+                        if (outbuf != null) {
+                            outbuf.close();
+                        }
+                    } catch (Exception ignore) {
+
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final NativeByteBuffer result) {
+            Utilities.stageQueue.postRunnable(() -> {
+                currentTask = null;
+                if (result != null) {
+                    native_applyDnsConfig(currentAccount, result.address, AccountInstance.getInstance(currentAccount).getUserConfig().getClientPhone(), responseDate);
+                } else {
+                    if (BuildVars.LOGS_ENABLED) {
+                        FileLog.d("failed to get dns txt result");
+                        FileLog.d("start google task");
+                    }
+                    GoogleDnsLoadTask task = new GoogleDnsLoadTask(currentAccount);
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null, null, null);
+                    currentTask = task;
+                }
+            });
+        }
+    }
+
     private static class FirebaseTask extends AsyncTask<Void, Void, NativeByteBuffer> {
 
         private int currentAccount;
@@ -1440,6 +1570,7 @@ public class ConnectionsManager extends BaseController {
     }
 
     public static void onIntegrityCheckClassic(final int currentAccount, final int requestToken, final String project, final String nonce) {
+        /*
         AndroidUtilities.runOnUIThread(() -> {
             long start = System.currentTimeMillis();
             FileLog.d("account"+currentAccount+": server requests integrity classic check with project = "+project+" nonce = " + nonce);
@@ -1475,5 +1606,6 @@ public class ConnectionsManager extends BaseController {
                     native_receivedIntegrityCheckClassic(currentAccount, requestToken, nonce, "PLAYINTEGRITY_FAILED_EXCEPTION_" + LoginActivity.errorString(e));
                 });
         });
+         */
     }
 }
