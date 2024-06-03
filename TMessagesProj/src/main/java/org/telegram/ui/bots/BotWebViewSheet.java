@@ -57,7 +57,7 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
 import com.google.android.exoplayer2.offline.Download;
-import com.google.android.gms.vision.Frame;
+//import com.google.android.gms.vision.Frame;
 
 import org.json.JSONObject;
 import org.telegram.messenger.AndroidUtilities;
