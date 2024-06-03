@@ -291,57 +291,57 @@ public class StarsController {
             giftOptionsLoading = false;
             NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.starGiftOptionsLoaded);
             if (!toLoadStorePrice.isEmpty()) {
-                Runnable fetchStorePrices = () -> {
-                    ArrayList<QueryProductDetailsParams.Product> productQueries = new ArrayList<>();
-                    for (int i = 0; i < toLoadStorePrice.size(); ++i) {
-                        productQueries.add(
-                                QueryProductDetailsParams.Product.newBuilder()
-                                        .setProductType(BillingClient.ProductType.INAPP)
-                                        .setProductId(toLoadStorePrice.get(i).store_product)
-                                        .build()
-                        );
-                    }
-                    BillingController.getInstance().queryProductDetails(productQueries, (result, list) -> AndroidUtilities.runOnUIThread(() -> {
-                        if (result.getResponseCode() != BillingClient.BillingResponseCode.OK) {
-                            bulletinError("BILLING_" + BillingController.getResponseCodeString(result.getResponseCode()));
-                            return;
-                        }
-                        if (list != null) {
-                            for (int i = 0; i < list.size(); ++i) {
-                                ProductDetails productDetails = list.get(i);
-                                TLRPC.TL_starsGiftOption option = null;
-                                for (int j = 0; j < toLoadStorePrice.size(); ++j) {
-                                    if (toLoadStorePrice.get(j).store_product.equals(productDetails.getProductId())) {
-                                        option = toLoadStorePrice.get(j);
-                                        break;
-                                    }
-                                }
-                                if (option == null) continue;
-
-                                ProductDetails.OneTimePurchaseOfferDetails offerDetails = productDetails.getOneTimePurchaseOfferDetails();
-                                if (offerDetails != null) {
-                                    option.currency = offerDetails.getPriceCurrencyCode();
-                                    option.amount = (long) ((offerDetails.getPriceAmountMicros() / Math.pow(10, 6)) * Math.pow(10, BillingController.getInstance().getCurrencyExp(option.currency)));
-                                    option.loadingStorePrice = false;
-                                }
-                            }
-                        }
-                        if (giftOptions != null) {
-                            for (int i = 0; i < giftOptions.size(); ++i) {
-                                TLRPC.TL_starsGiftOption option = giftOptions.get(i);
-                                if (option != null && option.loadingStorePrice) {
-                                    option.missingStorePrice = true;
-                                }
-                            }
-                        }
-                        NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.starGiftOptionsLoaded);
-                    }));
-                };
-                if (!BillingController.getInstance().isReady()) {
-                    BillingController.getInstance().whenSetuped(fetchStorePrices);
-                } else {
-                    fetchStorePrices.run();
-                }
+                // Runnable fetchStorePrices = () -> {
+//                    ArrayList<QueryProductDetailsParams.Product> productQueries = new ArrayList<>();
+//                    for (int i = 0; i < toLoadStorePrice.size(); ++i) {
+//                        productQueries.add(
+//                                QueryProductDetailsParams.Product.newBuilder()
+//                                        .setProductType(BillingClient.ProductType.INAPP)
+//                                        .setProductId(toLoadStorePrice.get(i).store_product)
+//                                        .build()
+//                        );
+//                    }
+//                    BillingController.getInstance().queryProductDetails(productQueries, (result, list) -> AndroidUtilities.runOnUIThread(() -> {
+//                        if (result.getResponseCode() != BillingClient.BillingResponseCode.OK) {
+//                            bulletinError("BILLING_" + BillingController.getResponseCodeString(result.getResponseCode()));
+//                            return;
+//                        }
+//                        if (list != null) {
+//                            for (int i = 0; i < list.size(); ++i) {
+//                                ProductDetails productDetails = list.get(i);
+//                                TLRPC.TL_starsGiftOption option = null;
+//                                for (int j = 0; j < toLoadStorePrice.size(); ++j) {
+//                                    if (toLoadStorePrice.get(j).store_product.equals(productDetails.getProductId())) {
+//                                        option = toLoadStorePrice.get(j);
+//                                        break;
+//                                    }
+//                                }
+//                                if (option == null) continue;
+//
+//                                ProductDetails.OneTimePurchaseOfferDetails offerDetails = productDetails.getOneTimePurchaseOfferDetails();
+//                                if (offerDetails != null) {
+//                                    option.currency = offerDetails.getPriceCurrencyCode();
+//                                    option.amount = (long) ((offerDetails.getPriceAmountMicros() / Math.pow(10, 6)) * Math.pow(10, BillingController.getInstance().getCurrencyExp(option.currency)));
+//                                    option.loadingStorePrice = false;
+//                                }
+//                            }
+//                        }
+//                        if (giftOptions != null) {
+//                            for (int i = 0; i < giftOptions.size(); ++i) {
+//                                TLRPC.TL_starsGiftOption option = giftOptions.get(i);
+//                                if (option != null && option.loadingStorePrice) {
+//                                    option.missingStorePrice = true;
+//                                }
+//                            }
+//                        }
+//                        NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.starGiftOptionsLoaded);
+//                    }));
+//                };
+//                if (!BillingController.getInstance().isReady()) {
+//                    BillingController.getInstance().whenSetuped(fetchStorePrices);
+//                } else {
+//                    fetchStorePrices.run();
+//                }
             }
         }));
         return giftOptions;
@@ -656,7 +656,7 @@ public class StarsController {
             return;
         }
 
-        if (BuildVars.useInvoiceBilling() || !BillingController.getInstance().isReady()) {
+        if (BuildVars.useInvoiceBilling()/* || !BillingController.getInstance().isReady()*/) {
             TLRPC.TL_inputStorePaymentStarsGift purpose = new TLRPC.TL_inputStorePaymentStarsGift();
             purpose.stars = option.stars;
             purpose.amount = option.amount;
@@ -723,61 +723,61 @@ public class StarsController {
             return;
         }
 
-        TLRPC.TL_inputStorePaymentStarsGift payload = new TLRPC.TL_inputStorePaymentStarsGift();
-        payload.stars = option.stars;
-        payload.currency = option.currency;
-        payload.amount = option.amount;
-        payload.user_id = MessagesController.getInstance(currentAccount).getInputUser(user_id);
+//         TLRPC.TL_inputStorePaymentStarsGift payload = new TLRPC.TL_inputStorePaymentStarsGift();
+//         payload.stars = option.stars;
+//         payload.currency = option.currency;
+//         payload.amount = option.amount;
+//         payload.user_id = MessagesController.getInstance(currentAccount).getInputUser(user_id);
 
-        QueryProductDetailsParams.Product product = QueryProductDetailsParams.Product.newBuilder()
-                .setProductType(BillingClient.ProductType.INAPP)
-                .setProductId(option.store_product)
-                .build();
-        BillingController.getInstance().queryProductDetails(Arrays.asList(product), (billingResult, list) -> AndroidUtilities.runOnUIThread(() -> {
-            if (list.isEmpty()) {
-                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NOT_FOUND"));
-                return;
-            }
+//         QueryProductDetailsParams.Product product = QueryProductDetailsParams.Product.newBuilder()
+//                 .setProductType(BillingClient.ProductType.INAPP)
+//                 .setProductId(option.store_product)
+//                 .build();
+//         BillingController.getInstance().queryProductDetails(Arrays.asList(product), (billingResult, list) -> AndroidUtilities.runOnUIThread(() -> {
+//             if (list.isEmpty()) {
+//                 AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NOT_FOUND"));
+//                 return;
+//             }
 
-            ProductDetails productDetails = list.get(0);
-            ProductDetails.OneTimePurchaseOfferDetails offerDetails = productDetails.getOneTimePurchaseOfferDetails();
-            if (offerDetails == null) {
-                AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NO_ONETIME_OFFER_DETAILS"));
-                return;
-            }
+//             ProductDetails productDetails = list.get(0);
+//             ProductDetails.OneTimePurchaseOfferDetails offerDetails = productDetails.getOneTimePurchaseOfferDetails();
+//             if (offerDetails == null) {
+//                 AndroidUtilities.runOnUIThread(() -> whenDone.run(false, "PRODUCT_NO_ONETIME_OFFER_DETAILS"));
+//                 return;
+//             }
 
-            payload.currency = offerDetails.getPriceCurrencyCode();
-            payload.amount = (long) ((offerDetails.getPriceAmountMicros() / Math.pow(10, 6)) * Math.pow(10, BillingController.getInstance().getCurrencyExp(option.currency)));
+//             payload.currency = offerDetails.getPriceCurrencyCode();
+//             payload.amount = (long) ((offerDetails.getPriceAmountMicros() / Math.pow(10, 6)) * Math.pow(10, BillingController.getInstance().getCurrencyExp(option.currency)));
 
-            TLRPC.TL_payments_canPurchasePremium checkReq = new TLRPC.TL_payments_canPurchasePremium();
-            checkReq.purpose = payload;
-            ConnectionsManager.getInstance(currentAccount).sendRequest(checkReq, (res, err) -> AndroidUtilities.runOnUIThread(() -> {
-                if (res instanceof TLRPC.TL_boolTrue) {
-                    BillingController.getInstance().addResultListener(productDetails.getProductId(), billingResult1 -> {
-                        final boolean success = billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK;
-                        final String error = success ? null : BillingController.getResponseCodeString(billingResult.getResponseCode());
-                        AndroidUtilities.runOnUIThread(() -> whenDone.run(success, error));
-                    });
-                    BillingController.getInstance().setOnCanceled(() -> {
-                        AndroidUtilities.runOnUIThread(() -> whenDone.run(false, null));
-                    });
-                    BillingController.getInstance().launchBillingFlow(
-                            activity, AccountInstance.getInstance(UserConfig.selectedAccount), payload,
-                            Collections.singletonList(BillingFlowParams.ProductDetailsParams.newBuilder()
-                                    .setProductDetails(list.get(0))
-                                    .build())
-                    );
-                } else if (res instanceof TLRPC.TL_boolFalse) {
-                    if (whenDone != null) {
-                        whenDone.run(false, "PURCHASE_FORBIDDEN");
-                    }
-                } else {
-                    if (whenDone != null) {
-                        whenDone.run(false, err != null ? err.text : "SERVER_ERROR");
-                    }
-                }
-            }));
-        }));
+//             TLRPC.TL_payments_canPurchasePremium checkReq = new TLRPC.TL_payments_canPurchasePremium();
+//             checkReq.purpose = payload;
+//             ConnectionsManager.getInstance(currentAccount).sendRequest(checkReq, (res, err) -> AndroidUtilities.runOnUIThread(() -> {
+//                 if (res instanceof TLRPC.TL_boolTrue) {
+// //                    BillingController.getInstance().addResultListener(productDetails.getProductId(), billingResult1 -> {
+// //                        final boolean success = billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK;
+// //                        final String error = success ? null : BillingController.getResponseCodeString(billingResult.getResponseCode());
+// //                        AndroidUtilities.runOnUIThread(() -> whenDone.run(success, error));
+// //                    });
+// //                    BillingController.getInstance().setOnCanceled(() -> {
+// //                        AndroidUtilities.runOnUIThread(() -> whenDone.run(false, null));
+// //                    });
+// //                    BillingController.getInstance().launchBillingFlow(
+// //                            activity, AccountInstance.getInstance(UserConfig.selectedAccount), payload,
+// //                            Collections.singletonList(BillingFlowParams.ProductDetailsParams.newBuilder()
+// //                                    .setProductDetails(list.get(0))
+// //                                    .build())
+// //                    );
+//                 } else if (res instanceof TLRPC.TL_boolFalse) {
+//                     if (whenDone != null) {
+//                         whenDone.run(false, "PURCHASE_FORBIDDEN");
+//                     }
+//                 } else {
+//                     if (whenDone != null) {
+//                         whenDone.run(false, err != null ? err.text : "SERVER_ERROR");
+//                     }
+//                 }
+//             }));
+//         }));
     }
 
     public Runnable pay(MessageObject messageObject, Runnable whenShown) {

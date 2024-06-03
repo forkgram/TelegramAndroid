@@ -18,9 +18,7 @@ import com.google.android.exoplayer2.util.Util;
 import org.telegram.messenger.utils.BillingUtilities;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
-import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.PremiumPreviewFragment;
-import org.telegram.ui.Stars.StarsController;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -76,7 +74,6 @@ public class BillingController {
         return formatCurrency(amount, currency, exp, false);
     }
 
-    private static NumberFormat currencyInstance;
     public String formatCurrency(long amount, String currency, int exp, boolean rounded) {
         if (currency == null || currency.isEmpty()) {
             return String.valueOf(amount);
@@ -86,14 +83,12 @@ public class BillingController {
         }
         Currency cur = Currency.getInstance(currency);
         if (cur != null) {
-            if (currencyInstance == null) {
-                currencyInstance = NumberFormat.getCurrencyInstance();
-            }
-            currencyInstance.setCurrency(cur);
+            NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+            numberFormat.setCurrency(cur);
             if (rounded) {
-                return currencyInstance.format(Math.round(amount / Math.pow(10, exp)));
+                return numberFormat.format(Math.round(amount / Math.pow(10, exp)));
             }
-            return currencyInstance.format(amount / Math.pow(10, exp));
+            return numberFormat.format(amount / Math.pow(10, exp));
         }
         return amount + " " + currency;
     }
@@ -124,19 +119,18 @@ public class BillingController {
 
     public static String getResponseCodeString(int code) {
         switch (code) {
-            case BillingClient.BillingResponseCode.SERVICE_TIMEOUT:       return "SERVICE_TIMEOUT";
-            case BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED: return "FEATURE_NOT_SUPPORTED";
-            case BillingClient.BillingResponseCode.SERVICE_DISCONNECTED:  return "SERVICE_DISCONNECTED";
-            case BillingClient.BillingResponseCode.OK:                    return "OK";
-            case BillingClient.BillingResponseCode.USER_CANCELED:         return "USER_CANCELED";
-            case BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE:   return "SERVICE_UNAVAILABLE";
-            case BillingClient.BillingResponseCode.BILLING_UNAVAILABLE:   return "BILLING_UNAVAILABLE";
-            case BillingClient.BillingResponseCode.ITEM_UNAVAILABLE:      return "ITEM_UNAVAILABLE";
-            case BillingClient.BillingResponseCode.DEVELOPER_ERROR:       return "DEVELOPER_ERROR";
-            case BillingClient.BillingResponseCode.ERROR:                 return "ERROR";
-            case BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED:    return "ITEM_ALREADY_OWNED";
-            case BillingClient.BillingResponseCode.ITEM_NOT_OWNED:        return "ITEM_NOT_OWNED";
-            case BillingClient.BillingResponseCode.NETWORK_ERROR:         return "NETWORK_ERROR";
+            case -3: return "SERVICE_TIMEOUT";
+            case -2: return "FEATURE_NOT_SUPPORTED";
+            case -1: return "SERVICE_DISCONNECTED";
+            case 0: return "OK";
+            case 1: return "USER_CANCELED";
+            case 2: return "SERVICE_UNAVAILABLE";
+            case 3: return "BILLING_UNAVAILABLE";
+            case 4: return "ITEM_UNAVAILABLE";
+            case 5: return "DEVELOPER_ERROR";
+            case 6: return "ERROR";
+            case 7: return "ITEM_ALREADY_OWNED";
+            case 8: return "ITEM_NOT_OWNED";
         }
         return null;
     }
