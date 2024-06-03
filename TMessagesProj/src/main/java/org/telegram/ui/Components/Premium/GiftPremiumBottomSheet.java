@@ -499,7 +499,7 @@ public class GiftPremiumBottomSheet extends BottomSheetWithRecyclerListView impl
         private long pricePerMonth;
 
         private long pricePerMonthRegular;
-        public ProductDetails googlePlayProductDetails;
+//        public ProductDetails googlePlayProductDetails;
 
         public int yOffset;
 
@@ -595,7 +595,7 @@ public class GiftPremiumBottomSheet extends BottomSheetWithRecyclerListView impl
                     return giftCodeOption.currency;
                 }
             }
-            return 0;
+            return "";
             //return googlePlayProductDetails == null ? "" : googlePlayProductDetails.getOneTimePurchaseOfferDetails().getPriceCurrencyCode();
         }
     }
