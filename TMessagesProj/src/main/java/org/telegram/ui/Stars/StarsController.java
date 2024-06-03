@@ -8,10 +8,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.QueryProductDetailsParams;
+// import com.android.billingclient.api.BillingClient;
+// import com.android.billingclient.api.BillingFlowParams;
+// import com.android.billingclient.api.ProductDetails;
+// import com.android.billingclient.api.QueryProductDetailsParams;
 
 import org.json.JSONObject;
 import org.telegram.messenger.AccountInstance;
@@ -189,6 +189,7 @@ public class StarsController {
             NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.starOptionsLoaded);
             if (!toLoadStorePrice.isEmpty()) {
                 Runnable fetchStorePrices = () -> {
+                    /*
                     ArrayList<QueryProductDetailsParams.Product> productQueries = new ArrayList<>();
                     for (int i = 0; i < toLoadStorePrice.size(); ++i) {
                         productQueries.add(
@@ -225,12 +226,14 @@ public class StarsController {
                         }
                         NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.starOptionsLoaded);
                     }));
+                    */
                 };
+                /*
                 if (!BillingController.getInstance().isReady()) {
                     BillingController.getInstance().whenSetuped(fetchStorePrices);
-                } else {
+                } else {*/
                     fetchStorePrices.run();
-                }
+                //}
             }
         }));
         return options;
@@ -346,7 +349,7 @@ public class StarsController {
             return;
         }
 
-        if (BuildVars.useInvoiceBilling() || !BillingController.getInstance().isReady()) {
+        if (BuildVars.useInvoiceBilling()/* || !BillingController.getInstance().isReady()*/) {
             TLRPC.TL_inputStorePaymentStars payload = new TLRPC.TL_inputStorePaymentStars();
             payload.stars = option.stars;
             payload.currency = option.currency;
@@ -416,6 +419,7 @@ public class StarsController {
         payload.stars = option.stars;
         payload.currency = option.currency;
         payload.amount = option.amount;
+/*
         QueryProductDetailsParams.Product product = QueryProductDetailsParams.Product.newBuilder()
                 .setProductType(BillingClient.ProductType.INAPP)
                 .setProductId(option.store_product)
@@ -451,6 +455,7 @@ public class StarsController {
                             .build())
             );
         }));
+*/
     }
 
     public Runnable pay(MessageObject messageObject, Runnable whenShown) {
