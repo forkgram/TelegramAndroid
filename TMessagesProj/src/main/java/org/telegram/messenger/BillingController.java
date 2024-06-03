@@ -27,7 +27,6 @@ import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.LaunchActivity;
 import org.telegram.ui.LoginActivity;
 import org.telegram.ui.PremiumPreviewFragment;
-import org.telegram.ui.Stars.StarsController;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -85,8 +84,6 @@ public class BillingController {
         return formatCurrency(amount, currency, exp, false);
     }
 
-    private static NumberFormat currencyInstance;
-    private static NumberFormat currencyInstanceRounded;
     public String formatCurrency(long amount, String currency, int exp, boolean rounded) {
         if (currency == null || currency.isEmpty()) {
             return String.valueOf(amount);
@@ -99,19 +96,17 @@ public class BillingController {
         }
         Currency cur = Currency.getInstance(currency);
         if (cur != null) {
-            if (currencyInstance == null) {
-                currencyInstance = NumberFormat.getCurrencyInstance();
-            }
-            currencyInstance.setCurrency(cur);
+            NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+            numberFormat.setCurrency(cur);
             if (rounded) {
-                currencyInstance.setMaximumFractionDigits(0);
-                currencyInstance.setMinimumFractionDigits(0);
-                return currencyInstance.format(Math.round(amount / Math.pow(10, exp)));
+                numberFormat.setMaximumFractionDigits(0);
+                numberFormat.setMinimumFractionDigits(0);
+                return numberFormat.format(Math.round(amount / Math.pow(10, exp)));
             }
             final int defaultFractionDigits = cur.getDefaultFractionDigits();
-            currencyInstance.setMinimumFractionDigits(defaultFractionDigits);
-            currencyInstance.setMaximumFractionDigits(defaultFractionDigits);
-            return currencyInstance.format(amount / Math.pow(10, exp));
+            numberFormat.setMinimumFractionDigits(defaultFractionDigits);
+            numberFormat.setMaximumFractionDigits(defaultFractionDigits);
+            return numberFormat.format(amount / Math.pow(10, exp));
         }
         return amount + " " + currency;
     }
