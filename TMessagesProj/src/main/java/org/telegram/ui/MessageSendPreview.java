@@ -1454,7 +1454,7 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
         final int heightup = chatListView.getMeasuredHeight() - sendButton.getHeight() + (effectSelector != null ? dp(320) : 0);
         final int top = insets.top + dp(8);
 
-        final int heightdown = dp(messageObjects.isEmpty() ? -6 : 48) + (optionsView == null ? 0 : optionsView.getMeasuredHeight());
+        final int heightdown = dp(messageObjects.isEmpty() ? -6 : 48) + (optionsView == null ? 0 : optionsView.getMeasuredHeight()) + dp(30);
         final int bottom = containerView.getMeasuredHeight() - dp(8) - insets.bottom;
         if (pos[1] + heightdown > bottom) {
             pos[1] = bottom - heightdown;
