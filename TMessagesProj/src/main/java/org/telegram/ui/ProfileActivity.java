@@ -3951,7 +3951,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 SharedConfig.inappCamera ? LocaleController.getString("DebugMenuDisableCamera", R.string.DebugMenuDisableCamera) : LocaleController.getString("DebugMenuEnableCamera", R.string.DebugMenuEnableCamera),
                                 LocaleController.getString("DebugMenuClearMediaCache", R.string.DebugMenuClearMediaCache),
                                 LocaleController.getString("DebugMenuCallSettings", R.string.DebugMenuCallSettings),
-                                null,
+                                "Set ignoreSetOnline = true.",
                                 BuildVars.DEBUG_PRIVATE_VERSION || ApplicationLoader.isStandaloneBuild() ? LocaleController.getString("DebugMenuCheckAppUpdate", R.string.DebugMenuCheckAppUpdate) : null,
                                 LocaleController.getString("DebugMenuReadAllDialogs", R.string.DebugMenuReadAllDialogs),
                                 BuildVars.DEBUG_PRIVATE_VERSION ? (SharedConfig.disableVoiceAudioEffects ? "Enable voip audio effects" : "Disable voip audio effects") : null,
@@ -4040,7 +4040,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             } else if (which == 7) {
                                 VoIPHelper.showCallDebugSettings(getParentActivity());
                             } else if (which == 8) {
-                                SharedConfig.toggleRoundCamera16to9();
+                                MessagesController.getInstance(currentAccount).ignoreSetOnline = true;
+                                Toast.makeText(getParentActivity(), "ignoreSetOnline = true;", Toast.LENGTH_SHORT).show();
+                                // SharedConfig.toggleRoundCamera16to9();
                             } else if (which == 9) {
                                 ((LaunchActivity) getParentActivity()).checkAppUpdate(true, null);
                             } else if (which == 10) {
