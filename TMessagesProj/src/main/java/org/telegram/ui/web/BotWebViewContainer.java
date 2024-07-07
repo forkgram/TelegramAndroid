@@ -63,7 +63,7 @@ import androidx.core.content.FileProvider;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.util.Consumer;
 
-import com.google.android.gms.safetynet.SafetyNet;
+//import com.google.android.gms.safetynet.SafetyNet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
