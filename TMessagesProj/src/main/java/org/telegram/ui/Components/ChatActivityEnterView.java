@@ -3255,6 +3255,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             final boolean birthday = getParentFragment().getCurrentUserInfo() != null && BirthdayController.isToday(getParentFragment().getCurrentUserInfo().birthday);
             ArrayList<TLRPC.TL_premiumGiftOption> options = new ArrayList<>(getParentFragment().getCurrentUserInfo().premium_gifts);
             if (options.isEmpty()) {
+                /*
                 final AlertDialog progressDialog = new AlertDialog(getContext(), AlertDialog.ALERT_TYPE_SPINNER);
                 progressDialog.showDelayed(200);
                 final int reqId = BoostRepository.loadGiftOptions(currentAccount, null, loadedOptions -> {
@@ -3265,7 +3266,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                 });
                 progressDialog.setOnCancelListener(di -> {
                     parentFragment.getConnectionsManager().cancelRequest(reqId, true);
-                });
+                });*/
             } else {
                 new GiftSheet(getContext(), currentAccount, user.id, null, null).setBirthday(birthday).show();
             }
