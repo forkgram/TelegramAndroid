@@ -688,10 +688,10 @@ extern "C" int registerNativeTgNetFunctions(JavaVM *vm, JNIEnv *env) {
     if (jclass_ConnectionsManager_onIntegrityCheckClassic == 0) {
         return JNI_FALSE;
     }
-    jclass_ConnectionsManager_onCaptchaCheck = env->GetStaticMethodID(jclass_ConnectionsManager, "onCaptchaCheck", "(IILjava/lang/String;Ljava/lang/String;)V");
-    if (jclass_ConnectionsManager_onCaptchaCheck == 0) {
-        return JNI_FALSE;
-    }
+    //jclass_ConnectionsManager_onCaptchaCheck = env->GetStaticMethodID(jclass_ConnectionsManager, "onCaptchaCheck", "(IILjava/lang/String;Ljava/lang/String;)V");
+    //if (jclass_ConnectionsManager_onCaptchaCheck == 0) {
+    //    return JNI_FALSE;
+    //}
 
     return JNI_TRUE;
 }
