@@ -3251,6 +3251,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             if (user == null) return;
             ArrayList<TLRPC.TL_premiumGiftOption> options = new ArrayList<>(getParentFragment().getCurrentUserInfo().premium_gifts);
             if (options.isEmpty()) {
+                /*
                 final AlertDialog progressDialog = new AlertDialog(getContext(), AlertDialog.ALERT_TYPE_SPINNER);
                 final int reqId = BoostRepository.loadGiftOptions(currentAccount, null, loadedOptions -> {
                     progressDialog.dismiss();
@@ -3261,7 +3262,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                 progressDialog.setOnCancelListener(di -> {
                     parentFragment.getConnectionsManager().cancelRequest(reqId, true);
                 });
-                progressDialog.showDelayed(200);
+                progressDialog.showDelayed(200);*/
             } else {
                 new GiftSheet(getContext(), currentAccount, user.id, null, null).show();
             }
