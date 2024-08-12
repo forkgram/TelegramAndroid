@@ -11,6 +11,7 @@
     <string name="ReplaceForwardInfo">전달하면 채팅 선택 대신 공유 시트가 열립니다.</string>
     <string name="MentionByNameInfo">자동 완성이 사용자 이름 대신 사람 이름을 삽입합니다.</string>
     <string name="HideSendAsInfo">메시지 입력란의 보낸 사람 선택 버튼을 숨깁니다.</string>
+    <string name="DisableSlideToNextChannelInfo">끝을 넘겨 스크롤해도 다음 채널로 넘어가지 않습니다.</string>
     <string name="FormatWithSecondsInfo">메시지 시간과 기타 시간에 초를 표시합니다.</string>
     <string name="DisableQuickReactionInfo">메시지를 두 번 탭해도 리액션을 보내지 않습니다.</string>
     <string name="DisableLockedAnimatedEmojiInfo">잠긴 프리미엄 이모지 팩을 숨깁니다. Premium이 아닌 계정에만 적용됩니다.</string>
