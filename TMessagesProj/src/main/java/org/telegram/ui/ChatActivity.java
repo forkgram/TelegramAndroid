@@ -6615,7 +6615,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (!foundTopView) {
                     scrolled = super.scrollVerticallyBy(dy, recycler, state);
                 }
-                if (dy > 0 && scrolled == 0 && (ChatObject.isChannel(currentChat) && !currentChat.megagroup || isTopic && !UserObject.isBotForum(currentUser)) && chatMode != MODE_SAVED && chatMode != MODE_SCHEDULED && chatListView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING && !chatListView.isFastScrollAnimationRunning() && !chatListView.isMultiselect() && !isReport()) {
+                if (dy > 0 && scrolled == 0 && (ChatObject.isChannel(currentChat) && !currentChat.megagroup || isTopic && !UserObject.isBotForum(currentUser)) && chatMode != MODE_SAVED && chatMode != MODE_SCHEDULED && chatListView.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING && !chatListView.isFastScrollAnimationRunning() && !chatListView.isMultiselect() && !isReport() && !MessagesController.getGlobalMainSettings().getBoolean("disableSlideToNextChannel", false)) {
                     if (pullingDownOffset == 0 && pullingDownDrawable != null) {
                         if (nextChannels != null && !nextChannels.isEmpty()) {
                             pullingDownDrawable.updateDialog(nextChannels.get(0));
@@ -14835,7 +14835,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         public String text;
         public ArrayList<TLRPC.MessageEntity> entities;
         public int offset, length;
-        
+
         public TLRPC.TodoItem task;
 
         private ReplyQuote(long peerId, @NonNull MessageObject message, int start, int end) {
@@ -39619,7 +39619,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             if (true) {
                 selectedObject = messageObject;
                 selectedObjectGroup = null;
-                
+
                 TodoItemMenu menu = new TodoItemMenu(getContext(), getResourceProvider());
                 menu.setCell(ChatActivity.this, cell, task.id);
 
@@ -44639,7 +44639,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         if (currentChat != null && (!ChatObject.canSendMessages(currentChat))) {
             allowChatActions = false;
         }
-        
+
         if (message.isSponsored() && !getUserConfig().isPremium() && !getMessagesController().premiumFeaturesBlocked() && !message.sponsoredCanReport) {
             items.add(LocaleController.getString(R.string.HideAd));
             options.add(OPTION_HIDE_SPONSORED_MESSAGE);
