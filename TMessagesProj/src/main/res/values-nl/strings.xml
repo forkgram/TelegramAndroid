@@ -11,6 +11,7 @@
     <string name="ReplaceForwardInfo">Doorsturen opent het deelvenster in plaats van de chatkiezer.</string>
     <string name="MentionByNameInfo">Automatisch aanvullen voegt de naam van de persoon in in plaats van de gebruikersnaam.</string>
     <string name="HideSendAsInfo">De knop Verzenden als in het berichtveld verbergen.</string>
+    <string name="DisableSlideToNextChannelInfo">Niet naar het volgende kanaal gaan bij doorscrollen voorbij het einde.</string>
     <string name="FormatWithSecondsInfo">Seconden tonen in berichttijden en andere tijden.</string>
     <string name="DisableQuickReactionInfo">Geen reactie versturen bij dubbeltikken op een bericht.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Vergrendelde premium-emojipakketten verbergen. Alleen voor accounts zonder Premium.</string>
