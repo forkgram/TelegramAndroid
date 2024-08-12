@@ -58,6 +58,7 @@
     <string name="AddDeleteAllUnpinnedMessages">Add "Delete all unpinned messages" to menu</string>
     <string name="AddDeleteAllUnpinnedMessagesInfo">EXPERIMENTAL.</string>
     <string name="NewMyStory">New Story</string>
+    <string name="DisableSlideToNextChannel">Disable slide to next channel</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
