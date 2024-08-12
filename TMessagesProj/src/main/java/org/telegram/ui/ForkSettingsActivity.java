@@ -76,6 +76,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_MENTION_BY_NAME = 31;
     public static final int ID_HIDE_SEND_AS = 32;
     public static final int ID_DELETE_ALL_UNPINNED = 34;
+    public static final int ID_DISABLE_SLIDE_TO_NEXT_CHANNEL = 35;
     public static final int ID_FORMAT_WITH_SECONDS = 36;
 
     public static final int ID_DISABLE_QUICK_REACTION = 40;
@@ -385,6 +386,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("hideSendAs", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DELETE_ALL_UNPINNED, LocaleController.getString(R.string.AddDeleteAllUnpinnedMessages), LocaleController.getString(R.string.AddDeleteAllUnpinnedMessagesInfo))
             .setChecked(pref("addItemToDeleteAllUnpinnedMessages", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_DISABLE_SLIDE_TO_NEXT_CHANNEL, LocaleController.getString(R.string.DisableSlideToNextChannel), LocaleController.getString(R.string.DisableSlideToNextChannelInfo))
+            .setChecked(pref("disableSlideToNextChannel", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_FORMAT_WITH_SECONDS, LocaleController.getString(R.string.FormatWithSeconds), LocaleController.getString(R.string.FormatWithSecondsInfo))
             .setChecked(pref("formatWithSeconds", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -486,6 +489,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideSendAs", item, view);
         } else if (id == ID_DELETE_ALL_UNPINNED) {
             toggle("addItemToDeleteAllUnpinnedMessages", item, view);
+        } else if (id == ID_DISABLE_SLIDE_TO_NEXT_CHANNEL) {
+            toggle("disableSlideToNextChannel", item, view);
         } else if (id == ID_FORMAT_WITH_SECONDS) {
             toggle("formatWithSeconds", item, view);
         } else if (id == ID_DISABLE_QUICK_REACTION) {

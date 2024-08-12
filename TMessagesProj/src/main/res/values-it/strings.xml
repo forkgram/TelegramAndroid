@@ -11,6 +11,7 @@
     <string name="ReplaceForwardInfo">Inoltra apre il pannello di condivisione invece del selettore di chat.</string>
     <string name="MentionByNameInfo">Il completamento automatico inserisce il nome della persona invece del nome utente.</string>
     <string name="HideSendAsInfo">Nascondere il pulsante invia come nel campo del messaggio.</string>
+    <string name="DisableSlideToNextChannelInfo">Non passare al canale successivo scorrendo oltre la fine.</string>
     <string name="FormatWithSecondsInfo">Mostrare i secondi negli orari dei messaggi e in altri orari.</string>
     <string name="DisableQuickReactionInfo">Non inviare una reazione al doppio tocco su un messaggio.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Nascondere i pacchetti di emoji premium bloccati. Riguarda solo gli account senza Premium.</string>
