@@ -11,6 +11,7 @@
     <string name="ReplaceForwardInfo">إعادة التوجيه تفتح لوحة المشاركة بدلاً من محدد الدردشة.</string>
     <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
     <string name="HideSendAsInfo">إخفاء زر الإرسال باسم في حقل الرسالة.</string>
+    <string name="DisableSlideToNextChannelInfo">عدم الانتقال إلى القناة التالية عند التمرير بعد النهاية.</string>
     <string name="FormatWithSecondsInfo">إظهار الثواني في أوقات الرسائل والأوقات الأخرى.</string>
     <string name="DisableQuickReactionInfo">عدم إرسال تفاعل عند النقر المزدوج على رسالة.</string>
     <string name="DisableLockedAnimatedEmojiInfo">إخفاء حزم الإيموجي المميزة المقفلة. يؤثر على الحسابات غير المميزة فقط.</string>

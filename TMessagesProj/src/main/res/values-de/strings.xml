@@ -11,6 +11,7 @@
     <string name="ReplaceForwardInfo">Weiterleiten öffnet das Teilen-Fenster statt der Chat-Auswahl.</string>
     <string name="MentionByNameInfo">Autovervollständigung fügt den Namen der Person statt des Benutzernamens ein.</string>
     <string name="HideSendAsInfo">Die Senden-als-Schaltfläche im Nachrichtenfeld ausblenden.</string>
+    <string name="DisableSlideToNextChannelInfo">Beim Scrollen über das Ende hinaus nicht zum nächsten Kanal wechseln.</string>
     <string name="FormatWithSecondsInfo">Sekunden in Nachrichtenzeiten und anderen Zeitangaben anzeigen.</string>
     <string name="DisableQuickReactionInfo">Beim Doppeltippen auf eine Nachricht keine Reaktion senden.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Gesperrte Premium-Emoji-Pakete ausblenden. Betrifft nur Konten ohne Premium.</string>

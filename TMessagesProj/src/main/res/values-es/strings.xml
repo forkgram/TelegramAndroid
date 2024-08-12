@@ -11,6 +11,7 @@
     <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="MentionByNameInfo">El autocompletado inserta el nombre de la persona en lugar del nombre de usuario.</string>
     <string name="HideSendAsInfo">Ocultar el botón de enviar como en el campo de mensaje.</string>
+    <string name="DisableSlideToNextChannelInfo">No pasar al siguiente canal al desplazarse más allá del final.</string>
     <string name="FormatWithSecondsInfo">Mostrar los segundos en la hora de los mensajes y otras horas.</string>
     <string name="DisableQuickReactionInfo">No enviar una reacción al tocar dos veces un mensaje.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Ocultar los paquetes de emojis premium bloqueados. Solo afecta a cuentas sin Premium.</string>
