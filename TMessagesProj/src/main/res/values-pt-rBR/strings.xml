@@ -11,6 +11,7 @@
     <string name="ReplaceForwardInfo">Encaminhar abre o painel de compartilhamento em vez do seletor de conversas.</string>
     <string name="MentionByNameInfo">O preenchimento automático insere o nome da pessoa em vez do nome de usuário.</string>
     <string name="HideSendAsInfo">Ocultar o botão de enviar como no campo de mensagem.</string>
+    <string name="DisableSlideToNextChannelInfo">Não passar para o próximo canal ao rolar além do fim.</string>
     <string name="FormatWithSecondsInfo">Mostrar os segundos nos horários das mensagens e em outros horários.</string>
     <string name="DisableQuickReactionInfo">Não enviar uma reação ao tocar duas vezes em uma mensagem.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Ocultar os pacotes de emoji premium bloqueados. Afeta apenas contas sem Premium.</string>
