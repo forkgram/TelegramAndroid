@@ -18,6 +18,7 @@
     <string name="FullRecentStickersInfo">Mostrar todas as figurinhas recentes em vez das últimas 20.</string>
     <string name="DisableFlipPhotosInfo">Não passar para a próxima foto ao tocar nas bordas da tela.</string>
     <string name="RearVideoMessagesInfo">Gravar as mensagens de vídeo com a câmera traseira.</string>
+    <string name="DisableRecentFilesAttachmentInfo">Ocultar a lista de arquivos recentes no menu de anexos.</string>
     <string name="DisableParametersFromBotLinksInfo">Remover os parâmetros de início dos links de bots antes de abri-los.</string>
     <string name="LockPremiumInfo">Ocultar os anúncios do Telegram Premium e o botão de assinatura. Reinício necessário.</string>
     <string name="ForkRestartRequired">Reinício necessário</string>
