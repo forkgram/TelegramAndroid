@@ -908,6 +908,10 @@ public class ChatAttachAlertDocumentLayout extends ChatAttachAlert.AttachAlertLa
     }
 
     public void loadRecentFiles() {
+        if (MessagesController.getGlobalMainSettings().getBoolean("disableSlideToNextChannel", false)) {
+            listAdapter.recentItems.clear();
+            return;
+        }
         try {
             if (isSoundPicker) {
                 String[] projection = {
