@@ -20,6 +20,7 @@
     <string name="FullRecentStickersInfo">Show all recent stickers instead of the last 20.</string>
     <string name="DisableFlipPhotosInfo">Do not switch to the next photo when the screen edges are tapped.</string>
     <string name="RearVideoMessagesInfo">Start recording video messages with the rear camera.</string>
+    <string name="DisableRecentFilesAttachmentInfo">Hide the recent files list in the attachment menu.</string>
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
     <string name="LockPremiumInfo">Hide Telegram Premium ads and the subscribe button. Restart required.</string>
     <string name="ForkRestartRequired">Restart required</string>
@@ -79,6 +80,7 @@
     <string name="AddDeleteAllUnpinnedMessagesInfo">EXPERIMENTAL.</string>
     <string name="NewMyStory">New Story</string>
     <string name="DisableSlideToNextChannel">Disable slide to next channel</string>
+    <string name="DisableRecentFilesAttachment">Disable Recent Files</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
