@@ -161,6 +161,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int lockPremium;
     private int addItemToDeleteAllUnpinnedMessages;
     private int disableSlideToNextChannel;
+    private int disableRecentFilesAttachment;
 
     private int stickerSizeRow;
 
@@ -229,6 +230,7 @@ public class ForkSettingsActivity extends BaseFragment {
         disableParametersFromBotLinks = rowCount++;
         addItemToDeleteAllUnpinnedMessages = rowCount++;
         disableSlideToNextChannel = rowCount++;
+        disableRecentFilesAttachment = rowCount++;
     
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
@@ -337,6 +339,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("addItemToDeleteAllUnpinnedMessages", view, false);
             } else if (position == disableSlideToNextChannel) {
                 toggleGlobalMainSetting("disableSlideToNextChannel", view, false);
+            } else if (position == disableRecentFilesAttachment) {
+                toggleGlobalMainSetting("disableRecentFilesAttachment", view, false);
             } else if (position == lockPremium) {
                 toggleGlobalMainSetting("lockPremium", view, false);
             } else if (position == replaceForward) {
@@ -476,6 +480,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableSlideToNextChannel) {
                         String t = LocaleController.getString("DisableSlideToNextChannel", R.string.DisableSlideToNextChannel);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableSlideToNextChannel", false), false);
+                    } else if (position == disableRecentFilesAttachment) {
+                        String t = LocaleController.getString("DisableRecentFilesAttachment", R.string.DisableRecentFilesAttachment);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("disableRecentFilesAttachment", false), false);
                     } else if (position == lockPremium) {
                         String t = LocaleController.getString("LockPremium", R.string.LockPremium);
                         String info = LocaleController.getString("SquareAvatarsInfo", R.string.SquareAvatarsInfo);
@@ -543,6 +550,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == disableParametersFromBotLinks
                         || position == addItemToDeleteAllUnpinnedMessages
                         || position == disableSlideToNextChannel
+                        || position == disableRecentFilesAttachment
                         || position == lockPremium
                         || position == replaceForward
                         || position == mentionByName
@@ -609,6 +617,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == disableParametersFromBotLinks
                 || position == addItemToDeleteAllUnpinnedMessages
                 || position == disableSlideToNextChannel
+                || position == disableRecentFilesAttachment
                 || position == lockPremium
                 || position == replaceForward
                 || position == mentionByName
