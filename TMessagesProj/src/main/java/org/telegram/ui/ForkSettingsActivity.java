@@ -89,6 +89,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_PHOTO_HAS_STICKER = 52;
     public static final int ID_DISABLE_FLIP_PHOTOS = 54;
     public static final int ID_REAR_VIDEO_MESSAGES = 55;
+    public static final int ID_DISABLE_RECENT_FILES_ATTACHMENT = 57;
 
     public static final int ID_DISABLE_PARAMETERS_FROM_BOT_LINKS = 72;
 
@@ -424,6 +425,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("disableFlipPhotos", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_REAR_VIDEO_MESSAGES, LocaleController.getString(R.string.RearVideoMessages), LocaleController.getString(R.string.RearVideoMessagesInfo))
             .setChecked(pref("rearVideoMessages", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_DISABLE_RECENT_FILES_ATTACHMENT, LocaleController.getString(R.string.DisableRecentFilesAttachment), LocaleController.getString(R.string.DisableRecentFilesAttachmentInfo))
+            .setChecked(pref("disableRecentFilesAttachment", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionBots)));
@@ -513,6 +516,9 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("disableFlipPhotos", item, view);
         } else if (id == ID_REAR_VIDEO_MESSAGES) {
             toggle("rearVideoMessages", item, view);
+        } else if (id == ID_DISABLE_RECENT_FILES_ATTACHMENT) {
+            toggle("disableRecentFilesAttachment", item, view);
+
         } else if (id == ID_DISABLE_PARAMETERS_FROM_BOT_LINKS) {
             toggle("disableParametersFromBotLinks", item, view);
         } else if (id == ID_LOCK_PREMIUM) {
