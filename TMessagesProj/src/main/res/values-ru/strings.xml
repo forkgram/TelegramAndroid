@@ -18,6 +18,7 @@
     <string name="FullRecentStickersInfo">Показывать все недавние стикеры вместо последних 20.</string>
     <string name="DisableFlipPhotosInfo">Не переключать фото при нажатии на края экрана.</string>
     <string name="RearVideoMessagesInfo">Начинать запись видеосообщений с основной камеры.</string>
+    <string name="DisableRecentFilesAttachmentInfo">Скрывать список недавних файлов в меню вложений.</string>
     <string name="DisableParametersFromBotLinksInfo">Убирать start-параметры из ссылок на ботов перед открытием.</string>
     <string name="LockPremiumInfo">Скрывать рекламу Telegram Premium и кнопку подписки. Требуется перезапуск.</string>
     <string name="ForkRestartRequired">Требуется перезапуск</string>
