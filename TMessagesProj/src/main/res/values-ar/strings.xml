@@ -18,6 +18,7 @@
     <string name="FullRecentStickersInfo">إظهار جميع الملصقات الأخيرة بدلاً من آخر 20 فقط.</string>
     <string name="DisableFlipPhotosInfo">عدم الانتقال إلى الصورة التالية عند النقر على حواف الشاشة.</string>
     <string name="RearVideoMessagesInfo">تسجيل رسائل الفيديو بالكاميرا الخلفية.</string>
+    <string name="DisableRecentFilesAttachmentInfo">إخفاء قائمة الملفات الأخيرة في قائمة المرفقات.</string>
     <string name="DisableParametersFromBotLinksInfo">إزالة معاملات البدء من روابط البوتات قبل فتحها.</string>
     <string name="LockPremiumInfo">إخفاء إعلانات Telegram Premium وزر الاشتراك. إعادة التشغيل مطلوبة.</string>
     <string name="ForkRestartRequired">إعادة التشغيل مطلوبة</string>
