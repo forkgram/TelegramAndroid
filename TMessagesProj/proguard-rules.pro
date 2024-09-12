@@ -108,3 +108,5 @@
 -dontwarn org.osmdroid.tileprovider.modules.NetworkAvailabliltyCheck
 # Osmdroid
 -dontwarn org.osmdroid.**
+
+-dontwarn java.lang.invoke.StringConcatFactory
