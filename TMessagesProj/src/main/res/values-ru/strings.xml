@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--FORK CLIENT-->
     <string name="ForkSectionAppearance">Внешний вид</string>
     <string name="ForkSectionMedia">Фото и видео</string>
     <string name="ForkSectionBots">Боты и браузер</string>
@@ -22,6 +23,64 @@
     <string name="DisableParametersFromBotLinksInfo">Убирать start-параметры из ссылок на ботов перед открытием.</string>
     <string name="LockPremiumInfo">Скрывать рекламу Telegram Premium и кнопку подписки. Требуется перезапуск.</string>
     <string name="ForkRestartRequired">Требуется перезапуск</string>
+    <string name="BottomDialogs">Нажмите здесь, чтобы начать новый чат.</string>
+    <string name="FastForward">Переслать Быстро</string>
+    <string name="ForwardAsAlbum">Переслать как альбом</string>
+    <string name="DateForward">Дата</string>
+    <string name="ShowTitle">Показать заголовок</string>
+    <string name="HideTitle">Скрыть заголовок</string>
+    <string name="RemoveFromHideMode">Убрать из режима скрытия</string>
+    <string name="AddToHideMode">Добавить в режим скрытия</string>
+    <string name="PinOrderInfo">Вы можете управлять локальным порядком закреплённых диалогов прямо здесь.</string>
+    <string name="GoToFirstMessage">Перейти к началу</string>
+    <string name="formatterDay24HSec">HH:mm:ss</string>
+    <string name="formatterDay12HSec">h:mm:ss a</string>
+    <string name="CopyWithoutProtocol">Копировать без протокола</string>
+    <!--fork settings view-->
+    <string name="ForkSettingsTitle">Настройки Fork Client</string>
+    <string name="ForkCheckUpdate">Проверить обновления</string>
+    <string name="SquareAvatars">Квадратные аватары</string>
+    <string name="InAppCamera">Включить камеру в приложении</string>
+    <string name="InAppCameraInfo">Во вложениях</string>
+    <string name="SyncPins">Синхронизировать закреплённые диалоги</string>
+    <string name="SyncPinsInfo">Отключение синхронизации позволяет закрепить неограниченное количество диалогов</string>
+    <string name="UnmutedOnTop">Незаглушённые сообщения в приоритете</string>
+    <string name="UnmutedOnTopInfo">Незаглушённые сообщения будут под закреплёнными диалогами</string>
+    <string name="PhotoHasSticker">Отправить информацию о стикере в фото</string>
+    <string name="PhotoHasStickerInfo">При использовании стикеров на фото</string>
+    <string name="PinDialogsOrder">Порядок закреплённых диалогов</string>
+    <string name="RearVideoMessages">Задняя камера в видеосообщениях</string>
+    <string name="ReplaceForward">Заменить оригинальное пересылание</string>
+    <string name="HideSensitiveData">Скрыть конфиденциальные данные</string>
+    <string name="SystemCamera">Использовать системную камеру для фото</string>
+    <string name="SystemCameraInfo">Только в диалоге вложений</string>
+    <string name="MentionByName">Упомянуть пользователя по имени</string>
+    <string name="HideBottomButton">Скрыть нижнюю кнопку</string>
+    <string name="OpenArchiveOnPull">Открыть архив при потягивании вниз</string>
+    <string name="StickerSize">Размер стикера</string>
+    <string name="DisableFlipPhotos">Отключить переворот фото при нажатии</string>
+    <string name="FormatWithSeconds">Форматировать время сообщения с секундами</string>
+    <string name="DisableThumbsInDialogList">Отключить миниатюры в списке диалогов</string>
+    <string name="FullRecentStickers">Показать полный список недавних стикеров</string>
+    <string name="HideSendAs">Скрыть кнопку "Отправить как"</string>
+    <string name="ShowNotificationContent">Показать содержимое уведомлений</string>
+    <string name="ShowNotificationContentInfo">Когда приложение заблокировано. Может быть причиной утечки конфиденциальности.</string>
+    <string name="DeleteAllYourMessages">Удалить все ваши сообщения</string>
+    <string name="DeleteAllYourMessagesInfo">Вы уверены, что хотите **удалить все ваши сообщения** из этого чата?</string>
+    <string name="ReallySure">Вы **действительно уверены**?</string>
+    <string name="DisableGlobalSearch">Отключить глобальный поиск</string>
+    <string name="DisableQuickReaction">Отключить быструю реакцию</string>
+    <string name="DisableLockedAnimatedEmoji">Скрыть заблокированные анимированные эмодзи в панели</string>
+    <string name="DisableParametersFromBotLinks">Отключить параметры из ссылок бота</string>
+    <string name="LockPremium">Заблокировать премиум функции</string>
+    <string name="DeleteAllUnpinnedMessages">Удалить все незакреплённые сообщения</string>
+    <string name="DeleteAllUnpinnedMessagesInfo">Вы уверены, что хотите **удалить все незакреплённые сообщения** из этого чата?</string>
+    <string name="AddDeleteAllUnpinnedMessages">Добавить "Удалить все незакреплённые сообщения" в меню</string>
+    <string name="AddDeleteAllUnpinnedMessagesInfo">ЭКСПЕРИМЕНТАЛЬНО.</string>
+    <string name="NewMyStory">Новая история</string>
+    <string name="DisableSlideToNextChannel">Отключить слайд на следующий канал</string>
+    <string name="DisableRecentFilesAttachment">Отключить недавние файлы</string>
+
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Русский</string>
@@ -101,6 +160,18 @@
     <string name="LastNameSmall">Фамилия</string>
     <string name="CancelRegistration">Отмена регистрации</string>
     <string name="RegistrationProfileInfo">Информация о себе</string>
+    <!--widgets-->
+    <string name="EditWidget">Изменить виджет</string>
+    <string name="EditWidgetContactsInfo">Этот виджет показывает ярлыки для быстрого доступа к выбранным чатам.\n\nЕсли ничего не выбрано, отображаются последние активные контакты.</string>
+    <string name="EditWidgetChatsInfo">Этот виджет показывает последние сообщения из выбранных чатов.\n\nЕсли ничего не выбрано, отображаются последние активные чаты.</string>
+    <string name="WidgetPasscode2">Примечание: код-пароль будет **игнорироваться** для виджетов.</string>
+    <string name="SearchForChats">Поиск чатов...</string>
+    <string name="WidgetPreview">Предпросмотр виджета</string>
+    <string name="TapToEditWidget">изменить виджет</string>
+    <string name="TapToEditWidgetShort">изменить</string>
+    <string name="WidgetChats">Чаты</string>
+    <string name="WidgetShortcuts">Ярлыки</string>
+    <string name="WidgetLoggedOff">Выполнен выход из аккаунта.</string>
     <!--password view-->
     <string name="TwoStepVerification">Облачный пароль</string>
     <string name="TwoStepVerificationTitle">Облачный пароль</string>
