@@ -272,7 +272,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             helpIcon = R.drawable.msg_help_ny;
         } else if (eventType == 1) {
             newGroupIcon = R.drawable.msg_groups_14;
-            newSecretIcon = R.drawable.msg_secret_14;
+            newSecretIcon = R.drawable.msg_secret;
             newChannelIcon = R.drawable.msg_channel;
             contactsIcon = R.drawable.msg_contacts_14;
             callsIcon = R.drawable.msg_calls_14;
@@ -282,7 +282,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             helpIcon = R.drawable.msg_help;
         } else if (eventType == 2) {
             newGroupIcon = R.drawable.msg_groups_hw;
-            newSecretIcon = R.drawable.msg_secret_hw;
+            newSecretIcon = R.drawable.msg_secret;
             newChannelIcon = R.drawable.msg_channel;
             contactsIcon = R.drawable.msg_contacts_hw;
             callsIcon = R.drawable.msg_calls_hw;
