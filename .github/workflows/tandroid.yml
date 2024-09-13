@@ -63,7 +63,7 @@ jobs:
           ###
           echo $ADDITIONAL_BUILD_NUMBER
           sudo apt update
-          sudo apt -y install ninja-build meson nasm gperf pkg-config
+          sudo apt -y install ninja-build meson nasm gperf pkg-config unzip pip
           rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
           ./gradlew :TMessagesProj_App:assembleAfatRelease
 
@@ -75,6 +75,28 @@ jobs:
           cp app.apk "artifact/ForkClient $(cat ver.txt).apk"
           mkdir -p tag_asset
           cp app.apk "tag_asset/ForkClient_$(cat ver.txt).apk"
+
+          # Upload to channel.
+          if [[ "${{ contains(github.event.head_commit.message, '[Release]') }}" == "true" ]]; then
+            FORK_UPLOAD_MODE=release
+          elif [[ "${{ contains(github.event.head_commit.message, '[Optional]') }}" == "true" ]]; then
+            FORK_UPLOAD_MODE=optional
+          else
+            FORK_UPLOAD_MODE=
+          fi
+          if [[ -n "$FORK_UPLOAD_MODE" ]]; then
+            set +x
+            pip install requests tgcrypto-pyrofork Kurigram
+            cp app.apk "ForkClient $(cat ver.txt).apk"
+            echo "${{ secrets.BASE64_ZIP }}" | base64 --decode > output.zip
+            unzip -j output.zip -d .
+            ls
+            FORK_UPLOAD_MODE=$FORK_UPLOAD_MODE python3 upload.py
+            set -x
+          else
+            echo "Skipping channel upload (no [Release] or [Optional] marker in commit message)."
+          fi
+          ###
 
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
 
