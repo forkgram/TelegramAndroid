@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
+import android.util.Log;
 
 public class NotificationsService extends Service {
 
@@ -28,13 +29,20 @@ public class NotificationsService extends Service {
         super.onCreate();
         ApplicationLoader.postInitApplication();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int pendingIntentFlags;
+            if (Build.VERSION.SDK_INT >= 34) {
+                pendingIntentFlags = PendingIntent.FLAG_IMMUTABLE;
+            } else {
+                pendingIntentFlags = PendingIntent.FLAG_MUTABLE;
+            }
             String CHANNEL_ID = "push_service_channel";
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,"Push Notifications Service",NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
             Intent explainIntent = new Intent("android.intent.action.VIEW");
             explainIntent.setData(Uri.parse("https://github.com/Telegram-FOSS-Team/Telegram-FOSS/blob/master/Notifications.md"));
-            PendingIntent explainPendingIntent = PendingIntent.getActivity(this, 0, explainIntent, PendingIntent.FLAG_MUTABLE);
+            try {
+            PendingIntent explainPendingIntent = PendingIntent.getActivity(this, 0, explainIntent, pendingIntentFlags);
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentIntent(explainPendingIntent)
                     .setShowWhen(false)
@@ -42,6 +50,9 @@ public class NotificationsService extends Service {
                     .setSmallIcon(R.drawable.notification)
                     .setContentText("Push service: tap to learn more").build();
             startForeground(9999,notification);
+            } catch (Throwable ignore) {
+                Log.d("Fork Client", "Failed to set intent");
+            }
         }
     }
 
