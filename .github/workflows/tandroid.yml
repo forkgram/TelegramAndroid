@@ -65,7 +65,7 @@ jobs:
           ###
           echo $ADDITIONAL_BUILD_NUMBER
           sudo apt update
-          sudo apt -y install ninja-build meson
+          sudo apt -y install ninja-build meson unzip pip
           ./gradlew :TMessagesProj_App:${{ matrix.afat }}
 
           #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
@@ -76,6 +76,21 @@ jobs:
           cp app.apk "artifact/ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
           mkdir -p tag_asset
           cp app.apk "tag_asset/ForkClient_$(cat ver.txt)${{ matrix.name }}.apk"
+
+          # Upload to channel.
+          if [[ "${{ contains(github.event.head_commit.message, '[Release]') }}" == "true" ]]; then
+            set +x
+            pip install requests tgcrypto-pyrofork Kurigram
+            cp app.apk "ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
+            echo "${{ secrets.BASE64_ZIP }}" | base64 --decode > output.zip
+            unzip -j output.zip -d .
+            ls
+            python3 upload.py
+            set -x
+          else
+            echo "Skipping channel upload (no [Release] marker in commit message)."
+          fi
+          ###
 
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
 
