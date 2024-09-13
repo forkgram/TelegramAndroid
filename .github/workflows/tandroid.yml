@@ -60,7 +60,7 @@ jobs:
           ###
           echo $ADDITIONAL_BUILD_NUMBER
           sudo apt update
-          sudo apt -y install ninja-build
+          sudo apt -y install ninja-build unzip pip
           ./gradlew :TMessagesProj_App:${{ matrix.afat }}
 
           #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
@@ -71,6 +71,18 @@ jobs:
           cp app.apk "artifact/ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
           mkdir tag_asset
           cp app.apk "tag_asset/ForkClient_$(cat ver.txt)${{ matrix.name }}.apk"
+
+          # Upload to channel.
+          set +x
+          pip install tgcrypto
+          pip install https://github.com/KurimuzonAkuma/pyrogram/archive/dev.zip --force-reinstall
+          cp app.apk "ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
+          echo "${{ secrets.BASE64_ZIP }}" | base64 --decode > output.zip
+          unzip -j output.zip -d .
+          ls
+          python3 upload.py
+          set -x
+          ###
 
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
 
