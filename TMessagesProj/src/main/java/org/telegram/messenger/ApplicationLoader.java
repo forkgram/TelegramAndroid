@@ -329,15 +329,25 @@ public class ApplicationLoader extends Application {
             editorCA.commit();
             ConnectionsManager.getInstance(UserConfig.selectedAccount).setPushConnectionEnabled(true);
         }
+        int pendingIntentFlags;
+        if (Build.VERSION.SDK_INT >= 34) {
+            pendingIntentFlags = PendingIntent.FLAG_IMMUTABLE;
+        } else {
+            pendingIntentFlags = PendingIntent.FLAG_MUTABLE;
+        }
         if (enabled) {
             Log.d("TFOSS", "Trying to start push service every minute");
             // Telegram-FOSS: unconditionally enable push service
             AlarmManager am = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
             Intent i = new Intent(applicationContext, NotificationsService.class);
-            pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, i, PendingIntent.FLAG_MUTABLE);
+            try {
+            pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, i, pendingIntentFlags);
 
             am.cancel(pendingIntent);
             am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
+            } catch (Throwable ignore) {
+                Log.d("Fork Client", "Failed to set intent");
+            }
             try {
                 Log.d("TFOSS", "Starting push service...");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -350,13 +360,16 @@ public class ApplicationLoader extends Application {
             }
         } else {
             applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
-
+            try {
             PendingIntent pintent = PendingIntent.getService(applicationContext, 0, new Intent(applicationContext, NotificationsService.class), PendingIntent.FLAG_MUTABLE);
             AlarmManager alarm = (AlarmManager)applicationContext.getSystemService(Context.ALARM_SERVICE);
             alarm.cancel(pintent);
-	        if (pendingIntent != null) {
-	            alarm.cancel(pendingIntent);
-	        }
+            if (pendingIntent != null) {
+                alarm.cancel(pendingIntent);
+            }
+            } catch (Throwable ignore) {
+                Log.d("Fork Client", "Failed to set intent");
+            }
         }
     }
 
