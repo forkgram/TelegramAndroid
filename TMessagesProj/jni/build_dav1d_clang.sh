@@ -1,6 +1,54 @@
 #!/bin/bash
 set -e
 
+function build_one {
+	echo "Building ${ARCH}..."
+
+	PREBUILT=${NDK}/toolchains/${PREBUILT_ARCH}${PREBUILT_MIDDLE}-${VERSION}/prebuilt/${BUILD_PLATFORM}
+	PLATFORM=${NDK}/platforms/android-${ANDROID_API}/arch-${ARCH}
+
+	TOOLS_PREFIX="${LLVM_BIN}/${ARCH_NAME}-linux-${BIN_MIDDLE}-"
+
+	LD=${TOOLS_PREFIX}ld
+	AR=${TOOLS_PREFIX}ar
+	STRIP=${TOOLS_PREFIX}strip
+	NM=${TOOLS_PREFIX}nm
+
+	CC_PREFIX="${LLVM_BIN}/${CLANG_PREFIX}-linux-${BIN_MIDDLE}${ANDROID_API}-"
+
+	CC=${CC_PREFIX}clang
+	CXX=${CC_PREFIX}clang++
+	CROSS_PREFIX=${PREBUILT}/bin/${ARCH_NAME}-linux-${BIN_MIDDLE}-
+	
+	INCLUDES=" -I${LIBVPXPREFIX}/include"
+	LIBS=" -L${LIBVPXPREFIX}/lib"
+
+	echo "Cleaning..."
+	rm -f config.h
+	make clean || true
+
+	echo "Configuring..."
+
+	meson setup builddir-${ARCH} \
+	  --prefix "$PREFIX" \
+	  --libdir="lib" \
+	  --includedir="include" \
+	  --buildtype=release -Denable_tests=false -Denable_tools=false -Ddefault_library=static \
+	  --cross-file <(echo "
+		[binaries]
+		c = '${CC}'
+		ar = '${AR}'
+		
+		[host_machine]
+		system = 'android'
+		cpu_family = '${MESON_CPU_FAMILY}'
+		cpu = '${MESON_CPU}'
+		endian = 'little'
+	  ")
+	ninja -C builddir-${ARCH}
+	ninja -C builddir-${ARCH} install
+}
+
 function setCurrentPlatform {
 
 	CURRENT_PLATFORM="$(uname -s)"
@@ -54,110 +102,83 @@ function build {
 	for arg in "$@"; do
 		case "${arg}" in
 			x86_64)
+				ANDROID_API=21
+
 				ARCH=x86_64
-				PREFIX="$(pwd)/build/"
+				ARCH_NAME=x86_64
+				PREBUILT_ARCH=x86_64
+				PREBUILT_MIDDLE=
+				CLANG_PREFIX=x86_64
+				BIN_MIDDLE=android
+				CPU=x86_64
+				PREFIX="$(pwd)/build/x86_64"
+				LIBVPXPREFIX=../libvpx/build/$ARCH_NAME
+				ADDITIONAL_CONFIGURE_FLAG="--disable-asm"
 
-				echo "Building ${ARCH}..."
-				echo "Configuring..."
+				MESON_CPU=x86_64
+				MESON_CPU_FAMILY=x86_64
 
-				meson setup builddir-x86_64 \
-				  --prefix "$PREFIX/x86_64" \
-				  --libdir="lib" \
-				  --includedir="include" \
-				  --buildtype=release -Denable_tests=false -Denable_tools=false -Ddefault_library=static \
-				  --cross-file <(echo "
-					[binaries]
-					c = '${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/x86_64-linux-android21-clang'
-					ar = '${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/x86_64-linux-android-ar'
-					
-					[host_machine]
-					system = 'android'
-					cpu_family = 'x86_64'
-					cpu = 'x86_64'
-					endian = 'little'
-				  ")
-				ninja -C builddir-x86_64
-				ninja -C builddir-x86_64 install
-			;;
-			x86)
-				ARCH=x86
-				PREFIX="$(pwd)/build/"
-
-				echo "Building ${ARCH}..."
-				echo "Configuring..."
-
-				meson setup builddir-x86 \
-				  --prefix "$PREFIX/x86" \
-				  --libdir="lib" \
-				  --includedir="include" \
-				  --buildtype=release -Denable_tests=false -Denable_tools=false -Ddefault_library=static \
-				  --cross-file <(echo "
-					[binaries]
-					c = '${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/i686-linux-android21-clang'
-					ar = '${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/i686-linux-android-ar'
-					
-					[host_machine]
-					system = 'android'
-					cpu_family = 'x86'
-					cpu = 'i686'
-					endian = 'little'
-				  ")
-				ninja -C builddir-x86
-				ninja -C builddir-x86 install
+				build_one
 			;;
 			arm64)
+				ANDROID_API=21
+
 				ARCH=arm64
-				PREFIX="$(pwd)/build/"
+				ARCH_NAME=aarch64
+				PREBUILT_ARCH=aarch64
+				PREBUILT_MIDDLE="-linux-android"
+				CLANG_PREFIX=aarch64
+				BIN_MIDDLE=android
+				CPU=arm64-v8a
+				OPTIMIZE_CFLAGS=
+				PREFIX="$(pwd)/build/arm64-v8a"
+				LIBVPXPREFIX=../libvpx/build/$CPU
+				ADDITIONAL_CONFIGURE_FLAG="--enable-neon --enable-optimizations"
 
-				echo "Building ${ARCH}..."
-				echo "Configuring..."
+				MESON_CPU=arm64
+				MESON_CPU_FAMILY=aarch64
 
-				meson setup builddir-arm64 \
-				  --prefix "$PREFIX/arm64-v8a" \
-				  --libdir="lib" \
-				  --includedir="include" \
-				  --buildtype=release -Denable_tests=false -Denable_tools=false -Ddefault_library=static \
-				  --cross-file <(echo "
-					[binaries]
-					c = '${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android21-clang'
-					ar = '${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android-ar'
-					
-					[host_machine]
-					system = 'android'
-					cpu_family = 'aarch64'
-					cpu = 'arm64'
-					endian = 'little'
-				  ")
-				ninja -C builddir-arm64
-				ninja -C builddir-arm64 install
-
+				build_one
 			;;
 			arm)
+				ANDROID_API=16
+
 				ARCH=arm
-				PREFIX="$(pwd)/build/"
+				ARCH_NAME=arm
+				PREBUILT_ARCH=arm
+				PREBUILT_MIDDLE="-linux-androideabi"
+				CLANG_PREFIX=armv7a
+				BIN_MIDDLE=androideabi
+				CPU=armv7-a
+				OPTIMIZE_CFLAGS="-marm -march=$CPU"
+				PREFIX="$(pwd)/build/armeabi-v7a"
+				LIBVPXPREFIX=../libvpx/build/armeabi-v7a
+				ADDITIONAL_CONFIGURE_FLAG=--enable-neon
 
-				echo "Building ${ARCH}..."
-				echo "Configuring..."
+				MESON_CPU=armv7
+				MESON_CPU_FAMILY=arm
 
-				meson setup builddir-armv7 \
-				  --prefix "$PREFIX/armeabi-v7a" \
-				  --libdir="lib" \
-				  --includedir="include" \
-				  --buildtype=release -Denable_tests=false -Denable_tools=false -Ddefault_library=static \
-				  --cross-file <(echo "
-					[binaries]
-					c = '${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang'
-					ar = '${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-ar'
-					
-					[host_machine]
-					system = 'android'
-					cpu_family = 'arm'
-					cpu = 'armv7'
-					endian = 'little'
-				  ") \
-				  -Dc_args="-DDAV1D_NO_GETAUXVAL"
-				ninja -C builddir-armv7
-				ninja -C builddir-armv7 install
+				build_one
+			;;
+			x86)
+				ANDROID_API=16
+
+				ARCH=x86
+				ARCH_NAME=i686
+				PREBUILT_ARCH=x86
+				PREBUILT_MIDDLE=
+				CLANG_PREFIX=i686
+				BIN_MIDDLE=android
+				CPU=i686
+				OPTIMIZE_CFLAGS="-march=$CPU"
+				PREFIX="$(pwd)/build/x86"
+				LIBVPXPREFIX=../libvpx/build/$ARCH
+				ADDITIONAL_CONFIGURE_FLAG="--disable-x86asm --disable-inline-asm --disable-asm"
+
+				MESON_CPU=i686
+				MESON_CPU_FAMILY=x86
+
+				build_one
 			;;
 			*)
 			;;
