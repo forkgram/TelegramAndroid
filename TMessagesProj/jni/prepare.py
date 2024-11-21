@@ -392,6 +392,15 @@ if customRunCommand:
         finish(1)
     finish(0)
 
+stage('dav1d', """
+    git submodule init && git submodule update
+    cd dav1d && git reset --hard HEAD && cd ..
+    export NDK={ndk}
+    export NINJA_PATH=`which ninja`
+    ./build_dav1d_clang.sh {archesStr}
+    echo "Built archs: {archesStr}"
+""".format(ndk=ndkPath,archesStr=' '.join(arches)))
+
 stage('libvpx', """
     git submodule init && git submodule update
     cd libvpx && git reset --hard HEAD && cd ..
