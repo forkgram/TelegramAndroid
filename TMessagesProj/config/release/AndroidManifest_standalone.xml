@@ -37,7 +37,7 @@
         android:largeHeap="true"
         android:supportsRtl="false"
         android:requestLegacyExternalStorage="true"
-        tools:replace="android:supportsRtl">
+        tools:replace="android:supportsRtl, android:label">
 
         <activity-alias
             android:enabled="false"
