@@ -20,6 +20,8 @@
     <string name="DisableFlipPhotosInfo">Niet naar de volgende foto gaan bij tikken op de schermranden.</string>
     <string name="RearVideoMessagesInfo">Videoberichten opnemen met de camera aan de achterkant.</string>
     <string name="DisableRecentFilesAttachmentInfo">De lijst met recente bestanden in het bijlagemenu verbergen.</string>
+    <string name="BotSkipShareInfo">Verzoeken van mini-apps om een bericht te delen stilzwijgend negeren.</string>
+    <string name="BotSkipFullscreenInfo">Mini-apps niet laten overschakelen naar volledig scherm.</string>
     <string name="DisableParametersFromBotLinksInfo">Startparameters uit botlinks verwijderen voordat ze worden geopend.</string>
     <string name="LockPremiumInfo">Telegram Premium-advertenties en de abonneerknop verbergen. Herstart vereist.</string>
     <string name="ForkRestartRequired">Herstart vereist</string>
@@ -80,6 +82,12 @@
     <string name="NewMyStory">Nieuw verhaal</string>
     <string name="DisableSlideToNextChannel">Veeg naar het volgende kanaal uitschakelen</string>
     <string name="DisableRecentFilesAttachment">Recente bestanden uitschakelen</string>
+    <string name="BotSkipShare">Deelvensters van bots overslaan</string>
+    <string name="BotSkipFullscreen">Volledig scherm voor bots uitschakelen</string>
+    <string name="BotSetPlatform">Platform wijzigen</string>
+    <string name="BotSetPlatformTitle">Botplatform wijzigen</string>
+    <string name="BotSetPlatformAbout">Start opnieuw op na de wijziging om het nieuwe platform voor de huidige bot toe te passen.</string>
+    <string name="BotCopyUrl">Elke aangeklikte link kopiëren</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
