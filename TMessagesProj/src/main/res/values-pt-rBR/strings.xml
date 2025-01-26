@@ -20,6 +20,8 @@
     <string name="DisableFlipPhotosInfo">Não passar para a próxima foto ao tocar nas bordas da tela.</string>
     <string name="RearVideoMessagesInfo">Gravar as mensagens de vídeo com a câmera traseira.</string>
     <string name="DisableRecentFilesAttachmentInfo">Ocultar a lista de arquivos recentes no menu de anexos.</string>
+    <string name="BotSkipShareInfo">Descartar silenciosamente os pedidos de compartilhar mensagem dos mini apps.</string>
+    <string name="BotSkipFullscreenInfo">Não permitir que os mini apps entrem em tela cheia.</string>
     <string name="DisableParametersFromBotLinksInfo">Remover os parâmetros de início dos links de bots antes de abri-los.</string>
     <string name="LockPremiumInfo">Ocultar os anúncios do Telegram Premium e o botão de assinatura. Reinício necessário.</string>
     <string name="ForkRestartRequired">Reinício necessário</string>
@@ -80,6 +82,10 @@
     <string name="NewMyStory">Nova história</string>
     <string name="DisableSlideToNextChannel">Desativar deslizar para o próximo canal</string>
     <string name="DisableRecentFilesAttachment">Desativar arquivos recentes</string>
+    <string name="BotSetPlatform">Alterar plataforma</string>
+    <string name="BotSetPlatformTitle">Alterar plataforma do bot</string>
+    <string name="BotSetPlatformAbout">Reinicie após a alteração para aplicar a nova plataforma ao bot atual.</string>
+    <string name="BotCopyUrl">Copiar cada link clicado</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
