@@ -21,6 +21,8 @@
     <string name="DisableFlipPhotosInfo">Do not switch to the next photo when the screen edges are tapped.</string>
     <string name="RearVideoMessagesInfo">Start recording video messages with the rear camera.</string>
     <string name="DisableRecentFilesAttachmentInfo">Hide the recent files list in the attachment menu.</string>
+    <string name="BotSkipShareInfo">Silently dismiss share-this-message requests from mini apps.</string>
+    <string name="BotSkipFullscreenInfo">Do not let mini apps switch to fullscreen mode.</string>
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
     <string name="LockPremiumInfo">Hide Telegram Premium ads and the subscribe button. Restart required.</string>
     <string name="ForkRestartRequired">Restart required</string>
@@ -81,6 +83,12 @@
     <string name="NewMyStory">New Story</string>
     <string name="DisableSlideToNextChannel">Disable slide to next channel</string>
     <string name="DisableRecentFilesAttachment">Disable Recent Files</string>
+    <string name="BotSkipShare">Skip share boxes from bots</string>
+    <string name="BotSkipFullscreen">Disable fullscreen for bots</string>
+    <string name="BotSetPlatform">Change platform</string>
+    <string name="BotSetPlatformTitle">Change bot platform</string>
+    <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
+    <string name="BotCopyUrl">Copy every clicked link</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
