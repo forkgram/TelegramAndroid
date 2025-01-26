@@ -1470,7 +1470,7 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
                     TLRPC.TL_messages_requestWebView req = new TLRPC.TL_messages_requestWebView();
                     req.bot = MessagesController.getInstance(currentAccount).getInputUser(botId);
                     req.peer = MessagesController.getInstance(currentAccount).getInputPeer(botId);
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.compact = props.compact;
                     req.fullscreen = props.fullscreen;
 
@@ -1499,7 +1499,7 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
                     TLRPC.TL_messages_requestSimpleWebView req = new TLRPC.TL_messages_requestSimpleWebView();
                     req.from_switch_webview = (props.flags & FLAG_FROM_INLINE_SWITCH) != 0;
                     req.bot = MessagesController.getInstance(currentAccount).getInputUser(botId);
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.from_side_menu = (props.flags & FLAG_FROM_SIDE_MENU) != 0;
                     req.compact = props.compact;
                     req.fullscreen = props.fullscreen;
@@ -1531,7 +1531,7 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
                     TLRPC.TL_messages_requestWebView req = new TLRPC.TL_messages_requestWebView();
                     req.peer = MessagesController.getInstance(currentAccount).getInputPeer(peerId);
                     req.bot = MessagesController.getInstance(currentAccount).getInputUser(botId);
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.compact = props.compact;
                     req.fullscreen = props.fullscreen;
                     if (props.buttonUrl != null) {
@@ -1577,7 +1577,7 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
 
                     req.app = botApp;
                     req.write_allowed = props.allowWrite;
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.peer = fragment instanceof ChatActivity ? ((ChatActivity) fragment).getCurrentUser() != null ? MessagesController.getInputPeer(((ChatActivity) fragment).getCurrentUser()) : MessagesController.getInputPeer(((ChatActivity) fragment).getCurrentChat())
                             : MessagesController.getInputPeer(props.botUser);
                     req.compact = props.compact;
@@ -1608,7 +1608,7 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
                     TLRPC.TL_messages_requestMainWebView req = new TLRPC.TL_messages_requestMainWebView();
 
                     req.bot = MessagesController.getInstance(currentAccount).getInputUser(props.botId);
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.peer = fragment instanceof ChatActivity ? ((ChatActivity) fragment).getCurrentUser() != null ? MessagesController.getInputPeer(((ChatActivity) fragment).getCurrentUser()) : MessagesController.getInputPeer(((ChatActivity) fragment).getCurrentChat())
                             : MessagesController.getInputPeer(props.botUser);
                     req.compact = props.compact;
@@ -1704,6 +1704,41 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
             })
             .addIf(onVerifiedAge == null && currentBot != null && (currentBot.show_in_side_menu || currentBot.show_in_attach_menu), R.drawable.msg_delete, LocaleController.getString(R.string.BotWebViewDeleteBot), () -> {
                 deleteBot(currentAccount, botId, () -> dismiss());
+            })
+            .addSpaceGap()
+            .add(R.drawable.msg_bot, LocaleController.getString(R.string.BotSetPlatform), () -> {
+                String[] platforms = { "android", "tdesktop", "ios", "macos" };
+                int[] icons = new int[platforms.length];
+                String wasPlatform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
+                for (int i = 0; i < platforms.length; i++) {
+                    icons[i] = (wasPlatform.equals(platforms[i])) ? R.drawable.msg_text_check : 0;
+                }
+
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                    .setTitle(LocaleController.getString(R.string.BotSetPlatformTitle))
+                    .forceVerticalButtons()
+                    .setMessage(LocaleController.getString(R.string.BotSetPlatformAbout))
+                    .setNegativeButton(LocaleController.getString(R.string.Cancel), null)
+                    .setItems(platforms, icons, (d, which) -> {
+                        android.content.SharedPreferences.Editor editor = MessagesController.getMainSettings(currentAccount).edit();
+                        editor.putString("bot_platform_" + botId, platforms[which]);
+                        editor.commit();
+                    })
+                    .create();
+                dialog.show();
+            })
+            .add(org.telegram.ui.ForkSettingsActivity.GetBotCopyLink(currentAccount, botId)
+                    ? R.drawable.msg_text_check
+                    : 0,
+                LocaleController.getString(R.string.BotCopyUrl),
+                () -> {
+                    android.content.SharedPreferences.Editor editor = MessagesController.getMainSettings(currentAccount).edit();
+                    editor.putBoolean("bot_copy_link_" + botId, !org.telegram.ui.ForkSettingsActivity.GetBotCopyLink(currentAccount, botId));
+                    editor.commit();
+                    android.widget.Toast.makeText(
+                        getContext(),
+                        LocaleController.getString(R.string.OK),
+                        android.widget.Toast.LENGTH_SHORT).show();
             });
 
         if (actionBarColor != Theme.getColor(Theme.key_windowBackgroundWhite)) {
@@ -2189,7 +2224,10 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
 
     private boolean resetOffsetY = true;
     private ValueAnimator fullscreenAnimator;
-    public void setFullscreen(boolean fullscreen, boolean animated) {
+    public void setFullscreen(boolean fullscreenF, boolean animated) {
+        final boolean fullscreen = org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("botSkipFullscreen", false)
+            ? false
+            : fullscreenF;
         if (this.fullscreen == fullscreen) return;
         this.fullscreen = fullscreen;
         if (fullscreenAnimator != null) {
