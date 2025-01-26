@@ -1647,6 +1647,14 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                 try {
                     JSONObject jsonData = new JSONObject(eventData);
                     Uri uri = Uri.parse(jsonData.optString("url"));
+                    if (org.telegram.ui.ForkSettingsActivity.GetBotCopyLink(currentAccount, botUser.id)) {
+                        AndroidUtilities.addToClipboard(uri.toString());
+                        android.widget.Toast.makeText(
+                            getContext(),
+                            LocaleController.getString(R.string.AffiliateProgramLinkCopiedTitle),
+                            android.widget.Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                     String browser = jsonData.optString("try_browser");
                     if (MessagesController.getInstance(currentAccount).webAppAllowedProtocols != null &&
                         MessagesController.getInstance(currentAccount).webAppAllowedProtocols.contains(uri.getScheme())) {
@@ -1661,6 +1669,14 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                 try {
                     JSONObject jsonData = new JSONObject(eventData);
                     String pathFull = jsonData.optString("path_full");
+                    if (org.telegram.ui.ForkSettingsActivity.GetBotCopyLink(currentAccount, botUser.id)) {
+                        AndroidUtilities.addToClipboard(pathFull);
+                        android.widget.Toast.makeText(
+                            getContext(),
+                            LocaleController.getString(R.string.AffiliateProgramLinkCopiedTitle),
+                            android.widget.Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                     boolean force_request = jsonData.optBoolean("force_request", false);
                     if (pathFull.startsWith("/")) {
                         pathFull = pathFull.substring(1);
@@ -2557,6 +2573,12 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                 if (TextUtils.isEmpty(id)) {
                     notifyEvent("prepared_message_failed", obj("error", "MESSAGE_EXPIRED"));
                     return;
+                }
+                if (org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("botSkipShare", false)) {
+                    AndroidUtilities.runOnUIThread(() -> {
+                        notifyEvent("prepared_message_sent", null);
+                    }, 1500);
+                    break;
                 }
 
                 BotShareSheet.share(getContext(), currentAccount, botUser.id, id, resourcesProvider, () -> {
@@ -3705,7 +3727,18 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                                     opener.botWebViewContainer.delegate.onCloseToTabs();
                                 }
                             }
+                            if (botWebViewContainer.botUser != null
+                                && org.telegram.ui.ForkSettingsActivity.GetBotCopyLink(
+                                    botWebViewContainer.currentAccount,
+                                    botWebViewContainer.botUser.id)) {
+                                AndroidUtilities.addToClipboard(uriNew.toString());
+                                android.widget.Toast.makeText(
+                                    getContext(),
+                                    LocaleController.getString(R.string.AffiliateProgramLinkCopiedTitle),
+                                    android.widget.Toast.LENGTH_SHORT).show();
+                            } else {
                             botWebViewContainer.onOpenUri(uriNew);
+                            }
                         }
                         d("shouldOverrideUrlLoading("+url+") = true");
                         return true;
