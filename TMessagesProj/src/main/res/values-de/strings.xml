@@ -20,6 +20,8 @@
     <string name="DisableFlipPhotosInfo">Beim Tippen auf die Bildschirmränder nicht zum nächsten Foto wechseln.</string>
     <string name="RearVideoMessagesInfo">Videonachrichten mit der Rückkamera aufnehmen.</string>
     <string name="DisableRecentFilesAttachmentInfo">Die Liste der zuletzt verwendeten Dateien im Anhangsmenü ausblenden.</string>
+    <string name="BotSkipShareInfo">Anfragen von Mini-Apps zum Teilen einer Nachricht stillschweigend ablehnen.</string>
+    <string name="BotSkipFullscreenInfo">Mini-Apps nicht in den Vollbildmodus wechseln lassen.</string>
     <string name="DisableParametersFromBotLinksInfo">Start-Parameter aus Bot-Links vor dem Öffnen entfernen.</string>
     <string name="LockPremiumInfo">Telegram-Premium-Werbung und die Abo-Schaltfläche ausblenden. Neustart erforderlich.</string>
     <string name="ForkRestartRequired">Neustart erforderlich</string>
@@ -80,6 +82,12 @@
     <string name="NewMyStory">Neue Geschichte</string>
     <string name="DisableSlideToNextChannel">Wischen zum nächsten Kanal deaktivieren</string>
     <string name="DisableRecentFilesAttachment">Neueste Dateien deaktivieren</string>
+    <string name="BotSkipShare">Teilen-Dialoge von Bots überspringen</string>
+    <string name="BotSkipFullscreen">Vollbildmodus für Bots deaktivieren</string>
+    <string name="BotSetPlatform">Plattform ändern</string>
+    <string name="BotSetPlatformTitle">Bot-Plattform ändern</string>
+    <string name="BotSetPlatformAbout">Bitte starten Sie die App nach der Änderung neu, um die neue Plattform für den aktuellen Bot anzuwenden.</string>
+    <string name="BotCopyUrl">Jeden angeklickten Link kopieren</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
