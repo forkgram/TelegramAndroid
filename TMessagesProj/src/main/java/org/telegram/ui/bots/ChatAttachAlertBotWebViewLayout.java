@@ -498,7 +498,7 @@ public class ChatAttachAlertBotWebViewLayout extends ChatAttachAlert.AttachAlert
         req.peer = MessagesController.getInstance(currentAccount).getInputPeer(peerId);
         req.bot = MessagesController.getInstance(currentAccount).getInputUser(botId);
         req.silent = silent;
-        req.platform = "android";
+        req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
 
         if (peerId < 0) {
             TLRPC.ChatFull chatFull = MessagesController.getInstance(currentAccount).getChatFull(-peerId);
