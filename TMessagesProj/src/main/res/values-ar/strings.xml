@@ -20,6 +20,8 @@
     <string name="DisableFlipPhotosInfo">عدم الانتقال إلى الصورة التالية عند النقر على حواف الشاشة.</string>
     <string name="RearVideoMessagesInfo">تسجيل رسائل الفيديو بالكاميرا الخلفية.</string>
     <string name="DisableRecentFilesAttachmentInfo">إخفاء قائمة الملفات الأخيرة في قائمة المرفقات.</string>
+    <string name="BotSkipShareInfo">تجاهل طلبات مشاركة الرسائل من التطبيقات المصغرة بصمت.</string>
+    <string name="BotSkipFullscreenInfo">عدم السماح للتطبيقات المصغرة بالتبديل إلى وضع ملء الشاشة.</string>
     <string name="DisableParametersFromBotLinksInfo">إزالة معاملات البدء من روابط البوتات قبل فتحها.</string>
     <string name="LockPremiumInfo">إخفاء إعلانات Telegram Premium وزر الاشتراك. إعادة التشغيل مطلوبة.</string>
     <string name="ForkRestartRequired">إعادة التشغيل مطلوبة</string>
@@ -80,6 +82,12 @@
     <string name="NewMyStory">قصة جديدة</string>
     <string name="DisableSlideToNextChannel">تعطيل السحب إلى القناة التالية</string>
     <string name="DisableRecentFilesAttachment">تعطيل الملفات الحديثة</string>
+    <string name="BotSkipShare">تخطي مربعات المشاركة من الروبوتات</string>
+    <string name="BotSkipFullscreen">تعطيل ملء الشاشة للروبوتات</string>
+    <string name="BotSetPlatform">تغيير المنصة</string>
+    <string name="BotSetPlatformTitle">تغيير منصة الروبوت</string>
+    <string name="BotSetPlatformAbout">يُرجى إعادة التشغيل بعد التغيير لتطبيق المنصة الجديدة على الروبوت الحالي.</string>
+    <string name="BotCopyUrl">نسخ كل رابط يتم النقر عليه</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

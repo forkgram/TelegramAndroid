@@ -91,6 +91,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_REAR_VIDEO_MESSAGES = 55;
     public static final int ID_DISABLE_RECENT_FILES_ATTACHMENT = 57;
 
+    public static final int ID_BOT_SKIP_SHARE = 70;
+    public static final int ID_BOT_SKIP_FULLSCREEN = 71;
     public static final int ID_DISABLE_PARAMETERS_FROM_BOT_LINKS = 72;
 
     public static final int ID_LOCK_PREMIUM = 83;
@@ -430,6 +432,10 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionBots)));
+        items.add(UItem.asButtonCheck(ID_BOT_SKIP_SHARE, LocaleController.getString(R.string.BotSkipShare), LocaleController.getString(R.string.BotSkipShareInfo))
+            .setChecked(pref("botSkipShare", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_BOT_SKIP_FULLSCREEN, LocaleController.getString(R.string.BotSkipFullscreen), LocaleController.getString(R.string.BotSkipFullscreenInfo))
+            .setChecked(pref("botSkipFullscreen", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_PARAMETERS_FROM_BOT_LINKS, LocaleController.getString(R.string.DisableParametersFromBotLinks), LocaleController.getString(R.string.DisableParametersFromBotLinksInfo))
             .setChecked(pref("disableParametersFromBotLinks", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -519,6 +525,10 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_DISABLE_RECENT_FILES_ATTACHMENT) {
             toggle("disableRecentFilesAttachment", item, view);
 
+        } else if (id == ID_BOT_SKIP_SHARE) {
+            toggle("botSkipShare", item, view);
+        } else if (id == ID_BOT_SKIP_FULLSCREEN) {
+            toggle("botSkipFullscreen", item, view);
         } else if (id == ID_DISABLE_PARAMETERS_FROM_BOT_LINKS) {
             toggle("disableParametersFromBotLinks", item, view);
         } else if (id == ID_LOCK_PREMIUM) {
@@ -592,4 +602,11 @@ public class ForkSettingsActivity extends BaseFragment {
 
     @Override
 
+    public static String GetBotPlatform(int currentAccount, long botId) {
+        return MessagesController.getMainSettings(currentAccount).getString("bot_platform_" + botId, "android");
+    }
+
+    public static boolean GetBotCopyLink(int currentAccount, long botId) {
+        return MessagesController.getMainSettings(currentAccount).getBoolean("bot_copy_link_" + botId, false);
+    }
 }
