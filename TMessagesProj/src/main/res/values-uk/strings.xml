@@ -20,6 +20,8 @@
     <string name="DisableFlipPhotosInfo">Не перемикати фото під час натискання на краї екрана.</string>
     <string name="RearVideoMessagesInfo">Починати запис відеоповідомлень з основної камери.</string>
     <string name="DisableRecentFilesAttachmentInfo">Приховувати список нещодавніх файлів у меню вкладень.</string>
+    <string name="BotSkipShareInfo">Мовчки відхиляти запити міні-застосунків на надсилання повідомлення.</string>
+    <string name="BotSkipFullscreenInfo">Не дозволяти міні-застосункам переходити в повноекранний режим.</string>
     <string name="DisableParametersFromBotLinksInfo">Прибирати start-параметри з посилань на ботів перед відкриттям.</string>
     <string name="LockPremiumInfo">Приховувати рекламу Telegram Premium і кнопку підписки. Потрібен перезапуск.</string>
     <string name="ForkRestartRequired">Потрібен перезапуск</string>
@@ -80,6 +82,12 @@
     <string name="NewMyStory">Нова історія</string>
     <string name="DisableSlideToNextChannel">Вимкнути прокрутку до наступного каналу</string>
     <string name="DisableRecentFilesAttachment">Вимкнути недавні файли</string>
+    <string name="BotSkipShare">Пропускати вікна «Поділитися» від ботів</string>
+    <string name="BotSkipFullscreen">Вимкнути повноекранний режим для ботів</string>
+    <string name="BotSetPlatform">Змінити платформу</string>
+    <string name="BotSetPlatformTitle">Змінити платформу бота</string>
+    <string name="BotSetPlatformAbout">Після зміни перезапустіть додаток, щоб застосувати нову платформу для поточного бота.</string>
+    <string name="BotCopyUrl">Копіювати кожне натиснуте посилання</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
