@@ -20,6 +20,8 @@
     <string name="DisableFlipPhotosInfo">Не переключать фото при нажатии на края экрана.</string>
     <string name="RearVideoMessagesInfo">Начинать запись видеосообщений с основной камеры.</string>
     <string name="DisableRecentFilesAttachmentInfo">Скрывать список недавних файлов в меню вложений.</string>
+    <string name="BotSkipShareInfo">Молча отклонять запросы мини-приложений на отправку сообщения.</string>
+    <string name="BotSkipFullscreenInfo">Не позволять мини-приложениям переходить в полноэкранный режим.</string>
     <string name="DisableParametersFromBotLinksInfo">Убирать start-параметры из ссылок на ботов перед открытием.</string>
     <string name="LockPremiumInfo">Скрывать рекламу Telegram Premium и кнопку подписки. Требуется перезапуск.</string>
     <string name="ForkRestartRequired">Требуется перезапуск</string>
@@ -80,6 +82,12 @@
     <string name="NewMyStory">Новая история</string>
     <string name="DisableSlideToNextChannel">Отключить слайд на следующий канал</string>
     <string name="DisableRecentFilesAttachment">Отключить недавние файлы</string>
+    <string name="BotSkipShare">Пропускать окна «Поделиться» от ботов</string>
+    <string name="BotSkipFullscreen">Отключить полноэкранный режим для ботов</string>
+    <string name="BotSetPlatform">Изменить платформу</string>
+    <string name="BotSetPlatformTitle">Изменить платформу бота</string>
+    <string name="BotSetPlatformAbout">После изменения перезапустите приложение, чтобы применить новую платформу для текущего бота.</string>
+    <string name="BotCopyUrl">Копировать каждую нажатую ссылку</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
