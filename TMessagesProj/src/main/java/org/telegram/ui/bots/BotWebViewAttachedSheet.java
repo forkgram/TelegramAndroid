@@ -1085,7 +1085,7 @@ public class BotWebViewAttachedSheet implements NotificationCenter.NotificationC
                     TLRPC.TL_messages_requestWebView req = new TLRPC.TL_messages_requestWebView();
                     req.bot = MessagesController.getInstance(currentAccount).getInputUser(botId);
                     req.peer = MessagesController.getInstance(currentAccount).getInputPeer(botId);
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.compact = props.compact;
                     req.fullscreen = props.fullscreen;
 
@@ -1114,7 +1114,7 @@ public class BotWebViewAttachedSheet implements NotificationCenter.NotificationC
                     TLRPC.TL_messages_requestSimpleWebView req = new TLRPC.TL_messages_requestSimpleWebView();
                     req.from_switch_webview = (props.flags & FLAG_FROM_INLINE_SWITCH) != 0;
                     req.bot = MessagesController.getInstance(currentAccount).getInputUser(botId);
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.from_side_menu = (props.flags & FLAG_FROM_SIDE_MENU) != 0;
                     req.compact = props.compact;
                     req.fullscreen = props.fullscreen;
@@ -1146,7 +1146,7 @@ public class BotWebViewAttachedSheet implements NotificationCenter.NotificationC
                     TLRPC.TL_messages_requestWebView req = new TLRPC.TL_messages_requestWebView();
                     req.peer = MessagesController.getInstance(currentAccount).getInputPeer(peerId);
                     req.bot = MessagesController.getInstance(currentAccount).getInputUser(botId);
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.compact = props.compact;
                     req.fullscreen = props.fullscreen;
                     if (props.buttonUrl != null) {
@@ -1184,7 +1184,7 @@ public class BotWebViewAttachedSheet implements NotificationCenter.NotificationC
 
                     req.app = botApp;
                     req.write_allowed = props.allowWrite;
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.peer = fragment instanceof ChatActivity ? ((ChatActivity) fragment).getCurrentUser() != null ? MessagesController.getInputPeer(((ChatActivity) fragment).getCurrentUser()) : MessagesController.getInputPeer(((ChatActivity) fragment).getCurrentChat())
                             : MessagesController.getInputPeer(props.botUser);
                     req.compact = props.compact;
@@ -1214,7 +1214,7 @@ public class BotWebViewAttachedSheet implements NotificationCenter.NotificationC
                 case TYPE_WEB_VIEW_BOT_MAIN: {
                     TLRPC.TL_messages_requestMainWebView req = new TLRPC.TL_messages_requestMainWebView();
 
-                    req.platform = "android";
+                    req.platform = org.telegram.ui.ForkSettingsActivity.GetBotPlatform(currentAccount, botId);
                     req.bot = MessagesController.getInstance(currentAccount).getInputUser(props.botId);
                     req.peer = fragment instanceof ChatActivity ? ((ChatActivity) fragment).getCurrentUser() != null ? MessagesController.getInputPeer(((ChatActivity) fragment).getCurrentUser()) : MessagesController.getInputPeer(((ChatActivity) fragment).getCurrentChat())
                             : MessagesController.getInputPeer(props.botUser);
