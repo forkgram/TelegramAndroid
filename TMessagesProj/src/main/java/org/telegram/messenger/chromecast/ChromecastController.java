@@ -5,16 +5,16 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.MediaError;
-import com.google.android.gms.cast.MediaLoadOptions;
-import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.cast.MediaStatus;
-import com.google.android.gms.cast.framework.CastContext;
-import com.google.android.gms.cast.framework.CastSession;
-import com.google.android.gms.cast.framework.SessionManager;
-import com.google.android.gms.cast.framework.SessionManagerListener;
-import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+//import com.google.android.gms.cast.CastDevice;
+//import com.google.android.gms.cast.MediaError;
+//import com.google.android.gms.cast.MediaLoadOptions;
+//import com.google.android.gms.cast.MediaMetadata;
+//import com.google.android.gms.cast.MediaStatus;
+//import com.google.android.gms.cast.framework.CastContext;
+//import com.google.android.gms.cast.framework.CastSession;
+//import com.google.android.gms.cast.framework.SessionManager;
+//import com.google.android.gms.cast.framework.SessionManagerListener;
+//import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.ui.CastSync;
@@ -22,7 +22,7 @@ import org.telegram.ui.PhotoViewer;
 
 import java.io.File;
 import java.util.Objects;
-
+/*
 public class ChromecastController implements SessionManagerListener<CastSession> {
     private final static String CAST_CONTROLLER = "CAST_CONTROLLER";
     private final static String CAST_SESSION_TAG = "CAST_SESSION";
@@ -116,7 +116,6 @@ public class ChromecastController implements SessionManagerListener<CastSession>
     }
 
 
-    /* * */
 
     private static volatile ChromecastController Instance = null;
 
@@ -135,7 +134,6 @@ public class ChromecastController implements SessionManagerListener<CastSession>
 
 
 
-    /* * */
 
     static class RemoteMediaClientHandler extends RemoteMediaClient.Callback {
         public final RemoteMediaClient client;
@@ -261,7 +259,6 @@ public class ChromecastController implements SessionManagerListener<CastSession>
 
 
 
-    /* Session Listener */
 
     @Override
     public void onSessionStarting(@NonNull CastSession castSession) {
@@ -312,3 +309,4 @@ public class ChromecastController implements SessionManagerListener<CastSession>
     }
 
 }
+*/
