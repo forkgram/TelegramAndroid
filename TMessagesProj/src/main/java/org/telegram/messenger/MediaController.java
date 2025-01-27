@@ -79,11 +79,11 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.extractor.jpeg.MotionPhotoDescription;
 import com.google.android.exoplayer2.extractor.jpeg.XmpMotionPhotoDescriptionParser;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.common.images.WebImage;
+//import com.google.android.gms.cast.MediaMetadata;
+//import com.google.android.gms.common.images.WebImage;
 
 import org.telegram.messenger.audioinfo.AudioInfo;
-import org.telegram.messenger.chromecast.ChromecastController;
+//import org.telegram.messenger.chromecast.ChromecastController;
 import org.telegram.messenger.chromecast.ChromecastFileServer;
 import org.telegram.messenger.chromecast.ChromecastMedia;
 import org.telegram.messenger.chromecast.ChromecastMediaVariations;
@@ -4144,9 +4144,9 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         try {
             CastSync.check(CastSync.TYPE_MUSIC);
             if (!ignorePlayerUpdate) {
-                if (ChromecastController.getInstance().isCasting()) {
-                    ChromecastController.getInstance().setCurrentMediaAndCastIfNeeded(getCurrentChromecastMedia());
-                }
+                //if (ChromecastController.getInstance().isCasting()) {
+                //    ChromecastController.getInstance().setCurrentMediaAndCastIfNeeded(getCurrentChromecastMedia());
+                //}
                 CastSync.setPlaying(true);
             }
         } catch (Exception e) {
@@ -4206,28 +4206,28 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                 final String mime = playingMessageObject.getMimeType();
                 final Uri uri = Uri.parse("file://" + file.getAbsolutePath());
 
-                final MediaMetadata metadata = new MediaMetadata();
+//                final MediaMetadata metadata = new MediaMetadata();
                 if (audioInfo != null) {
                     if (!TextUtils.isEmpty(audioInfo.getTitle())) {
-                        metadata.putString(MediaMetadata.KEY_TITLE, audioInfo.getTitle());
+//                        metadata.putString(MediaMetadata.KEY_TITLE, audioInfo.getTitle());
                     }
                     if (!TextUtils.isEmpty(audioInfo.getArtist())) {
-                        metadata.putString(MediaMetadata.KEY_ARTIST, audioInfo.getArtist());
+//                        metadata.putString(MediaMetadata.KEY_ARTIST, audioInfo.getArtist());
                     }
                     if (!TextUtils.isEmpty(audioInfo.getAlbum())) {
-                        metadata.putString(MediaMetadata.KEY_ALBUM_TITLE, audioInfo.getAlbum());
+//                        metadata.putString(MediaMetadata.KEY_ALBUM_TITLE, audioInfo.getAlbum());
                     }
                     if (!TextUtils.isEmpty(audioInfo.getAlbumArtist())) {
-                        metadata.putString(MediaMetadata.KEY_ALBUM_ARTIST, audioInfo.getAlbumArtist());
+//                        metadata.putString(MediaMetadata.KEY_ALBUM_ARTIST, audioInfo.getAlbumArtist());
                     }
                     if (!TextUtils.isEmpty(audioInfo.getComposer())) {
-                        metadata.putString(MediaMetadata.KEY_COMPOSER, audioInfo.getComposer());
+//                        metadata.putString(MediaMetadata.KEY_COMPOSER, audioInfo.getComposer());
                     }
                     if (audioInfo.getDisc() != 0) {
-                        metadata.putInt(MediaMetadata.KEY_DISC_NUMBER, (int) audioInfo.getDisc());
+//                        metadata.putInt(MediaMetadata.KEY_DISC_NUMBER, (int) audioInfo.getDisc());
                     }
                     if (audioInfo.getTrack() != 0) {
-                        metadata.putInt(MediaMetadata.KEY_TRACK_NUMBER, (int) audioInfo.getTrack());
+//                        metadata.putInt(MediaMetadata.KEY_TRACK_NUMBER, (int) audioInfo.getTrack());
                     }
                     if (audioInfo.getCover() != null) {
                         File coverFile = audioInfo.getCoverFile();
@@ -4251,15 +4251,15 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                             audioInfo.setCoverFile(coverFile);
                         }
                         if (coverFile != null && coverFile.exists()) {
-                            final String path = ChromecastController.getInstance().setCover(coverFile);
-                            metadata.addImage(new WebImage(Uri.parse(ChromecastFileServer.getUrlToSource(ChromecastFileServer.getHost(), path))));
+//                            final String path = ChromecastController.getInstance().setCover(coverFile);
+//                            metadata.addImage(new WebImage(Uri.parse(ChromecastFileServer.getUrlToSource(ChromecastFileServer.getHost(), path))));
                         }
                     }
                 }
                 final ChromecastMedia media = ChromecastMedia.Builder.fromUri(uri, "/player_" + playingMessageObject.getId(), mime)
                     .setTitle(title)
                     .setSubtitle(subtitle)
-                    .setMetadata(metadata)
+//                    .setMetadata(metadata)
                     .build();
 
                 return ChromecastMediaVariations.of(media);
@@ -4376,9 +4376,9 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         try {
             CastSync.check(CastSync.TYPE_MUSIC);
             if (!ignorePlayerUpdate) {
-                if (ChromecastController.getInstance().isCasting()) {
-                    ChromecastController.getInstance().setCurrentMediaAndCastIfNeeded(getCurrentChromecastMedia());
-                }
+                //if (ChromecastController.getInstance().isCasting()) {
+                //    ChromecastController.getInstance().setCurrentMediaAndCastIfNeeded(getCurrentChromecastMedia());
+                //}
                 CastSync.setPlaying(false);
             }
         } catch (Exception e) {
