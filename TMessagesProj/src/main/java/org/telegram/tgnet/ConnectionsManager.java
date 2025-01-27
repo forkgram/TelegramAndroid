@@ -1633,7 +1633,7 @@ public class ConnectionsManager extends BaseController {
 
     @Keep
     public static void onIntegrityCheckClassic(final int currentAccount, final int requestToken, final String project, final String nonce) {
-        AndroidUtilities.runOnUIThread(() -> {
+        /*AndroidUtilities.runOnUIThread(() -> {
             long start = System.currentTimeMillis();
             FileLog.d("account"+currentAccount+": server requests integrity classic check with project = "+project+" nonce = " + nonce);
             IntegrityManager integrityManager = IntegrityManagerFactory.create(ApplicationLoader.applicationContext);
@@ -1667,7 +1667,7 @@ public class ConnectionsManager extends BaseController {
                     FileLog.e("account"+currentAccount+": integrity check failed to give a token in " + (System.currentTimeMillis() - start) + "ms", e);
                     native_receivedIntegrityCheckClassic(currentAccount, requestToken, nonce, "PLAYINTEGRITY_FAILED_EXCEPTION_" + LoginActivity.errorString(e));
                 });
-        });
+        });*/
     }
 
     @Keep
