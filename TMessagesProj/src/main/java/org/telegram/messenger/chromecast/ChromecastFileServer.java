@@ -16,7 +16,7 @@ import androidx.media3.datasource.DataSource;
 import androidx.media3.datasource.DataSpec;
 import androidx.media3.datasource.FileDataSource;
 
-import com.google.android.gms.cast.MediaMetadata;
+//import com.google.android.gms.cast.MediaMetadata;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.FileLog;
@@ -186,20 +186,20 @@ public class ChromecastFileServer extends NanoHTTPD {
                 }
                 sb.append(getUrlToSource(host, media.getKey()));
 
-                final MediaMetadata mediaMetadata = media.getValue().mediaMetadata;
-                if (mediaMetadata == null) continue;
-
-                final String title = mediaMetadata.getString(MediaMetadata.KEY_TITLE);
-                final String subtitle = mediaMetadata.getString(MediaMetadata.KEY_SUBTITLE);
-                if (title != null) {
-                    sb.append(' ');
-                    sb.append(title);
-                }
-                if (subtitle != null) {
-                    sb.append(" [");
-                    sb.append(subtitle);
-                    sb.append(']');
-                }
+//                final MediaMetadata mediaMetadata = media.getValue().mediaMetadata;
+//                if (mediaMetadata == null) continue;
+//
+//                final String title = mediaMetadata.getString(MediaMetadata.KEY_TITLE);
+//                final String subtitle = mediaMetadata.getString(MediaMetadata.KEY_SUBTITLE);
+//                if (title != null) {
+//                    sb.append(' ');
+//                    sb.append(title);
+//                }
+//                if (subtitle != null) {
+//                    sb.append(" [");
+//                    sb.append(subtitle);
+//                    sb.append(']');
+//                }
             }
         }
         return newFixedLengthResponse(Response.Status.OK, "text/plain", sb.toString());
