@@ -68,7 +68,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.exoplayer2.C;
-import com.google.android.gms.cast.framework.CastContext;
+//import com.google.android.gms.cast.framework.CastContext;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -95,7 +95,6 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.audioinfo.AudioInfo;
-import org.telegram.messenger.chromecast.ChromecastController;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.InputSerializedData;
 import org.telegram.tgnet.TLObject;
@@ -1150,7 +1149,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         };
         boolean castAvailable = true;
         try {
-            castItemButton.setRouteSelector(CastContext.getSharedInstance(context).getMergedSelector());
+//            castItemButton.setRouteSelector(CastContext.getSharedInstance(context).getMergedSelector());
         } catch (Exception e) {
             FileLog.e(e);
             castAvailable = false;
@@ -1770,7 +1769,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         } else if (id == 5) {
             saveToMusic(messageObject);
         } else if (id == 6) {
-            ChromecastController.getInstance().setCurrentMediaAndCastIfNeeded(MediaController.getInstance().getCurrentChromecastMedia());
+//            ChromecastController.getInstance().setCurrentMediaAndCastIfNeeded(MediaController.getInstance().getCurrentChromecastMedia());
             castItemButton.performClick();
         } else if (id == 7) {
             saveToProfile(messageObject, false, () -> {
