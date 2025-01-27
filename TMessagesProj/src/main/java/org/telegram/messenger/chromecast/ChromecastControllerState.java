@@ -11,28 +11,28 @@ import java.io.File;
 class ChromecastControllerState {
     private ChromecastFileServer server;
     private ChromecastMediaVariations media;
-    private ChromecastController.RemoteMediaClientHandler client;
+//    private ChromecastController.RemoteMediaClientHandler client;
 
     public void setMedia(ChromecastMediaVariations m) {
-        if (client != null && m != null) {
-            addToFileServer(m);
-        }
-
-        if (client != null && media != null) {
-            removeFromFileServer(media);
-        }
-
-        if (m != null && m.getVariationsCount() > 0 && !m.getVariation(0).mimeType.startsWith("audio/")) {
-            if (server != null) {
-                server.setCoverFile(null, null);
-            }
-        }
-
-        if (client != null && m != null) {
-            client.load(m);
-        }
-
-        media = m;
+//        if (client != null && m != null) {
+//            addToFileServer(m);
+//        }
+//
+//        if (client != null && media != null) {
+//            removeFromFileServer(media);
+//        }
+//
+//        if (m != null && m.getVariationsCount() > 0 && !m.getVariation(0).mimeType.startsWith("audio/")) {
+//            if (server != null) {
+//                server.setCoverFile(null, null);
+//            }
+//        }
+//
+//        if (client != null && m != null) {
+//            client.load(m);
+//        }
+//
+//        media = m;
     }
 
     public String setCoverFile(File file) {
@@ -52,34 +52,34 @@ class ChromecastControllerState {
         return media;
     }
 
-    public void setClient(ChromecastController.RemoteMediaClientHandler c) {
-        if (media != null && client == null && c != null) {
-            addToFileServer(media);
-        }
+//    public void setClient(ChromecastController.RemoteMediaClientHandler c) {
+//        if (media != null && client == null && c != null) {
+//            addToFileServer(media);
+//        }
+//
+//        if (client != null && media != null && c == null) {
+//            removeFromFileServer(media);
+//        }
+//
+//        if (client != null) {
+//            client.unregister();
+//        }
+//
+//        if (c != null) {
+//            c.register();
+//
+//            if (media != null) {
+//                c.load(media);
+//            }
+//        }
+//
+//        client = c;
+//    }
 
-        if (client != null && media != null && c == null) {
-            removeFromFileServer(media);
-        }
-
-        if (client != null) {
-            client.unregister();
-        }
-
-        if (c != null) {
-            c.register();
-
-            if (media != null) {
-                c.load(media);
-            }
-        }
-
-        client = c;
-    }
-
-    @Nullable
-    public ChromecastController.RemoteMediaClientHandler getClient() {
-        return client;
-    }
+//    @Nullable
+//    public ChromecastController.RemoteMediaClientHandler getClient() {
+//        return client;
+//    }
 
     private void addToFileServer(ChromecastMediaVariations media) {
         if (server == null) {
