@@ -24,6 +24,7 @@
     <string name="BotSkipShareInfo">Silently dismiss share-this-message requests from mini apps.</string>
     <string name="BotSkipFullscreenInfo">Do not let mini apps switch to fullscreen mode.</string>
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
+    <string name="DisableDefaultInAppBrowserInfo">Open links in your system browser instead of the in-app one.</string>
     <string name="LockPremiumInfo">Hide Telegram Premium ads and the subscribe button. Restart required.</string>
     <string name="ForkRestartRequired">Restart required</string>
     <string name="BottomDialogs">Tap here to start a new chat.</string>
@@ -89,6 +90,7 @@
     <string name="BotSetPlatformTitle">Change bot platform</string>
     <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
     <string name="BotCopyUrl">Copy every clicked link</string>
+    <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
