@@ -125,6 +125,7 @@ android {
         buildConfigField 'int', 'VERSION_CODE', Utils['getVersionCode']()
 
         buildConfigField 'boolean', 'SKIP_DNS_RESOLVER', (Utils['isFdroid']() ? 'true' : 'false')
+        buildConfigField 'boolean', 'SKIP_INTERNAL_BROWSER_BY_DEFAULT', (Utils['isFdroid']() ? 'true' : 'false')
 
         externalNativeBuild {
             cmake {

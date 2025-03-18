@@ -66,6 +66,7 @@
     <string name="BotSetPlatformTitle">Change bot platform</string>
     <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
     <string name="BotCopyUrl">Copy every clicked link</string>
+    <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
