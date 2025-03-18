@@ -416,6 +416,7 @@ public class Browser {
                 (SharedConfig.inappBrowser || isInstantViewOpen()) &&
                 TextUtils.isEmpty(browserPackage) &&
                 !RestrictedDomainsList.getInstance().isRestricted(AndroidUtilities.getHostAuthority(uri, true)) &&
+                !MessagesController.getGlobalMainSettings().getBoolean("disableDefaultInAppBrowser", org.telegram.messenger.BuildConfig.SKIP_INTERNAL_BROWSER_BY_DEFAULT) &&
                 (uri.getScheme() == null || "https".equals(uri.getScheme()) || "http".equals(uri.getScheme()) || "tonsite".equals(uri.getScheme()))
                 ||
                 isTonsite(uri.toString())
