@@ -9095,4 +9095,5 @@
     <string name="BotSetPlatformTitle">Change bot platform</string>
     <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
     <string name="BotCopyUrl">Copy every clicked link</string>
+    <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
 </resources>
