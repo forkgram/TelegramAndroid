@@ -23,6 +23,7 @@
     <string name="BotSkipShareInfo">Descartar en silencio las solicitudes de compartir mensajes de las mini apps.</string>
     <string name="BotSkipFullscreenInfo">No permitir que las mini apps pasen al modo de pantalla completa.</string>
     <string name="DisableParametersFromBotLinksInfo">Eliminar los parámetros de inicio de los enlaces de bots antes de abrirlos.</string>
+    <string name="DisableDefaultInAppBrowserInfo">Abrir los enlaces en el navegador del sistema en lugar del integrado.</string>
     <string name="LockPremiumInfo">Ocultar los anuncios de Telegram Premium y el botón de suscripción. Reinicio requerido.</string>
     <string name="ForkRestartRequired">Reinicio requerido</string>
     <string name="BottomDialogs">Toca aquí para iniciar un nuevo chat.</string>
@@ -88,6 +89,7 @@
     <string name="BotSetPlatformTitle">Cambiar plataforma del bot</string>
     <string name="BotSetPlatformAbout">Reinicia después del cambio para aplicar la nueva plataforma al bot actual.</string>
     <string name="BotCopyUrl">Copiar cada enlace pulsado</string>
+    <string name="DisableDefaultInAppBrowser">Abrir enlaces en el navegador del sistema</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Español</string>

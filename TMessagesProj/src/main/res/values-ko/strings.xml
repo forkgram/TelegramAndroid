@@ -23,6 +23,7 @@
     <string name="BotSkipShareInfo">미니 앱의 메시지 공유 요청을 조용히 무시합니다.</string>
     <string name="BotSkipFullscreenInfo">미니 앱이 전체 화면 모드로 전환하지 못하게 합니다.</string>
     <string name="DisableParametersFromBotLinksInfo">봇 링크를 열기 전에 시작 매개변수를 제거합니다.</string>
+    <string name="DisableDefaultInAppBrowserInfo">링크를 앱 내 브라우저 대신 시스템 브라우저에서 엽니다.</string>
     <string name="LockPremiumInfo">Telegram Premium 광고와 구독 버튼을 숨깁니다. 재시작 필요.</string>
     <string name="ForkRestartRequired">재시작 필요</string>
     <string name="BottomDialogs">여기를 탭하여 새 채팅을 시작하세요.</string>
@@ -88,6 +89,7 @@
     <string name="BotSetPlatformTitle">봇 플랫폼 변경</string>
     <string name="BotSetPlatformAbout">변경 후 현재 봇에 새 플랫폼을 적용하려면 다시 시작하세요.</string>
     <string name="BotCopyUrl">클릭한 모든 링크 복사</string>
+    <string name="DisableDefaultInAppBrowser">시스템 브라우저에서 링크 열기</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
