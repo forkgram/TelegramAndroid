@@ -23,6 +23,7 @@
     <string name="BotSkipShareInfo">Verzoeken van mini-apps om een bericht te delen stilzwijgend negeren.</string>
     <string name="BotSkipFullscreenInfo">Mini-apps niet laten overschakelen naar volledig scherm.</string>
     <string name="DisableParametersFromBotLinksInfo">Startparameters uit botlinks verwijderen voordat ze worden geopend.</string>
+    <string name="DisableDefaultInAppBrowserInfo">Links openen in je systeembrowser in plaats van de ingebouwde browser.</string>
     <string name="LockPremiumInfo">Telegram Premium-advertenties en de abonneerknop verbergen. Herstart vereist.</string>
     <string name="ForkRestartRequired">Herstart vereist</string>
     <string name="BottomDialogs">Tik hier om een nieuwe chat te starten.</string>
@@ -88,6 +89,7 @@
     <string name="BotSetPlatformTitle">Botplatform wijzigen</string>
     <string name="BotSetPlatformAbout">Start opnieuw op na de wijziging om het nieuwe platform voor de huidige bot toe te passen.</string>
     <string name="BotCopyUrl">Elke aangeklikte link kopiëren</string>
+    <string name="DisableDefaultInAppBrowser">Links openen in de systeembrowser</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
