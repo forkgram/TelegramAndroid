@@ -9646,6 +9646,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
     public void updateGiftButton(boolean animated) {
 
         final boolean visible =
+            false &&
             !MessagesController.getInstance(currentAccount).premiumPurchaseBlocked() &&
             getParentFragment() != null && getParentFragment().getCurrentUser() != null &&
             !BuildVars.IS_BILLING_UNAVAILABLE &&
