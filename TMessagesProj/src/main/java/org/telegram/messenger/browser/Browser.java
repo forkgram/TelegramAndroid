@@ -424,6 +424,7 @@ public class Browser {
                 SharedConfig.inappBrowser &&
                 TextUtils.isEmpty(browserPackage) &&
                 !RestrictedDomainsList.getInstance().isRestricted(AndroidUtilities.getHostAuthority(uri, true)) &&
+                !MessagesController.getGlobalMainSettings().getBoolean("disableDefaultInAppBrowser", false) &&
                 (uri.getScheme() == null || "https".equals(uri.getScheme()) || "http".equals(uri.getScheme()) || "tonsite".equals(uri.getScheme()))
                 ||
                 isTonsite(uri.toString())
