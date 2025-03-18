@@ -23,6 +23,7 @@
     <string name="BotSkipShareInfo">Молча отклонять запросы мини-приложений на отправку сообщения.</string>
     <string name="BotSkipFullscreenInfo">Не позволять мини-приложениям переходить в полноэкранный режим.</string>
     <string name="DisableParametersFromBotLinksInfo">Убирать start-параметры из ссылок на ботов перед открытием.</string>
+    <string name="DisableDefaultInAppBrowserInfo">Открывать ссылки в системном браузере вместо встроенного.</string>
     <string name="LockPremiumInfo">Скрывать рекламу Telegram Premium и кнопку подписки. Требуется перезапуск.</string>
     <string name="ForkRestartRequired">Требуется перезапуск</string>
     <string name="BottomDialogs">Нажмите здесь, чтобы начать новый чат.</string>
@@ -88,6 +89,7 @@
     <string name="BotSetPlatformTitle">Изменить платформу бота</string>
     <string name="BotSetPlatformAbout">После изменения перезапустите приложение, чтобы применить новую платформу для текущего бота.</string>
     <string name="BotCopyUrl">Копировать каждую нажатую ссылку</string>
+    <string name="DisableDefaultInAppBrowser">Открывать ссылки в системном браузере</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
