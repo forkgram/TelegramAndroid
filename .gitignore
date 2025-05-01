@@ -32,3 +32,5 @@ TMessagesProj/jni/tlottie_lib/arm64-v8a/
 TMessagesProj/jni/tlottie_lib/armeabi-v7a/
 TMessagesProj/jni/tlottie_lib/x86/
 TMessagesProj/jni/tlottie_lib/x86_64/
+TMessagesProj/jni/tde2e/x86*
+TMessagesProj/jni/tde2e/arm*
