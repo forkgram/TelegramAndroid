@@ -15,3 +15,6 @@
 [submodule "TMessagesProj/jni/dav1d"]
 	path = TMessagesProj/jni/dav1d
 	url = https://github.com/videolan/dav1d
+[submodule "TMessagesProj/jni/tde2e_source"]
+	path = TMessagesProj/jni/tde2e_source
+	url = https://github.com/tdlib/td
