@@ -26,3 +26,5 @@ TMessagesProj/jni/ffmpeg/x86/
 TMessagesProj/jni/ffmpeg/x86_64/
 TMessagesProj/jni/ffmpeg/.*.headers
 TMessagesProj/jni/boringssl/build/
+TMessagesProj/jni/tde2e/x86*
+TMessagesProj/jni/tde2e/arm*
