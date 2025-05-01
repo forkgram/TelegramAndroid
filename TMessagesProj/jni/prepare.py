@@ -273,7 +273,7 @@ def run(commands):
     elif re.search(r'\%', commands):
         error('Bad command: ' + commands)
     else:
-        return subprocess.run("set -e\n" + commands, shell=True, env=modifiedEnv).returncode == 0
+        return subprocess.run("set -e\n" + commands, shell=True, executable="/bin/bash", env=modifiedEnv).returncode == 0
 
 # Thanks https://stackoverflow.com/a/510364
 class _Getch:
@@ -428,5 +428,82 @@ stage('boringssl', """
     ./build_boringssl.sh {archesStr}
     echo "Built archs: {archesStr}"
 """.format(ndk=ndkPath,archesStr=' '.join(arches)))
+
+stage('tde2e', """
+    # Install gsed on macOS.
+
+    git submodule init && git submodule update
+    git reset HEAD tde2e/ && git checkout -- tde2e/
+    cd tde2e_source && git reset --hard HEAD && cd ..
+    export NDK={ndk}
+    export NINJA_PATH=`which ninja`
+
+    tde2e_dir=`pwd`/tde2e
+    source_dir=`pwd`/tde2e_source
+    broingssl_dir=`pwd`/boringssl
+
+    cp "$tde2e_dir/build-tdlib.sh" "$source_dir/example/android/."
+    cp "$tde2e_dir/CMakeLists.txt" "$source_dir/example/android/."
+
+    for arch in {archesStr}; do
+        mkdir -p $source_dir/example/android/third-party/openssl/$arch/lib/
+        cp "$broingssl_dir/build/$arch/crypto/libcrypto.a" "$source_dir/example/android/third-party/openssl/$arch/lib/libcrypto.a"
+        cp "$broingssl_dir/build/$arch/ssl/libssl.a" "$source_dir/example/android/third-party/openssl/$arch/lib/libssl.a"
+        cp -R "$broingssl_dir/include" "$source_dir/example/android/third-party/openssl/$arch/"
+    done
+
+    SED_CMDS=""
+
+    if ! [[ "{archesStr}" =~ "arm64-v8a" ]]; then
+        SED_CMDS+="s/arm64-v8a//g;"
+    fi
+
+    if ! [[ "{archesStr}" =~ "armeabi-v7a" ]]; then
+        SED_CMDS+="s/armeabi-v7a//g;"
+    fi
+
+    if ! [[ "{archesStr}" =~ "x86_64" ]]; then
+        SED_CMDS+="s/x86_64//g;"
+    fi
+
+    if ! [[ "{archesStr}" =~ "x86" ]]; then
+        SED_CMDS+="s/x86//g;"
+    fi
+
+    comment_line() {{
+        SED_CMDS+="s/$1/# $1/g;"
+    }}
+
+    comment_line "rm tdlib"
+    comment_line "jar"
+    comment_line "mv tdlib"
+
+    sed -i "s/ php//g" "$source_dir/example/android/check-environment.sh"
+    sed -i "s/PHP_EXECUTABLE/FALSE/g" "$source_dir/td/generate/CMakeLists.txt"
+
+    cd "$source_dir/example/android"
+    if [ -n "$SED_CMDS" ]; then
+        sed "$SED_CMDS" ./build-tdlib.sh
+        sed "$SED_CMDS" ./build-tdlib.sh | bash -s -- "${{ANDROID_SDK_ROOT:-${{ANDROID_HOME:-{ndk}/../..}}}}"
+    else
+        ./build-tdlib.sh "${{ANDROID_SDK_ROOT:-${{ANDROID_HOME:-{ndk}/../..}}}}"
+    fi
+
+    for arch in {archesStr}; do
+        mkdir -p $tde2e_dir/$arch
+        cp "$source_dir/example/android/build-$arch-Java/td/tde2e/libtde2e.a" $tde2e_dir/$arch
+        cp "$source_dir/example/android/build-$arch-Java/td/tdutils/libtdutils.a" $tde2e_dir/$arch
+    done
+
+    echo "Built archs: {archesStr}"
+""".format(
+    ndk=ndkPath,
+    archesStr=' '.join(
+        'arm64-v8a' if arch == 'arm64' else
+        'armeabi-v7a' if arch == 'arm' else
+        arch
+        for arch in arches
+    )
+))
 
 runStages()
