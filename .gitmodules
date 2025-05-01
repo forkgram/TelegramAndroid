@@ -35,3 +35,6 @@
 	path = TMessagesProj/jni/boringssl
 	url = https://github.com/google/boringssl
 	ignore = all
+[submodule "TMessagesProj/jni/tde2e_source"]
+	path = TMessagesProj/jni/tde2e_source
+	url = https://github.com/tdlib/td
