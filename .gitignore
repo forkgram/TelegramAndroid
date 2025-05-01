@@ -33,3 +33,5 @@ TMessagesProj/jni/prebuild/arm64-v8a/
 TMessagesProj/jni/prebuild/armeabi-v7a/
 TMessagesProj/jni/prebuild/x86/
 TMessagesProj/jni/prebuild/x86_64/
+TMessagesProj/jni/tde2e/x86*
+TMessagesProj/jni/tde2e/arm*
