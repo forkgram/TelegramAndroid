@@ -99,7 +99,6 @@ android {
         coreLibraryDesugaringEnabled true
     }
 
-
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 34
@@ -205,7 +204,6 @@ android {
     }
     namespace 'org.telegram.messenger'
 }
-
 
 def getProps(String propName) {
     def propsFile = rootProject.file('local.properties')
