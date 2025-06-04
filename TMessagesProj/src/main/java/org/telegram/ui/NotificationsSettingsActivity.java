@@ -11,6 +11,7 @@ package org.telegram.ui;
 import static org.telegram.messenger.LocaleController.getString;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,17 +20,22 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.LongSparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.telegram.messenger.UnifiedPushReceiver;
+import org.unifiedpush.android.connector.UnifiedPush;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -56,6 +62,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeDescription;
 import org.telegram.ui.Cells.HeaderCell;
 import org.telegram.ui.Cells.NotificationsCheckCell;
+import org.telegram.ui.Cells.RadioColorCell;
 import org.telegram.ui.Cells.ShadowSectionCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextDetailSettingsCell;
@@ -70,6 +77,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class NotificationsSettingsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -131,6 +140,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
     private int badgeNumberSection2Row;
     private int androidAutoAlertRow;
     private int repeatRow;
+    private int unifiedPushDistributorRow;
     private int resetSection2Row;
     private int resetSectionRow;
     private int resetNotificationsRow;
@@ -140,6 +150,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
     private boolean updateVibrate;
     private boolean updateRingtone;
     private boolean updateRepeatNotifications;
+    private boolean updateUnifiedPushDistributor;
 
     @Override
     public boolean onFragmentCreate() {
@@ -196,6 +207,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
         notificationsServiceConnectionRow = rowCount++;
         androidAutoAlertRow = -1;
         repeatRow = rowCount++;
+        unifiedPushDistributorRow = rowCount++;
         resetSection2Row = rowCount++;
         resetSectionRow = rowCount++;
         resetNotificationsRow = rowCount++;
@@ -756,6 +768,73 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(!enabled);
             }
+            else if (position == unifiedPushDistributorRow) {
+                AtomicReference<Dialog> dialogRef = new AtomicReference<>();
+
+                LinearLayout linearLayout = new LinearLayout(context);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext, new ArrayList<>());
+                CharSequence[] items = distributors.toArray(new CharSequence[distributors.size()]);
+
+                String distributor = UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext);
+
+                for (int i = 0; i < items.length; ++i) {
+                    final int index = i;
+                    RadioColorCell cell = new RadioColorCell(getParentActivity());
+                    cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
+                    cell.setCheckColor(Theme.getColor(Theme.key_radioBackground), Theme.getColor(Theme.key_dialogRadioBackgroundChecked));
+                    cell.setTextAndValue(items[index], items[index].equals(distributor));
+                    cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
+                    linearLayout.addView(cell);
+                    cell.setOnClickListener(v -> {
+                        UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, items[index].toString());
+                        UnifiedPush.registerApp(ApplicationLoader.applicationContext,
+                                "default",
+                                new ArrayList<String>(),
+                                "Telegram Simple Push");
+                        updateUnifiedPushDistributor = true;
+                        adapter.notifyItemChanged(position);
+                        dialogRef.get().dismiss();
+                    });
+                }
+
+                Dialog dialog = new AlertDialog.Builder(getParentActivity())
+                        .setTitle(LocaleController.getString("UnifiedPushDistributor", R.string.UnifiedPushDistributor))
+                        .setView(linearLayout)
+                        .setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null)
+                        .create();
+                dialogRef.set(dialog);
+                showDialog(dialog);
+            }
+            if (view instanceof TextCheckCell) {
+                ((TextCheckCell) view).setChecked(!enabled);
+            }
+        });
+        listView.setOnItemLongClickListener((view, position, x, y) -> {
+            if (getParentActivity() == null) {
+                return false;
+            }
+            if (position == unifiedPushDistributorRow) {
+                String txt;
+                if (UnifiedPushReceiver.getNumOfReceivedNotifications() == 0) {
+                    txt = "You never received notifications with UnifiedPush since Mercurygram was started.";
+                } else {
+                    txt = String.format("The last received notification with UnifiedPush was %d seconds ago.\n" +
+                                        "You received %d notifications since Mercurygram was started.",
+                                        (SystemClock.elapsedRealtime() - UnifiedPushReceiver.getLastReceivedNotification()) / 1000,
+                                        UnifiedPushReceiver.getNumOfReceivedNotifications());
+                }
+                txt += String.format("\n\nThe current UnifiedPush endpoint is: %s", SharedConfig.pushString);
+                Dialog dialog = new AlertDialog.Builder(getParentActivity())
+                        .setTitle("UnifiedPush Notifications")
+                        .setMessage(txt)
+                        .setNegativeButton(LocaleController.getString("OK", R.string.OK), null)
+                        .create();
+                showDialog(dialog);
+                return true;
+            }
+            return false;
         });
 
         return fragmentView;
@@ -1135,6 +1214,10 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                         }
                         textCell.setTextAndValue(getString("RepeatNotifications", R.string.RepeatNotifications), value, updateRepeatNotifications, false);
                         updateRepeatNotifications = false;
+                    } else if (position == unifiedPushDistributorRow) {
+                        String value = UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext);
+                        textCell.setTextAndValue(LocaleController.getString("UnifiedPushDistributor", R.string.UnifiedPushDistributor), value, updateUnifiedPushDistributor, false);
+                        updateUnifiedPushDistributor = false;
                     }
                     break;
                 }
