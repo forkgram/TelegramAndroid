@@ -5,6 +5,12 @@
     <string name="ForkSectionMedia">Foto\'s en video</string>
     <string name="ForkSectionBots">Bots en browser</string>
     <string name="ForkSectionSystem">Systeem en updates</string>
+    <string name="UnifiedPushDistributor">UnifiedPush-distributeurs</string>
+    <string name="UnifiedPushGateway">UnifiedPush-gateway (PUT naar POST)</string>
+    <string name="UnifiedPushGatewayInfo">Standaard wordt het pushadres rechtstreeks bij Telegram geregistreerd, zonder gateway.\n\nAls jouw opstelling toch een ‘PUT naar POST’-gateway nodig heeft, vul die hier in of laat het veld leeg voor directe bezorging:</string>
+    <string name="UnifiedPushGatewayNone">Niet gebruikt (directe bezorging)</string>
+    <string name="DisableUnifiedPush">UnifiedPush uitschakelen</string>
+    <string name="DisableUnifiedPushInfo">Meldingen komen dan via de eigen achtergrondverbinding van de app</string>
     <string name="HideBottomButtonInfo">De knop in de onderste balk (Dempen, Deelnemen) leegmaken en tikken negeren.</string>
     <string name="OpenArchiveOnPullInfo">De map Archief openen wanneer de chatlijst omlaag wordt getrokken.</string>
     <string name="DisableThumbsInDialogListInfo">Mediaminiaturen van het laatste bericht in de chatlijst verbergen.</string>

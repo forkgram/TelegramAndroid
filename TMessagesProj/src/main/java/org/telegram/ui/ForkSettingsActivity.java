@@ -96,6 +96,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_PARAMETERS_FROM_BOT_LINKS = 72;
     public static final int ID_DISABLE_DEFAULT_IN_APP_BROWSER = 73;
 
+    public static final int ID_UNIFIED_PUSH = 80;
     public static final int ID_LOCK_PREMIUM = 83;
 
     private static final int MENU_SEARCH = 100;
@@ -444,6 +445,7 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionSystem)));
+        items.add(UItem.asSettingsCell(ID_UNIFIED_PUSH, LocaleController.getString(R.string.UnifiedPush), null));
         items.add(UItem.asButtonCheck(ID_LOCK_PREMIUM, LocaleController.getString(R.string.LockPremium), LocaleController.getString(R.string.LockPremiumInfo))
             .setChecked(pref("lockPremium", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -537,6 +539,8 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_DISABLE_DEFAULT_IN_APP_BROWSER) {
             toggle("disableDefaultInAppBrowser", item, view);
 
+        } else if (id == ID_UNIFIED_PUSH) {
+            presentFragment(new NotificationsSettingsActivity().highlightUnifiedPush());
         } else if (id == ID_LOCK_PREMIUM) {
             toggle("lockPremium", item, view);
 
