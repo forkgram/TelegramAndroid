@@ -171,6 +171,8 @@ public class ForkSettingsActivity extends BaseFragment {
     private ArrayList<Integer> emptyRows = new ArrayList<Integer>();
     private int syncPinsRow;
 
+    private int disableUnifiedPushRow;
+
     private static int getIntLocale(String str) {
         try {
             try {
@@ -209,6 +211,7 @@ public class ForkSettingsActivity extends BaseFragment {
         showNotificationContent = rowCount++;
         hideBottomButton = SharedConfig.isUserOwner() ? rowCount++ : -1;
         lockPremium = rowCount++;
+        disableUnifiedPushRow = rowCount++;
     
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
@@ -377,6 +380,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("syncPins", view, true);
             } else if (position == hideSensitiveDataRow) {
                 toggleGlobalMainSetting("hideSensitiveData", view, false);
+            } else if (position == disableUnifiedPushRow) {
+                toggleGlobalMainSetting("disableUnifiedPush", view, false);
             } else if (position == customTitleRow) {
                 final String defaultValue = "Fork Client";
                 org.telegram.messenger.forkgram.ForkDialogs.CreateFieldAlert(
@@ -542,6 +547,10 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("HideSensitiveData", R.string.HideSensitiveData);
                         String info = LocaleController.getString("SquareAvatarsInfo", R.string.SquareAvatarsInfo);
                         textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("hideSensitiveData", false), true, false);
+                    } else if (position == disableUnifiedPushRow) {
+                        String t = LocaleController.getString("DisableUnifiedPush", R.string.DisableUnifiedPush);
+                        String info = LocaleController.getString("DisableUnifiedPushInfo", R.string.DisableUnifiedPushInfo);
+                        textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("disableUnifiedPush", true), true, false);
                     }
                     break;
                 }
@@ -589,7 +598,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == hideBottomButton
                         || position == syncPinsRow
                         || position == showNotificationContent
-                        || position == photoHasStickerRow;
+                        || position == photoHasStickerRow
+                        || position == disableUnifiedPushRow;
             return fork;
         }
 
@@ -657,7 +667,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == disableGlobalSearch
                 || position == hideBottomButton
                 || position == showNotificationContent
-                || position == photoHasStickerRow) {
+                || position == photoHasStickerRow
+                || position == disableUnifiedPushRow) {
                 return 3;
             } else if (sectionRows.contains(position)) {
                 return 4;

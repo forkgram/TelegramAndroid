@@ -144,6 +144,14 @@ public class SharedConfig {
                 .apply();
     }
 
+    public static void setUnifiedPushGateway(String value) {
+        unifiedPushGateway = value;
+        ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE)
+                .edit()
+                .putString("unifiedPushGateway", unifiedPushGateway)
+                .apply();
+    }
+
     public static void toggleSurfaceInStories() {
         useSurfaceInStories = !useSurfaceInStories;
         ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE)
@@ -263,6 +271,8 @@ public class SharedConfig {
     public static boolean useSurfaceInStories;
     public static boolean photoViewerBlur = true;
     public static boolean payByInvoice;
+    public static boolean disableUnifiedPush;
+    public static String unifiedPushGateway;
     public static int stealthModeSendMessageConfirm = 2;
     private static int lastLocalId = -210000;
 
@@ -678,6 +688,8 @@ public class SharedConfig {
             debugViewMetrics = preferences.getBoolean("debugViewMetrics", false);
             photoHighQualityDefault = preferences.getBoolean("photoHighQualityDefault", false);
             photoLiveDefault = preferences.getBoolean("photoLiveDefault", false);
+            disableUnifiedPush = preferences.getBoolean("disableUnifiedPush", false);
+            unifiedPushGateway = preferences.getString("unifiedPushGateway", "https://p2p.belloworld.it/");
 
             loadDebugConfig(preferences);
 

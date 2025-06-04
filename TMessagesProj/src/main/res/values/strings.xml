@@ -2806,6 +2806,11 @@
     <string name="DistanceUnitsAutomatic">Automatic</string>
     <string name="DistanceUnitsKilometers">Kilometers</string>
     <string name="DistanceUnitsMiles">Miles</string>
+    <string name="UnifiedPushDistributor">UnifiedPush Distributors</string>
+    <string name="UnifiedPushGateway">UnifiedPush PUT to POST gateway</string>
+    <string name="UnifiedPushGatewayInfo">Since Telegram Simple push uses PUT, but UnifiedPush only supports POST, a "PUT to POST" gateway is needed.\n\nPlease insert your gateway (or just keep the default value to use my proxy):</string>
+    <string name="DisableUnifiedPush">Disable UnifiedPush</string>
+    <string name="DisableUnifiedPushInfo">Restart required</string>
     <string name="AuthAnotherClient">Scan QR Code</string>
     <string name="AuthAnotherClientScan">Scan QR Code</string>
     <string name="AuthAnotherClientNotFound">No auth token found</string>
@@ -6913,8 +6918,8 @@
     <string name="SortByReactions">Reactions First</string>
     <string name="SortByReposts">Reposts First</string>
     <string name="SortByTime">Newest First</string>
-    <string name="StoryViewsSortDescription">Choose the order for the  list of viewers.</string>
-    <string name="StoryReactionsSortDescription">Choose the order for the  list of reactions.</string>
+    <string name="StoryViewsSortDescription">Choose the order for the  list of viewers.</string>
+    <string name="StoryReactionsSortDescription">Choose the order for the  list of reactions.</string>
     <string name="NoContactsViewed">None of your contacts viewed this story.</string>
     <string name="Viewers">Viewers</string>
     <string name="StealthModeConfirmTitle">You are in Stealth Mode now</string>
