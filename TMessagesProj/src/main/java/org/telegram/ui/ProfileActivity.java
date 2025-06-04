@@ -14895,6 +14895,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     new SearchResult(1048, getString(R.string.BotSkipFullscreen), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_BOT_SKIP_FULLSCREEN))),
                     new SearchResult(1049, getString(R.string.DisableParametersFromBotLinks), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_DISABLE_PARAMETERS_FROM_BOT_LINKS))),
                     new SearchResult(1050, getString(R.string.DisableDefaultInAppBrowser), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_DISABLE_DEFAULT_IN_APP_BROWSER))),
+                    new SearchResult(1051, getString(R.string.UnifiedPush), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_UNIFIED_PUSH))),
+                    new SearchResult(1057, getString(R.string.DisableUnifiedPush), "disableUnifiedPushRow", getString(R.string.NotificationsAndSounds), R.drawable.msg_notifications, () -> f.presentFragment(new NotificationsSettingsActivity().highlightUnifiedPush())),
+                    new SearchResult(1052, getString(R.string.UpdateCheckInterval), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_UPDATE_CHECK_INTERVAL))),
+                    new SearchResult(1053, getString(R.string.DisableTabletMode), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_DISABLE_TABLET_MODE))),
                     new SearchResult(1054, getString(R.string.LockPremium), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_LOCK_PREMIUM))),
             };
         }

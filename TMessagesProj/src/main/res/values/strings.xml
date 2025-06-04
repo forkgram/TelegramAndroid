@@ -2838,6 +2838,13 @@
     <string name="DistanceUnitsAutomatic">Automatic</string>
     <string name="DistanceUnitsKilometers">Kilometers</string>
     <string name="DistanceUnitsMiles">Miles</string>
+    <string name="UnifiedPush">UnifiedPush</string>
+    <string name="UnifiedPushDistributor">UnifiedPush Distributors</string>
+    <string name="UnifiedPushGateway">UnifiedPush PUT to POST gateway</string>
+    <string name="UnifiedPushGatewayInfo">By default the push endpoint is registered with Telegram directly and no gateway is involved.\n\nIf your setup still needs a "PUT to POST" gateway, insert it here or leave the field empty for direct delivery:</string>
+    <string name="UnifiedPushGatewayNone">Not used (direct delivery)</string>
+    <string name="DisableUnifiedPush">Disable UnifiedPush</string>
+    <string name="DisableUnifiedPushInfo">Notifications will rely on the app\'s own background connection</string>
     <string name="AuthAnotherClient">Scan QR Code</string>
     <string name="AuthAnotherClientScan">Scan QR Code</string>
     <string name="AuthAnotherClientNotFound">No auth token found</string>
@@ -6969,8 +6976,8 @@
     <string name="SortByReactions">Reactions First</string>
     <string name="SortByReposts">Reposts First</string>
     <string name="SortByTime">Newest First</string>
-    <string name="StoryViewsSortDescription">Choose the order for the  list of viewers.</string>
-    <string name="StoryReactionsSortDescription">Choose the order for the  list of reactions.</string>
+    <string name="StoryViewsSortDescription">Choose the order for the  list of viewers.</string>
+    <string name="StoryReactionsSortDescription">Choose the order for the  list of reactions.</string>
     <string name="NoContactsViewed">None of your contacts viewed this story.</string>
     <string name="Viewers">Viewers</string>
     <string name="StealthModeConfirmTitle">You are in Stealth Mode now</string>

@@ -5,6 +5,12 @@
     <string name="ForkSectionMedia">Fotos und Videos</string>
     <string name="ForkSectionBots">Bots und Browser</string>
     <string name="ForkSectionSystem">System und Updates</string>
+    <string name="UnifiedPushDistributor">UnifiedPush-Distributoren</string>
+    <string name="UnifiedPushGateway">UnifiedPush-Gateway (PUT zu POST)</string>
+    <string name="UnifiedPushGatewayInfo">Standardmäßig wird die Push-Adresse direkt bei Telegram registriert, ganz ohne Gateway.\n\nFalls deine Einrichtung dennoch ein „PUT zu POST“-Gateway benötigt, trage es hier ein oder lasse das Feld für die direkte Zustellung leer:</string>
+    <string name="UnifiedPushGatewayNone">Nicht verwendet (direkte Zustellung)</string>
+    <string name="DisableUnifiedPush">UnifiedPush deaktivieren</string>
+    <string name="DisableUnifiedPushInfo">Benachrichtigungen kommen dann über die eigene Hintergrundverbindung der App</string>
     <string name="HideBottomButtonInfo">Die untere Leistenschaltfläche (Stumm, Beitreten) leeren und Tippen darauf ignorieren.</string>
     <string name="OpenArchiveOnPullInfo">Den Archivordner öffnen, wenn die Chatliste nach unten gezogen wird.</string>
     <string name="DisableThumbsInDialogListInfo">Medien-Vorschaubilder der letzten Nachricht in der Chatliste ausblenden.</string>

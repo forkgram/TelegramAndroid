@@ -5,6 +5,12 @@
     <string name="ForkSectionMedia">Фото и видео</string>
     <string name="ForkSectionBots">Боты и браузер</string>
     <string name="ForkSectionSystem">Система и обновления</string>
+    <string name="UnifiedPushDistributor">Дистрибьюторы UnifiedPush</string>
+    <string name="UnifiedPushGateway">Шлюз UnifiedPush PUT в POST</string>
+    <string name="UnifiedPushGatewayInfo">По умолчанию адрес для уведомлений регистрируется в Telegram напрямую, без шлюза.\n\nЕсли вашей связке всё же нужен шлюз «PUT в POST», укажите его здесь или оставьте поле пустым для прямой доставки:</string>
+    <string name="UnifiedPushGatewayNone">Не используется (прямая доставка)</string>
+    <string name="DisableUnifiedPush">Отключить UnifiedPush</string>
+    <string name="DisableUnifiedPushInfo">Уведомления будут приходить через собственное фоновое соединение приложения</string>
     <string name="HideBottomButtonInfo">Очищать нижнюю кнопку (Выключить звук, Вступить) и игнорировать нажатия по ней.</string>
     <string name="OpenArchiveOnPullInfo">Открывать папку «Архив» при потягивании списка чатов вниз.</string>
     <string name="DisableThumbsInDialogListInfo">Скрывать миниатюры медиа последнего сообщения в списке чатов.</string>
