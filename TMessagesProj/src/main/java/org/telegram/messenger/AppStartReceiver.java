@@ -23,6 +23,10 @@ public class AppStartReceiver extends BroadcastReceiver {
                     SharedConfig.saveConfig();
                 }
                 ApplicationLoader.startPushService();
+                PushListenerController.IPushListenerServiceProvider provider = ApplicationLoader.getPushProvider();
+                if (provider.hasServices()) {
+                    provider.onRequestPushToken();
+                }
             });
         }
     }
