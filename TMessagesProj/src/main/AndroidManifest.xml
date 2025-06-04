@@ -649,6 +649,12 @@
             </intent-filter>
         </receiver>
 
+        <service android:exported="false" android:name="org.telegram.messenger.UnifiedPushService">
+            <intent-filter>
+                <action android:name="org.unifiedpush.android.connector.PUSH_EVENT"/>
+            </intent-filter>
+        </service>
+
         <service
             android:name=".ContactsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"

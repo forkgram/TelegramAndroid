@@ -231,14 +231,17 @@ object ForkDialogs {
     }
 
     @JvmStatic
+    @JvmOverloads
     fun createFieldAlert(
         context: Context,
         title: String,
         defaultValue: String,
-        finish: (String) -> Unit
+        finish: (String) -> Unit,
+        message: String? = null
     ) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(title)
+        message?.let { builder.setMessage(it) }
 
         val textLayout = LinearLayout(context)
         textLayout.orientation = LinearLayout.HORIZONTAL

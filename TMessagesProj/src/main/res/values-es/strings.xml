@@ -5,6 +5,12 @@
     <string name="ForkSectionMedia">Fotos y vídeos</string>
     <string name="ForkSectionBots">Bots y navegador</string>
     <string name="ForkSectionSystem">Sistema y actualizaciones</string>
+    <string name="UnifiedPushDistributor">Distribuidores de UnifiedPush</string>
+    <string name="UnifiedPushGateway">Pasarela UnifiedPush de PUT a POST</string>
+    <string name="UnifiedPushGatewayInfo">De forma predeterminada, la dirección de notificaciones se registra directamente en Telegram, sin pasarela.\n\nSi tu configuración todavía necesita una pasarela «PUT a POST», indícala aquí o deja el campo vacío para la entrega directa:</string>
+    <string name="UnifiedPushGatewayNone">Sin usar (entrega directa)</string>
+    <string name="DisableUnifiedPush">Desactivar UnifiedPush</string>
+    <string name="DisableUnifiedPushInfo">Las notificaciones llegarán por la propia conexión en segundo plano de la app</string>
     <string name="HideBottomButtonInfo">Vaciar el botón de la barra inferior (Silenciar, Unirse) e ignorar los toques en él.</string>
     <string name="OpenArchiveOnPullInfo">Abrir la carpeta Archivados al deslizar hacia abajo la lista de chats.</string>
     <string name="DisableThumbsInDialogListInfo">Ocultar las miniaturas del último mensaje en la lista de chats.</string>
