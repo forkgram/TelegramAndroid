@@ -144,6 +144,22 @@ public class SharedConfig {
                 .apply();
     }
 
+    public static void toggleDisableUnifiedPush() {
+        disableUnifiedPush = !disableUnifiedPush;
+        ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE)
+                .edit()
+                .putBoolean("disableUnifiedPush", disableUnifiedPush)
+                .apply();
+    }
+
+    public static void setUnifiedPushGateway(String value) {
+        unifiedPushGateway = value;
+        ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE)
+                .edit()
+                .putString("unifiedPushGateway", unifiedPushGateway)
+                .apply();
+    }
+
     public static void toggleSurfaceInStories() {
         useSurfaceInStories = !useSurfaceInStories;
         ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE)
@@ -263,6 +279,8 @@ public class SharedConfig {
     public static boolean useSurfaceInStories;
     public static boolean photoViewerBlur = true;
     public static boolean payByInvoice;
+    public static boolean disableUnifiedPush;
+    public static String unifiedPushGateway;
     public static int stealthModeSendMessageConfirm = 2;
     private static int lastLocalId = -210000;
 
@@ -677,6 +695,20 @@ public class SharedConfig {
             debugViewMetrics = preferences.getBoolean("debugViewMetrics", false);
             photoHighQualityDefault = preferences.getBoolean("photoHighQualityDefault", false);
             photoLiveDefault = preferences.getBoolean("photoLiveDefault", false);
+            disableUnifiedPush = preferences.getBoolean("disableUnifiedPush", false);
+            unifiedPushGateway = preferences.getString("unifiedPushGateway", "");
+            // Dropping the old default gateway is a one-time migration, not a filter. Running it on
+            // every load also wiped the value for anyone picking that gateway on purpose, so it could
+            // never survive a restart. Clear it once, persist the result so the stored preference
+            // matches, and never touch the user's own choice again.
+            if (!preferences.getBoolean("unifiedPushGatewayMigrated", false)) {
+                SharedPreferences.Editor editor = preferences.edit().putBoolean("unifiedPushGatewayMigrated", true);
+                if ("https://p2p.belloworld.it/".equals(unifiedPushGateway)) {
+                    unifiedPushGateway = "";
+                    editor.putString("unifiedPushGateway", unifiedPushGateway);
+                }
+                editor.apply();
+            }
 
             loadDebugConfig(preferences);
 

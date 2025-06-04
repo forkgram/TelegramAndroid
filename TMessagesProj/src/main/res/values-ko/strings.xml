@@ -5,6 +5,12 @@
     <string name="ForkSectionMedia">사진 및 동영상</string>
     <string name="ForkSectionBots">봇 및 브라우저</string>
     <string name="ForkSectionSystem">시스템 및 업데이트</string>
+    <string name="UnifiedPushDistributor">UnifiedPush 배포자</string>
+    <string name="UnifiedPushGateway">UnifiedPush PUT→POST 게이트웨이</string>
+    <string name="UnifiedPushGatewayInfo">기본적으로 푸시 주소는 게이트웨이 없이 Telegram에 직접 등록됩니다.\n\n사용 중인 구성에 여전히 «PUT→POST» 게이트웨이가 필요하다면 여기에 입력하고, 직접 전달을 원하면 비워 두세요:</string>
+    <string name="UnifiedPushGatewayNone">사용 안 함 (직접 전달)</string>
+    <string name="DisableUnifiedPush">UnifiedPush 끄기</string>
+    <string name="DisableUnifiedPushInfo">알림은 앱 자체의 백그라운드 연결로 전달됩니다</string>
     <string name="HideBottomButtonInfo">하단 막대 버튼(음소거, 참여)을 비우고 탭을 무시합니다.</string>
     <string name="OpenArchiveOnPullInfo">채팅 목록을 아래로 당기면 보관함 폴더를 엽니다.</string>
     <string name="DisableThumbsInDialogListInfo">채팅 목록에서 마지막 메시지의 미디어 미리보기를 숨깁니다.</string>
