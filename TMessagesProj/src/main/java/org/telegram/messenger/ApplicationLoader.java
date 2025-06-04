@@ -106,7 +106,7 @@ public class ApplicationLoader extends Application {
     }
 
     protected PushListenerController.IPushListenerServiceProvider onCreatePushProvider() {
-        return PushListenerController.GooglePushListenerServiceProvider.INSTANCE;
+        return PushListenerController.UnifiedPushListenerServiceProvider.INSTANCE;
     }
 
     public static String getApplicationId() {
@@ -256,7 +256,7 @@ public class ApplicationLoader extends Application {
         }
 
         ApplicationLoader app = (ApplicationLoader) ApplicationLoader.applicationContext;
-        //app.initPushServices();
+        app.initPushServices();
         if (BuildVars.LOGS_ENABLED) {
             FileLog.d("app initied");
         }
@@ -431,7 +431,6 @@ public class ApplicationLoader extends Application {
             e.printStackTrace();
         }
     }
-/*
     private void initPushServices() {
         AndroidUtilities.runOnUIThread(() -> {
             if (getPushProvider().hasServices()) {
@@ -445,7 +444,7 @@ public class ApplicationLoader extends Application {
             }
         }, 1000);
     }
-
+/*
     private boolean checkPlayServices() {
         try {
             int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
