@@ -7,6 +7,12 @@ apply plugin: 'kotlin-android'
 repositories {
     mavenCentral()
     google()
+    maven {
+        url 'https://www.jitpack.io'
+        content {
+            includeModule 'com.github.UnifiedPush', 'android-connector'
+        }
+    }
 }
 
 configurations {
@@ -62,6 +68,7 @@ dependencies {
             because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
         }
     }
+    implementation 'com.github.UnifiedPush:android-connector:2.3.1'
     implementation 'org.osmdroid:osmdroid-android:6.1.20'
 }
 
