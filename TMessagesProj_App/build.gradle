@@ -48,7 +48,7 @@ android {
 
     def fdroid = Utils['isFdroid']()
     def appSuffix = fdroid ? "" : ".beta"
-    def flavorsConfig = fdroid ? "config/release" : "config/debug"
+    def flavorsConfig = fdroid ? "release" : "debug"
     if (fdroid) {
         defaultConfig.applicationId = "org.forkgram.messenger"
     }
