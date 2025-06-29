@@ -60,6 +60,7 @@
     <string name="LargePhoto">2560px для надсилання фото</string>
     <string name="DisableSlideToNextChannel">Вимкнути прокрутку до наступного каналу</string>
     <string name="DisableRecentFilesAttachment">Вимкнути недавні файли</string>
+    <string name="SmsOnlyOfficialWarning">Примітка: SMS-підтвердження доступне ЛИШЕ у офіційних мобільних додатках</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

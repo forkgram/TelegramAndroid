@@ -67,6 +67,7 @@
     <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
     <string name="BotCopyUrl">Copy every clicked link</string>
     <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
+    <string name="SmsOnlyOfficialWarning">Note: SMS verification is limited to ONLY official mobile apps</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="AppNameFdroid">Forkgram</string>

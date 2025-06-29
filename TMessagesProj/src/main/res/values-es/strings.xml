@@ -60,6 +60,7 @@
     <string name="LargePhoto">2560px para enviar fotos</string>
     <string name="DisableSlideToNextChannel">Desactivar deslizar al siguiente canal</string>
     <string name="DisableRecentFilesAttachment">Desactivar archivos recientes</string>
+    <string name="SmsOnlyOfficialWarning">Nota: La verificación por SMS está limitada SOLO a aplicaciones móviles oficiales</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Español</string>
