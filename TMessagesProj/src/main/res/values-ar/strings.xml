@@ -1303,5 +1303,6 @@
     <string name="LargePhoto">2560 بكسل لإرسال الصور</string>
     <string name="DisableSlideToNextChannel">تعطيل السحب إلى القناة التالية</string>
     <string name="DisableRecentFilesAttachment">تعطيل الملفات الحديثة</string>
+    <string name="SmsOnlyOfficialWarning">ملاحظة: التحقق عبر الرسائل النصية مقتصر فقط على التطبيقات الرسمية</string>
 
 </resources>
