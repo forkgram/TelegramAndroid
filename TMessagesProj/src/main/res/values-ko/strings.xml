@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="AppNameFdroid">Forkgram</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">모양</string>
     <string name="ForkSectionMedia">사진 및 동영상</string>
