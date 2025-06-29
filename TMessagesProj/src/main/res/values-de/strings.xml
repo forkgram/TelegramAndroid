@@ -96,6 +96,7 @@
     <string name="BotSetPlatformAbout">Bitte starten Sie die App nach der Änderung neu, um die neue Plattform für den aktuellen Bot anzuwenden.</string>
     <string name="BotCopyUrl">Jeden angeklickten Link kopieren</string>
     <string name="DisableDefaultInAppBrowser">Links im System-Browser öffnen</string>
+    <string name="SmsOnlyOfficialWarning">Hinweis: Die SMS-Verifizierung ist NUR für offizielle mobile Apps verfügbar</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
