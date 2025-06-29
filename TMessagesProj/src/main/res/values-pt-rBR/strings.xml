@@ -93,6 +93,7 @@
     <string name="BotSetPlatformTitle">Alterar plataforma do bot</string>
     <string name="BotSetPlatformAbout">Reinicie após a alteração para aplicar a nova plataforma ao bot atual.</string>
     <string name="BotCopyUrl">Copiar cada link clicado</string>
+    <string name="SmsOnlyOfficialWarning">Observação: A verificação por SMS está disponível APENAS para aplicativos oficiais</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
