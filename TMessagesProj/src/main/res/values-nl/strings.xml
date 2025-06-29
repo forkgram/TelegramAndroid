@@ -96,6 +96,7 @@
     <string name="BotSetPlatformAbout">Start opnieuw op na de wijziging om het nieuwe platform voor de huidige bot toe te passen.</string>
     <string name="BotCopyUrl">Elke aangeklikte link kopiëren</string>
     <string name="DisableDefaultInAppBrowser">Links openen in de systeembrowser</string>
+    <string name="SmsOnlyOfficialWarning">Let op: SMS-verificatie is ALLEEN beschikbaar voor officiële mobiele apps</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
