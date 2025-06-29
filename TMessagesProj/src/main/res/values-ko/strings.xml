@@ -90,6 +90,7 @@
     <string name="BotSetPlatformAbout">변경 후 현재 봇에 새 플랫폼을 적용하려면 다시 시작하세요.</string>
     <string name="BotCopyUrl">클릭한 모든 링크 복사</string>
     <string name="DisableDefaultInAppBrowser">시스템 브라우저에서 링크 열기</string>
+    <string name="SmsOnlyOfficialWarning">참고: SMS 인증은 공식 모바일 앱에서만 가능합니다</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
