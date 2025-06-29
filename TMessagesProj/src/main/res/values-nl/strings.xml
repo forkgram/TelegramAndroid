@@ -60,6 +60,7 @@
     <string name="LargePhoto">2560px voor het verzenden van foto\'s</string>
     <string name="DisableSlideToNextChannel">Veeg naar het volgende kanaal uitschakelen</string>
     <string name="DisableRecentFilesAttachment">Recente bestanden uitschakelen</string>
+    <string name="SmsOnlyOfficialWarning">Let op: SMS-verificatie is ALLEEN beschikbaar voor officiële mobiele apps</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
