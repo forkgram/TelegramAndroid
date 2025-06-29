@@ -60,6 +60,7 @@
     <string name="LargePhoto">사진 전송을 위한 2560px</string>
     <string name="DisableSlideToNextChannel">다음 채널로 슬라이드 비활성화</string>
     <string name="DisableRecentFilesAttachment">최근 파일 비활성화</string>
+    <string name="SmsOnlyOfficialWarning">참고: SMS 인증은 공식 모바일 앱에서만 가능합니다</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
