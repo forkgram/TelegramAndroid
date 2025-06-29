@@ -90,6 +90,7 @@
     <string name="BotSetPlatformAbout">يُرجى إعادة التشغيل بعد التغيير لتطبيق المنصة الجديدة على الروبوت الحالي.</string>
     <string name="BotCopyUrl">نسخ كل رابط يتم النقر عليه</string>
     <string name="DisableDefaultInAppBrowser">فتح الروابط في متصفح النظام</string>
+    <string name="SmsOnlyOfficialWarning">ملاحظة: التحقق عبر الرسائل النصية مقتصر فقط على التطبيقات الرسمية</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
