@@ -130,6 +130,7 @@ android {
 
         buildConfigField 'boolean', 'SKIP_DNS_RESOLVER', (Utils['isFdroid']() ? 'true' : 'false')
         buildConfigField 'boolean', 'SKIP_INTERNAL_BROWSER_BY_DEFAULT', (Utils['isFdroid']() ? 'true' : 'false')
+        manifestPlaceholders = [appLabel: Utils['isFdroid']() ? "@string/AppNameFdroid" : "@string/AppName"]
 
         externalNativeBuild {
             cmake {
