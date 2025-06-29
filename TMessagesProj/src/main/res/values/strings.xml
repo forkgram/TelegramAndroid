@@ -69,6 +69,7 @@
     <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
+    <string name="AppNameFdroid">Forkgram</string>
     <string name="LanguageName">English</string>
     <string name="English">English</string>
     <string name="LanguageNameInEnglish">English</string>
