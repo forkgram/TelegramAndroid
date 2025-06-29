@@ -2038,6 +2038,15 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             subtitleView.setLineSpacing(dp(2), 1.0f);
             addView(subtitleView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 32, 8, 32, 0));
 
+            TextView warningView = new TextView(context);
+            warningView.setText(R.string.SmsOnlyOfficialWarning);
+            warningView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            warningView.setTextColor(Theme.getColor(Theme.key_text_RedRegular));
+            warningView.setGravity(Gravity.CENTER);
+            warningView.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
+            warningView.setPadding(0, AndroidUtilities.dp(8), 0, 0);
+            addView(warningView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 32, 0, 32, 0));
+
             countryButton = new TextViewSwitcher(context);
             countryButton.setFactory(() -> {
                 TextView tv = new TextView(context);
