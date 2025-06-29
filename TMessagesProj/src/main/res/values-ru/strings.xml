@@ -60,6 +60,7 @@
     <string name="LargePhoto">2560px для отправки фото</string>
     <string name="DisableSlideToNextChannel">Отключить слайд на следующий канал</string>
     <string name="DisableRecentFilesAttachment">Отключить недавние файлы</string>
+    <string name="SmsOnlyOfficialWarning">Примечание: SMS-подтверждение доступно ТОЛЬКО в официальных мобильных приложениях</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
