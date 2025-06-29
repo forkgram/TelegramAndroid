@@ -1309,5 +1309,6 @@
     <string name="LargePhoto">2560px para enviar fotos</string>
     <string name="DisableSlideToNextChannel">Desativar deslizar para o próximo canal</string>
     <string name="DisableRecentFilesAttachment">Desativar arquivos recentes</string>
+    <string name="SmsOnlyOfficialWarning">Observação: A verificação por SMS está disponível APENAS para aplicativos oficiais</string>
 
 </resources>
