@@ -80,8 +80,7 @@ jobs:
           mkdir -p artifact
           mv TMessagesProj_App/build/outputs/apk/afat/${{ matrix.type }}/app.apk app.apk
           cp app.apk "artifact/ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
-          mkdir -p tag_asset
-          cp app.apk "tag_asset/ForkClient_$(cat ver.txt)${{ matrix.name }}.apk"
+          sha256sum app.apk > "artifact/ForkClient $(cat ver.txt)${{ matrix.name }}.apk.sha256"
 
           # Upload to channel.
           set +x
@@ -103,7 +102,35 @@ jobs:
         name: Upload artifact
         with:
           name: ForkClient-${{ matrix.type }}
-          path: artifact/
+          path: |
+            artifact/*.apk
+
+  checksum:
+    name: Generate Checksums
+    needs: linux
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type: [debug, release]
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: ForkClient-${{ matrix.type }}
+          path: apk_files
+      - name: Generate SHA256
+        run: |
+          cd apk_files
+          for apk in *.apk; do
+            hash=$(sha256sum "$apk" | cut -d' ' -f1)
+            echo "$hash" > "${apk}.sha256"
+            echo "SHA256_HASH=${hash}" >> $GITHUB_ENV
+          done
+      - name: Upload checksums
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ env.SHA256_HASH }}
+          path: apk_files/*.sha256
 
   release:
     name: Create Release.
@@ -126,6 +153,22 @@ jobs:
           find debug_asset -name "*.apk" | head -1 | sed 's/.*ForkClient //;s/\.apk//' > version.txt
           echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
           echo "OFFICIAL_VERSION=$(cat version.txt | sed 's/..$//')" >> $GITHUB_ENV
+      - name: Generate checksums for verification
+        run: |
+          echo "— Updated to ${{ env.OFFICIAL_VERSION }} build of the official Telegram." > release_body.txt
+          echo "" >> release_body.txt
+          echo "**Build Verification:**" >> release_body.txt
+          echo "- Workflow: [${{ github.workflow }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> release_body.txt
+          echo "- Commit: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})" >> release_body.txt
+          echo "" >> release_body.txt
+          echo "**APK SHA256:**" >> release_body.txt
+          for file in debug_asset/*.apk release_asset/*.apk; do
+            if [ -f "$file" ]; then
+              filename=$(basename "$file")
+              checksum=$(sha256sum "$file" | cut -d' ' -f1)
+              echo "- $filename: \`$checksum\`" >> release_body.txt
+            fi
+          done
       - name: Create Release
         uses: softprops/action-gh-release@v0.1.15
         env:
@@ -133,8 +176,8 @@ jobs:
         with:
           draft: true
           files: |
-            debug_asset/*
-            release_asset/*
+            debug_asset/*.apk
+            release_asset/*.apk
           tag_name: ${{ env.VERSION }}
           name: "ForkClient ${{ env.VERSION }}"
-          body: "— Updated to ${{ env.OFFICIAL_VERSION }} build of the official Telegram."
+          body_path: release_body.txt
