@@ -256,7 +256,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 35
         versionName Utils['getVersionName']()
         ndkVersion "21.4.7075529"
