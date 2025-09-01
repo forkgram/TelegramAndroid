@@ -24,6 +24,8 @@ configurations.all {
 }
 
 dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+
     implementation 'androidx.core:core:1.16.0'
     implementation 'androidx.interpolator:interpolator:1.0.0'
     implementation 'androidx.fragment:fragment:1.2.0'
