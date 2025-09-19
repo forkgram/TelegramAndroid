@@ -91,6 +91,7 @@
     <string name="BotCopyUrl">Копіювати кожне натиснуте посилання</string>
     <string name="DisableDefaultInAppBrowser">Відкривати посилання в системному браузері</string>
     <string name="SmsOnlyOfficialWarning">Примітка: SMS-підтвердження доступне ЛИШЕ у офіційних мобільних додатках</string>
+    <string name="ThirdParty">Сторонні</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
