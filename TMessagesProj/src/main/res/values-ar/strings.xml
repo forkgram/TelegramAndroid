@@ -91,6 +91,7 @@
     <string name="BotCopyUrl">نسخ كل رابط يتم النقر عليه</string>
     <string name="DisableDefaultInAppBrowser">فتح الروابط في متصفح النظام</string>
     <string name="SmsOnlyOfficialWarning">ملاحظة: التحقق عبر الرسائل النصية مقتصر فقط على التطبيقات الرسمية</string>
+    <string name="ThirdParty">طرف ثالث</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
