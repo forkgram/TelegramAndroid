@@ -91,6 +91,7 @@
     <string name="BotCopyUrl">Copia ogni link cliccato</string>
     <string name="DisableDefaultInAppBrowser">Apri i link nel browser di sistema</string>
     <string name="SmsOnlyOfficialWarning">Nota: la verifica SMS è limitata SOLO alle app mobili ufficiali</string>
+    <string name="ThirdParty">Di terze parti</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
