@@ -99,6 +99,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_UNIFIED_PUSH = 80;
     public static final int ID_LOCK_PREMIUM = 83;
 
+    public static final int ID_LASTFM_LOGIN = 90;
+
     private static final int MENU_SEARCH = 100;
 
     private UniversalRecyclerView listView;
@@ -450,6 +452,13 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("lockPremium", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
+        if (BuildVars.LASTFM_API_KEY != null && BuildVars.LASTFM_API_KEY.length() > 2 &&
+            BuildVars.LASTFM_API_SECRET != null && BuildVars.LASTFM_API_SECRET.length() > 2) {
+            items.add(UItem.asHeader(LocaleController.getString(R.string.ThirdParty)));
+            items.add(UItem.asSettingsCell(ID_LASTFM_LOGIN, R.drawable.ic_lastfm, "Last.fm"));
+            items.add(UItem.asShadow(null));
+        }
+
     }
 
     private boolean toggle(String option, UItem item, View view) {
@@ -543,6 +552,9 @@ public class ForkSettingsActivity extends BaseFragment {
             presentFragment(new NotificationsSettingsActivity().highlightUnifiedPush());
         } else if (id == ID_LOCK_PREMIUM) {
             toggle("lockPremium", item, view);
+
+        } else if (id == ID_LASTFM_LOGIN) {
+            presentFragment(new LastFmLoginActivity());
 
         }
     }
