@@ -33,6 +33,10 @@ public class BuildVars {
     public static String HUAWEI_STORE_URL = "https://appgallery.huawei.com/app/C101184875";
     public static String GOOGLE_AUTH_CLIENT_ID = "760348033671-81kmi3pi84p11ub8hp9a1funsv0rn2p9.apps.googleusercontent.com";
 
+    // Last.fm API constants
+    public static String LASTFM_API_KEY = BuildConfig.LASTFM_API_KEY;
+    public static String LASTFM_API_SECRET = BuildConfig.LASTFM_API_SECRET;
+    public static String LASTFM_API_URL = "https://ws.audioscrobbler.com/2.0/";
 
     public static String UPDATE_CHANNEL_USERNAME = BuildConfig.UPDATE_CHANNEL_USERNAME;
 
