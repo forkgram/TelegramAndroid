@@ -70,6 +70,7 @@
     <string name="ShowNotificationContentInfo">Когда приложение заблокировано. Может быть причиной утечки конфиденциальности.</string>
     <string name="DeleteAllYourMessages">Удалить все ваши сообщения</string>
     <string name="DeleteAllYourMessagesInfo">Вы уверены, что хотите **удалить все ваши сообщения** из этого чата?</string>
+    <string name="DeleteAllYourMessagesInAllTopics">Удалить все ваши сообщения во всех темах</string>
     <string name="ReallySure">Вы **действительно уверены**?</string>
     <string name="DisableGlobalSearch">Отключить глобальный поиск</string>
     <string name="DisableQuickReaction">Отключить быструю реакцию</string>
