@@ -76,6 +76,7 @@
     <string name="ShowNotificationContentInfo">Wenn die App gesperrt ist. Kann Ursache für Datenschutzverletzungen sein.</string>
     <string name="DeleteAllYourMessages">Alle Ihre Nachrichten löschen</string>
     <string name="DeleteAllYourMessagesInfo">Sind Sie sicher, dass Sie **alle Ihre Nachrichten** aus diesem Chat löschen möchten?</string>
+    <string name="DeleteAllYourMessagesInAllTopics">Alle Ihre Nachrichten in allen Themen löschen</string>
     <string name="ReallySure">Sind Sie **wirklich sicher**?</string>
     <string name="DisableGlobalSearch">Globale Suche deaktivieren</string>
     <string name="DisableQuickReaction">Schnelle Reaktion deaktivieren</string>

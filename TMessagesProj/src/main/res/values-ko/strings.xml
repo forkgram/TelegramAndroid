@@ -76,6 +76,7 @@
     <string name="ShowNotificationContentInfo">앱이 잠겨 있을 때. 개인 정보 유출의 원인이 될 수 있습니다.</string>
     <string name="DeleteAllYourMessages">모든 메시지 삭제</string>
     <string name="DeleteAllYourMessagesInfo">이 채팅에서 **모든 메시지를 삭제**하시겠습니까?</string>
+    <string name="DeleteAllYourMessagesInAllTopics">모든 주제에서 내 메시지 모두 삭제</string>
     <string name="ReallySure">정말 **확실합니까**?</string>
     <string name="DisableGlobalSearch">전역 검색 비활성화</string>
     <string name="DisableQuickReaction">빠른 반응 비활성화</string>
