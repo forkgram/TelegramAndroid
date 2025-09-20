@@ -128,6 +128,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserNameResolver;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
+import org.telegram.messenger.LifecycleHelper;
 import org.telegram.messenger.browser.Browser;
 import org.telegram.messenger.pip.PipActivityController;
 import org.telegram.messenger.pip.activity.IPipActivity;
@@ -965,6 +966,20 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         }
         checkLayout();
         checkSystemBarColors();
+        
+        // Handle app restoration after process kill
+        if (savedInstanceState != null) {
+            // Ensure fragments are properly restored
+            if (actionBarLayout.getFragmentStack().isEmpty()) {
+                if (UserConfig.getInstance(currentAccount).isClientActivated()) {
+                    DialogsActivity dialogsActivity = new DialogsActivity(null);
+                    dialogsActivity.setSideMenu(sideMenu);
+                    actionBarLayout.addFragmentToStack(dialogsActivity);
+                    drawerLayoutContainer.setAllowOpenDrawer(true, false);
+                }
+            }
+        }
+        
         handleIntent(getIntent(), false, savedInstanceState != null, false, null, true, true);
         try {
             String os1 = Build.DISPLAY;
@@ -6779,6 +6794,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         pipActivityHandler.onPause();
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.stopAllHeavyOperations, 4096);
         ApplicationLoader.mainInterfacePaused = true;
+        
+        // UI state is handled by existing fragment lifecycle methods
         int account = currentAccount;
         Utilities.stageQueue.postRunnable(() -> {
             ApplicationLoader.mainInterfacePausedStageQueue = true;
@@ -6831,6 +6848,21 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         GroupCallPip.updateVisibility(this);
         if (GroupCallActivity.groupCallInstance != null) {
             GroupCallActivity.groupCallInstance.onResume();
+        }
+        
+        // Ensure fragments are properly restored after app comes back from background
+        if (actionBarLayout != null && actionBarLayout.getFragmentStack().isEmpty()) {
+            // If fragment stack is empty, restore default fragment
+            if (UserConfig.getInstance(currentAccount).isClientActivated()) {
+                DialogsActivity dialogsActivity = new DialogsActivity(null);
+                if (sideMenu != null) {
+                    dialogsActivity.setSideMenu(sideMenu);
+                }
+                actionBarLayout.addFragmentToStack(dialogsActivity);
+                if (drawerLayoutContainer != null) {
+                    drawerLayoutContainer.setAllowOpenDrawer(true, false);
+                }
+            }
         }
     }
 
@@ -6971,6 +7003,27 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         if (onResumeStaticCallback != null) {
             onResumeStaticCallback.run();
             onResumeStaticCallback = null;
+        }
+        
+        // Fix for white screen issue after device sleep
+        LifecycleHelper.ensureUIVisible(this, frameLayout, drawerLayoutContainer);
+        
+        // Delayed UI restore if needed
+        if (LifecycleHelper.needsStateRestore(this)) {
+            LifecycleHelper.delayedUIRestore(() -> {
+                if (actionBarLayout != null && actionBarLayout.getFragmentStack().isEmpty()) {
+                    if (UserConfig.getInstance(currentAccount).isClientActivated()) {
+                        DialogsActivity dialogsActivity = new DialogsActivity(null);
+                        if (sideMenu != null) {
+                            dialogsActivity.setSideMenu(sideMenu);
+                        }
+                        actionBarLayout.addFragmentToStack(dialogsActivity);
+                        if (drawerLayoutContainer != null) {
+                            drawerLayoutContainer.setAllowOpenDrawer(true, false);
+                        }
+                    }
+                }
+            });
         }
         if (Theme.selectedAutoNightType == Theme.AUTO_NIGHT_TYPE_SYSTEM) {
             Theme.checkAutoNightThemeConditions();
@@ -8193,6 +8246,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     protected void onSaveInstanceState(Bundle outState) {
         try {
             super.onSaveInstanceState(outState);
+            
+            // Save current account and app state
+            outState.putInt("currentAccount", currentAccount);
+            outState.putBoolean("isActive", isActive);
+            outState.putBoolean("isResumed", isResumed);
+            outState.putBoolean("isStarted", isStarted);
             BaseFragment lastFragment = null;
             if (AndroidUtilities.isTablet()) {
                 if (layersActionBarLayout != null && !layersActionBarLayout.getFragmentStack().isEmpty()) {
@@ -8231,6 +8290,35 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     outState.putString("fragment", "channel");
                 }
                 lastFragment.saveSelfArgs(outState);
+            }
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+            
+            // Restore app state
+            if (savedInstanceState != null) {
+                int savedAccount = savedInstanceState.getInt("currentAccount", currentAccount);
+                if (savedAccount != currentAccount && UserConfig.isValidAccount(savedAccount)) {
+                    switchToAccount(savedAccount, false);
+                }
+                
+                isActive = savedInstanceState.getBoolean("isActive", true);
+                isResumed = savedInstanceState.getBoolean("isResumed", false);
+                isStarted = savedInstanceState.getBoolean("isStarted", false);
+                
+                // Ensure UI is visible after restore
+                if (frameLayout != null) {
+                    frameLayout.setVisibility(View.VISIBLE);
+                }
+                if (drawerLayoutContainer != null) {
+                    drawerLayoutContainer.setVisibility(View.VISIBLE);
+                }
             }
         } catch (Exception e) {
             FileLog.e(e);
