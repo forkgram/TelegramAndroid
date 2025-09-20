@@ -76,6 +76,7 @@
     <string name="ShowNotificationContentInfo">عند قفل التطبيق. قد يكون سببًا لتسرب الخصوصية.</string>
     <string name="DeleteAllYourMessages">حذف جميع رسائلك</string>
     <string name="DeleteAllYourMessagesInfo">هل أنت متأكد أنك تريد **حذف جميع رسائلك** من هذه المحادثة؟</string>
+    <string name="DeleteAllYourMessagesInAllTopics">حذف جميع رسائلك في كل المواضيع</string>
     <string name="ReallySure">هل أنت **متأكد حقًا**؟</string>
     <string name="DisableGlobalSearch">تعطيل البحث العالمي</string>
     <string name="DisableQuickReaction">تعطيل رد الفعل السريع</string>

@@ -76,6 +76,7 @@
     <string name="ShowNotificationContentInfo">Wanneer de app is vergrendeld. Kan oorzaak zijn van privacylekken.</string>
     <string name="DeleteAllYourMessages">Verwijder al je berichten</string>
     <string name="DeleteAllYourMessagesInfo">Weet je zeker dat je **alle je berichten** uit deze chat wilt verwijderen?</string>
+    <string name="DeleteAllYourMessagesInAllTopics">Al je berichten in alle onderwerpen verwijderen</string>
     <string name="ReallySure">Ben je **echt zeker**?</string>
     <string name="DisableGlobalSearch">Globale zoekfunctie uitschakelen</string>
     <string name="DisableQuickReaction">Snelle reactie uitschakelen</string>
