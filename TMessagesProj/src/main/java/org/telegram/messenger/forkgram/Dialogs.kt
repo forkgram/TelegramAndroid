@@ -231,6 +231,98 @@ object ForkDialogs {
     }
 
     @JvmStatic
+    fun createDeleteAllYourMessagesInAllTopicsAlert(
+        currentAccount: Int,
+        dialogId: Long,
+        context: Context
+    ) {
+
+        fun create(text: String, callback: () -> Unit) {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle(LocaleController.getString(R.string.DeleteAllYourMessages))
+            builder.setMessage(AndroidUtilities.replaceTags(text))
+
+            builder.setPositiveButton(
+                LocaleController.getString(R.string.OK),
+                { _: DialogInterface?, _: Int -> callback() })
+            builder.setNegativeButton(
+                LocaleController.getString(R.string.Cancel),
+                null)
+            val dialog = builder.show()
+            val button = dialog.getButton(DialogInterface.BUTTON_POSITIVE) as TextView
+            button.setTextColor(Theme.getColor(Theme.key_text_RedBold))
+        }
+
+        val messagesController = AccountInstance.getInstance(currentAccount).messagesController
+        val topicsController = messagesController.topicsController
+        val meId = UserConfig.getInstance(UserConfig.selectedAccount).clientUserId
+        val chatId = -dialogId
+
+        fun deleteFor(to: Long, found: ArrayList<TLRPC.Message>) {
+            val messages: java.util.ArrayList<Int> = ArrayList(found.map { it.id })
+            AndroidUtilities.runOnUIThread {
+                messagesController.deleteMessages(
+                    messages,
+                    null,
+                    null,
+                    to,
+                    0,
+                    true,
+                    0)
+            }
+        }
+
+        create(
+            LocaleController.getString(R.string.DeleteAllYourMessagesInfo) + "\n\n" +
+            "This will delete your messages in ALL topics of this group."
+        ) {
+            create(LocaleController.getString(R.string.ReallySure)) {
+                val topics = topicsController.getTopics(chatId)
+                val mePeer = messagesController.getInputPeer(meId)
+                val dialogPeer = messagesController.getInputPeer(dialogId)
+
+                if (topics != null && topics.isNotEmpty()) {
+                    // Delete messages in each topic
+                    for (topic in topics) {
+                        // Use the main dialog peer but search within specific topic
+                        ForkApi.searchAllMessages(
+                            currentAccount,
+                            dialogPeer,
+                            mePeer,
+                            { found: ArrayList<TLRPC.Message> ->
+                                // Filter messages that belong to this topic
+                                val topicMessages = found.filter { message ->
+                                    val topicId = if (message.reply_to != null && message.reply_to.reply_to_top_id != 0) {
+                                        message.reply_to.reply_to_top_id
+                                    } else if (message.reply_to != null && message.reply_to.reply_to_msg_id != 0) {
+                                        message.reply_to.reply_to_msg_id
+                                    } else {
+                                        message.id
+                                    }
+                                    topicId == topic.id
+                                }
+                                if (topicMessages.isNotEmpty()) {
+                                    deleteFor(dialogId, ArrayList(topicMessages))
+                                }
+                            },
+                            {}
+                        )
+                    }
+                } else {
+                    // Fallback to main dialog if no topics
+                    ForkApi.searchAllMessages(
+                        currentAccount,
+                        dialogPeer,
+                        mePeer,
+                        { found: ArrayList<TLRPC.Message> -> deleteFor(dialogId, found) },
+                        {}
+                    )
+                }
+            }
+        }
+    }
+
+    @JvmStatic
     fun createFieldAlert(
         context: Context,
         title: String,
