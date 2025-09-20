@@ -368,27 +368,36 @@ public class ApplicationLoader extends Application {
             pendingIntentFlags = PendingIntent.FLAG_MUTABLE;
         }
         if (enabled) {
-            Log.d("TFOSS", "Trying to start push service every minute");
-            // Telegram-FOSS: unconditionally enable push service
-            AlarmManager am = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
-            Intent i = new Intent(applicationContext, NotificationsService.class);
-            try {
-            pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, i, pendingIntentFlags);
+            // Check if UnifiedPush is active and working
+            boolean unifiedPushActive = getPushProvider() instanceof PushListenerController.UnifiedPushListenerServiceProvider &&
+                    getPushProvider().hasServices() &&
+                    !TextUtils.isEmpty(SharedConfig.pushString) &&
+                    SharedConfig.pushType == PushListenerController.PUSH_TYPE_SIMPLE;
+            
+            if (!unifiedPushActive) {
+                Log.d("TFOSS", "Trying to start push service every minute");
+                AlarmManager am = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
+                Intent i = new Intent(applicationContext, NotificationsService.class);
+                try {
+                pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, i, pendingIntentFlags);
 
-            am.cancel(pendingIntent);
-            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
-            } catch (Throwable ignore) {
-                Log.d("Fork Client", "Failed to set intent");
-            }
-            try {
-                Log.d("TFOSS", "Starting push service...");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    applicationContext.startForegroundService(new Intent(applicationContext, NotificationsService.class));
-                } else {
-                    applicationContext.startService(new Intent(applicationContext, NotificationsService.class));
+                am.cancel(pendingIntent);
+                am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
+                } catch (Throwable ignore) {
+                    Log.d("Fork Client", "Failed to set intent");
                 }
-            } catch (Throwable ignore) {
-                Log.d("TFOSS", "Failed to start push service");
+                try {
+                    Log.d("TFOSS", "Starting push service...");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        applicationContext.startForegroundService(new Intent(applicationContext, NotificationsService.class));
+                    } else {
+                        applicationContext.startService(new Intent(applicationContext, NotificationsService.class));
+                    }
+                } catch (Throwable ignore) {
+                    Log.d("TFOSS", "Failed to start push service");
+                }
+            } else {
+                Log.d("Fork Client", "UnifiedPush is active, skipping foreground service");
             }
         } else {
             applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
