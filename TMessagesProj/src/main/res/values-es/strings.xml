@@ -76,6 +76,7 @@
     <string name="ShowNotificationContentInfo">Cuando la aplicación está bloqueada. Puede ser causa de filtraciones de privacidad.</string>
     <string name="DeleteAllYourMessages">Eliminar todos tus mensajes</string>
     <string name="DeleteAllYourMessagesInfo">¿Estás seguro de que deseas **eliminar todos tus mensajes** de este chat?</string>
+    <string name="DeleteAllYourMessagesInAllTopics">Eliminar todos tus mensajes en todos los temas</string>
     <string name="ReallySure">¿Estás **realmente seguro**?</string>
     <string name="DisableGlobalSearch">Desactivar búsqueda global</string>
     <string name="DisableQuickReaction">Desactivar reacción rápida</string>
