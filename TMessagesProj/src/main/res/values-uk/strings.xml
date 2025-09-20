@@ -70,6 +70,7 @@
     <string name="ShowNotificationContentInfo">Коли додаток заблоковано. Може бути причиною витоків конфіденційності.</string>
     <string name="DeleteAllYourMessages">Видалити всі ваші повідомлення</string>
     <string name="DeleteAllYourMessagesInfo">Ви впевнені, що хочете **видалити всі ваші повідомлення** з цього чату?</string>
+    <string name="DeleteAllYourMessagesInAllTopics">Видалити всі ваші повідомлення в усіх темах</string>
     <string name="ReallySure">Ви **справді впевнені**?</string>
     <string name="DisableGlobalSearch">Вимкнути глобальний пошук</string>
     <string name="DisableQuickReaction">Вимкнути швидку реакцію</string>
