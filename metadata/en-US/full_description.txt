@@ -1,60 +1,60 @@
 Forkgram is a simple fork of the Telegram Messenger with a few minor improvements.
 
-Features
-    Square avatars (sorry, I love it)
-    "Delete for everyone" enabled by default
-    Online colored statuses
-    Date of forwarded messages
-    Set rear camera as default for Video Messages
-    Buttons for backward and forward steps in audio player
-    Days of week to schedule time picker
-    A lot of self-destruct timer's options in secret chats
-    Send Video Messages without white background
-    "Sync Contacts" is disabled by default in Login activity
-    Send GIF with pre-written caption in Message Field
-    Send pre-written text from Message Field before sending sticker
-    See count of unread messages when selecting multiple dialogs
+<b>Features</b>
+͏ • Square avatars (sorry, I love it)
+͏ • "Delete for everyone" enabled by default
+͏ • Online colored statuses
+͏ • Date of forwarded messages
+͏ • Set rear camera as default for Video Messages
+͏ • Buttons for backward and forward steps in audio player
+͏ • Days of week to schedule time picker
+͏ • A lot of self-destruct timer's options in secret chats
+͏ • Send Video Messages without white background
+͏ • "Sync Contacts" is disabled by default in Login activity
+͏ • Send GIF with pre-written caption in Message Field
+͏ • Send pre-written text from Message Field before sending sticker
+͏ • See count of unread messages when selecting multiple dialogs
 
-Abilities:
-    Open archive on pulldown
-    See profile info from dialogs list via context menu
-    Select all messages between 2 selections from bar
-    Hide title and avatar in dialogs
-    Open calendar from long click on floating date
-    Jump to the first message in any dialog
-    Copy ID of dialogs
-    Open Saved Messages on long click on search top button
-    Delete all your messages in group
-    Attach text to Voice Message before sending it
-    Seek Voice Messages from audio player alert
-    Set custom title of main view
-    Copy links without protocol
-    Mention users by name
-    Copy Username without long touch
-    Copy URL from inline button
+<b>Abilities</b>
+͏ • Open archive on pulldown
+͏ • See profile info from dialogs list via context menu
+͏ • Select all messages between 2 selections from bar
+͏ • Hide title and avatar in dialogs
+͏ • Open calendar from long click on floating date
+͏ • Jump to the first message in any dialog
+͏ • Copy ID of dialogs
+͏ • Open Saved Messages on long click on search top button
+͏ • Delete all your messages in group
+͏ • Attach text to Voice Message before sending it
+͏ • Seek Voice Messages from audio player alert
+͏ • Set custom title of main view
+͏ • Copy links without protocol
+͏ • Mention users by name
+͏ • Copy Username without long touch
+͏ • Copy URL from inline button
 
-Options:
-    Turn off sync pins to make unlimited number of pinned dialogs
-    Raise all unmuted messages above muted messages
-    Disable Global Search
-    Hide "Send As" button
-    Disable thumbs in dialog list
-    Disable premium features
-    Hide animated locked premium emoji from emoji panel
-    Disable quick reaction with double tap
-    Show notifications content when application is locked
-    Enable time format with seconds for messages
-    Disable flip through photos by tapping on their edge
-    Disable sending sticker info in photos
-    Disable parameters from bot links
+<b>Options</b>
+͏ • Turn off sync pins to make unlimited number of pinned dialogs
+͏ • Raise all unmuted messages above muted messages
+͏ • Disable Global Search
+͏ • Hide "Send As" button
+͏ • Disable thumbs in dialog list
+͏ • Disable premium features
+͏ • Hide animated locked premium emoji from emoji panel
+͏ • Disable quick reaction with double tap
+͏ • Show notifications content when application is locked
+͏ • Enable time format with seconds for messages
+͏ • Disable flip through photos by tapping on their edge
+͏ • Disable sending sticker info in photos
+͏ • Disable parameters from bot links
 
-Fast Forward:
-    You can forward any message with Share Alert from Fast Forward menu item.
-    Share Alert now has two additional buttons: forward as copy (Anon Button) and forward without original caption (No-Text Button).
-    If you have pre-written comment, then No-Text Button will replace the original caption with your text.
-    A long press on both the Anon and No-Text buttons will send the message without sound
-    If a selected chat has Drafted Reply, then both Anon and No-Text buttons will send message to this Reply.
+<b>Fast Forward</b>
+͏ • You can forward any message with Share Alert from Fast Forward menu item.
+͏ • Share Alert now has two additional buttons: forward as copy (Anon Button) and forward without original caption (No-Text Button).
+͏ • If you have pre-written comment, then No-Text Button will replace the original caption with your text.
+͏ • A long press on both the Anon and No-Text buttons will send the message without sound.
+͏ • If a selected chat has Drafted Reply, then both Anon and No-Text buttons will send message to this Reply.
 
-    Selected messages can now be forwarded as grouped media.
+Selected messages can now be forwarded as grouped media.
 
-    Media within webpage previews now can be forwarded as plain media to any chat. Just open the webpage preview and tap the Anon Button from the top.
+͏Media within webpage previews now can be forwarded as plain media to any chat. Just open the webpage preview and tap the Anon Button from the top.
