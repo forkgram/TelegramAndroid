@@ -12538,7 +12538,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         boolean onlySelfStories = !isArchive() && getStoriesController().hasOnlySelfStories();
         boolean newVisibility;
         if (isArchive()) {
-            newVisibility = !getStoriesController().getHiddenList().isEmpty();
+            boolean hideStoriesInArchive = MessagesController.getGlobalMainSettings().getBoolean("hideStoriesInArchive", false);
+            newVisibility = !hideStoriesInArchive && !getStoriesController().getHiddenList().isEmpty();
         } else {
             newVisibility = !onlySelfStories && getStoriesController().hasStories();
             onlySelfStories = getStoriesController().hasOnlySelfStories();
