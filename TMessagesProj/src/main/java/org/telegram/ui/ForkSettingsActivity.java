@@ -69,6 +69,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_SYNC_PINS = 20;
     public static final int ID_UNMUTED_ON_TOP = 21;
     public static final int ID_OPEN_ARCHIVE_ON_PULL = 22;
+    public static final int ID_HIDE_STORIES_IN_ARCHIVE = 23;
     public static final int ID_DISABLE_THUMBS_IN_DIALOG_LIST = 24;
     public static final int ID_DISABLE_GLOBAL_SEARCH = 25;
     public static final int ID_ENABLE_LAST_SEEN_DOTS = 27;
@@ -379,6 +380,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("unmutedOnTop", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_OPEN_ARCHIVE_ON_PULL, LocaleController.getString(R.string.OpenArchiveOnPull), LocaleController.getString(R.string.OpenArchiveOnPullInfo))
             .setChecked(pref("openArchiveOnPull", true)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_HIDE_STORIES_IN_ARCHIVE, LocaleController.getString(R.string.HideStoriesInArchive), LocaleController.getString(R.string.HideStoriesInArchiveInfo))
+            .setChecked(pref("hideStoriesInArchive", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_THUMBS_IN_DIALOG_LIST, LocaleController.getString(R.string.DisableThumbsInDialogList), LocaleController.getString(R.string.DisableThumbsInDialogListInfo))
             .setChecked(pref("disableThumbsInDialogList", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_GLOBAL_SEARCH, LocaleController.getString(R.string.DisableGlobalSearch), LocaleController.getString(R.string.DisableGlobalSearchInfo))
@@ -504,6 +507,8 @@ public class ForkSettingsActivity extends BaseFragment {
             MessagesController.getInstance(currentAccount).sortDialogs(null);
         } else if (id == ID_OPEN_ARCHIVE_ON_PULL) {
             toggle("openArchiveOnPull", item, view);
+        } else if (id == ID_HIDE_STORIES_IN_ARCHIVE) {
+            toggle("hideStoriesInArchive", item, view);
         } else if (id == ID_DISABLE_THUMBS_IN_DIALOG_LIST) {
             toggle("disableThumbsInDialogList", item, view);
         } else if (id == ID_DISABLE_GLOBAL_SEARCH) {
