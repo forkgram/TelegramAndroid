@@ -8,6 +8,7 @@
     <string name="ForkSectionSystem">System and updates</string>
     <string name="HideBottomButtonInfo">Blank the bottom bar button (Mute, Join) and ignore taps on it.</string>
     <string name="OpenArchiveOnPullInfo">Open the Archive folder when the chat list is pulled down.</string>
+    <string name="HideStoriesInArchiveInfo">Hide the stories row inside Archived Chats.</string>
     <string name="DisableThumbsInDialogListInfo">Hide media thumbnails of the last message in the chat list.</string>
     <string name="DisableGlobalSearchInfo">Show only your chats and contacts in search, no global results.</string>
     <string name="EnableLastSeenDotsInfo">Color the avatar dot for people last seen within the past hour.</string>
@@ -96,6 +97,7 @@
     <string name="SmsOnlyOfficialWarning">Note: SMS verification is limited to ONLY official mobile apps</string>
     <string name="ThirdParty">Third-party</string>
     <string name="EnableLastSeenDots">Enable colored last seen dots</string>
+    <string name="HideStoriesInArchive">Hide Stories in Archive</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="AppNameFdroid">Forkgram</string>
