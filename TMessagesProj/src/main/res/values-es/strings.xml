@@ -7,6 +7,7 @@
     <string name="ForkSectionSystem">Sistema y actualizaciones</string>
     <string name="HideBottomButtonInfo">Vaciar el botón de la barra inferior (Silenciar, Unirse) e ignorar los toques en él.</string>
     <string name="OpenArchiveOnPullInfo">Abrir la carpeta Archivados al deslizar hacia abajo la lista de chats.</string>
+    <string name="HideStoriesInArchiveInfo">Ocultar la fila de historias dentro de los chats archivados.</string>
     <string name="DisableThumbsInDialogListInfo">Ocultar las miniaturas del último mensaje en la lista de chats.</string>
     <string name="DisableGlobalSearchInfo">Mostrar en la búsqueda solo tus chats y contactos, sin resultados globales.</string>
     <string name="EnableLastSeenDotsInfo">Colorear el punto del avatar de quienes se conectaron en la última hora.</string>
@@ -95,6 +96,7 @@
     <string name="SmsOnlyOfficialWarning">Nota: La verificación por SMS está limitada SOLO a aplicaciones móviles oficiales</string>
     <string name="ThirdParty">De terceros</string>
     <string name="EnableLastSeenDots">Activar puntos de color de última conexión</string>
+    <string name="HideStoriesInArchive">Ocultar historias en el archivo</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Español</string>
