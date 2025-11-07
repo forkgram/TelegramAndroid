@@ -13,6 +13,7 @@
     <string name="DisableUnifiedPushInfo">Сповіщення надходитимуть через власне фонове з’єднання застосунку</string>
     <string name="HideBottomButtonInfo">Очищати нижню кнопку (Вимкнути звук, Приєднатися) та ігнорувати натискання на неї.</string>
     <string name="OpenArchiveOnPullInfo">Відкривати теку «Архів» під час потягування списку чатів униз.</string>
+    <string name="HideStoriesInArchiveInfo">Приховувати стрічку історій усередині архіву чатів.</string>
     <string name="DisableThumbsInDialogListInfo">Приховувати мініатюри медіа останнього повідомлення у списку чатів.</string>
     <string name="DisableGlobalSearchInfo">Показувати в пошуку лише ваші чати та контакти, без глобальних результатів.</string>
     <string name="EnableLastSeenDotsInfo">Підсвічувати крапку на аватарі для тих, хто був у мережі протягом останньої години.</string>
@@ -101,6 +102,7 @@
     <string name="SmsOnlyOfficialWarning">Примітка: SMS-підтвердження доступне ЛИШЕ у офіційних мобільних додатках</string>
     <string name="ThirdParty">Сторонні</string>
     <string name="EnableLastSeenDots">Увімкнути кольорові крапки останнього входу</string>
+    <string name="HideStoriesInArchive">Сховати історії в архіві</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

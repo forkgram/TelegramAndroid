@@ -13,6 +13,7 @@
     <string name="DisableUnifiedPushInfo">ستصل الإشعارات عبر اتصال التطبيق الخلفي الخاص به</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>
     <string name="OpenArchiveOnPullInfo">فتح مجلد الأرشيف عند سحب قائمة الدردشات للأسفل.</string>
+    <string name="HideStoriesInArchiveInfo">إخفاء صف القصص داخل الدردشات المؤرشفة.</string>
     <string name="DisableThumbsInDialogListInfo">إخفاء الصور المصغرة لآخر رسالة في قائمة الدردشات.</string>
     <string name="DisableGlobalSearchInfo">إظهار محادثاتك وجهات اتصالك فقط في البحث، دون نتائج عامة.</string>
     <string name="EnableLastSeenDotsInfo">تلوين نقطة الصورة الرمزية لمن ظهروا خلال الساعة الماضية.</string>
@@ -101,6 +102,7 @@
     <string name="SmsOnlyOfficialWarning">ملاحظة: التحقق عبر الرسائل النصية مقتصر فقط على التطبيقات الرسمية</string>
     <string name="ThirdParty">طرف ثالث</string>
     <string name="EnableLastSeenDots">تفعيل نقاط ملونة لآخر ظهور</string>
+    <string name="HideStoriesInArchive">إخفاء القصص في الأرشيف</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

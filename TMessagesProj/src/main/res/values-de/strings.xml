@@ -13,6 +13,7 @@
     <string name="DisableUnifiedPushInfo">Benachrichtigungen kommen dann über die eigene Hintergrundverbindung der App</string>
     <string name="HideBottomButtonInfo">Die untere Leistenschaltfläche (Stumm, Beitreten) leeren und Tippen darauf ignorieren.</string>
     <string name="OpenArchiveOnPullInfo">Den Archivordner öffnen, wenn die Chatliste nach unten gezogen wird.</string>
+    <string name="HideStoriesInArchiveInfo">Die Storys-Zeile in archivierten Chats ausblenden.</string>
     <string name="DisableThumbsInDialogListInfo">Medien-Vorschaubilder der letzten Nachricht in der Chatliste ausblenden.</string>
     <string name="DisableGlobalSearchInfo">In der Suche nur eigene Chats und Kontakte anzeigen, keine globalen Ergebnisse.</string>
     <string name="EnableLastSeenDotsInfo">Den Avatar-Punkt für zuletzt innerhalb der letzten Stunde gesehene Personen einfärben.</string>
@@ -101,6 +102,7 @@
     <string name="SmsOnlyOfficialWarning">Hinweis: Die SMS-Verifizierung ist NUR für offizielle mobile Apps verfügbar</string>
     <string name="ThirdParty">Drittanbieter</string>
     <string name="EnableLastSeenDots">Farbige Punkte für „Zuletzt gesehen“ aktivieren</string>
+    <string name="HideStoriesInArchive">Stories im Archiv ausblenden</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
