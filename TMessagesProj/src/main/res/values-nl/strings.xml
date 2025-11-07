@@ -7,6 +7,7 @@
     <string name="ForkSectionSystem">Systeem en updates</string>
     <string name="HideBottomButtonInfo">De knop in de onderste balk (Dempen, Deelnemen) leegmaken en tikken negeren.</string>
     <string name="OpenArchiveOnPullInfo">De map Archief openen wanneer de chatlijst omlaag wordt getrokken.</string>
+    <string name="HideStoriesInArchiveInfo">De storyrij in gearchiveerde chats verbergen.</string>
     <string name="DisableThumbsInDialogListInfo">Mediaminiaturen van het laatste bericht in de chatlijst verbergen.</string>
     <string name="DisableGlobalSearchInfo">In de zoekresultaten alleen je eigen chats en contacten tonen, geen globale resultaten.</string>
     <string name="EnableLastSeenDotsInfo">De avatarstip kleuren voor mensen die het afgelopen uur online waren.</string>
@@ -95,6 +96,7 @@
     <string name="SmsOnlyOfficialWarning">Let op: SMS-verificatie is ALLEEN beschikbaar voor officiële mobiele apps</string>
     <string name="ThirdParty">Van derden</string>
     <string name="EnableLastSeenDots">Gekleurde stippen voor laatst gezien inschakelen</string>
+    <string name="HideStoriesInArchive">Verhalen in archief verbergen</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
