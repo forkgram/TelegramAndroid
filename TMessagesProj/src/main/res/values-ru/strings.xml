@@ -13,6 +13,7 @@
     <string name="DisableUnifiedPushInfo">Уведомления будут приходить через собственное фоновое соединение приложения</string>
     <string name="HideBottomButtonInfo">Очищать нижнюю кнопку (Выключить звук, Вступить) и игнорировать нажатия по ней.</string>
     <string name="OpenArchiveOnPullInfo">Открывать папку «Архив» при потягивании списка чатов вниз.</string>
+    <string name="HideStoriesInArchiveInfo">Скрывать ленту историй внутри архива чатов.</string>
     <string name="DisableThumbsInDialogListInfo">Скрывать миниатюры медиа последнего сообщения в списке чатов.</string>
     <string name="DisableGlobalSearchInfo">Показывать в поиске только ваши чаты и контакты, без глобальных результатов.</string>
     <string name="EnableLastSeenDotsInfo">Подсвечивать точку на аватаре для тех, кто был в сети в течение последнего часа.</string>
@@ -101,6 +102,7 @@
     <string name="SmsOnlyOfficialWarning">Примечание: SMS-подтверждение доступно ТОЛЬКО в официальных мобильных приложениях</string>
     <string name="ThirdParty">Сторонние</string>
     <string name="EnableLastSeenDots">Включить цветные точки последнего входа</string>
+    <string name="HideStoriesInArchive">Скрыть истории в архиве</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
