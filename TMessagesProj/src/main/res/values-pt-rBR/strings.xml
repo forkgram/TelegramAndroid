@@ -13,6 +13,7 @@
     <string name="DisableUnifiedPushInfo">As notificações chegarão pela própria conexão em segundo plano do app</string>
     <string name="HideBottomButtonInfo">Esvaziar o botão da barra inferior (Silenciar, Entrar) e ignorar toques nele.</string>
     <string name="OpenArchiveOnPullInfo">Abrir a pasta Arquivadas ao puxar a lista de conversas para baixo.</string>
+    <string name="HideStoriesInArchiveInfo">Ocultar a linha de stories dentro das conversas arquivadas.</string>
     <string name="DisableThumbsInDialogListInfo">Ocultar as miniaturas de mídia da última mensagem na lista de conversas.</string>
     <string name="DisableGlobalSearchInfo">Mostrar na busca apenas suas conversas e contatos, sem resultados globais.</string>
     <string name="EnableLastSeenDotsInfo">Colorir o ponto do avatar de quem esteve online na última hora.</string>
