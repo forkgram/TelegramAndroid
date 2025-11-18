@@ -40,7 +40,7 @@ public class NotificationsService extends Service {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,"Push Notifications Service",NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
             Intent explainIntent = new Intent("android.intent.action.VIEW");
-            explainIntent.setData(Uri.parse("https://github.com/Telegram-FOSS-Team/Telegram-FOSS/blob/master/Notifications.md"));
+            explainIntent.setData(Uri.parse("https://github.com/forkgram/TelegramAndroid/blob/dev/Notifications.md"));
             try {
             PendingIntent explainPendingIntent = PendingIntent.getActivity(this, 0, explainIntent, pendingIntentFlags);
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
