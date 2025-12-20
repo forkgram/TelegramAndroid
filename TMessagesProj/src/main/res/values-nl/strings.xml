@@ -27,12 +27,14 @@
     <string name="FullRecentStickersInfo">Alle recente stickers tonen in plaats van de laatste 20.</string>
     <string name="DisableFlipPhotosInfo">Niet naar de volgende foto gaan bij tikken op de schermranden.</string>
     <string name="RearVideoMessagesInfo">Videoberichten opnemen met de camera aan de achterkant.</string>
+    <string name="DisablePlayVisibleVideoOnVolumeInfo">De demping van de zichtbare video niet opheffen met de volumetoetsen.</string>
     <string name="DisableRecentFilesAttachmentInfo">De lijst met recente bestanden in het bijlagemenu verbergen.</string>
     <string name="BotSkipShareInfo">Verzoeken van mini-apps om een bericht te delen stilzwijgend negeren.</string>
     <string name="BotSkipFullscreenInfo">Mini-apps niet laten overschakelen naar volledig scherm.</string>
     <string name="DisableParametersFromBotLinksInfo">Startparameters uit botlinks verwijderen voordat ze worden geopend.</string>
     <string name="DisableDefaultInAppBrowserInfo">Links openen in je systeembrowser in plaats van de ingebouwde browser.</string>
     <string name="LockPremiumInfo">Telegram Premium-advertenties en de abonneerknop verbergen. Herstart vereist.</string>
+    <string name="DisablePlayVisibleVideoOnVolume">Video afspelen bij volumeverandering uitschakelen</string>
     <string name="ForkRestartRequired">Herstart vereist</string>
     <string name="BottomDialogs">Tik hier om een nieuwe chat te starten.</string>
     <string name="FastForward">Snel Doorsturen</string>

@@ -27,12 +27,14 @@
     <string name="FullRecentStickersInfo">최근 스티커를 20개가 아니라 전부 표시합니다.</string>
     <string name="DisableFlipPhotosInfo">화면 가장자리를 탭해도 다음 사진으로 넘어가지 않습니다.</string>
     <string name="RearVideoMessagesInfo">동영상 메시지를 후면 카메라로 녹화합니다.</string>
+    <string name="DisablePlayVisibleVideoOnVolumeInfo">볼륨 키를 눌러도 보이는 동영상의 음소거를 해제하지 않습니다.</string>
     <string name="DisableRecentFilesAttachmentInfo">첨부 메뉴에서 최근 파일 목록을 숨깁니다.</string>
     <string name="BotSkipShareInfo">미니 앱의 메시지 공유 요청을 조용히 무시합니다.</string>
     <string name="BotSkipFullscreenInfo">미니 앱이 전체 화면 모드로 전환하지 못하게 합니다.</string>
     <string name="DisableParametersFromBotLinksInfo">봇 링크를 열기 전에 시작 매개변수를 제거합니다.</string>
     <string name="DisableDefaultInAppBrowserInfo">링크를 앱 내 브라우저 대신 시스템 브라우저에서 엽니다.</string>
     <string name="LockPremiumInfo">Telegram Premium 광고와 구독 버튼을 숨깁니다. 재시작 필요.</string>
+    <string name="DisablePlayVisibleVideoOnVolume">볼륨 변경 시 동영상 재생 비활성화</string>
     <string name="ForkRestartRequired">재시작 필요</string>
     <string name="BottomDialogs">여기를 탭하여 새 채팅을 시작하세요.</string>
     <string name="FastForward">빠른 전달</string>
