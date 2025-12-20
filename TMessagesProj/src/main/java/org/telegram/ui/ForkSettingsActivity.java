@@ -169,6 +169,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int disableDefaultInAppBrowser;
     private int hideStoriesInArchiveRow;
     private int disablePlayVisibleVideoOnVolumeRow;
+    private int updateCheckIntervalRow;
     private int lastFmLoginRow;
 
     private int stickerSizeRow;
@@ -203,6 +204,81 @@ public class ForkSettingsActivity extends BaseFragment {
         return LocaleController.getString(s, i);
     }
 
+    private String getUpdateIntervalText() {
+        SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        long interval = preferences.getLong("updateForkCheckInterval", 30 * 60 * 1000);
+
+        if (interval == 0) {
+            return "Disabled";
+        } else if (interval < 60 * 1000) {
+            return (interval / 1000) + " sec";
+        } else if (interval < 60 * 60 * 1000) {
+            return (interval / (60 * 1000)) + " min";
+        } else if (interval < 24 * 60 * 60 * 1000) {
+            return (interval / (60 * 60 * 1000)) + " h";
+        } else {
+            return (interval / (24 * 60 * 60 * 1000)) + " d";
+        }
+    }
+
+    private void showUpdateIntervalDialog() {
+        String[] options = {
+            "Disabled",
+            "5 minutes",
+            "15 minutes",
+            "30 minutes",
+            "1 hour",
+            "2 hours",
+            "6 hours",
+            "12 hours",
+            "24 hours",
+            "2 days",
+            "7 days"
+        };
+
+        long[] intervals = {
+            0,
+            5 * 60 * 1000,
+            15 * 60 * 1000,
+            30 * 60 * 1000,
+            60 * 60 * 1000,
+            2 * 60 * 60 * 1000,
+            6 * 60 * 60 * 1000,
+            12 * 60 * 60 * 1000,
+            24 * 60 * 60 * 1000,
+            2 * 24 * 60 * 60 * 1000,
+            7 * 24 * 60 * 60 * 1000
+        };
+
+        SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        long currentInterval = preferences.getLong("updateForkCheckInterval", 30 * 60 * 1000);
+
+        int selectedIndex = 3; // default 30 minutes
+        for (int i = 0; i < intervals.length; i++) {
+            if (intervals[i] == currentInterval) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getParentActivity());
+        builder.setTitle("Update Check Interval");
+        builder.setSingleChoiceItems(options, selectedIndex, (dialog, which) -> {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong("updateForkCheckInterval", intervals[which]);
+            editor.commit();
+
+            RecyclerListView.Holder holder = (RecyclerListView.Holder) listView.findViewHolderForAdapterPosition(updateCheckIntervalRow);
+            if (holder != null && holder.itemView instanceof TextSettingsCell) {
+                ((TextSettingsCell) holder.itemView).getValueTextView().setText(getUpdateIntervalText());
+            }
+
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
     @Override
     public boolean onFragmentCreate() {
         super.onFragmentCreate();
@@ -228,6 +304,7 @@ public class ForkSettingsActivity extends BaseFragment {
         disableGlobalSearch = rowCount++;
         enableLastSeenDots = rowCount++;
         customTitleRow = rowCount++;
+        updateCheckIntervalRow = rowCount++;
     
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
@@ -426,6 +503,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         }
                         return null;
                     });
+            } else if (position == updateCheckIntervalRow) {
+                showUpdateIntervalDialog();
             } else if (position == lastFmLoginRow) {
                 presentFragment(new LastFmLoginActivity());
             }
@@ -463,6 +542,10 @@ public class ForkSettingsActivity extends BaseFragment {
                     if (position == customTitleRow) {
                         String t = LocaleController.getString("EditAdminRank", R.string.EditAdminRank);
                         final String v = MessagesController.getGlobalMainSettings().getString("forkCustomTitle", "Fork Client");
+                        textCell.setTextAndValue(t, v, false);
+                    } else if (position == updateCheckIntervalRow) {
+                        String t = "Update Check Interval";
+                        String v = getUpdateIntervalText();
                         textCell.setTextAndValue(t, v, false);
                     } else if (position == lastFmLoginRow) {
                         textCell.setTextAndIcon("Last.fm Login", R.drawable.ic_lastfm, false);
@@ -634,6 +717,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == syncPinsRow
                         || position == showNotificationContent
                         || position == photoHasStickerRow
+                        || position == updateCheckIntervalRow
                         || position == lastFmLoginRow
                         || position == disableUnifiedPushRow;
             return fork;
@@ -673,7 +757,7 @@ public class ForkSettingsActivity extends BaseFragment {
         public int getItemViewType(int position) {
             if (emptyRows.contains(position)) {
                 return 1;
-            } else if (position == customTitleRow || position == lastFmLoginRow) {
+            } else if (position == customTitleRow || position == updateCheckIntervalRow || position == lastFmLoginRow) {
                 return 2;
             } else if (position == squareAvatarsRow
                 || position == hideSensitiveDataRow
