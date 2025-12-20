@@ -28,6 +28,7 @@
     <string name="DisableParametersFromBotLinksInfo">Eliminar los parámetros de inicio de los enlaces de bots antes de abrirlos.</string>
     <string name="DisableDefaultInAppBrowserInfo">Abrir los enlaces en el navegador del sistema en lugar del integrado.</string>
     <string name="LockPremiumInfo">Ocultar los anuncios de Telegram Premium y el botón de suscripción. Reinicio requerido.</string>
+    <string name="UpdateCheckInterval">Intervalo de comprobación de actualizaciones</string>
     <string name="DisablePlayVisibleVideoOnVolume">Desactivar reproducción de video al cambiar el volumen</string>
     <string name="ForkRestartRequired">Reinicio requerido</string>
     <string name="BottomDialogs">Toca aquí para iniciar un nuevo chat.</string>
