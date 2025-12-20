@@ -22,12 +22,14 @@
     <string name="FullRecentStickersInfo">Show all recent stickers instead of the last 20.</string>
     <string name="DisableFlipPhotosInfo">Do not switch to the next photo when the screen edges are tapped.</string>
     <string name="RearVideoMessagesInfo">Start recording video messages with the rear camera.</string>
+    <string name="DisablePlayVisibleVideoOnVolumeInfo">Do not unmute the visible video when volume keys are pressed.</string>
     <string name="DisableRecentFilesAttachmentInfo">Hide the recent files list in the attachment menu.</string>
     <string name="BotSkipShareInfo">Silently dismiss share-this-message requests from mini apps.</string>
     <string name="BotSkipFullscreenInfo">Do not let mini apps switch to fullscreen mode.</string>
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
     <string name="DisableDefaultInAppBrowserInfo">Open links in your system browser instead of the in-app one.</string>
     <string name="LockPremiumInfo">Hide Telegram Premium ads and the subscribe button. Restart required.</string>
+    <string name="DisablePlayVisibleVideoOnVolume">Disable play video on volume change</string>
     <string name="ForkRestartRequired">Restart required</string>
     <string name="BottomDialogs">Tap here to start a new chat.</string>
     <string name="FastForward">Fast Forward</string>
