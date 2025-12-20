@@ -16,6 +16,7 @@ import org.telegram.messenger.BuildVars
 import org.telegram.messenger.DownloadController
 import org.telegram.messenger.FileLoader
 import org.telegram.messenger.LocaleController
+import org.telegram.messenger.MessagesController
 import org.telegram.messenger.R
 import org.telegram.messenger.UserConfig
 import org.telegram.tgnet.ConnectionsManager
@@ -27,7 +28,7 @@ import java.net.URL
 import org.telegram.messenger.FileLog;
 
 object AppUpdater {
-    private const val CHECK_INTERVAL = 30 * 60 * 1000 // 30 minutes.
+
     private const val TITLE = "The latest Forkgram version"
     private const val DESC = ""
     private const val PREFS_NAME = "AppUpdaterPrefs"
@@ -81,7 +82,8 @@ object AppUpdater {
     ) {
 
         try {
-            if (!manual && System.currentTimeMillis() - lastTimestampOfCheck < CHECK_INTERVAL) {
+            val updateInterval = MessagesController.getGlobalMainSettings().getLong("updateForkCheckInterval", 30 * 60 * 1000L)
+            if (!manual && (updateInterval == 0L || System.currentTimeMillis() - lastTimestampOfCheck < updateInterval)) {
                 return
             }
             if (downloadId != 0L) {

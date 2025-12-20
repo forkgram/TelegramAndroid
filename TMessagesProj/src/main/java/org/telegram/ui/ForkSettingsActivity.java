@@ -100,6 +100,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_DEFAULT_IN_APP_BROWSER = 73;
 
     public static final int ID_UNIFIED_PUSH = 80;
+    public static final int ID_UPDATE_CHECK_INTERVAL = 81;
     public static final int ID_LOCK_PREMIUM = 83;
 
     public static final int ID_LASTFM_LOGIN = 90;
@@ -205,6 +206,21 @@ public class ForkSettingsActivity extends BaseFragment {
 
     private static boolean pref(String option, boolean byDefault) {
         return prefs().getBoolean(option, byDefault);
+    }
+
+    private String getUpdateIntervalText() {
+        long interval = prefs().getLong("updateForkCheckInterval", 30 * 60 * 1000);
+        if (interval == 0) {
+            return LocaleController.getString(R.string.Disable);
+        } else if (interval < 60 * 1000) {
+            return LocaleController.formatPluralString("Seconds", (int) (interval / 1000));
+        } else if (interval < 60 * 60 * 1000) {
+            return LocaleController.formatPluralString("Minutes", (int) (interval / (60 * 1000)));
+        } else if (interval < 24 * 60 * 60 * 1000) {
+            return LocaleController.formatPluralString("Hours", (int) (interval / (60 * 60 * 1000)));
+        } else {
+            return LocaleController.formatPluralString("Days", (int) (interval / (24 * 60 * 60 * 1000)));
+        }
     }
 
     @Override
@@ -457,6 +473,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionSystem)));
         items.add(UItem.asSettingsCell(ID_UNIFIED_PUSH, LocaleController.getString(R.string.UnifiedPush), null));
+        items.add(UItem.asSettingsCell(ID_UPDATE_CHECK_INTERVAL, LocaleController.getString(R.string.UpdateCheckInterval), getUpdateIntervalText()));
         items.add(UItem.asButtonCheck(ID_LOCK_PREMIUM, LocaleController.getString(R.string.LockPremium), LocaleController.getString(R.string.LockPremiumInfo))
             .setChecked(pref("lockPremium", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -566,6 +583,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
         } else if (id == ID_UNIFIED_PUSH) {
             presentFragment(new NotificationsSettingsActivity().highlightUnifiedPush());
+        } else if (id == ID_UPDATE_CHECK_INTERVAL) {
+            showUpdateIntervalDialog();
         } else if (id == ID_LOCK_PREMIUM) {
             toggle("lockPremium", item, view);
 
@@ -628,6 +647,50 @@ public class ForkSettingsActivity extends BaseFragment {
         builder.setView(linearLayout);
         builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
         builder.show();
+    }
+
+    private void showUpdateIntervalDialog() {
+        final long[] intervals = {
+            0,
+            5 * 60 * 1000L,
+            15 * 60 * 1000L,
+            30 * 60 * 1000L,
+            60 * 60 * 1000L,
+            2 * 60 * 60 * 1000L,
+            6 * 60 * 60 * 1000L,
+            12 * 60 * 60 * 1000L,
+            24 * 60 * 60 * 1000L,
+            2 * 24 * 60 * 60 * 1000L,
+            7 * 24 * 60 * 60 * 1000L
+        };
+        final String[] options = new String[intervals.length];
+        options[0] = LocaleController.getString(R.string.Disable);
+        for (int i = 1; i < intervals.length; i++) {
+            long interval = intervals[i];
+            if (interval < 60 * 60 * 1000L) {
+                options[i] = LocaleController.formatPluralString("Minutes", (int) (interval / (60 * 1000L)));
+            } else if (interval < 24 * 60 * 60 * 1000L) {
+                options[i] = LocaleController.formatPluralString("Hours", (int) (interval / (60 * 60 * 1000L)));
+            } else {
+                options[i] = LocaleController.formatPluralString("Days", (int) (interval / (24 * 60 * 60 * 1000L)));
+            }
+        }
+
+        long currentInterval = prefs().getLong("updateForkCheckInterval", 30 * 60 * 1000);
+        int selectedIndex = 3;
+        for (int i = 0; i < intervals.length; i++) {
+            if (intervals[i] == currentInterval) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        showRadioDialog(LocaleController.getString(R.string.UpdateCheckInterval), options, selectedIndex, index -> {
+            SharedPreferences.Editor editor = prefs().edit();
+            editor.putLong("updateForkCheckInterval", intervals[index]);
+            editor.commit();
+            listView.adapter.update(false);
+        });
     }
 
     @Override
