@@ -34,6 +34,7 @@
     <string name="DisableParametersFromBotLinksInfo">Rimuovere i parametri di avvio dai link dei bot prima di aprirli.</string>
     <string name="DisableDefaultInAppBrowserInfo">Aprire i link nel browser di sistema invece che in quello integrato.</string>
     <string name="LockPremiumInfo">Nascondere le pubblicità di Telegram Premium e il pulsante di abbonamento. Riavvio richiesto.</string>
+    <string name="UpdateCheckInterval">Intervallo di controllo aggiornamenti</string>
     <string name="DisablePlayVisibleVideoOnVolume">Disabilita la riproduzione del video al variare del volume</string>
     <string name="ForkRestartRequired">Riavvio richiesto</string>
     <string name="BottomDialogs">Tocca qui per avviare una nuova chat.</string>
