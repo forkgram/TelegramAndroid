@@ -32,7 +32,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 object AppUpdater {
-    private const val kCheckInterval = 30 * 60 * 1000 // 30 minutes.
+
     private const val title = "The latest Forkgram version"
     private const val desc = ""
     private const val PREFS_NAME = "AppUpdaterPrefs"
@@ -85,7 +85,8 @@ object AppUpdater {
             manual: Boolean = false) {
 
         try {
-            if (!manual && System.currentTimeMillis() - lastTimestampOfCheck < kCheckInterval) {
+            val updateInterval = MessagesController.getGlobalMainSettings().getLong("updateForkCheckInterval", 30 * 60 * 1000L)
+            if (!manual && (updateInterval == 0L || System.currentTimeMillis() - lastTimestampOfCheck < updateInterval)) {
                 return
             }
             if (downloadId != 0L) {
