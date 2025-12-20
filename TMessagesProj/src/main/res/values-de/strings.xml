@@ -27,12 +27,14 @@
     <string name="FullRecentStickersInfo">Alle zuletzt verwendeten Sticker anzeigen statt nur der letzten 20.</string>
     <string name="DisableFlipPhotosInfo">Beim Tippen auf die Bildschirmränder nicht zum nächsten Foto wechseln.</string>
     <string name="RearVideoMessagesInfo">Videonachrichten mit der Rückkamera aufnehmen.</string>
+    <string name="DisablePlayVisibleVideoOnVolumeInfo">Das sichtbare Video beim Drücken der Lautstärketasten nicht lauter schalten.</string>
     <string name="DisableRecentFilesAttachmentInfo">Die Liste der zuletzt verwendeten Dateien im Anhangsmenü ausblenden.</string>
     <string name="BotSkipShareInfo">Anfragen von Mini-Apps zum Teilen einer Nachricht stillschweigend ablehnen.</string>
     <string name="BotSkipFullscreenInfo">Mini-Apps nicht in den Vollbildmodus wechseln lassen.</string>
     <string name="DisableParametersFromBotLinksInfo">Start-Parameter aus Bot-Links vor dem Öffnen entfernen.</string>
     <string name="DisableDefaultInAppBrowserInfo">Links im Systembrowser statt im integrierten Browser öffnen.</string>
     <string name="LockPremiumInfo">Telegram-Premium-Werbung und die Abo-Schaltfläche ausblenden. Neustart erforderlich.</string>
+    <string name="DisablePlayVisibleVideoOnVolume">Videowiedergabe bei Lautstärkeänderung deaktivieren</string>
     <string name="ForkRestartRequired">Neustart erforderlich</string>
     <string name="BottomDialogs">Tippen Sie hier, um einen neuen Chat zu starten.</string>
     <string name="FastForward">Schnell Weiterleiten</string>

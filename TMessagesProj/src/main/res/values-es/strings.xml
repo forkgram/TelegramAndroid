@@ -27,12 +27,14 @@
     <string name="FullRecentStickersInfo">Mostrar todos los stickers recientes en lugar de los últimos 20.</string>
     <string name="DisableFlipPhotosInfo">No pasar a la siguiente foto al tocar los bordes de la pantalla.</string>
     <string name="RearVideoMessagesInfo">Grabar los mensajes de vídeo con la cámara trasera.</string>
+    <string name="DisablePlayVisibleVideoOnVolumeInfo">No activar el sonido del vídeo visible al pulsar las teclas de volumen.</string>
     <string name="DisableRecentFilesAttachmentInfo">Ocultar la lista de archivos recientes en el menú de adjuntos.</string>
     <string name="BotSkipShareInfo">Descartar en silencio las solicitudes de compartir mensajes de las mini apps.</string>
     <string name="BotSkipFullscreenInfo">No permitir que las mini apps pasen al modo de pantalla completa.</string>
     <string name="DisableParametersFromBotLinksInfo">Eliminar los parámetros de inicio de los enlaces de bots antes de abrirlos.</string>
     <string name="DisableDefaultInAppBrowserInfo">Abrir los enlaces en el navegador del sistema en lugar del integrado.</string>
     <string name="LockPremiumInfo">Ocultar los anuncios de Telegram Premium y el botón de suscripción. Reinicio requerido.</string>
+    <string name="DisablePlayVisibleVideoOnVolume">Desactivar reproducción de video al cambiar el volumen</string>
     <string name="ForkRestartRequired">Reinicio requerido</string>
     <string name="BottomDialogs">Toca aquí para iniciar un nuevo chat.</string>
     <string name="FastForward">Reenviar Rápido</string>
