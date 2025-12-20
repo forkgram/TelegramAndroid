@@ -379,4 +379,5 @@
     <string name="RemindTodayAt">\'Отправить сегодня в\' HH:mm</string>
     <string name="RemindDayAt">\'Отправить\' d MMM \'в\' HH:mm</string>
     <string name="RemindDayYearAt">\'Напомнить\' d MMM yyyy \'в\' HH:mm</string>
+    <string name="PasskeyGoogleManagerInfo">Менеджер паролей Google не принимает passkey из этого приложения. Выберите другой менеджер паролей, например Bitwarden или KeePassDX.</string>
 </resources>
