@@ -1640,5 +1640,6 @@
     <string name="RemindTodayAt">\'Ricorda oggi alle\' HH:mm</string>
     <string name="RemindDayAt">\'Ricorda il\' d MMM \'alle\' HH:mm</string>
     <string name="RemindDayYearAt">\'Ricorda il\' d MMM yyyy \'alle\' HH:mm</string>
+    <string name="PasskeyGoogleManagerInfo">Il Gestore delle password di Google non accetta le passkey di questa app. Scegli un altro gestore di password, ad esempio Bitwarden o KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
 </resources>

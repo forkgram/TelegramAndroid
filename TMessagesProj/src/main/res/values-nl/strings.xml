@@ -1187,5 +1187,6 @@
     <string name="RemindTodayAt">\'Herinner vandaag om HH:mm</string>
     <string name="RemindDayAt">\'Herinner op\' d MMM \'om\' HH:mm</string>
     <string name="RemindDayYearAt">\'Herinner op\' d MMM yyyy \'om\' HH:mm</string>
+    <string name="PasskeyGoogleManagerInfo">Google Wachtwoordmanager accepteert geen passkeys uit deze app. Kies een andere wachtwoordmanager, zoals Bitwarden of KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
 </resources>

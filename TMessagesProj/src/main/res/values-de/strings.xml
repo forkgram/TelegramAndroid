@@ -1479,4 +1479,5 @@
     <string name="RemindTodayAt">\'Heute um\' HH:mm \'erinnern\'</string>
     <string name="RemindDayAt">\'Am\' d MMM \'um\' HH:mm \'erinnern\'</string>
     <string name="RemindDayYearAt">\'Am\' d\'.\' MMM yyyy \'um\' HH:mm \'erinnern\'</string>
+    <string name="PasskeyGoogleManagerInfo">Der Google Passwortmanager akzeptiert keine Passkeys aus dieser App. Wähle einen anderen Passwortmanager, etwa Bitwarden oder KeePassDX.</string>
 </resources>

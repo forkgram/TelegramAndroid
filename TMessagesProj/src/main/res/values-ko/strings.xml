@@ -1239,5 +1239,6 @@
     <string name="RemindTodayAt">\'오늘\' HH:mm\'에 알리기\'</string>
     <string name="RemindDayAt">MMM d HH:mm\'에 알리기\'</string>
     <string name="RemindDayYearAt">yyyy\'년\' M\'월\' d\'일\' HH:mm\'에 알림\'</string>
+    <string name="PasskeyGoogleManagerInfo">Google 비밀번호 관리자는 이 앱의 패스키를 허용하지 않습니다. Bitwarden이나 KeePassDX 같은 다른 비밀번호 관리자를 사용하세요.</string>
     <string name="BotsMenuTitle">메뉴</string>
 </resources>
