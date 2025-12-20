@@ -29,6 +29,7 @@
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
     <string name="DisableDefaultInAppBrowserInfo">Open links in your system browser instead of the in-app one.</string>
     <string name="LockPremiumInfo">Hide Telegram Premium ads and the subscribe button. Restart required.</string>
+    <string name="UpdateCheckInterval">Update Check Interval</string>
     <string name="DisablePlayVisibleVideoOnVolume">Disable play video on volume change</string>
     <string name="ForkRestartRequired">Restart required</string>
     <string name="BottomDialogs">Tap here to start a new chat.</string>
