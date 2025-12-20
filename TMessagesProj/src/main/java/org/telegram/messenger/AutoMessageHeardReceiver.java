@@ -11,8 +11,11 @@ package org.telegram.messenger;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_account;
 
 public class AutoMessageHeardReceiver extends BroadcastReceiver {
 
@@ -35,6 +38,7 @@ public class AutoMessageHeardReceiver extends BroadcastReceiver {
                         accountInstance.getMessagesController().putUser(user1, true);
                         MessagesController.getInstance(currentAccount).markDialogAsRead(dialogId, maxId, maxId, 0, false, 0, 0, true, 0);
                         MessagesController.getInstance(currentAccount).markReactionsAsRead(dialogId, 0);
+                        scheduleOfflineStatus(currentAccount);
                     });
                 });
                 return;
@@ -48,6 +52,7 @@ public class AutoMessageHeardReceiver extends BroadcastReceiver {
                         accountInstance.getMessagesController().putChat(chat1, true);
                         MessagesController.getInstance(currentAccount).markDialogAsRead(dialogId, maxId, maxId, 0, false, 0, 0, true, 0);
                         MessagesController.getInstance(currentAccount).markReactionsAsRead(dialogId, 0);
+                        scheduleOfflineStatus(currentAccount);
                     });
                 });
                 return;
@@ -55,5 +60,25 @@ public class AutoMessageHeardReceiver extends BroadcastReceiver {
         }
         MessagesController.getInstance(currentAccount).markDialogAsRead(dialogId, maxId, maxId, 0, false, 0, 0, true, 0);
         MessagesController.getInstance(currentAccount).markReactionsAsRead(dialogId, 0);
+        scheduleOfflineStatus(currentAccount);
+    }
+
+    private void scheduleOfflineStatus(int currentAccount) {
+        try {
+            if (!UserConfig.isValidAccount(currentAccount)) {
+                return;
+            }
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                try {
+                    TL_account.updateStatus req = new TL_account.updateStatus();
+                    req.offline = true;
+                    org.telegram.tgnet.ConnectionsManager.getInstance(currentAccount).sendRequest(req, null);
+                } catch (Exception e) {
+                    FileLog.e(e);
+                }
+            }, 5000);
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
     }
 }
