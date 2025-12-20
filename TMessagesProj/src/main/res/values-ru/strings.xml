@@ -21,12 +21,14 @@
     <string name="FullRecentStickersInfo">Показывать все недавние стикеры вместо последних 20.</string>
     <string name="DisableFlipPhotosInfo">Не переключать фото при нажатии на края экрана.</string>
     <string name="RearVideoMessagesInfo">Начинать запись видеосообщений с основной камеры.</string>
+    <string name="DisablePlayVisibleVideoOnVolumeInfo">Не включать звук видимого видео при нажатии клавиш громкости.</string>
     <string name="DisableRecentFilesAttachmentInfo">Скрывать список недавних файлов в меню вложений.</string>
     <string name="BotSkipShareInfo">Молча отклонять запросы мини-приложений на отправку сообщения.</string>
     <string name="BotSkipFullscreenInfo">Не позволять мини-приложениям переходить в полноэкранный режим.</string>
     <string name="DisableParametersFromBotLinksInfo">Убирать start-параметры из ссылок на ботов перед открытием.</string>
     <string name="DisableDefaultInAppBrowserInfo">Открывать ссылки в системном браузере вместо встроенного.</string>
     <string name="LockPremiumInfo">Скрывать рекламу Telegram Premium и кнопку подписки. Требуется перезапуск.</string>
+    <string name="DisablePlayVisibleVideoOnVolume">Отключить воспроизведение видео при изменении громкости</string>
     <string name="ForkRestartRequired">Требуется перезапуск</string>
     <string name="BottomDialogs">Нажмите здесь, чтобы начать новый чат.</string>
     <string name="FastForward">Переслать Быстро</string>
