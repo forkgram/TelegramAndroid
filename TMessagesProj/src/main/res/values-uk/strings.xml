@@ -380,4 +380,5 @@
     <string name="RemindTodayAt">\'Нагадати сьогодні,\' HH:mm</string>
     <string name="RemindDayAt">\'Нагадати\' d MMM\',\' HH:mm</string>
     <string name="RemindDayYearAt">\'Нагадати\' d MMM yyyy\',\' HH:mm</string>
+    <string name="PasskeyGoogleManagerInfo">Менеджер паролів Google не приймає passkey із цього застосунку. Виберіть інший менеджер паролів, наприклад Bitwarden або KeePassDX.</string>
 </resources>
