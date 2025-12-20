@@ -1354,4 +1354,7 @@
     <string name="RemindDayYearAt">\'ذكّرني بتاريخ\' d MMM yyyy \'عند\' HH:mm</string>
     <string name="AppIconAdaptive">تكيفية</string>
     <string name="PasskeyGoogleManagerInfo">لا يقبل مدير كلمات مرور Google مفاتيح المرور من هذا التطبيق. اختر مدير كلمات مرور آخر، مثل Bitwarden أو KeePassDX.</string>
+    <string name="ResetLauncherShortcuts">إعادة تعيين اختصارات الشاشة الرئيسية</string>
+    <string name="ResetLauncherShortcutsConfirm">حذف جميع اختصارات المشغّل؟ ستُعاد بناؤها فورًا من الحسابات والمحادثات الحالية.</string>
+    <string name="ResetLauncherShortcutsInfo">يزيل اختصارات الحسابات والمحادثات القديمة التي يعرضها المشغّل عند الضغط المطوّل على أيقونة التطبيق ويعيد بناءها من قائمة الحسابات الحالية.</string>
 </resources>

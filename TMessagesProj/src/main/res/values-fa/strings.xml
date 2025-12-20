@@ -199,6 +199,9 @@
     <string name="ExportSettingsDone">از تنظیمات خروجی گرفته شد.</string>
     <string name="ImportSettingsError">وارد کردن تنظیمات از این فایل ممکن نشد.</string>
     <string name="ImportSettingsRestart">تنظیمات وارد شد. برای اعمال، برنامه را دوباره اجرا کنید.</string>
+    <string name="ResetLauncherShortcuts">بازنشانی میان‌برهای صفحه اصلی</string>
+    <string name="ResetLauncherShortcutsConfirm">همه میان‌برهای لانچر حذف شوند؟ بلافاصله از حساب‌ها و چت‌های فعلی دوباره ساخته می‌شوند.</string>
+    <string name="ResetLauncherShortcutsInfo">میان‌برهای قدیمی حساب‌ها و چت‌هایی که لانچر با نگه‌داشتن آیکون برنامه نشان می‌دهد را حذف می‌کند و آن‌ها را از فهرست حساب‌های فعلی دوباره می‌سازد.</string>
     <!--passcode view-->
     <string name="HiddenAccounts">حساب‌های مخفی</string>
     <string name="HiddenAccountsOptions">گزینه‌ها</string>

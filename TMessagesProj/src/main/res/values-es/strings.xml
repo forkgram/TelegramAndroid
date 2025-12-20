@@ -1426,4 +1426,7 @@
     <string name="BotsMenuTitle">Menu</string>
     <string name="Understood">👍 Entendido</string>
     <string name="AppIconAdaptive">Adaptativo</string>
+    <string name="ResetLauncherShortcuts">Restablecer accesos directos de la pantalla de inicio</string>
+    <string name="ResetLauncherShortcutsConfirm">¿Eliminar todos los accesos directos del lanzador? Se reconstruirán de inmediato con las cuentas y chats actuales.</string>
+    <string name="ResetLauncherShortcutsInfo">Elimina los accesos directos obsoletos de cuentas y chats que el lanzador muestra al mantener pulsado el icono de la app y los reconstruye a partir de la lista de cuentas actual.</string>
 </resources>
