@@ -10509,6 +10509,7 @@
     <string name="PasskeyLastUsedOn">Last used %s</string>
     <string name="PasskeyAdd">Add Passkey</string>
     <string name="PasskeyInfo">Your passkey is stored securely in your password manager. **Learn more >**</string>
+    <string name="PasskeyGoogleManagerInfo">Google Password Manager does not accept passkeys from this app. Choose another password manager, such as Bitwarden or KeePassDX.</string>
     <string name="PasskeyFeatureTitle">Protect your account</string>
     <string name="PasskeyFeatureSubtitle">Log in safely and keep your account secure.</string>
     <string name="PasskeyFeature1Title">Create a Passkey</string>
