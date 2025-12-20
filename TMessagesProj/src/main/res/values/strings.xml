@@ -11790,4 +11790,7 @@
     <string name="FpnvConsentSimSlot">SIM Slot</string>
     <string name="FpnvConsentSimSlotValue">SIM %1$d</string>
     <string name="FpnvConsentPhoneNumber">Phone Number</string>
+    <string name="ResetLauncherShortcuts">Reset home screen shortcuts</string>
+    <string name="ResetLauncherShortcutsConfirm">Remove all launcher shortcuts? They will be rebuilt right away from the current accounts and chats.</string>
+    <string name="ResetLauncherShortcutsInfo">Removes the stale account and chat shortcuts shown by the launcher on app icon long press and rebuilds them from the current account list.</string>
 </resources>

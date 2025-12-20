@@ -386,4 +386,7 @@
     <string name="RemindDayYearAt">\'Напомнить\' d MMM yyyy \'в\' HH:mm</string>
     <string name="AppIconAdaptive">Адаптивный</string>
     <string name="PasskeyGoogleManagerInfo">Менеджер паролей Google не принимает passkey из этого приложения. Выберите другой менеджер паролей, например Bitwarden или KeePassDX.</string>
+    <string name="ResetLauncherShortcuts">Сбросить ярлыки на главном экране</string>
+    <string name="ResetLauncherShortcutsConfirm">Удалить все ярлыки лаунчера? Они будут сразу пересобраны из текущих аккаунтов и чатов.</string>
+    <string name="ResetLauncherShortcutsInfo">Удаляет устаревшие ярлыки аккаунтов и чатов, которые лаунчер показывает по долгому нажатию на иконку приложения, и пересобирает их из текущего списка аккаунтов.</string>
 </resources>

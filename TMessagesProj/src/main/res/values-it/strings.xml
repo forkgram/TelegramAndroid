@@ -1648,4 +1648,7 @@
     <string name="PasskeyGoogleManagerInfo">Il Gestore delle password di Google non accetta le passkey di questa app. Scegli un altro gestore di password, ad esempio Bitwarden o KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
     <string name="AppIconAdaptive">Adattiva</string>
+    <string name="ResetLauncherShortcuts">Ripristina le scorciatoie della schermata home</string>
+    <string name="ResetLauncherShortcutsConfirm">Rimuovere tutte le scorciatoie del launcher? Verranno ricreate subito dagli account e dalle chat attuali.</string>
+    <string name="ResetLauncherShortcutsInfo">Rimuove le scorciatoie obsolete di account e chat mostrate dal launcher alla pressione prolungata sull\'icona dell\'app e le ricostruisce dall\'elenco degli account attuali.</string>
 </resources>
