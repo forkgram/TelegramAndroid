@@ -102,9 +102,10 @@ public class PasskeysActivity extends BaseFragment {
             addPasskeyRow = items.size();
             items.add(UItem.asButton(-1, R.drawable.menu_passkey_add, getString(R.string.PasskeyAdd)).accent());
         }
-        items.add(UItem.asShadow(AndroidUtilities.replaceArrows(AndroidUtilities.replaceSingleTag(getString(R.string.PasskeyInfo), () -> {
+        final CharSequence info = AndroidUtilities.replaceArrows(AndroidUtilities.replaceSingleTag(getString(R.string.PasskeyInfo), () -> {
             showLearnSheet(getContext(), currentAccount, resourceProvider, passkeys.size() + 1 <= getMessagesController().config.passkeysAccountPasskeysMax.get());
-        }), true)));
+        }), true);
+        items.add(UItem.asShadow(TextUtils.concat(info, "\n\n", getString(R.string.PasskeyGoogleManagerInfo))));
     }
 
     private void openMenu(View view) {
