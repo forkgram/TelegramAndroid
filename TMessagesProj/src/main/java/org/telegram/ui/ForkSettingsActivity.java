@@ -168,6 +168,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int botSkipFullscreen;
     private int disableDefaultInAppBrowser;
     private int hideStoriesInArchiveRow;
+    private int disablePlayVisibleVideoOnVolumeRow;
     private int lastFmLoginRow;
 
     private int stickerSizeRow;
@@ -244,6 +245,7 @@ public class ForkSettingsActivity extends BaseFragment {
         disableSlideToNextChannel = rowCount++;
         disableRecentFilesAttachment = rowCount++;
         disableDefaultInAppBrowser = rowCount++;
+        disablePlayVisibleVideoOnVolumeRow = rowCount++;
 
         emptyRows.add(rowCount++);
         botSkipShare = rowCount++;
@@ -365,6 +367,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("disableRecentFilesAttachment", view, false);
             } else if (position == disableDefaultInAppBrowser) {
                 toggleGlobalMainSetting("disableDefaultInAppBrowser", view, false);
+            } else if (position == disablePlayVisibleVideoOnVolumeRow) {
+                toggleGlobalMainSetting("disablePlayVisibleVideoOnVolume", view, false);
             } else if (position == botSkipShare) {
                 toggleGlobalMainSetting("botSkipShare", view, false);
             } else if (position == botSkipFullscreen) {
@@ -524,6 +528,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableDefaultInAppBrowser) {
                         String t = LocaleController.getString("DisableDefaultInAppBrowser", R.string.DisableDefaultInAppBrowser);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableDefaultInAppBrowser", false), false);
+                    } else if (position == disablePlayVisibleVideoOnVolumeRow) {
+                        String t = "Disable play video on volume change";
+                        textCell.setTextAndCheck(t, preferences.getBoolean("disablePlayVisibleVideoOnVolume", false), false);
                     } else if (position == botSkipShare) {
                         String t = LocaleController.getString("BotSkipShare", R.string.BotSkipShare);
                         textCell.setTextAndCheck(t, preferences.getBoolean("botSkipShare", false), false);
@@ -609,6 +616,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == disableSlideToNextChannel
                         || position == disableRecentFilesAttachment
                         || position == disableDefaultInAppBrowser
+                        || position == disablePlayVisibleVideoOnVolumeRow
                         || position == botSkipShare
                         || position == botSkipFullscreen
                         || position == lockPremium
@@ -683,6 +691,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == disableSlideToNextChannel
                 || position == disableRecentFilesAttachment
                 || position == disableDefaultInAppBrowser
+                || position == disablePlayVisibleVideoOnVolumeRow
                 || position == botSkipShare
                 || position == botSkipFullscreen
                 || position == lockPremium
