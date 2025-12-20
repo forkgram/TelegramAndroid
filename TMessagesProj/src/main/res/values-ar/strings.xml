@@ -27,12 +27,14 @@
     <string name="FullRecentStickersInfo">إظهار جميع الملصقات الأخيرة بدلاً من آخر 20 فقط.</string>
     <string name="DisableFlipPhotosInfo">عدم الانتقال إلى الصورة التالية عند النقر على حواف الشاشة.</string>
     <string name="RearVideoMessagesInfo">تسجيل رسائل الفيديو بالكاميرا الخلفية.</string>
+    <string name="DisablePlayVisibleVideoOnVolumeInfo">عدم إلغاء كتم الفيديو الظاهر عند الضغط على مفاتيح الصوت.</string>
     <string name="DisableRecentFilesAttachmentInfo">إخفاء قائمة الملفات الأخيرة في قائمة المرفقات.</string>
     <string name="BotSkipShareInfo">تجاهل طلبات مشاركة الرسائل من التطبيقات المصغرة بصمت.</string>
     <string name="BotSkipFullscreenInfo">عدم السماح للتطبيقات المصغرة بالتبديل إلى وضع ملء الشاشة.</string>
     <string name="DisableParametersFromBotLinksInfo">إزالة معاملات البدء من روابط البوتات قبل فتحها.</string>
     <string name="DisableDefaultInAppBrowserInfo">فتح الروابط في متصفح النظام بدلاً من المتصفح المدمج.</string>
     <string name="LockPremiumInfo">إخفاء إعلانات Telegram Premium وزر الاشتراك. إعادة التشغيل مطلوبة.</string>
+    <string name="DisablePlayVisibleVideoOnVolume">تعطيل تشغيل الفيديو عند تغيير مستوى الصوت</string>
     <string name="ForkRestartRequired">إعادة التشغيل مطلوبة</string>
     <string name="BottomDialogs">اضغط هنا لبدء محادثة جديدة.</string>
     <string name="FastForward">إعادة توجيه سريعة</string>
