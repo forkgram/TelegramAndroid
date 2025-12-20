@@ -1346,5 +1346,6 @@
     <string name="RemindTodayAt">\'Lembrar hoje às\' HH:mm</string>
     <string name="RemindDayAt">\'Lembrar em\' d \'de\' MMM \'às\' HH:mm</string>
     <string name="RemindDayYearAt">\'Lembrar em\' d \'de\' MMM \'de\' yyyy \'às\' HH:mm</string>
+    <string name="PasskeyGoogleManagerInfo">O Gerenciador de senhas do Google não aceita passkeys deste app. Escolha outro gerenciador de senhas, como Bitwarden ou KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
 </resources>
