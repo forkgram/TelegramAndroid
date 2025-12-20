@@ -34,6 +34,7 @@
     <string name="DisableParametersFromBotLinksInfo">Убирать start-параметры из ссылок на ботов перед открытием.</string>
     <string name="DisableDefaultInAppBrowserInfo">Открывать ссылки в системном браузере вместо встроенного.</string>
     <string name="LockPremiumInfo">Скрывать рекламу Telegram Premium и кнопку подписки. Требуется перезапуск.</string>
+    <string name="UpdateCheckInterval">Интервал проверки обновлений</string>
     <string name="DisablePlayVisibleVideoOnVolume">Отключить воспроизведение видео при изменении громкости</string>
     <string name="ForkRestartRequired">Требуется перезапуск</string>
     <string name="BottomDialogs">Нажмите здесь, чтобы начать новый чат.</string>

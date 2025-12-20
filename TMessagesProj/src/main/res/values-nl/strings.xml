@@ -34,6 +34,7 @@
     <string name="DisableParametersFromBotLinksInfo">Startparameters uit botlinks verwijderen voordat ze worden geopend.</string>
     <string name="DisableDefaultInAppBrowserInfo">Links openen in je systeembrowser in plaats van de ingebouwde browser.</string>
     <string name="LockPremiumInfo">Telegram Premium-advertenties en de abonneerknop verbergen. Herstart vereist.</string>
+    <string name="UpdateCheckInterval">Interval voor controle op updates</string>
     <string name="DisablePlayVisibleVideoOnVolume">Video afspelen bij volumeverandering uitschakelen</string>
     <string name="ForkRestartRequired">Herstart vereist</string>
     <string name="BottomDialogs">Tik hier om een nieuwe chat te starten.</string>
