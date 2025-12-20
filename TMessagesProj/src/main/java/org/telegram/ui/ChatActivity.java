@@ -30543,6 +30543,9 @@ public class ChatActivity extends BaseFragment implements
         if (chatListView == null) {
             return false;
         }
+        if (org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("disablePlayVisibleVideoOnVolume", false)) {
+            return false;
+        }
         MessageObject playingMessage = MediaController.getInstance().getPlayingMessageObject();
         if (playingMessage != null && !playingMessage.isVideo()) {
             return false;
