@@ -28,6 +28,7 @@
     <string name="DisableParametersFromBotLinksInfo">Start-Parameter aus Bot-Links vor dem Öffnen entfernen.</string>
     <string name="DisableDefaultInAppBrowserInfo">Links im Systembrowser statt im integrierten Browser öffnen.</string>
     <string name="LockPremiumInfo">Telegram-Premium-Werbung und die Abo-Schaltfläche ausblenden. Neustart erforderlich.</string>
+    <string name="UpdateCheckInterval">Intervall der Update-Prüfung</string>
     <string name="DisablePlayVisibleVideoOnVolume">Videowiedergabe bei Lautstärkeänderung deaktivieren</string>
     <string name="ForkRestartRequired">Neustart erforderlich</string>
     <string name="BottomDialogs">Tippen Sie hier, um einen neuen Chat zu starten.</string>
