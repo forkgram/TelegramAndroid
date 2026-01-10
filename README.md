@@ -52,3 +52,6 @@ Fork Client is a fork of the official Telegram for Android application.
 
 ## Downloads:
 You can download binaries from Releases or from my [Telegram channel Forkgram](https://t.me/forkgram).
+
+## Building instructions for Debian 13:
+[BUILDING.md](BUILDING.md)
