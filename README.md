@@ -56,3 +56,6 @@ Forkgram adds no telemetry, no analytics, no crash-reporting, and no third-party
 
 ## Downloads:
 You can download binaries from Releases or from my [Telegram channel Forkgram](https://t.me/forkgram).
+
+## Building instructions for Debian 13:
+[BUILDING.md](BUILDING.md)
