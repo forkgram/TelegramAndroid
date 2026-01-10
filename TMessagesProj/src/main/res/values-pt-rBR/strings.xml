@@ -1354,7 +1354,4 @@
     <string name="PasskeyGoogleManagerInfo">O Gerenciador de senhas do Google não aceita passkeys deste app. Escolha outro gerenciador de senhas, como Bitwarden ou KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
     <string name="AppIconAdaptive">Adaptativo</string>
-    <string name="ResetLauncherShortcuts">Redefinir atalhos da tela inicial</string>
-    <string name="ResetLauncherShortcutsConfirm">Remover todos os atalhos do launcher? Eles serão reconstruídos imediatamente a partir das contas e conversas atuais.</string>
-    <string name="ResetLauncherShortcutsInfo">Remove os atalhos desatualizados de contas e conversas exibidos pelo launcher ao pressionar longamente o ícone do aplicativo e os reconstrói a partir da lista de contas atual.</string>
 </resources>
