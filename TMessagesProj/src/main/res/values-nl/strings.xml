@@ -1195,7 +1195,4 @@
     <string name="PasskeyGoogleManagerInfo">Google Wachtwoordmanager accepteert geen passkeys uit deze app. Kies een andere wachtwoordmanager, zoals Bitwarden of KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
     <string name="AppIconAdaptive">Adaptief</string>
-    <string name="ResetLauncherShortcuts">Snelkoppelingen van het startscherm herstellen</string>
-    <string name="ResetLauncherShortcutsConfirm">Alle snelkoppelingen van de launcher verwijderen? Ze worden meteen opnieuw opgebouwd uit de huidige accounts en chats.</string>
-    <string name="ResetLauncherShortcutsInfo">Verwijdert verouderde account- en chatsnelkoppelingen die de launcher toont bij lang indrukken van het app-pictogram en bouwt ze opnieuw op uit de huidige accountlijst.</string>
 </resources>

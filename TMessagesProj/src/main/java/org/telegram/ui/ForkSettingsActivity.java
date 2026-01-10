@@ -32,7 +32,6 @@ import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
-import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
@@ -105,8 +104,6 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_LOCK_PREMIUM = 83;
 
     public static final int ID_LASTFM_LOGIN = 90;
-
-    public static final int ID_RESET_LAUNCHER_SHORTCUTS = 97;
 
     private static final int MENU_SEARCH = 100;
 
@@ -479,8 +476,7 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asSettingsCell(ID_UPDATE_CHECK_INTERVAL, LocaleController.getString(R.string.UpdateCheckInterval), getUpdateIntervalText()));
         items.add(UItem.asButtonCheck(ID_LOCK_PREMIUM, LocaleController.getString(R.string.LockPremium), LocaleController.getString(R.string.LockPremiumInfo))
             .setChecked(pref("lockPremium", false)).setMultiline(true));
-        items.add(UItem.asSettingsCell(ID_RESET_LAUNCHER_SHORTCUTS, LocaleController.getString(R.string.ResetLauncherShortcuts), ""));
-        items.add(UItem.asShadow(LocaleController.getString(R.string.ResetLauncherShortcutsInfo)));
+        items.add(UItem.asShadow(null));
 
         if (BuildVars.LASTFM_API_KEY != null && BuildVars.LASTFM_API_KEY.length() > 2 &&
             BuildVars.LASTFM_API_SECRET != null && BuildVars.LASTFM_API_SECRET.length() > 2) {
@@ -594,27 +590,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
         } else if (id == ID_LASTFM_LOGIN) {
             presentFragment(new LastFmLoginActivity());
-        } else if (id == ID_RESET_LAUNCHER_SHORTCUTS) {
-            showResetLauncherShortcutsDialog();
-        }
-    }
 
-    private void showResetLauncherShortcutsDialog() {
-        if (getParentActivity() == null) {
-            return;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
-        builder.setTitle(LocaleController.getString(R.string.ResetLauncherShortcuts));
-        builder.setMessage(LocaleController.getString(R.string.ResetLauncherShortcutsConfirm));
-        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
-        builder.setPositiveButton(LocaleController.getString(R.string.Reset), (dialog, which) ->
-                Utilities.globalQueue.postRunnable(() -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        androidx.core.content.pm.ShortcutManagerCompat.removeAllDynamicShortcuts(ApplicationLoader.applicationContext);
-                        MediaDataController.getInstance(UserConfig.selectedAccount).buildShortcuts();
-                    }
-                }));
-        showDialog(builder.create());
     }
 
     private void showCustomTitleDialog(View view) {
