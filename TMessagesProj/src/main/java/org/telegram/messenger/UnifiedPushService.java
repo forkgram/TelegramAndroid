@@ -4,14 +4,17 @@ import android.content.Context;
 import android.os.SystemClock;
 
 import org.telegram.tgnet.ConnectionsManager;
-import org.unifiedpush.android.connector.MessagingReceiver;
+import org.unifiedpush.android.connector.FailedReason;
+import org.unifiedpush.android.connector.PushService;
 import org.unifiedpush.android.connector.UnifiedPush;
+import org.unifiedpush.android.connector.data.PushEndpoint;
+import org.unifiedpush.android.connector.data.PushMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.concurrent.CountDownLatch;
 
-public class UnifiedPushReceiver extends MessagingReceiver {
+public class UnifiedPushService extends PushService {
 
     private static long lastReceivedNotification = 0;
     private static long numOfReceivedNotifications = 0;
@@ -25,17 +28,17 @@ public class UnifiedPushReceiver extends MessagingReceiver {
     }
 
     @Override
-    public void onNewEndpoint(Context context, String endpoint, String instance){
+    public void onNewEndpoint(PushEndpoint endpoint, String instance){
         Utilities.globalQueue.postRunnable(() -> {
             SharedConfig.pushStringGetTimeEnd = SystemClock.elapsedRealtime();
 
-            String savedDistributor = UnifiedPush.getSavedDistributor(context);
+            String savedDistributor = UnifiedPush.getSavedDistributor(this);
 
             if (savedDistributor.equals("io.heckel.ntfy")) {
-                PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, endpoint);
+                PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, endpoint.getUrl());
             } else {
                 try {
-                    PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, SharedConfig.unifiedPushGateway + URLEncoder.encode(endpoint, "UTF-8"));
+                    PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, SharedConfig.unifiedPushGateway + URLEncoder.encode(endpoint.getUrl(), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     FileLog.e(e);
                 }
@@ -44,7 +47,7 @@ public class UnifiedPushReceiver extends MessagingReceiver {
     }
 
     @Override
-    public void onMessage(Context context, byte[] message, String instance){
+    public void onMessage(PushMessage message, String instance){
         final long receiveTime = SystemClock.elapsedRealtime();
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -85,9 +88,9 @@ public class UnifiedPushReceiver extends MessagingReceiver {
     }
 
     @Override
-    public void onRegistrationFailed(Context context, String instance){
+    public void onRegistrationFailed(FailedReason reason, String instance){
         if (BuildVars.LOGS_ENABLED) {
-            FileLog.d("Failed to get endpoint");
+            FileLog.d("Failed to get endpoint: " + reason);
         }
         SharedConfig.pushStringStatus = "__UNIFIEDPUSH_FAILED__";
         Utilities.globalQueue.postRunnable(() -> {
@@ -98,7 +101,7 @@ public class UnifiedPushReceiver extends MessagingReceiver {
     }
 
     @Override
-    public void onUnregistered(Context context, String instance){
+    public void onUnregistered(String instance){
         SharedConfig.pushStringStatus = "__UNIFIEDPUSH_FAILED__";
         Utilities.globalQueue.postRunnable(() -> {
             SharedConfig.pushStringGetTimeEnd = SystemClock.elapsedRealtime();
