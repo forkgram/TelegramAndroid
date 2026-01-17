@@ -1735,13 +1735,13 @@ public class PushListenerController {
     }
     public final static class UnifiedPushListenerServiceProvider implements IPushListenerServiceProvider {
         public final static UnifiedPushListenerServiceProvider INSTANCE = new UnifiedPushListenerServiceProvider();
-        private final static UnifiedPushReceiver mReceiver = new UnifiedPushReceiver();
+        private final static UnifiedPushService mService = new UnifiedPushService();
 
         private UnifiedPushListenerServiceProvider(){};
 
         @Override
         public boolean hasServices() {
-            return !UnifiedPush.getDistributors(ApplicationLoader.applicationContext, new ArrayList()).isEmpty();
+            return !UnifiedPush.getDistributors(ApplicationLoader.applicationContext).isEmpty();
         }
 
         @Override
@@ -1769,18 +1769,17 @@ public class PushListenerController {
                         SharedConfig.pushStringGetTimeStart = SystemClock.elapsedRealtime();
                         SharedConfig.saveConfig();
                         if (UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext) == null) {
-                            List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext, new ArrayList<>());
+                            List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext);
                             if (distributors.size() > 0) {
                                 String distributor = distributors.get(0);
                                 UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, distributor);
                             }
                         }
-                        UnifiedPush.registerApp(
+                        UnifiedPush.register(
                                 ApplicationLoader.applicationContext,
                                 "default",
-                                new ArrayList<>(),
-                                "Telegram Simple Push"
-                        );
+                                "Telegram Simple Push",
+                                null);
                     } catch (Throwable e) {
                         FileLog.e(e);
                     }
