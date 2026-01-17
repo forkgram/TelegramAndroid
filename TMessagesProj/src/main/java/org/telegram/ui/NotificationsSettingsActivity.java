@@ -37,7 +37,7 @@ import androidx.annotation.Keep;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.telegram.messenger.UnifiedPushReceiver;
+import org.telegram.messenger.UnifiedPushService;
 import org.unifiedpush.android.connector.UnifiedPush;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -825,7 +825,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                 LinearLayout linearLayout = new LinearLayout(context);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-                List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext, new ArrayList<>());
+                List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext);
                 CharSequence[] items = distributors.toArray(new CharSequence[distributors.size()]);
 
                 String distributor = UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext);
@@ -840,10 +840,10 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                     linearLayout.addView(cell);
                     cell.setOnClickListener(v -> {
                         UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, items[index].toString());
-                        UnifiedPush.registerApp(ApplicationLoader.applicationContext,
+                        UnifiedPush.register(ApplicationLoader.applicationContext,
                                 "default",
-                                new ArrayList<String>(),
-                                "Telegram Simple Push");
+                                "Telegram Simple Push",
+                                null);
                         updateUnifiedPushDistributor = true;
                         adapter.notifyItemChanged(position);
                         dialogRef.get().dismiss();
@@ -872,10 +872,10 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                                 value += "/";
                             }
                             SharedConfig.setUnifiedPushGateway(value);
-                            UnifiedPush.registerApp(ApplicationLoader.applicationContext,
+                            UnifiedPush.register(ApplicationLoader.applicationContext,
                                     "default",
-                                    new ArrayList<String>(),
-                                    "Telegram Simple Push");
+                                    "Telegram Simple Push",
+                                    null);
                             updateUnifiedPushGateway = true;
                             adapter.notifyItemChanged(position);
                         }).setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null)
@@ -892,13 +892,13 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
             }
             if (position == unifiedPushDistributorRow) {
                 String txt;
-                if (UnifiedPushReceiver.getNumOfReceivedNotifications() == 0) {
+                if (UnifiedPushService.getNumOfReceivedNotifications() == 0) {
                     txt = "You never received notifications with UnifiedPush since Forkgram was started.";
                 } else {
                     txt = String.format("The last received notification with UnifiedPush was %d seconds ago.\n" +
                                         "You received %d notifications since Forkgram was started.",
-                                        (SystemClock.elapsedRealtime() - UnifiedPushReceiver.getLastReceivedNotification()) / 1000,
-                                        UnifiedPushReceiver.getNumOfReceivedNotifications());
+                                        (SystemClock.elapsedRealtime() - UnifiedPushService.getLastReceivedNotification()) / 1000,
+                                        UnifiedPushService.getNumOfReceivedNotifications());
                 }
                 txt += String.format("\n\nThe current UnifiedPush endpoint is: %s", SharedConfig.pushString);
                 Dialog dialog = new AlertDialog.Builder(getParentActivity())
