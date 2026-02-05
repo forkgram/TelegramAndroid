@@ -443,7 +443,7 @@ public class ForkSettingsActivity extends BaseFragment {
             } else if (position == disableRecentFilesAttachment) {
                 toggleGlobalMainSetting("disableRecentFilesAttachment", view, false);
             } else if (position == disableDefaultInAppBrowser) {
-                toggleGlobalMainSetting("disableDefaultInAppBrowser", view, false);
+                toggleGlobalMainSetting("disableDefaultInAppBrowser", view, org.telegram.messenger.BuildConfig.SKIP_INTERNAL_BROWSER_BY_DEFAULT);
             } else if (position == disablePlayVisibleVideoOnVolumeRow) {
                 toggleGlobalMainSetting("disablePlayVisibleVideoOnVolume", view, false);
             } else if (position == botSkipShare) {
@@ -610,7 +610,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableRecentFilesAttachment", false), false);
                     } else if (position == disableDefaultInAppBrowser) {
                         String t = LocaleController.getString("DisableDefaultInAppBrowser", R.string.DisableDefaultInAppBrowser);
-                        textCell.setTextAndCheck(t, preferences.getBoolean("disableDefaultInAppBrowser", false), false);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("disableDefaultInAppBrowser", org.telegram.messenger.BuildConfig.SKIP_INTERNAL_BROWSER_BY_DEFAULT), false);
                     } else if (position == disablePlayVisibleVideoOnVolumeRow) {
                         String t = "Disable play video on volume change";
                         textCell.setTextAndCheck(t, preferences.getBoolean("disablePlayVisibleVideoOnVolume", false), false);
