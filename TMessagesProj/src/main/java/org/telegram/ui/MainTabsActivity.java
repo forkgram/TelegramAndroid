@@ -259,6 +259,12 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             openAccountSelector(v);
             return true;
         });
+        tabs[INDEX_CHATS].setOnLongClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
+            presentFragment(new ChatActivity(args));
+            return true;
+        });
 
         for (int index = 0; index < tabs.length; index++) {
             final GlassTabView view = tabs[index];
@@ -795,6 +801,9 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
     }
 
     private void checkUi_tabsPosition() {
+        if (tabsView == null || updateLayoutWrapper == null) {
+            return;
+        }
         final boolean isUpdateLayoutVisible = updateLayoutWrapper.isUpdateLayoutVisible();
         final int updateLayoutHeight = isUpdateLayoutVisible ? dp(UpdateLayoutWrapper.HEIGHT) : 0;
         final int normalY = -(updateLayoutHeight);
