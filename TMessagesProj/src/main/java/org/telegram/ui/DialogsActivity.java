@@ -3175,6 +3175,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
         ActionBarMenu menu = actionBar.createMenu();
         searchItem = menu.addItem(0, R.drawable.outline_header_search).setIsSearchField(true, false);
+        searchItem.setOnLongClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
+            presentFragment(new ChatActivity(args));
+            return true;
+        });
         searchItem.setOnClickListener(v -> {
             showSearch(true, false, true);
             fragmentSearchFieldWatcher.toggleSearch(true);
@@ -3396,6 +3402,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (initialDialogsType == DIALOGS_TYPE_DEFAULT) {
             optionsItem = menu.addItem(4, R.drawable.ic_ab_other);
             optionsItem.setContentDescription(LocaleController.getString(R.string.AccDescrMoreOptions));
+            optionsItem.setOnLongClickListener(v -> {
+                presentFragment(new SettingsActivity());
+                return true;
+            });
             optionsItem.setOnClickListener(v -> {
                 getContactsController().loadGlobalPrivacySetting();
                 showItemOptions();
@@ -3467,6 +3477,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 ssb.setSpan(new ImageSpan(logoDrawable), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 actionBar.setTitle(ssb, statusDrawable);
                 actionBar.setTitle(MessagesController.getGlobalMainSettings().getString("forkCustomTitle", "Fork Client"));
+                actionBar.setTitleLongClickListener(v -> {
+                    UserConfig.getInstance(currentAccount).setMainTabsHiddenFork(!UserConfig.getInstance(currentAccount).getMainTabsHiddenFork());
+                    checkUi_mainTabsVisible();
+                    return true;
+                });
+
                 updateStatus(UserConfig.getInstance(currentAccount).getCurrentUser(), false);
             }
             if (folderId == 0) {
@@ -13447,15 +13463,23 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 });
             });
             io.addGap();
-            io.add(R.drawable.outline_groups_24, getString(R.string.NewGroup), () -> {
-                Bundle args = new Bundle();
-                presentFragment(new GroupCreateActivity(args));
-            });
             io.add(R.drawable.outline_saved_24, getString(R.string.SavedMessages), () -> {
                 Bundle args = new Bundle();
                 args.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
                 presentFragment(new ChatActivity(args));
             });
+            io.add(R.drawable.outline_groups_24, getString(R.string.NewMessageTitle), () -> {
+                openWriteContacts();
+            });
+            if (MessagesController.getInstance(currentAccount).storiesEnabled()) {
+                io.add(R.drawable.outline_fab_story_24, getString(R.string.RecorderNewStory), () -> {
+                    if (!MessagesController.getInstance(currentAccount).storiesEnabled()) {
+                        dialogStoriesCell.showPremiumHint();
+                    } else {
+                        dialogStoriesCell.openStoryRecorder();
+                    }
+                });
+            }
             if (ApplicationLoader.applicationLoaderInstance != null) {
                 ApplicationLoader.applicationLoaderInstance.addItemOptions(io);
             }
@@ -13732,7 +13756,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private void checkUi_mainTabsVisible() {
         final boolean mainTabsVisible = !searching && (blurredView == null || blurredView.getBackground() == null || blurredView.getAlpha() < 0.01f || blurredView.getVisibility() == View.GONE);
         if (mainTabsActivityController != null) {
-            mainTabsActivityController.setTabsVisible(mainTabsVisible);
+            mainTabsActivityController.setTabsVisible(UserConfig.getInstance(currentAccount).getMainTabsHiddenFork() ? false : mainTabsVisible);
         }
     }
 

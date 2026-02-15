@@ -62,6 +62,7 @@ public class UserConfig extends BaseController {
     public boolean syncContacts = false;
     public boolean suggestContacts = true;
     public boolean showCallsTab;
+    public boolean mainTabsHiddenFork = false;
     public boolean hasSecureData;
     public int loginTime;
     public TLRPC.TL_help_termsOfService unacceptedTermsOfService;
@@ -161,6 +162,7 @@ public class UserConfig extends BaseController {
                     editor.putInt("loginTime", loginTime);
                     editor.putBoolean("syncContacts", syncContacts);
                     editor.putBoolean("showCallsTab", showCallsTab);
+                    editor.putBoolean("mainTabsHiddenFork", mainTabsHiddenFork);
                     editor.putBoolean("suggestContacts", suggestContacts);
                     editor.putBoolean("hasSecureData", hasSecureData);
                     editor.putBoolean("notificationsSettingsLoaded4", notificationsSettingsLoaded);
@@ -313,6 +315,7 @@ public class UserConfig extends BaseController {
             loginTime = preferences.getInt("loginTime", currentAccount);
             syncContacts = preferences.getBoolean("syncContacts", false);
             showCallsTab = preferences.getBoolean("showCallsTab", false);
+            mainTabsHiddenFork = preferences.getBoolean("mainTabsHiddenFork", false);
             suggestContacts = preferences.getBoolean("suggestContacts", true);
             hasSecureData = preferences.getBoolean("hasSecureData", false);
             notificationsSettingsLoaded = preferences.getBoolean("notificationsSettingsLoaded4", false);
@@ -485,6 +488,7 @@ public class UserConfig extends BaseController {
         contactsReimported = true;
         syncContacts = false;
         showCallsTab = false;
+        mainTabsHiddenFork = false;
         suggestContacts = true;
         unreadDialogsLoaded = true;
         hasValidDialogLoadIds = true;
@@ -567,6 +571,17 @@ public class UserConfig extends BaseController {
     public void setShowCallsTab(boolean show) {
         if (showCallsTab != show) {
             showCallsTab = show;
+            saveConfig(false);
+        }
+    }
+
+    public boolean getMainTabsHiddenFork() {
+        return mainTabsHiddenFork;
+    }
+
+    public void setMainTabsHiddenFork(boolean visible) {
+        if (mainTabsHiddenFork != visible) {
+            mainTabsHiddenFork = visible;
             saveConfig(false);
         }
     }
