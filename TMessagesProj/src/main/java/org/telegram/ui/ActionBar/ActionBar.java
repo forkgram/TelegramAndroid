@@ -165,6 +165,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
     private boolean attachState;
     private FrameLayout titlesContainer;
     private boolean useContainerForTitles;
+    private OnLongClickListener titleLongClickListener;
 
     private View.OnTouchListener interceptTouchEventListener;
     private final Theme.ResourcesProvider resourcesProvider;
@@ -1662,6 +1663,11 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
 
     public void setTitleActionRunnable(Runnable action) {
         lastRunnable = titleActionRunnable = action;
+    }
+
+    public void setTitleLongClickListener(OnLongClickListener listener) {
+        titleLongClickListener = listener;
+        setOnLongClickListener(listener);
     }
 
     boolean overlayTitleAnimationInProgress;
