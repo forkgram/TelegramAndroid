@@ -241,6 +241,12 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             openAccountSelector(v);
             return true;
         });
+        tabs[INDEX_CHATS].setOnLongClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
+            presentFragment(new ChatActivity(args));
+            return true;
+        });
 
         for (int index = 0; index < tabs.length; index++) {
             final GlassTabView view = tabs[index];
