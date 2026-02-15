@@ -7,6 +7,7 @@ import static org.telegram.ui.Components.Premium.LimitReachedBottomSheet.TYPE_AC
 
 import android.animation.Animator;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -24,6 +25,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,6 +51,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.ActionBarMenuSubItem;
+import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeDescription;
@@ -296,11 +299,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         tabs[INDEX_CALLS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.CALLS, R.string.MainTabsCalls);
         tabs[INDEX_PROFILE] = GlassTabView.createAvatar(context, resourceProvider, currentAccount, R.string.MainTabsProfile);
         tabs[INDEX_CHATS].setOnLongClickListener(this::openFoldersSelector);
-        tabs[INDEX_CONTACTS].setOnLongClickListener(v -> {
-            presentFragment(new PrivacySettingsActivity());
-            AndroidUtilities.scrollToFragmentRow(getParentLayout(), "contactsSyncRow");
-            return true;
-        });
+        tabs[INDEX_CONTACTS].setOnLongClickListener(this::openContactsSelector);
         tabs[INDEX_CALLS].setOnLongClickListener(this::openCallsSelector);
         tabs[INDEX_PROFILE].setOnLongClickListener(this::openAccountSelector);
 
@@ -404,6 +403,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             args.putBoolean("needFinishFragment", false);
             presentFragment(new CallLogActivity(args));
         });
+        o.addChecked(UserConfig.getInstance(currentAccount).syncContacts, getString(R.string.SyncContacts), this::forkToggleSyncContacts);
         o.setBlur(true);
         o.translate(0, -dp(4));
         o.setGravity(Gravity.LEFT);
@@ -412,6 +412,38 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         o.setScrimViewBackground(bg);
         o.show();
         return true;
+    }
+
+    private void forkToggleSyncContacts() {
+        if (UserConfig.getInstance(currentAccount).syncContacts) {
+            if (getParentActivity() == null) {
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+            builder.setTitle(getString(R.string.SyncContactsDeleteTitle));
+            builder.setMessage(AndroidUtilities.replaceTags(getString(R.string.SyncContactsDeleteText)));
+            builder.setNegativeButton(getString(R.string.Cancel), null);
+            builder.setPositiveButton(getString(R.string.Delete), (dialogInterface, i) -> {
+                UserConfig.getInstance(currentAccount).syncContacts = false;
+                UserConfig.getInstance(currentAccount).saveConfig(false);
+                ContactsController.getInstance(currentAccount).deleteAllContacts(() -> {});
+            });
+            AlertDialog dialog = builder.create();
+            showDialog(dialog);
+            TextView button = (TextView) dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            if (button != null) {
+                button.setTextColor(Theme.getColor(Theme.key_text_RedBold));
+            }
+        } else {
+            UserConfig.getInstance(currentAccount).syncContacts = true;
+            UserConfig.getInstance(currentAccount).saveConfig(false);
+            if (ContactsController.hasContactsPermission()) {
+                ContactsController.getInstance(currentAccount).forceImportContacts();
+                if (getParentActivity() != null) {
+                    Toast.makeText(getParentActivity(), getString(R.string.SyncContactsAdded), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     public boolean openCallsSelector(View anchor) {
@@ -468,6 +500,11 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             });
             o.addView(folderItem, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
         }
+        o.add(R.drawable.outline_saved_24, getString(R.string.SavedMessages), () -> {
+            Bundle args = new Bundle();
+            args.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
+            presentFragment(new ChatActivity(args));
+        });
 //        o.setBlur(true);
         o.translate(-dp(8), -dp(4));
         o.setMaxHeight(dp(400));
@@ -962,6 +999,9 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
     }
 
     private void checkUi_tabsPosition() {
+        if (tabsView == null || updateLayoutWrapper == null) {
+            return;
+        }
         final boolean isUpdateLayoutVisible = updateLayoutWrapper.isUpdateLayoutVisible();
         final int updateLayoutHeight = isUpdateLayoutVisible ? dp(UpdateLayoutWrapper.HEIGHT) : 0;
         final int normalY = -(updateLayoutHeight);
