@@ -1591,7 +1591,7 @@ public class ChatAttachAlertLocationLayout extends ChatAttachAlert.AttachAlertLa
         searchListView.setLayoutParams(layoutParams);
 
         adapter.setOverScrollHeight((locationDenied && isTypeSend() ? overScrollHeight - listView.getPaddingTop() : overScrollHeight) + dp(16));
-        layoutParams = (FrameLayout.LayoutParams) mapView.getView().getLayoutParams();
+//        layoutParams = (FrameLayout.LayoutParams) mapView.getView().getLayoutParams();
         if (layoutParams != null) {
             layoutParams.height = mapHeight + AndroidUtilities.dp(10);
             mapView.setLayoutParams(layoutParams);
