@@ -38,8 +38,6 @@ public class BuildVars {
     public static String LASTFM_API_SECRET = BuildConfig.LASTFM_API_SECRET;
     public static String LASTFM_API_URL = "https://ws.audioscrobbler.com/2.0/";
 
-    public static String UPDATE_CHANNEL_USERNAME = BuildConfig.UPDATE_CHANNEL_USERNAME;
-
     // You can use this flag to disable Google Play Billing (If you're making fork and want it to be in Google Play)
     public static boolean IS_BILLING_UNAVAILABLE = false;
 
@@ -70,7 +68,6 @@ public class BuildVars {
         CHECK_UPDATES = (BuildConfig.CHECK_UPDATES != 0);
     }
     public static int USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
-    public static String USER_REPO = BuildConfig.USER_REPO;
 
     public static boolean useInvoiceBilling() {
         return true;

@@ -70,6 +70,7 @@ jobs:
           echo "UPDATE_CHANNEL_USERNAME=${{ secrets.UPDATE_CHANNEL_USERNAME }}" >> $vars
           echo "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}" >> $vars
           echo "LASTFM_API_SECRET=${{ secrets.LASTFM_API_SECRET }}" >> $vars
+          echo "USER_ID_OWNER=${{ secrets.USER_ID_OWNER }}" >> $vars
 
           ###
           echo $ADDITIONAL_BUILD_NUMBER
@@ -96,6 +97,14 @@ jobs:
           python3 upload.py
           set -x
           ###
+          sudo apt -y install ninja-build meson
+          ./gradlew :TMessagesProj_App:assembleAfatDebug
+          grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
+          mkdir artifact
+          mv TMessagesProj_App/build/outputs/apk/afat/debug/app.apk app.apk
+          cp app.apk "artifact/ForkClient $(cat ver.txt).apk"
+          mkdir tag_asset
+          cp app.apk "tag_asset/ForkClient_$(cat ver.txt).apk"
 
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
 

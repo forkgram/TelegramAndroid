@@ -111,7 +111,6 @@ android {
         buildConfigField 'String', 'UPDATE_CHANNEL_USERNAME', getStringForConfig(UPDATE_CHANNEL_USERNAME)
         buildConfigField 'String', 'LASTFM_API_KEY', getStringForConfig(LASTFM_API_KEY)
         buildConfigField 'String', 'LASTFM_API_SECRET', getStringForConfig(LASTFM_API_SECRET)
-
         vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
 
         versionName = Utils['getVersionName']()
