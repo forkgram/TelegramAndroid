@@ -583,11 +583,12 @@ public class UserConfig extends BaseController {
     }
 
     public boolean isPremium() {
+        SharedPreferences preferences = MessagesController.getGlobalMainSettings();
         TLRPC.User user = currentUser;
         if (user == null) {
             return false;
         }
-        return user.premium;
+        return org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || currentUser.premium;
     }
 
     public Long getEmojiStatus() {

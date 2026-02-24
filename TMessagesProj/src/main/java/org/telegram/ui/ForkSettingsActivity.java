@@ -171,6 +171,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int disablePlayVisibleVideoOnVolumeRow;
     private int lastFmLoginRow;
     private int disableAds;
+    private int localPremium;
 
     private int stickerSizeRow;
 
@@ -219,6 +220,7 @@ public class ForkSettingsActivity extends BaseFragment {
         lockPremium = rowCount++;
         disableUnifiedPushRow = rowCount++;
         disableAds = rowCount++;
+        localPremium = rowCount++;
     
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
@@ -405,6 +407,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("disableUnifiedPush", view, false);
             } else if (position == disableAds) {
                 toggleGlobalMainSetting("disableAds", view, false);
+            } else if (position == localPremium) {
+                toggleGlobalMainSetting("localPremium", view, false);
             } else if (position == customTitleRow) {
                 final String defaultValue = "Fork Client";
                 org.telegram.messenger.forkgram.ForkDialogs.CreateFieldAlert(
@@ -590,6 +594,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableAds) {
                         String t = LocaleController.getString("DisableAds", R.string.DisableAds);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableAds", false), false);
+                    } else if (position == localPremium) {
+                        String t = LocaleController.getString("LocalPremium", R.string.LocalPremium);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("localPremium", false), false);
                     }
                     break;
                 }
@@ -642,8 +649,10 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == showNotificationContent
                         || position == photoHasStickerRow
                         || position == lastFmLoginRow
-                        || position == disableUnifiedPushRow;
+                        || position == disableUnifiedPushRow
                         || position == disableAds
+                        || position == localPremium;
+
             return fork;
         }
 
@@ -716,6 +725,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == showNotificationContent
                 || position == photoHasStickerRow
                 || position == disableAds
+                || position == localPremium
                 || position == disableUnifiedPushRow) {
                 return 3;
             } else if (sectionRows.contains(position)) {

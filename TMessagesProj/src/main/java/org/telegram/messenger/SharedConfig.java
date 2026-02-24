@@ -334,6 +334,7 @@ public class SharedConfig {
     public static int dayNightThemeSwitchHintCount;
     public static int callEncryptionHintDisplayedCount;
     public static boolean shadowsInSections;
+    public static boolean localPremium;
 
     public static TLRPC.TL_help_appUpdate pendingAppUpdate;
     public static int pendingAppUpdateBuildVersion;
@@ -541,6 +542,7 @@ public class SharedConfig {
             pushStatSent = preferences.getBoolean("pushStatSent", false);
             passportConfigJson = preferences.getString("passportConfigJson", "");
             passportConfigHash = preferences.getInt("passportConfigHash", 0);
+            localPremium = preferences.getBoolean("localPremium", false);
             storageCacheDir = preferences.getString("storageCacheDir", null);
             proxyRotationEnabled = preferences.getBoolean("proxyRotationEnabled", false);
             proxyRotationTimeout = preferences.getInt("proxyRotationTimeout", ProxyRotationController.DEFAULT_TIMEOUT_INDEX);
