@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">Fork Client</string>
-    <string name="AppNameBeta">Fork Client</string>
-    <string name="AppNameFdroid">Forkgram</string>
+    <string name="AppName">Optogram Client</string>
+    <string name="AppNameBeta">Optogram Client</string>
+    <string name="AppNameFdroid">Optogram</string>
     <string name="LanguageName">English</string>
     <string name="English">English</string>
     <string name="LanguageNameInEnglish">English</string>
@@ -10473,4 +10473,5 @@
     <string name="ThirdParty">Third-party</string>
     <string name="EnableLastSeenDots">Enable colored last seen dots</string>
     <string name="HideStoriesInArchive">Hide Stories in Archive</string>
+    <string name="DisableAds">Disable ads</string>    
 </resources>
