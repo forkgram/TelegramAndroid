@@ -105,22 +105,16 @@ android {
         //obtain your own keys at https://core.telegram.org/api/obtaining_api_id
         buildConfigField 'int', 'APP_ID', APP_ID
         buildConfigField 'String', 'APP_HASH', getStringForConfig(APP_HASH)
-        buildConfigField 'int', 'USER_ID_OWNER', USER_ID_OWNER
-        buildConfigField 'String', 'USER_REPO', getStringForConfig(USER_REPO)
-        buildConfigField 'int', 'CHECK_UPDATES', CHECK_UPDATES
-        buildConfigField 'String', 'UPDATE_CHANNEL_USERNAME', getStringForConfig(UPDATE_CHANNEL_USERNAME)
         buildConfigField 'String', 'LASTFM_API_KEY', getStringForConfig(LASTFM_API_KEY)
         buildConfigField 'String', 'LASTFM_API_SECRET', getStringForConfig(LASTFM_API_SECRET)
+        buildConfigField 'int', 'USER_ID_OWNER', USER_ID_OWNER
+
         vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
 
         versionName = Utils['getVersionName']()
         buildConfigField 'int', 'ADDITIONAL_BUILD_NUMBER', ADDITIONAL_BUILD_NUMBER
         buildConfigField 'String', 'VERSION_NAME', getStringForConfig(versionName)
         buildConfigField 'int', 'VERSION_CODE', Utils['getVersionCode']()
-
-        buildConfigField 'boolean', 'SKIP_DNS_RESOLVER', (Utils['isFdroid']() ? 'true' : 'false')
-        buildConfigField 'boolean', 'SKIP_INTERNAL_BROWSER_BY_DEFAULT', (Utils['isFdroid']() ? 'true' : 'false')
-        manifestPlaceholders = [appLabel: Utils['isFdroid']() ? "@string/AppNameFdroid" : "@string/AppName"]
 
         externalNativeBuild {
             cmake {

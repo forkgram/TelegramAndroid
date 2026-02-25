@@ -46,51 +46,10 @@ android {
         coreLibraryDesugaringEnabled true
     }
 
-    def fdroid = Utils['isFdroid']()
-    def appSuffix = fdroid ? "" : ".beta"
-    def flavorsConfig = fdroid ? "release" : "debug"
-    if (fdroid) {
-        defaultConfig.applicationId = "org.forkgram.messenger"
-    }
-
-    signingConfigs {
-        if (fdroid) {
-            debug {
-                storeFile file("")
-                storePassword ""
-                keyAlias ""
-                keyPassword ""
-            }
-
-            release {
-                storeFile file("")
-                storePassword ""
-                keyAlias ""
-                keyPassword ""
-            }
-        } else {
-            debug {
-                storeFile file("../TMessagesProj/config/release.keystore")
-                storePassword RELEASE_STORE_PASSWORD
-                keyAlias RELEASE_KEY_ALIAS
-                keyPassword RELEASE_KEY_PASSWORD
-            }
-
-            release {
-                storeFile file("../TMessagesProj/config/release.keystore")
-                storePassword RELEASE_STORE_PASSWORD
-                keyAlias RELEASE_KEY_ALIAS
-                keyPassword RELEASE_KEY_PASSWORD
-            }
-        }
-    }
-
     buildTypes {
         debug {
             debuggable true
             jniDebuggable true
-            signingConfig signingConfigs.debug
-            applicationIdSuffix appSuffix
             minifyEnabled true
             shrinkResources false
             multiDexEnabled true
@@ -100,8 +59,6 @@ android {
         HA {
             debuggable false
             jniDebuggable false
-            signingConfig signingConfigs.debug
-            applicationIdSuffix appSuffix
             minifyEnabled true
             multiDexEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro'
@@ -110,8 +67,6 @@ android {
         standalone {
             debuggable false
             jniDebuggable false
-            signingConfig signingConfigs.release
-            applicationIdSuffix ".web"
             minifyEnabled true
             shrinkResources false
             multiDexEnabled true
@@ -121,8 +76,6 @@ android {
         release {
             debuggable false
             jniDebuggable false
-            signingConfig signingConfigs.release
-            applicationIdSuffix appSuffix
             minifyEnabled true
             shrinkResources false
             multiDexEnabled true
@@ -132,18 +85,6 @@ android {
 
     sourceSets.debug {
         manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest.xml'
-    }
-
-    sourceSets.HA {
-        manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest.xml'
-    }
-
-    sourceSets.standalone {
-        manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest.xml'
-    }
-
-    sourceSets.release {
-        manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest.xml'
     }
 
     flavorDimensions "minApi"
@@ -164,12 +105,7 @@ android {
             sourceSets.debug {
                 manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
             }
-            sourceSets.release {
-                manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest_SDK23.xml'
-            }
-            sourceSets.standalone {
-                manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest_standalone.xml'
-            }
+
             minSdkVersion 23
             ext {
                 abiVersionCode = 2
@@ -178,15 +114,6 @@ android {
         afat {
             ndk {
                 abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-            }
-            sourceSets.debug {
-                manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
-            }
-            sourceSets.release {
-                manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest_SDK23.xml'
-            }
-            sourceSets.standalone {
-                manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest_standalone.xml'
             }
             ext {
                 abiVersionCode = 9
@@ -197,15 +124,6 @@ android {
             ndk {
                 abiFilters "armeabi-v7a"
             }
-            sourceSets.debug {
-                manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
-            }
-            sourceSets.release {
-                manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest_SDK23.xml'
-            }
-            sourceSets.standalone {
-                manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest_standalone.xml'
-            }
             ext {
                 abiVersionCode = 7
             }
@@ -213,15 +131,6 @@ android {
         afatFd_v8a {
             ndk {
                 abiFilters "arm64-v8a"
-            }
-            sourceSets.debug {
-                manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
-            }
-            sourceSets.release {
-                manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest_SDK23.xml'
-            }
-            sourceSets.standalone {
-                manifest.srcFile '../TMessagesProj/config/' + flavorsConfig + '/AndroidManifest_standalone.xml'
             }
             ext {
                 abiVersionCode = 8
@@ -234,9 +143,6 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            if (!fdroid) {
-                outputFileName = "app.apk"
-            }
             output.versionCodeOverride = defaultConfig.versionCode * 10 + variant.productFlavors.get(0).abiVersionCode
         }
     }

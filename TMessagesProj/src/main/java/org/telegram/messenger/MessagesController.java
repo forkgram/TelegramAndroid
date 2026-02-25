@@ -883,7 +883,7 @@ public class MessagesController extends BaseController implements NotificationCe
     }
 
     public boolean isPremiumUser(TLRPC.User currentUser) {
-        return !premiumFeaturesBlocked() && currentUser.premium && !isSupportUser(currentUser) || currentUser.id == getUserConfig().getClientUserId() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false));
+        return !premiumFeaturesBlocked() && (currentUser.premium && !isSupportUser(currentUser) || currentUser.id == getUserConfig().getClientUserId() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false));
     }
 
     public boolean didPressTranscribeButtonEnough() {

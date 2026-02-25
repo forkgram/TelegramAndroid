@@ -65,7 +65,6 @@ public class BuildVars {
         APP_HASH = BuildConfig.APP_HASH;
         PLAYSTORE_APP_URL = "";
         DEBUG_VERSION = false;
-        CHECK_UPDATES = (BuildConfig.CHECK_UPDATES != 0);
     }
     public static int USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
 

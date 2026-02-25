@@ -10418,7 +10418,7 @@
     <string name="formatterDay12HSec">h:mm:ss a</string>
     <string name="CopyWithoutProtocol">Copy without protocol</string>
     <!--fork settings view-->
-    <string name="ForkSettingsTitle">Fork Client Settings</string>
+    <string name="ForkSettingsTitle">Optogram Settings</string>
     <string name="SquareAvatars">Square Avatars</string>
     <string name="SquareAvatarsInfo">Restart required</string>
     <string name="InAppCamera">Enable In-App Camera</string>

@@ -10256,7 +10256,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         balanceDividerRow = -1;
         hasMusic = false;
 
-        forkHeaderRow = forkRow = forkCheckUpdateRow = forkSectionCell = -1;
+        forkHeaderRow = forkRow = forkSectionCell = -1;
 
         unblockRow = -1;
         joinRow = -1;
