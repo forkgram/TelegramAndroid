@@ -371,7 +371,7 @@ public class ApplicationLoader extends Application {
             am.cancel(pendingIntent);
             am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
             } catch (Throwable ignore) {
-                Log.d("Fork Client", "Failed to set intent");
+                Log.d("Optogram Client", "Failed to set intent");
             }
             try {
                 Log.d("TFOSS", "Starting push service...");
@@ -393,7 +393,7 @@ public class ApplicationLoader extends Application {
                 alarm.cancel(pendingIntent);
             }
             } catch (Throwable ignore) {
-                Log.d("Fork Client", "Failed to set intent");
+                Log.d("Optogram Client", "Failed to set intent");
             }
         }
     }

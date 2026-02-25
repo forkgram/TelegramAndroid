@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">Fork Client</string>
-    <string name="AppNameBeta">Fork Client</string>
+    <string name="AppName">Optogram</string>
+    <string name="AppNameBeta">Optogram</string>
     <string name="LanguageName">Español</string>
     <string name="English">Inglés</string>
     <string name="LanguageNameInEnglish">Spanish</string>
@@ -1331,7 +1331,7 @@
     <string name="formatterDay12HSec">h:mm:ss a</string>
     <string name="CopyWithoutProtocol">Copiar sin protocolo</string>
     <!--fork settings view-->
-    <string name="ForkSettingsTitle">Configuraciones del cliente Fork</string>
+    <string name="ForkSettingsTitle">Configuraciones del cliente Optogram</string>
     <string name="ForkCheckUpdate">Verificar actualizaciones</string>
     <string name="SquareAvatars">Avatares cuadrados</string>
     <string name="SquareAvatarsInfo">Reinicio requerido</string>

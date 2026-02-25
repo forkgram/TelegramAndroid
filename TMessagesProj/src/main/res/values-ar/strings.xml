@@ -1258,7 +1258,7 @@
     <string name="formatterDay12HSec">h:mm:ss ص</string>
     <string name="CopyWithoutProtocol">نسخ بدون بروتوكول</string>
     <!--fork settings view-->
-    <string name="ForkSettingsTitle">إعدادات عميل Fork</string>
+    <string name="ForkSettingsTitle">إعدادات عميل Optogram</string>
     <string name="ForkCheckUpdate">تحقق من التحديثات</string>
     <string name="SquareAvatars">أفاتارات مربعة</string>
     <string name="SquareAvatarsInfo">إعادة التشغيل مطلوبة</string>

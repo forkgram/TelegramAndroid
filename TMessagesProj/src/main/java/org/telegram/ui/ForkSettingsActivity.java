@@ -406,7 +406,7 @@ public class ForkSettingsActivity extends BaseFragment {
             } else if (position == localPremium) {
                 toggleGlobalMainSetting("localPremium", view, false);
             } else if (position == customTitleRow) {
-                final String defaultValue = "Fork Client";
+                final String defaultValue = "Optogram Client";
                 org.telegram.messenger.forkgram.ForkDialogs.CreateFieldAlert(
                     context,
                     LocaleController.getString("EditAdminRank", R.string.EditAdminRank),
@@ -466,7 +466,7 @@ public class ForkSettingsActivity extends BaseFragment {
                     TextSettingsCell textCell = (TextSettingsCell) holder.itemView;
                     if (position == customTitleRow) {
                         String t = LocaleController.getString("EditAdminRank", R.string.EditAdminRank);
-                        final String v = MessagesController.getGlobalMainSettings().getString("forkCustomTitle", "Fork Client");
+                        final String v = MessagesController.getGlobalMainSettings().getString("forkCustomTitle", "Optogram Client");
                         textCell.setTextAndValue(t, v, false);
                     } else if (position == lastFmLoginRow) {
                         textCell.setTextAndIcon("Last.fm Login", R.drawable.ic_lastfm, false);

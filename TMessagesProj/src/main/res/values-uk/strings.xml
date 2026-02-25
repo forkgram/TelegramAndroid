@@ -291,7 +291,7 @@
     <string name="formatterDay12HSec">h:mm:ss a</string>
     <string name="CopyWithoutProtocol">Копіювати без протоколу</string>
     <!--fork settings view-->
-    <string name="ForkSettingsTitle">Налаштування клієнта Fork</string>
+    <string name="ForkSettingsTitle">Налаштування клієнта Optogram</string>
     <string name="ForkCheckUpdate">Перевірити оновлення</string>
     <string name="SquareAvatars">Квадратні аватари</string>
     <string name="SquareAvatarsInfo">Потрібен перезапуск</string>

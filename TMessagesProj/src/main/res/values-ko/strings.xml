@@ -1151,7 +1151,7 @@
     <string name="formatterDay12HSec">h:mm:ss a</string>
     <string name="CopyWithoutProtocol">프로토콜 없이 복사</string>
     <!--fork settings view-->
-    <string name="ForkSettingsTitle">포크 클라이언트 설정</string>
+    <string name="ForkSettingsTitle">Optogram Settings</string>
     <string name="ForkCheckUpdate">업데이트 확인</string>
     <string name="SquareAvatars">정사각형 아바타</string>
     <string name="SquareAvatarsInfo">재시작 필요</string>
