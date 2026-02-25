@@ -93,6 +93,7 @@ public final class MimeTypes {
   public static final String AUDIO_MSGSM = BASE_TYPE_AUDIO + "/gsm";
   public static final String AUDIO_OGG = BASE_TYPE_AUDIO + "/ogg";
   public static final String AUDIO_WAV = BASE_TYPE_AUDIO + "/wav";
+  public static final String AUDIO_X_WAV = BASE_TYPE_AUDIO + "/x-wav";
   public static final String AUDIO_MIDI = BASE_TYPE_AUDIO + "/midi";
 
   public static final String AUDIO_EXOPLAYER_MIDI = BASE_TYPE_AUDIO + "/x-exoplayer-midi";
