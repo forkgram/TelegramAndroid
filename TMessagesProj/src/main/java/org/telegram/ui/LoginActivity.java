@@ -703,10 +703,6 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                     savedInstanceState = null;
                     clearCurrentState();
                 }
-            } else if (currentViewNum == VIEW_QR_LOGIN) {
-                currentViewNum = VIEW_PHONE_INPUT;
-                savedInstanceState = null;
-                clearCurrentState();
             }
         }
 
