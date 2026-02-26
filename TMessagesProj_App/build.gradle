@@ -29,7 +29,7 @@ android {
     compileSdkVersion 35
     buildToolsVersion '35.0.0'
 
-    defaultConfig.applicationId = "org.forkclient.messenger"
+    defaultConfig.applicationId = "org.jaguar.optogram"
 
     sourceSets.main.jniLibs.srcDirs = ['../TMessagesProj/jni/']
 
