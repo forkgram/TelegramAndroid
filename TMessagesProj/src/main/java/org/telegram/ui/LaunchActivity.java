@@ -7912,7 +7912,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     }
                 }
             };
-            if (SharedConfig.appLocked) {
+            if (SharedConfig.appLocked || SharedConfig.autoLockIn == 1) {
                 AndroidUtilities.runOnUIThread(lockRunnable, 1000);
                 if (BuildVars.LOGS_ENABLED) {
                     FileLog.d("schedule app lock in " + 1000);

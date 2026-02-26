@@ -10475,4 +10475,5 @@
     <string name="HideStoriesInArchive">Hide Stories in Archive</string>
     <string name="DisableAds">Disable ads</string>
     <string name="LocalPremium">Telegram Local Premium</string>
+    <string name="AutoLockImmediately">Immediately</string>
 </resources>
