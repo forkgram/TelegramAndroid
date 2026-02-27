@@ -6940,6 +6940,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             boolean canEditAdmin;
             boolean canRestrict;
             boolean editingAdmin;
+            int joined;
             final TLRPC.ChannelParticipant channelParticipant;
 
             if (ChatObject.isChannel(currentChat)) {
@@ -6954,16 +6955,18 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     canRestrict = false;
                 }
                 editingAdmin = channelParticipant instanceof TLRPC.TL_channelParticipantAdmin;
+                joined = channelParticipant.date;
             } else {
                 channelParticipant = null;
                 allowKick = currentChat.creator || participant instanceof TLRPC.TL_chatParticipant && (ChatObject.canBlockUsers(currentChat) || participant.inviter_id == getUserConfig().getClientUserId());
                 canEditAdmin = currentChat.creator;
                 canRestrict = currentChat.creator;
                 editingAdmin = participant instanceof TLRPC.TL_chatParticipantAdmin;
+                joined = participant.date;
             }
 
             boolean result = (canEditAdmin || canRestrict || allowKick);
-            if (resultOnly || !result) {
+            if (resultOnly || !result && joined == 0) {
                 return result;
             }
 
@@ -6975,7 +6978,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
             };
 
-            ItemOptions.makeOptions(this, view)
+            var options = ItemOptions.makeOptions(this, view)
                     .setScrimViewBackground(listView.getClipBackground(view))
                     .addIf(canEditAdmin, R.drawable.msg_admins, editingAdmin ? LocaleController.getString(R.string.EditAdminRights) : LocaleController.getString(R.string.SetAsAdmin), () -> openRightsEdit.run(0))
                     .addIf(canRestrict, R.drawable.msg_permissions, LocaleController.getString(R.string.ChangePermissions), () -> {
@@ -6995,8 +6998,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     .addIf(allowKick, R.drawable.msg_remove, LocaleController.getString(R.string.KickFromGroup), true, () -> {
                         kickUser(selectedUser, participant);
                     })
-                    .setMinWidth(190)
-                    .show();
+                .setMinWidth(190);
+            if (joined != 0) {
+                if (result) options.addGap();
+                options.addText(LocaleController.formatJoined(joined), 13);
+            }
+            options.show();
         } else {
             if (participant.user_id == getUserConfig().getClientUserId()) {
                 return false;
