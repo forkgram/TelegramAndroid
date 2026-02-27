@@ -688,7 +688,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
 
         {
             items.add(UItem.asShadow(null));
-            items.add(UItem.asHeader("Fork"));
+            items.add(UItem.asHeader("Optogram"));
             items.add(SettingCell.Factory.of(98, 0xFF55CA47, 0xFF27B434, 0, getString(R.string.ForkSettingsTitle)));
         }
 
