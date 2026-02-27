@@ -1,1 +1,1 @@
-Forkgram — это форк официального приложения Telegram для Android.
+Optogram — это форк официального приложения Telegram для Android.

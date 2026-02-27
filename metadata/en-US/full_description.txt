@@ -1,4 +1,4 @@
-Forkgram is a simple fork of the Telegram Messenger with a few minor improvements.
+Optogram is a simple fork of the Telegram Messenger with a few minor improvements.
 
 <b>Features</b>
 ͏ • Square avatars (sorry, I love it)
@@ -47,6 +47,7 @@ Forkgram is a simple fork of the Telegram Messenger with a few minor improvement
 ͏ • Disable flip through photos by tapping on their edge
 ͏ • Disable sending sticker info in photos
 ͏ • Disable parameters from bot links
+͏ • Disable ads
 
 <b>Fast Forward</b>
 ͏ • You can forward any message with Share Alert from Fast Forward menu item.
