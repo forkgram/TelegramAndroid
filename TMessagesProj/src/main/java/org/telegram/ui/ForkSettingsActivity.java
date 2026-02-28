@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
@@ -132,8 +131,8 @@ public class ForkSettingsActivity extends BaseFragment {
     private ListAdapter listAdapter;
 
     private ArrayList<Integer> sectionRows = new ArrayList<Integer>();
-    private String[] sectionStrings = {"General", "ChatList", "FilterChats", "ChatCamera", "StickerSize", "ThirdParty"};
-    private int[] sectionInts = {0, R.string.ChatList, R.string.FilterChats, 0, R.string.StickerSize, R.string.ThirdParty};
+    private String[] sectionStrings = {"General", "ChatList", "FilterChats", "ChatCamera", "StickerSize"};
+    private int[] sectionInts = {0, R.string.ChatList, R.string.FilterChats, 0, R.string.StickerSize};
 
     private int rowCount;
 
@@ -168,7 +167,6 @@ public class ForkSettingsActivity extends BaseFragment {
     private int botSkipFullscreen;
     private int hideStoriesInArchiveRow;
     private int disablePlayVisibleVideoOnVolumeRow;
-    private int lastFmLoginRow;
     private int disableAds;
     private int localPremium;
 
@@ -261,12 +259,6 @@ public class ForkSettingsActivity extends BaseFragment {
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
         stickerSizeRow = rowCount++;
-
-        emptyRows.add(rowCount++);
-        sectionRows.add(rowCount++);
-        lastFmLoginRow = (BuildVars.LASTFM_API_KEY != null && BuildVars.LASTFM_API_KEY.length() > 2 && 
-                          BuildVars.LASTFM_API_SECRET != null && BuildVars.LASTFM_API_SECRET.length() > 2) ? rowCount++ : -1;
-
         return true;
     }
 
@@ -430,8 +422,6 @@ public class ForkSettingsActivity extends BaseFragment {
                         }
                         return null;
                     });
-            } else if (position == lastFmLoginRow) {
-                presentFragment(new LastFmLoginActivity());
             }
         });
 
@@ -468,8 +458,6 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("EditAdminRank", R.string.EditAdminRank);
                         final String v = MessagesController.getGlobalMainSettings().getString("forkCustomTitle", "Optogram Client");
                         textCell.setTextAndValue(t, v, false);
-                    } else if (position == lastFmLoginRow) {
-                        textCell.setTextAndIcon("Last.fm Login", R.drawable.ic_lastfm, false);
                     }
                     break;
                 }
@@ -640,7 +628,6 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == syncPinsRow
                         || position == showNotificationContent
                         || position == photoHasStickerRow
-                        || position == lastFmLoginRow
                         || position == disableUnifiedPushRow
                         || position == disableAds
                         || position == localPremium;
@@ -682,7 +669,7 @@ public class ForkSettingsActivity extends BaseFragment {
         public int getItemViewType(int position) {
             if (emptyRows.contains(position)) {
                 return 1;
-            } else if (position == customTitleRow || position == lastFmLoginRow) {
+            } else if (position == customTitleRow) {
                 return 2;
             } else if (position == squareAvatarsRow
                 || position == hideSensitiveDataRow

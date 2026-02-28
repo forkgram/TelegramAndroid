@@ -3808,18 +3808,6 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                         if (playbackState == ExoPlayer.STATE_ENDED || (playbackState == ExoPlayer.STATE_IDLE || playbackState == ExoPlayer.STATE_BUFFERING) && playWhenReady && messageObject.audioProgress >= 0.999f) {
                             messageObject.audioProgress = 1f;
                             NotificationCenter.getInstance(messageObject.currentAccount).postNotificationName(NotificationCenter.messagePlayingProgressDidChanged, messageObject.getId(), 0);
-                            
-                            if (messageObject.isMusic() && messageObject.getDuration() > 30) {
-                                String artist = messageObject.getMusicAuthor();
-                                String track = messageObject.getMusicTitle();
-                                String album = null;
-                                if (audioInfo != null && !TextUtils.isEmpty(audioInfo.getAlbum())) {
-                                    album = audioInfo.getAlbum();
-                                }
-                                long timestamp = System.currentTimeMillis() / 1000;
-                                LastFmHelper.getInstance().scrobbleTrack(artist, track, album, timestamp);
-                            }
-                            
                             final boolean restored = restoreMusicPlaylistState();
                             if (!restored) {
                                 if (!playlist.isEmpty() && (playlist.size() > 1 || !messageObject.isVoice())) {
@@ -3979,16 +3967,6 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         }
         startProgressTimer(playingMessageObject);
         NotificationCenter.getInstance(messageObject.currentAccount).postNotificationName(NotificationCenter.messagePlayingDidStart, messageObject, oldMessageObject);
-        
-        if (messageObject.isMusic()) {
-            String artist = messageObject.getMusicAuthor();
-            String track = messageObject.getMusicTitle();
-            String album = null;
-            if (audioInfo != null && !TextUtils.isEmpty(audioInfo.getAlbum())) {
-                album = audioInfo.getAlbum();
-            }
-            LastFmHelper.getInstance().updateNowPlaying(artist, track, album);
-        }
 
         if (videoPlayer != null) {
             try {

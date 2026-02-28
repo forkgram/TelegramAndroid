@@ -105,8 +105,6 @@ android {
         //obtain your own keys at https://core.telegram.org/api/obtaining_api_id
         buildConfigField 'int', 'APP_ID', APP_ID
         buildConfigField 'String', 'APP_HASH', getStringForConfig(APP_HASH)
-        buildConfigField 'String', 'LASTFM_API_KEY', getStringForConfig(LASTFM_API_KEY)
-        buildConfigField 'String', 'LASTFM_API_SECRET', getStringForConfig(LASTFM_API_SECRET)
         buildConfigField 'int', 'USER_ID_OWNER', USER_ID_OWNER
 
         vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
