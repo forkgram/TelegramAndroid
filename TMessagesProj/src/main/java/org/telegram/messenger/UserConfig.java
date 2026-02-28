@@ -310,7 +310,7 @@ public class UserConfig extends BaseController {
             botRatingLoadTime = preferences.getInt("botRatingLoadTime", 0);
             webappRatingLoadTime = preferences.getInt("webappRatingLoadTime", 0);
             loginTime = preferences.getInt("loginTime", currentAccount);
-            syncContacts = preferences.getBoolean("syncContacts", true);
+            syncContacts = preferences.getBoolean("syncContacts", false);
             showCallsTab = preferences.getBoolean("showCallsTab", false);
             mainTabsHiddenFork = preferences.getBoolean("mainTabsHiddenFork", false);
             suggestContacts = preferences.getBoolean("suggestContacts", true);
@@ -482,7 +482,7 @@ public class UserConfig extends BaseController {
         webappRatingLoadTime = 0;
         draftsLoaded = false;
         contactsReimported = true;
-        syncContacts = true;
+        syncContacts = false;
         showCallsTab = false;
         mainTabsHiddenFork = false;
         suggestContacts = true;
