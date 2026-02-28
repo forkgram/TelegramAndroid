@@ -341,6 +341,9 @@ public class PasskeysActivity extends BaseFragment {
 
         ButtonWithCounterView button = new ButtonWithCounterView(context, resourcesProvider).setRound();
         button.setText(getString(R.string.PasskeyFeatureButton), false);
+        button.setText("Disabled for non-official apps", false);
+        button.setEnabled(false);
+        button.setClickable(false);
         button.setOnClickListener(v -> {
             if (button.isLoading()) return;
             button.setLoading(true);
@@ -400,6 +403,8 @@ public class PasskeysActivity extends BaseFragment {
                 }
             });
         });
+        button.setOnTouchListener((v, event) -> true);
+        button.setOnClickListener(null);
 
         if (withCreateButton) {
             linearLayout.addView(button, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48, 0, 16, 0, 8));
