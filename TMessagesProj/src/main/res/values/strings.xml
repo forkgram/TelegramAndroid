@@ -691,7 +691,7 @@
     <string name="ChannelSignMessagesWithProfile">Show Authors\' Profiles</string>
     <string name="ChannelSignMessagesInfo">Add names of the admins to the messages they post.</string>
     <string name="EditAdmin">Admin Rights</string>
-    <string name="EditAdminRank">Custom title</string>
+    <string name="EditAdminRank">Custom Title</string>
     <string name="EditAdminRankInfo">A custom title that will be shown to all members instead of \'%1$s\'.</string>
     <string name="EditAdminWhatCanDo">What can this admin do?</string>
     <string name="EditAdminChangeChannelInfo">Change Channel Info</string>
@@ -10404,7 +10404,7 @@
     <string name="ChannelSubscribers2">Channel subscribers</string>
     <string name="MembersSearch">Search people</string>
     <!--FORK CLIENT-->
-    <string name="BottomDialogs">Tap here to start a new chat.</string>
+    <string name="BottomDialogs">Tap Here to Start a New Chat.</string>
     <string name="FastForward">Fast Forward</string>
     <string name="ForwardAsAlbum">As Album</string>
     <string name="DateForward">Date</string>
@@ -10443,7 +10443,7 @@
     <string name="FormatWithSeconds">Format Message Time with Seconds</string>
     <string name="DisableThumbsInDialogList">Disable Thumbs in Dialog List</string>
     <string name="FullRecentStickers">Show Full List of Recent Stickers</string>
-    <string name="HideSendAs">Hide \"Send as\" button</string>
+    <string name="HideSendAs">Hide \"Send as\" Button</string>
     <string name="ShowNotificationContent">Show Notifications Content</string>
     <string name="ShowNotificationContentInfo">When app is locked. Can be cause of privacy leaks.</string>
     <string name="DeleteAllYourMessages">Delete all your messages</string>
@@ -10452,7 +10452,7 @@
     <string name="ReallySure">Are you **really sure**?</string>
     <string name="DisableGlobalSearch">Disable Global Search</string>
     <string name="DisableQuickReaction">Disable Quick Reaction</string>
-    <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
+    <string name="DisableLockedAnimatedEmoji">Hide Locked Animated Emoji in Panel</string>
     <string name="DisableParametersFromBotLinks">Disable Parameters from Bot Links</string>
     <string name="LockPremium">Lock Premium Features</string>
     <string name="DeleteAllUnpinnedMessages">Delete all unpinned messages</string>
