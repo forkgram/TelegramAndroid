@@ -8,7 +8,7 @@ to expose metadata to various third parties. Without FCM/GCM push, most users mu
 Unified Push, which is enabled automatically when using a [companion](https://github.com/optimumpr/ntfy-android/) application Ntfy that
 uses publicly available (or your own) push servers. 
 
-Credits: This application won't be possible without F-Droid's TelegramFOSS, Mercurygram and Ntfy application developments.
+Credits: This application won't be possible without F-Droid's TelegramFOSS, Forkgram and Mercurygram.
 
 
 Donations: If you want to support my project, please donate:
