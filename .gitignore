@@ -5,6 +5,7 @@ build/
 obj/
 *.iml
 local.properties
+gradle.properties
 TMessagesProj/.cxx/
 TMessagesProj/jniLibs/
 TMessagesProj/jniRes/
