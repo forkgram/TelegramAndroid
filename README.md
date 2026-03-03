@@ -8,8 +8,18 @@ to expose metadata to various third parties. Without FCM/GCM push, most users mu
 Unified Push, which is enabled automatically when using a [companion](https://github.com/optimumpr/ntfy-android/) application Ntfy that
 uses publicly available (or your own) push servers. 
 
-Credits: This application won't be possible without F-Droid's TelegramFOSS, Forkgram and Mercurygram.
+Credits: This application wouldn't be possible without F-Droid's TelegramFOSS, Forkgram and Mercurygram.
 
+## Additional Features:
+
+- Option to disable ads in channels
+- Local Premium
+- Add Wav and Wav_x support
+- Show join date in chat menu
+- Increase number of selected messages to 200
+- Option to hide keyboard on chat scrolling
+- View channel stats in message menu (for administrators)
+- Black interface and dark icons
 
 Donations: If you want to support my project, please donate:
 
