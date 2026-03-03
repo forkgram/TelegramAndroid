@@ -43894,6 +43894,11 @@ public class ChatActivity extends BaseFragment implements
                     options.add(OPTION_PIN);
                     icons.add(R.drawable.msg_pin);
                 }
+                if (message.messageOwner.forwards >= 1 && ChatObject.hasAdminRights(getCurrentChat())) {
+                    items.add(LocaleController.getString("ViewChannelStats", R.string.ViewChannelStats));
+                    options.add(28);
+                    icons.add(R.drawable.msg_stats);
+                }
                 if (selectedObject != null && selectedObject.contentType == 0 && (!TextUtils.isEmpty(selectedObject.getMessageTextToTranslate(selectedObjectGroup, null)) && !selectedObject.isAnimatedEmoji() && !selectedObject.isDice())) {
                     items.add(LocaleController.getString(R.string.TranslateMessage));
                     options.add(OPTION_TRANSLATE);
