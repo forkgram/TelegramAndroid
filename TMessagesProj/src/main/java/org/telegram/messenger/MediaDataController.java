@@ -4935,17 +4935,15 @@ public class MediaDataController extends BaseController {
         if (Build.VERSION.SDK_INT < 23) {
             return;
         }
-        int maxShortcuts = ShortcutManagerCompat.getMaxShortcutCountPerActivity(ApplicationLoader.applicationContext) - 1;
+        int maxShortcuts = ShortcutManagerCompat.getMaxShortcutCountPerActivity(ApplicationLoader.applicationContext) - 2;
         if (maxShortcuts <= 0) {
             maxShortcuts = 5;
         }
-        
-        // Get available accounts instead of hints
-        ArrayList<Integer> accountsList = new ArrayList<>();
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
-                accountsList.add(a);
-                if (accountsList.size() >= maxShortcuts) {
+        ArrayList<TLRPC.TL_topPeer> hintsFinal = new ArrayList<>();
+        if (SharedConfig.passcodeHash.length() <= 0) {
+            for (int a = 0; a < hints.size(); a++) {
+                hintsFinal.add(hints.get(a));
+                if (hintsFinal.size() == maxShortcuts - 2) {
                     break;
                 }
             }
@@ -4967,8 +4965,10 @@ public class MediaDataController extends BaseController {
                 } else {
                     List<ShortcutInfoCompat> currentShortcuts = ShortcutManagerCompat.getDynamicShortcuts(ApplicationLoader.applicationContext);
                     if (currentShortcuts != null && !currentShortcuts.isEmpty()) {
-                        for (int a = 0; a < accountsList.size(); a++) {
-                            newShortcutsIds.add("account_" + accountsList.get(a));
+                        newShortcutsIds.add("compose");
+                        for (int a = 0; a < hintsFinal.size(); a++) {
+                            TLRPC.TL_topPeer hint = hintsFinal.get(a);
+                            newShortcutsIds.add("did3_" + MessageObject.getPeerId(hint.peer));
                         }
                         for (int a = 0; a < currentShortcuts.size(); a++) {
                             String id = currentShortcuts.get(a).getId();
@@ -4987,25 +4987,70 @@ public class MediaDataController extends BaseController {
                     }
                 }
 
+                Intent intent = new Intent(ApplicationLoader.applicationContext, LaunchActivity.class);
+                intent.setAction("new_dialog");
                 ArrayList<ShortcutInfoCompat> arrayList = new ArrayList<>();
+                ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(ApplicationLoader.applicationContext, "compose")
+                        .setShortLabel(LocaleController.getString(R.string.NewConversationShortcut))
+                        .setLongLabel(LocaleController.getString(R.string.NewConversationShortcut))
+                        .setIcon(IconCompat.createWithResource(ApplicationLoader.applicationContext, R.drawable.shortcut_compose))
+                        .setRank(0)
+                        .setIntent(intent)
+                        .build();
+                if (recreateShortcuts) {
+                    ShortcutManagerCompat.pushDynamicShortcut(ApplicationLoader.applicationContext, shortcut);
+                } else {
+                    arrayList.add(shortcut);
+                    if (shortcutsToUpdate.contains("compose")) {
+                        ShortcutManagerCompat.updateShortcuts(ApplicationLoader.applicationContext, arrayList);
+                    } else {
+                        ShortcutManagerCompat.addDynamicShortcuts(ApplicationLoader.applicationContext, arrayList);
+                    }
+                    arrayList.clear();
+                }
 
-                for (int a = 0; a < accountsList.size(); a++) {
-                    int accountNum = accountsList.get(a);
-                    Intent shortcutIntent = new Intent(ApplicationLoader.applicationContext, LaunchActivity.class);
-                    shortcutIntent.setAction("switch_account");
-                    shortcutIntent.putExtra("currentAccount", accountNum);
-                    shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                    TLRPC.User user = UserConfig.getInstance(accountNum).getCurrentUser();
-                    if (user == null) {
+                HashSet<String> category = new HashSet<>(1);
+                category.add(SHORTCUT_CATEGORY);
+
+                for (int a = 0; a < hintsFinal.size(); a++) {
+                    Intent shortcutIntent = new Intent(ApplicationLoader.applicationContext, OpenChatReceiver.class);
+                    TLRPC.TL_topPeer hint = hintsFinal.get(a);
+
+                    TLRPC.User user = null;
+                    TLRPC.Chat chat = null;
+                    long peerId = MessageObject.getPeerId(hint.peer);
+                    if (DialogObject.isUserDialog(peerId)) {
+                        shortcutIntent.putExtra("userId", peerId);
+                        user = getMessagesController().getUser(peerId);
+                    } else {
+                        chat = getMessagesController().getChat(-peerId);
+                        shortcutIntent.putExtra("chatId", -peerId);
+                    }
+                    if ((user == null || UserObject.isDeleted(user)) && chat == null) {
                         continue;
                     }
 
-                    String name = ContactsController.formatName(user.first_name, user.last_name);
+                    String name;
                     TLRPC.FileLocation photo = null;
-                    if (user.photo != null) {
-                        photo = user.photo.photo_small;
+
+                    if (user != null) {
+                        name = ContactsController.formatName(user.first_name, user.last_name);
+                        if (user.photo != null) {
+                            photo = user.photo.photo_small;
+                        }
+                    } else {
+                        name = chat.title;
+                        if (chat.photo != null) {
+                            photo = chat.photo.photo_small;
+                        }
                     }
+
+                    shortcutIntent.putExtra("currentAccount", currentAccount);
+                    shortcutIntent.setAction("com.tmessages.openchat" + peerId);
+                    shortcutIntent.putExtra("dialogId", peerId);
+                    shortcutIntent.putExtra("hash", SharedConfig.directShareHash);
+                    shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                     Bitmap bitmap = null;
                     if (photo != null) {
@@ -5040,16 +5085,18 @@ public class MediaDataController extends BaseController {
                         }
                     }
 
-                    String id = "account_" + accountNum;
+                    String id = "did3_" + peerId;
                     if (TextUtils.isEmpty(name)) {
-                        name = "Account " + (accountNum + 1);
+                        name = " ";
                     }
                     ShortcutInfoCompat.Builder builder = new ShortcutInfoCompat.Builder(ApplicationLoader.applicationContext, id)
                             .setShortLabel(name)
                             .setLongLabel(name)
-                            .setRank(a)
+                            .setRank(1 + a)
                             .setIntent(shortcutIntent);
-                    
+                    if (SharedConfig.directShare) {
+                        builder.setCategories(category);
+                    }
                     if (bitmap != null) {
                         builder.setIcon(IconCompat.createWithBitmap(bitmap));
                     } else {
