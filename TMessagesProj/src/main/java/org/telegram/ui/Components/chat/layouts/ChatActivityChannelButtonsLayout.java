@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
+import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.CubicBezierInterpolator;
@@ -56,6 +57,13 @@ public class ChatActivityChannelButtonsLayout extends FrameLayout implements Fac
         BUTTON_GIFT,
         BUTTON_DIRECT,
         BUTTON_GIGA_GROUP_INFO
+    };
+
+    private final String[] buttonDescriptions = new String[] {
+            LocaleController.getString(R.string.Search),
+            LocaleController.getString(R.string.Gift2ChannelSend),
+            LocaleController.getString(R.string.PostSuggestions),
+            LocaleController.getString(R.string.SettingsHelp)
     };
 
     private final Theme.ResourcesProvider resourcesProvider;
@@ -119,6 +127,7 @@ public class ChatActivityChannelButtonsLayout extends FrameLayout implements Fac
 
             ScaleStateListAnimator.apply(button, .13f, 2f);
             button.setVisibility(GONE);
+            button.setContentDescription(buttonDescriptions[buttonId]);
             button.setOnClickListener(v -> {
                 if (onClickListeners[buttonId] != null) {
                     onClickListeners[buttonId].onClick(v);
