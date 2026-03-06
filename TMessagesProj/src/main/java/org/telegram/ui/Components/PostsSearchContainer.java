@@ -477,7 +477,7 @@ public class PostsSearchContainer extends FrameLayout {
     private void updateEmptyView() {
         AndroidUtilities.cancelRunOnUIThread(updateEmptyViewRunnable);
         final int now = ConnectionsManager.getInstance(currentAccount).getCurrentTime();
-        if (!UserConfig.getInstance(currentAccount).isPremium()) {
+        if (!UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             emptyImageView.setVisibility(View.GONE);
             emptyTitleView.setText(getString(R.string.SearchPostsTitle));
             emptyTextView.setText(getString(R.string.SearchPostsText));

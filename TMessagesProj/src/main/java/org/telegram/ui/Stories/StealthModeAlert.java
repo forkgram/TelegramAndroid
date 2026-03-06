@@ -95,7 +95,7 @@ public class StealthModeAlert extends BottomSheet {
         subtitle.setAlignment(Layout.Alignment.ALIGN_CENTER);
         subtitle.setMaxLines(100);
         subtitle.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText, resourcesProvider));
-        if (UserConfig.getInstance(currentAccount).isPremium()) {
+        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             subtitle.setText(LocaleController.getString(R.string.StealthModeHint));
         } else {
             subtitle.setText(LocaleController.getString(R.string.StealthModePremiumHint));

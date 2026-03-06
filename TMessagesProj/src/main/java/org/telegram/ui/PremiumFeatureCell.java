@@ -78,7 +78,7 @@ public class PremiumFeatureCell extends FrameLayout {
     }
 
     public void setData(PremiumPreviewFragment.PremiumFeatureData data, boolean drawDivider) {
-        if (UserConfig.getInstance(UserConfig.selectedAccount).isPremium() && data.type == PremiumPreviewFragment.PREMIUM_FEATURE_EMOJI_STATUS && data.icon == R.drawable.filled_premium_status2) {
+        if (UserConfig.getInstance(UserConfig.selectedAccount).isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && data.type == PremiumPreviewFragment.PREMIUM_FEATURE_EMOJI_STATUS && data.icon == R.drawable.filled_premium_status2) {
             nextIcon.setVisibility(View.GONE);
             if (imageDrawable == null) {
                 imageDrawable = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(this, false, dp(24), AnimatedEmojiDrawable.CACHE_TYPE_ALERT_PREVIEW_STATIC);

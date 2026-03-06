@@ -2973,7 +2973,7 @@ public class EmojiBottomSheet extends BottomSheet implements NotificationCenter.
             }
 
             public Button needsPremium() {
-                if (!UserConfig.getInstance(currentAccount).isPremium()) {
+                if (!UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     lockDrawable = getContext().getResources().getDrawable(R.drawable.msg_mini_lock3).mutate();
                     lockDrawable.setColorFilter(new PorterDuffColorFilter(Theme.multAlpha(Color.WHITE, .60f), PorterDuff.Mode.SRC_IN));
                     lockPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

@@ -139,7 +139,7 @@ public class PremiumPreviewBottomSheet extends BottomSheetWithRecyclerListView i
         dummyCell = new PremiumFeatureCell(getContext());
         PremiumPreviewFragment.fillPremiumFeaturesList(premiumFeatures, currentAccount, false);
 
-        if (giftTier != null || UserConfig.getInstance(currentAccount).isPremium()) {
+        if (giftTier != null || UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             buttonContainer.setVisibility(View.GONE);
         }
 
@@ -184,7 +184,7 @@ public class PremiumPreviewBottomSheet extends BottomSheetWithRecyclerListView i
         rowCount += premiumFeatures.size();
         featuresEndRow = rowCount;
         sectionRow = rowCount++;
-        if (!UserConfig.getInstance(currentAccount).isPremium() && giftTier == null) {
+        if (!UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && giftTier == null) {
             buttonRow = rowCount++;
         }
     }
@@ -239,7 +239,7 @@ public class PremiumPreviewBottomSheet extends BottomSheetWithRecyclerListView i
         buttonDivider.getLayoutParams().height = 1;
         AndroidUtilities.updateViewVisibilityAnimated(buttonDivider, true, 1f, false);
 
-        if (!UserConfig.getInstance(currentAccount).isPremium() && needDefaultPremiumBtn()) {
+        if (!UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && needDefaultPremiumBtn()) {
             buttonContainer.addView(premiumButtonView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, Gravity.CENTER_VERTICAL, 16, 0, 16, 0));
             buttonContainer.setBackgroundColor(getThemedColor(Theme.key_dialogBackground));
             containerView.addView(buttonContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 68, Gravity.BOTTOM));

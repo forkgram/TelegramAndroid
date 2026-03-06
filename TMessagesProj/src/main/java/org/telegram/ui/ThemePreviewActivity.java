@@ -1464,7 +1464,7 @@ public class ThemePreviewActivity extends BaseFragment implements DownloadContro
                     ScaleStateListAnimator.apply(applyButton2, 0.033f, 1.2f);
                     TLRPC.User user = getMessagesController().getUser(dialogId);
                     SpannableStringBuilder text = new SpannableStringBuilder("");
-                    if (!getUserConfig().isPremium()) {
+                    if (!getUserConfig().isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                         text.append("l ");
                         text.setSpan(new ColoredImageSpan(R.drawable.msg_mini_lock3), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
@@ -2456,7 +2456,7 @@ public class ThemePreviewActivity extends BaseFragment implements DownloadContro
                 return;
             }
         }
-        if (!getUserConfig().isPremium() && forBoth) {
+        if (!getUserConfig().isPremium() && forBoth && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             showDialog(new PremiumFeatureBottomSheet(this, PremiumPreviewFragment.PREMIUM_FEATURE_WALLPAPER, true));
             return;
         }

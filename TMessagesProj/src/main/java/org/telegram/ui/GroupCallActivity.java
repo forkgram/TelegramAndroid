@@ -3859,7 +3859,7 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
                                             restricterdUsersBottomSheet.setRestrictedUsers(null, users2, premiumBlockedUsers, premiumInviteBlockedUsers, link);
                                             restricterdUsersBottomSheet.show();
                                         };
-                                        if (UserConfig.getInstance(currentAccount).isPremium()) {
+                                        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                                             showLimitSheet.run();
                                         } else {
                                             ConnectionsManager.getInstance(currentAccount).sendRequest(req3, (res3, err3) -> AndroidUtilities.runOnUIThread(() -> {

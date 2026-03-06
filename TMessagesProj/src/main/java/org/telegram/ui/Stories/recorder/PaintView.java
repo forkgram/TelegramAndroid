@@ -1936,7 +1936,7 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
                             widgetsCount++;
                         }
                     }
-                    if (widgetsCount >= MessagesController.getInstance(currentAccount).storiesSuggestedReactionsLimitDefault && !UserConfig.getInstance(currentAccount).isPremium()) {
+                    if (widgetsCount >= MessagesController.getInstance(currentAccount).storiesSuggestedReactionsLimitDefault && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                         showPremiumBulletin(LocaleController.formatPluralString("StoryPremiumWidgets2", MessagesController.getInstance(currentAccount).storiesSuggestedReactionsLimitPremium));
                         return false;
                     }
@@ -2007,7 +2007,7 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
                 appearAnimation(reactionWidget);
                 return true;
             } else if (widgetId == EmojiBottomSheet.WIDGET_LINK) {
-                if (!UserConfig.getInstance(currentAccount).isPremium()) {
+                if (!UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     try {
                         alert.container.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
                     } catch (Exception ignored) {}

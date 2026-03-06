@@ -699,7 +699,7 @@ public class SelectChatUserSheet extends BottomSheetWithRecyclerListView {
                         }
                     }), ConnectionsManager.RequestFlagWithoutLogin);
                 } else if (error.text.equals("CHANNELS_TOO_MUCH")) {
-                    if (context != null && !AccountInstance.getInstance(currentAccount).getUserConfig().isPremium()) {
+                    if (context != null && !AccountInstance.getInstance(currentAccount).getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                         final BaseFragment lastFragment = LaunchActivity.getSafeLastFragment();
                         if (lastFragment == null) return;
                         showDialog(new LimitReachedBottomSheet(lastFragment, context, LimitReachedBottomSheet.TYPE_TO0_MANY_COMMUNITIES, currentAccount, null));

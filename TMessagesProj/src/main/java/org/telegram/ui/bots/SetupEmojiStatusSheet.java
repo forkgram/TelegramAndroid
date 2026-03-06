@@ -117,7 +117,7 @@ public class SetupEmojiStatusSheet {
             .setTopImage(new UserEmojiStatusDrawable(currentUser, document), Theme.getColor(Theme.key_dialogTopBackground))
             .setMessage(message)
             .setPositiveButton(LocaleController.getString(R.string.BotEmojiStatusConfirm), (dialogInterface, i) -> {
-                if (!UserConfig.getInstance(currentAccount).isPremium()) {
+                if (!UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     new PremiumFeatureBottomSheet(new BaseFragment() {
                         @Override
                         public int getCurrentAccount() {
@@ -215,7 +215,7 @@ public class SetupEmojiStatusSheet {
             .setTopImage(new UserEmojiStatusDrawable(currentUser), Theme.getColor(Theme.key_dialogTopBackground))
             .setMessage(AndroidUtilities.replaceTags(LocaleController.formatString(R.string.BotEmojiStatusPermissionRequest, UserObject.getUserName(bot), UserObject.getUserName(bot))))
             .setPositiveButton(LocaleController.getString(R.string.BotEmojiStatusPermissionAllow), (dialogInterface, i) -> {
-                if (!UserConfig.getInstance(currentAccount).isPremium()) {
+                if (!UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     new PremiumFeatureBottomSheet(new BaseFragment() {
                         @Override
                         public int getCurrentAccount() {

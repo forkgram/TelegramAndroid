@@ -72,7 +72,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
     };
     private int settingsDrawableId = R.drawable.smiles_tab_settings;
 
-    private boolean forceTabsShow = !UserConfig.getInstance(UserConfig.selectedAccount).isPremium();
+    private boolean forceTabsShow = !UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
     private boolean showSelected = true;
     private AnimatedFloat showSelectedAlpha;
 
@@ -131,7 +131,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
         super(context);
         final boolean disableLockedAnimatedEmoji = true
             && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("disableLockedAnimatedEmoji", false)
-            && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium();
+            && !UserConfig.getInstance(UserConfig.selectedAccount).isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
         this.includeAnimated = includeAnimated && !disableLockedAnimatedEmoji;
         this.resourcesProvider = resourcesProvider;
         this.onSettingsOpenRunnable = onSettingsOpen;
@@ -525,7 +525,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
         }
         appearCount = emojiPacks.size();
         final boolean includeFeatured = doIncludeFeatured();
-        final boolean isPremium = UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || allowEmojisForNonPremium();
+        final boolean isPremium = UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || allowEmojisForNonPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
 
         ArrayList<EmojiTabButton> attachedEmojiPacks = new ArrayList<>();
 

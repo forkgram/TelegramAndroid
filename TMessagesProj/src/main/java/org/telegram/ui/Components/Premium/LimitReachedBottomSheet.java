@@ -516,7 +516,7 @@ public class LimitReachedBottomSheet extends BottomSheetWithRecyclerListView imp
             }
             if (type == TYPE_BOOSTS_FOR_USERS || type == TYPE_BOOSTS_FOR_REMOVE_RESTRICTIONS || isMiniBoostBtnForAdminAvailable()) {
                 if (canApplyBoost.empty) {
-                    if (UserConfig.getInstance(currentAccount).isPremium() && BoostRepository.isMultiBoostsAvailable()) {
+                    if (UserConfig.getInstance(currentAccount).isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && BoostRepository.isMultiBoostsAvailable()) {
                         BoostDialogs.showMoreBoostsNeeded(dialogId, this);
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context, resourcesProvider);
@@ -635,7 +635,7 @@ public class LimitReachedBottomSheet extends BottomSheetWithRecyclerListView imp
                 dismiss();
                 return;
             }
-            if (UserConfig.getInstance(currentAccount).isPremium() || MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() || isVeryLargeFile) {
+            if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() || isVeryLargeFile) {
                 dismiss();
                 return;
             }
@@ -943,7 +943,7 @@ public class LimitReachedBottomSheet extends BottomSheetWithRecyclerListView imp
             spannableStringBuilder.setSpan(new ColoredImageSpan(R.drawable.msg_copy_filled), 0, 1, 0);
             spannableStringBuilder.append(getString(R.string.CopyLink));
             premiumButtonView.buttonTextView.setText(spannableStringBuilder);
-        } else if (UserConfig.getInstance(currentAccount).isPremium() || MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() || isVeryLargeFile) {
+        } else if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() || isVeryLargeFile) {
             premiumButtonView.buttonTextView.setText(getString(R.string.OK));
             premiumButtonView.hideIcon();
         } else {
@@ -1775,7 +1775,7 @@ public class LimitReachedBottomSheet extends BottomSheetWithRecyclerListView imp
                 if (premiumLocked) {
                     descriptionStr = limitParams.descriptionStrLocked;
                 } else {
-                    descriptionStr = (UserConfig.getInstance(currentAccount).isPremium() || isVeryLargeFile) ? limitParams.descriptionStrPremium : limitParams.descriptionStr;
+                    descriptionStr = (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || isVeryLargeFile) ? limitParams.descriptionStrPremium : limitParams.descriptionStr;
                 }
             }
             int defaultLimit = limitParams.defaultLimit;
@@ -1802,7 +1802,7 @@ public class LimitReachedBottomSheet extends BottomSheetWithRecyclerListView imp
                 currentValue = pinnedCount;
             }
 
-            if (UserConfig.getInstance(currentAccount).isPremium() || isVeryLargeFile) {
+            if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || isVeryLargeFile) {
                 currentValue = premiumLimit;
                 position = 1f;
             } else {
@@ -1990,10 +1990,10 @@ public class LimitReachedBottomSheet extends BottomSheetWithRecyclerListView imp
                     if (premiumLocked) {
                         limitPreviewView.setPremiumLocked();
                     } else {
-                        if (UserConfig.getInstance(currentAccount).isPremium() || isVeryLargeFile) {
+                        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || isVeryLargeFile) {
                             limitPreviewView.premiumCount.setVisibility(View.GONE);
                             if (type == TYPE_LARGE_FILE) {
-                                limitPreviewView.defaultCount.setText("2 GB");
+                                limitPreviewView.defaultCount.setText("3 GB");
                             } else {
                                 limitPreviewView.defaultCount.setText(Integer.toString(defaultLimit));
                             }

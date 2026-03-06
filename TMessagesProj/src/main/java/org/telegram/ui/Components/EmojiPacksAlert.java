@@ -151,7 +151,7 @@ public class EmojiPacksAlert extends BottomSheet implements NotificationCenter.N
 
         @Override
         public Boolean canSetAsStatus(TLRPC.Document document) {
-            if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || !MessageObject.isAnimatedEmoji(document)) {
+            if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || !MessageObject.isAnimatedEmoji(document) || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 return null;
             }
             TLRPC.User user = UserConfig.getInstance(UserConfig.selectedAccount).getCurrentUser();
@@ -1629,7 +1629,7 @@ public class EmojiPacksAlert extends BottomSheet implements NotificationCenter.N
 
             float endMarginDp = 8;
             if (!single) {
-                if (!UserConfig.getInstance(currentAccount).isPremium()) {
+                if (!UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     unlockButtonView = new PremiumButtonView(context, AndroidUtilities.dp(4), false, resourcesProvider);
                     unlockButtonView.setButton(LocaleController.getString(R.string.Unlock), ev -> {
                         premiumButtonClicked = SystemClock.elapsedRealtime();
@@ -1827,7 +1827,7 @@ public class EmojiPacksAlert extends BottomSheet implements NotificationCenter.N
                 }
             }
 
-            if (premium && unlockButtonView != null && !UserConfig.getInstance(currentAccount).isPremium()) {
+            if (premium && unlockButtonView != null && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 unlockButtonView.setVisibility(VISIBLE);
                 if (addButtonView != null) {
                     addButtonView.setVisibility(GONE);

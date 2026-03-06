@@ -735,7 +735,7 @@ public class PrivacySettingsActivity extends BaseFragment implements Notificatio
         forwardsRow = rowCount++;
         callsRow = rowCount++;
         groupsDetailRow = -1;
-        if (!getMessagesController().premiumFeaturesBlocked() || getUserConfig().isPremium()) {
+        if (!getMessagesController().premiumFeaturesBlocked() || getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             voicesRow = rowCount++;
             noncontactsRow = rowCount++;
         } else {
@@ -749,7 +749,7 @@ public class PrivacySettingsActivity extends BaseFragment implements Notificatio
         groupsRow = rowCount++;
         privacyShadowRow = rowCount++;
 
-        if (getMessagesController().autoarchiveAvailable || getUserConfig().isPremium()) {
+        if (getMessagesController().autoarchiveAvailable || getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             newChatsHeaderRow = rowCount++;
             newChatsRow = rowCount++;
             newChatsSectionRow = rowCount++;

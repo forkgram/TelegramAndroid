@@ -603,7 +603,7 @@ public class LiteModeSettingsActivity extends BaseFragment {
         }
 
         private int preprocessFlagsCount(int flags) {
-            boolean isPremium = getUserConfig().isPremium();
+            boolean isPremium = getUserConfig().isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
             int count = Integer.bitCount(flags);
             if (isPremium) {
                 if ((flags & LiteMode.FLAG_ANIMATED_EMOJI_CHAT_NOT_PREMIUM) > 0)

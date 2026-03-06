@@ -1261,7 +1261,7 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
             public void onReactionClicked(View view, ReactionsLayoutInBubble.VisibleReaction visibleReaction, boolean longpress, boolean addToRecent) {
                 if (visibleReaction == null || effectSelector == null)
                     return;
-                final boolean premiumLocked = !UserConfig.getInstance(currentAccount).isPremium() && visibleReaction.premium;
+                final boolean premiumLocked = !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && visibleReaction.premium;
                 if (mainMessageCell != null) {
                     MessageObject messageObject = mainMessageCell.getMessageObject();
                     if (messageObject == null)

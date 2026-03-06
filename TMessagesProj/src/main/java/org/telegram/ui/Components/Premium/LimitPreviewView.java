@@ -582,7 +582,7 @@ public class LimitPreviewView extends LinearLayout {
             if (limitIcon != null) {
                 SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
                 spannableStringBuilder.append("d ").setSpan(new ColoredImageSpan(icon), 0, 1, 0);
-                spannableStringBuilder.append(UserConfig.getInstance(UserConfig.selectedAccount).isPremium() ? "4 GB" : "2 GB");
+                spannableStringBuilder.append(UserConfig.getInstance(UserConfig.selectedAccount).isPremium() ? "4 GB" : "3 GB");
                 limitIcon.setText(spannableStringBuilder, false);
             }
             premiumCount.setText("4 GB");

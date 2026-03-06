@@ -251,7 +251,7 @@ public class PollCreateActivity extends BaseFragment implements NotificationCent
         answers = new CharSequence[maxAnswersCount];
         answersChecks = new boolean[maxAnswersCount];
         parentFragment = chatActivity;
-        isPremium = AccountInstance.getInstance(currentAccount).getUserConfig().isPremium();
+        isPremium = AccountInstance.getInstance(currentAccount).getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
         if (quiz != null) {
             quizPoll = quiz;
             quizOnly = quizPoll ? 1 : 2;

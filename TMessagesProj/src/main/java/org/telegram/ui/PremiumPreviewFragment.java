@@ -489,7 +489,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
 
             // preload
             QuickRepliesController.getInstance(currentAccount).load();
-            if (getUserConfig().isPremium()) {
+            if (getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 TLRPC.InputStickerSet inputStickerSet = new TLRPC.TL_inputStickerSetShortName();
                 inputStickerSet.short_name = "RestrictedEmoji";
                 MediaDataController.getInstance(currentAccount).getStickerSet(inputStickerSet, false);
@@ -794,7 +794,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
             if (view instanceof PremiumFeatureCell) {
                 PremiumFeatureCell cell = (PremiumFeatureCell) view;
 
-                if (type == FEATURES_BUSINESS && getUserConfig().isPremium()) {
+                if (type == FEATURES_BUSINESS && getUserConfig().isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     if (cell.data.type == PREMIUM_FEATURE_BUSINESS_LOCATION) {
                         presentFragment(new LocationActivity());
                     } else if (cell.data.type == PREMIUM_FEATURE_BUSINESS_GREETING_MESSAGES) {
@@ -1135,7 +1135,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
                         ((LaunchActivity) fragment.getParentActivity()).getFireworksOverlay().start();
                     }
                 };
-                if (list != null && !list.isEmpty() && !UserConfig.getInstance(account).isPremium()) {
+                if (list != null && !list.isEmpty() && !UserConfig.getInstance(account).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     for (Purchase purchase : list) {
                         if (purchase.getProducts().contains(BillingController.PREMIUM_PRODUCT_ID)) {
                             TLRPC.TL_payments_assignPlayMarketTransaction req = new TLRPC.TL_payments_assignPlayMarketTransaction();
@@ -1266,7 +1266,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
             /*if (!BuildVars.useInvoiceBilling() && tier.getOfferDetails() == null) {
                 return getString(R.string.Loading);
             }*/
-            final boolean isPremium = UserConfig.getInstance(currentAccount).isPremium();
+            final boolean isPremium = UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
             final boolean isManyYearsTier = tier.getMonths() > 12 && tier.getMonths() % 12 == 0;
             final boolean isYearTier = tier.getMonths() == 12;
             String price = isYearTier ? tier.getFormattedPricePerYear() : tier.getFormattedPricePerMonth();
@@ -1335,7 +1335,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
         featuresStartRow = rowCount;
         rowCount += premiumFeatures.size();
         featuresEndRow = rowCount;
-        if (type == FEATURES_BUSINESS && getUserConfig().isPremium()) {
+        if (type == FEATURES_BUSINESS && getUserConfig().isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             sectionRow = rowCount++;
             moreHeaderRow = rowCount++;
             moreFeaturesStartRow = rowCount;
@@ -1345,13 +1345,13 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
         statusRow = rowCount++;
         lastPaddingRow = rowCount++;
 
-        if (type == FEATURES_BUSINESS && getUserConfig().isPremium()) {
+        if (type == FEATURES_BUSINESS && getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             showAdsHeaderRow = rowCount++;
             showAdsRow = rowCount++;
             showAdsInfoRow = rowCount++;
         }
 
-        AndroidUtilities.updateViewVisibilityAnimated(buttonContainer, !getUserConfig().isPremium() || currentSubscriptionTier != null && currentSubscriptionTier.getMonths() < subscriptionTiers.get(selectedTierIndex).getMonths() && !forcePremium, 1f, false);
+        AndroidUtilities.updateViewVisibilityAnimated(buttonContainer, !getUserConfig().isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || currentSubscriptionTier != null && currentSubscriptionTier.getMonths() < subscriptionTiers.get(selectedTierIndex).getMonths() && !forcePremium, 1f, false);
 
         int buttonHeight = buttonContainer.getVisibility() == View.VISIBLE ? dp(64) : 0;
         layoutManager.setAdditionalHeight(buttonHeight + statusBarHeight - dp(16));
@@ -1829,7 +1829,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
                         }
                     }
 
-                    AndroidUtilities.updateViewVisibilityAnimated(buttonContainer, !getUserConfig().isPremium() || currentSubscriptionTier != null && currentSubscriptionTier.getMonths() < subscriptionTiers.get(selectedTierIndex).getMonths() && !forcePremium);
+                    AndroidUtilities.updateViewVisibilityAnimated(buttonContainer, !getUserConfig().isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || currentSubscriptionTier != null && currentSubscriptionTier.getMonths() < subscriptionTiers.get(selectedTierIndex).getMonths() && !forcePremium);
                 }
             });
             Path path = new Path();
@@ -1879,7 +1879,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
             long pricePerYearMax = 0;
             if (getMediaDataController().getPremiumPromo() != null) {
                 for (TLRPC.TL_premiumSubscriptionOption option : getMediaDataController().getPremiumPromo().period_options) {
-                    if (getUserConfig().isPremium() && !option.can_purchase_upgrade && !option.current) {
+                    if (getUserConfig().isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && !option.can_purchase_upgrade && !option.current) {
                         continue;
                     }
 
@@ -1900,7 +1900,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
                     }
                 }
             }
-            if (BuildVars.useInvoiceBilling() && getUserConfig().isPremium()) {
+            if (BuildVars.useInvoiceBilling() && getUserConfig().isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 subscriptionTiers.clear();
                 currentSubscriptionTier = null;
             } else if (!BuildVars.useInvoiceBilling() && currentSubscriptionTier != null && !Objects.equals(BillingController.getInstance().getLastPremiumTransaction(),
@@ -1967,10 +1967,10 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
         public void updateText() {
             if (type == FEATURES_PREMIUM) {
                 titleView.setText(getString(forcePremium ? R.string.TelegramPremiumSubscribedTitle : R.string.TelegramPremium));
-                subtitleView.setText(AndroidUtilities.replaceTags(getString(getUserConfig().isPremium() || forcePremium ? R.string.TelegramPremiumSubscribedSubtitle : R.string.TelegramPremiumSubtitle)));
+                subtitleView.setText(AndroidUtilities.replaceTags(getString(getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || forcePremium ? R.string.TelegramPremiumSubscribedSubtitle : R.string.TelegramPremiumSubtitle)));
             } else if (type == FEATURES_BUSINESS) {
                 titleView.setText(getString(forcePremium ? R.string.TelegramPremiumSubscribedTitle : R.string.TelegramBusiness));
-                subtitleView.setText(AndroidUtilities.replaceTags(getString(getUserConfig().isPremium() || forcePremium ? R.string.TelegramBusinessSubscribedSubtitleTemp : R.string.TelegramBusinessSubtitleTemp)));
+                subtitleView.setText(AndroidUtilities.replaceTags(getString(getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || forcePremium ? R.string.TelegramBusinessSubscribedSubtitleTemp : R.string.TelegramBusinessSubtitleTemp)));
             }
             subtitleView.getLayoutParams().width = Math.min(AndroidUtilities.displaySize.x - dp(42), HintView2.cutInFancyHalf(subtitleView.getText(), subtitleView.getPaint()));
             boolean tierNotVisible = forcePremium || BuildVars.IS_BILLING_UNAVAILABLE || IS_PREMIUM_TIERS_UNAVAILABLE || subscriptionTiers.size() <= 1;
@@ -2024,7 +2024,7 @@ public class PremiumPreviewFragment extends BaseFragment implements Notification
         if (premiumButtonView == null) {
             return;
         }
-        if (getUserConfig().isPremium() && currentSubscriptionTier != null && selectedTierIndex < subscriptionTiers.size() && subscriptionTiers.get(selectedTierIndex).getMonths() < currentSubscriptionTier.getMonths()) {
+        if (getUserConfig().isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && currentSubscriptionTier != null && selectedTierIndex < subscriptionTiers.size() && subscriptionTiers.get(selectedTierIndex).getMonths() < currentSubscriptionTier.getMonths()) {
             return;
         }
         if (LocaleController.isRTL) {

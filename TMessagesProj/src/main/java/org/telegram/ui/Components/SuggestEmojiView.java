@@ -94,7 +94,7 @@ public class SuggestEmojiView extends FrameLayout implements NotificationCenter.
                     BaseFragment fragment = enterView.getParentFragment();
                     if (fragment instanceof ChatActivity) {
                         ChatActivity chatActivity = (ChatActivity) fragment;
-                        return chatActivity.canSendMessage() && (UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || chatActivity.getCurrentUser() != null && UserObject.isUserSelf(chatActivity.getCurrentUser()));
+                        return chatActivity.canSendMessage() && (UserConfig.getInstance(UserConfig.selectedAccount).isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || chatActivity.getCurrentUser() != null && UserObject.isUserSelf(chatActivity.getCurrentUser()));
                     }
                     return false;
                 }
@@ -117,7 +117,7 @@ public class SuggestEmojiView extends FrameLayout implements NotificationCenter.
                     if (isCopyForbidden) {
                         return false;
                     }
-                    return UserConfig.getInstance(UserConfig.selectedAccount).isPremium();
+                    return UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
                 }
 
                 @Override
@@ -134,7 +134,7 @@ public class SuggestEmojiView extends FrameLayout implements NotificationCenter.
                     if (isSetAsStatusForbidden) {
                         return null;
                     }
-                    if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium()) {
+                    if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                         return null;
                     }
                     TLRPC.User user = UserConfig.getInstance(UserConfig.selectedAccount).getCurrentUser();
@@ -424,7 +424,7 @@ public class SuggestEmojiView extends FrameLayout implements NotificationCenter.
         }
         CharSequence text = enterView.getFieldText();
         Emoji.EmojiSpan[] emojiSpans = (text instanceof Spanned) ? ((Spanned) text).getSpans(Math.max(0, selectionEnd - 24), selectionEnd, Emoji.EmojiSpan.class) : null;
-        if (emojiSpans != null && emojiSpans.length > 0 && SharedConfig.suggestAnimatedEmoji && UserConfig.getInstance(currentAccount).isPremium()) {
+        if (emojiSpans != null && emojiSpans.length > 0 && SharedConfig.suggestAnimatedEmoji && UserConfig.getInstance(currentAccount).isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             Emoji.EmojiSpan lastEmoji = emojiSpans[emojiSpans.length - 1];
             if (lastEmoji != null) {
                 int emojiStart = ((Spanned) text).getSpanStart(lastEmoji);
@@ -556,7 +556,7 @@ public class SuggestEmojiView extends FrameLayout implements NotificationCenter.
                         clear = true;
                         forceClose();
                     }
-                }, SharedConfig.suggestAnimatedEmoji && UserConfig.getInstance(currentAccount).isPremium());
+                }, SharedConfig.suggestAnimatedEmoji && UserConfig.getInstance(currentAccount).isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false));
 //            };
 //            Runnable serverSearch = () -> {
 //                if (ConnectionsManager.getInstance(currentAccount).getConnectionState() != ConnectionsManager.ConnectionStateConnected) {

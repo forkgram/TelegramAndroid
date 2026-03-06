@@ -450,7 +450,7 @@ public class PremiumFeatureBottomSheet extends BottomSheet implements Notificati
 
         if (startType == PremiumPreviewFragment.FEATURE_GIFTS) {
             premiumButtonView.setOverlayText(replaceUnderstood(getString(R.string.Understood)), true, false);
-        } else if (UserConfig.getInstance(currentAccount).isPremium()) {
+        } else if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             premiumButtonView.setOverlayText(LocaleController.getString(R.string.OK), false, false);
         }
 
@@ -661,7 +661,7 @@ public class PremiumFeatureBottomSheet extends BottomSheet implements Notificati
         if (id == NotificationCenter.billingProductDetailsUpdated || id == NotificationCenter.premiumPromoUpdated) {
             setButtonText();
         } else if (id == NotificationCenter.currentUserPremiumStatusChanged) {
-            if (UserConfig.getInstance(currentAccount).isPremium()) {
+            if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 premiumButtonView.setOverlayText(LocaleController.getString(R.string.OK), false, true);
             } else {
                 premiumButtonView.clearOverlayText();

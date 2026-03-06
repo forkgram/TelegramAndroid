@@ -1070,7 +1070,7 @@ public class ReactionsContainerLayout extends FrameLayout implements Notificatio
         }
         hasStar = false;
         if (type == TYPE_TAGS) {
-            allReactionsAvailable = UserConfig.getInstance(currentAccount).isPremium();
+            allReactionsAvailable = UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
             fillRecentReactionsList(visibleReactions);
         } else if (type == TYPE_MESSAGE_EFFECTS) {
             allReactionsAvailable = true;
@@ -1116,8 +1116,8 @@ public class ReactionsContainerLayout extends FrameLayout implements Notificatio
             fillRecentReactionsList(visibleReactions);
         }
         filterReactions(visibleReactions);
-        showExpandableReactions = !hitLimit && (!allReactionsAvailable && visibleReactions.size() > 16 || allReactionsAvailable && !UserConfig.getInstance(currentAccount).isPremium() && MessagesController.getInstance(currentAccount).premiumFeaturesBlocked());
-        if (type == TYPE_TAGS && !UserConfig.getInstance(currentAccount).isPremium()) {
+        showExpandableReactions = !hitLimit && (!allReactionsAvailable && visibleReactions.size() > 16 || allReactionsAvailable && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && MessagesController.getInstance(currentAccount).premiumFeaturesBlocked());
+        if (type == TYPE_TAGS && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             showExpandableReactions = false;
         }
         if (type == TYPE_STICKER_SET_EMOJI) {
@@ -1376,7 +1376,7 @@ public class ReactionsContainerLayout extends FrameLayout implements Notificatio
         } else {
             for (int i = 0; i < topReactions.size(); i++) {
                 ReactionsLayoutInBubble.VisibleReaction visibleReaction = ReactionsLayoutInBubble.VisibleReaction.fromTL(topReactions.get(i));
-                if (!hashSet.contains(visibleReaction) && (type == TYPE_TAGS || UserConfig.getInstance(currentAccount).isPremium() || visibleReaction.documentId == 0)) {
+                if (!hashSet.contains(visibleReaction) && (type == TYPE_TAGS || UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || visibleReaction.documentId == 0)) {
                     hashSet.add(visibleReaction);
                     visibleReactions.add(visibleReaction);
                     added++;

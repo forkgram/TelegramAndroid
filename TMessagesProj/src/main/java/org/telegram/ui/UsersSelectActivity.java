@@ -781,7 +781,7 @@ public class UsersSelectActivity extends BaseFragment implements NotificationCen
                     GroupCreateSpan span = selectedContacts.get(id);
                     spansContainer.removeSpan(span);
                 } else {
-                    if (!(object instanceof String) && (!getUserConfig().isPremium() && selectedCount >= MessagesController.getInstance(currentAccount).dialogFiltersChatsLimitDefault) || selectedCount >= MessagesController.getInstance(currentAccount).dialogFiltersChatsLimitPremium) {
+                    if (!(object instanceof String) && (!getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && selectedCount >= MessagesController.getInstance(currentAccount).dialogFiltersChatsLimitDefault) || selectedCount >= MessagesController.getInstance(currentAccount).dialogFiltersChatsLimitPremium) {
                         LimitReachedBottomSheet limitReachedBottomSheet = new LimitReachedBottomSheet(this, context, LimitReachedBottomSheet.TYPE_CHATS_IN_FOLDER, currentAccount, null);
                         limitReachedBottomSheet.setCurrentValue(selectedCount);
                         showDialog(limitReachedBottomSheet);

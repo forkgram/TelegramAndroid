@@ -725,7 +725,7 @@ public class MessagesController extends BaseController implements NotificationCe
         return !starsLocked;
     }
     public boolean premiumFeaturesBlocked() {
-        return premiumLocked && !getUserConfig().isPremium();
+        return premiumLocked && !getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
     }
     public boolean premiumPurchaseBlocked() {
         return premiumLocked;
@@ -835,7 +835,7 @@ public class MessagesController extends BaseController implements NotificationCe
 
     public void lockFiltersInternal() {
         boolean changed = false;
-        if (!getUserConfig().isPremium() && dialogFilters.size() - 1 > dialogFiltersLimitDefault) {
+        if (!getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && dialogFilters.size() - 1 > dialogFiltersLimitDefault) {
             int n = dialogFilters.size() - 1 - dialogFiltersLimitDefault;
             ArrayList<DialogFilter> filtersSortedById = new ArrayList<>(dialogFilters);
             Collections.reverse(filtersSortedById);
@@ -22153,7 +22153,7 @@ public class MessagesController extends BaseController implements NotificationCe
     public boolean storiesEnabled() {
         switch (storiesPosting) {
             case "premium":
-                return getUserConfig().isPremium();
+                return getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
             case "enabled":
                 return true;
             default:
@@ -22165,7 +22165,7 @@ public class MessagesController extends BaseController implements NotificationCe
     public boolean storyEntitiesAllowed() {
         switch (storiesEntities) {
             case "premium":
-                return getUserConfig().isPremium();
+                return getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
             case "enabled":
                 return true;
             default:
@@ -22215,7 +22215,7 @@ public class MessagesController extends BaseController implements NotificationCe
         if (cachedChannelRecommendations == null) {
             cachedChannelRecommendations = new HashMap<>();
         }
-        final boolean isPremium = getUserConfig().isPremium();
+        final boolean isPremium = getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
         ChannelRecommendations rec = null;
         if (cachedChannelRecommendations.containsKey(dialogId)) {
             rec = cachedChannelRecommendations.get(dialogId);
@@ -22249,7 +22249,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 newrec.chats.addAll(chats);
                 if (res instanceof TLRPC.TL_messages_chatsSlice) {
                     newrec.more = Math.max(0, ((TLRPC.TL_messages_chatsSlice) res).count - chats.size());
-                } else if (!getUserConfig().isPremium() && BuildVars.DEBUG_PRIVATE_VERSION) {
+                } else if (!getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && BuildVars.DEBUG_PRIVATE_VERSION) {
                     newrec.more = 90;
                 }
                 cachedChannelRecommendations.put(dialogId, newrec);
@@ -22263,7 +22263,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 newrec.chats.addAll(users);
                 if (res instanceof TLRPC.TL_usersSlice) {
                     newrec.more = Math.max(0, ((TLRPC.TL_usersSlice) res).count - users.size());
-                } else if (!getUserConfig().isPremium() && BuildVars.DEBUG_PRIVATE_VERSION) {
+                } else if (!getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && BuildVars.DEBUG_PRIVATE_VERSION) {
                     newrec.more = 90;
                 }
                 cachedChannelRecommendations.put(dialogId, newrec);
@@ -22674,9 +22674,9 @@ public class MessagesController extends BaseController implements NotificationCe
         return isUserContactBlocked(userId, false);
     }
     public TL_account.RequirementToContact isUserContactBlocked(long userId, boolean cache) {
-        if (getUserConfig().isPremium() || getUserConfig().getClientUserId() == userId) {
+        if (getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || getUserConfig().getClientUserId() == userId) {
             return null;
-        }
+        } 
         TL_account.RequirementToContact cached = cachedIsUserContactBlocked.get(userId);
         if (cached != null)
             return cached;
