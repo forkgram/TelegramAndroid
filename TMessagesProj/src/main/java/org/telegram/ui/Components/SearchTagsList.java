@@ -242,7 +242,7 @@ public class SearchTagsList extends BlurredFrameLayout implements NotificationCe
             if (position < 0 || position >= items.size()) {
                 return;
             }
-            if (!UserConfig.getInstance(currentAccount).isPremium()) {
+            if (!UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 new PremiumFeatureBottomSheet(fragment, PremiumPreviewFragment.PREMIUM_FEATURE_SAVED_TAGS, true).show();
                 return;
             }
@@ -273,9 +273,9 @@ public class SearchTagsList extends BlurredFrameLayout implements NotificationCe
             }
         });
         listView.setOnItemLongClickListener((view, position) -> {
-            if (position < 0 || position >= items.size() || !UserConfig.getInstance(currentAccount).isPremium())
+            if (position < 0 || position >= items.size() || !UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false))
                 return false;
-            if (!UserConfig.getInstance(currentAccount).isPremium()) {
+            if (!UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 new PremiumFeatureBottomSheet(fragment, PremiumPreviewFragment.PREMIUM_FEATURE_SAVED_TAGS, true).show();
                 return true;
             }
@@ -621,7 +621,7 @@ public class SearchTagsList extends BlurredFrameLayout implements NotificationCe
             adapter.notifyDataSetChanged();
         }
 
-        if (shownPremiumLayout = !UserConfig.getInstance(currentAccount).isPremium()) {
+        if (shownPremiumLayout = !UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             createPremiumLayout();
             if (!notify) {
                 premiumLayout.setVisibility(View.VISIBLE);

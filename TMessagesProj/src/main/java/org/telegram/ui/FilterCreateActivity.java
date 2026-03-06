@@ -357,7 +357,7 @@ public class FilterCreateActivity extends BaseFragment {
             items.add(ItemInner.asShadow(LocaleController.getString(R.string.FilterExcludeInfo)));
         }
 
-        if (getMessagesController().folderTags || !getUserConfig().isPremium()) {
+        if (getMessagesController().folderTags || !getUserConfig().isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             items.add(new ItemInner(VIEW_TYPE_HEADER_COLOR_PREVIEW, false));
             items.add(new ItemInner(VIEW_TYPE_COLOR, false));
             items.add(ItemInner.asShadow(LocaleController.getString(R.string.FolderTagColorInfo)));
@@ -1692,7 +1692,7 @@ public class FilterCreateActivity extends BaseFragment {
                     cell.setCloseAsLock(!getUserConfig().isPremium());
                     cell.setSelected(!getUserConfig().isPremium() ? -1 : newFilterColor, false);
                     cell.setOnColorClick(color -> {
-                        if (!getUserConfig().isPremium()) {
+                        if (!getUserConfig().isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                             showDialog(new PremiumFeatureBottomSheet(FilterCreateActivity.this, PremiumPreviewFragment.PREMIUM_FEATURE_FOLDER_TAGS, true));
                             return;
                         }

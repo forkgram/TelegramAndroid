@@ -718,7 +718,7 @@ public class StickerSetCell extends FrameLayout {
             cell.premiumButtonView.setOnClickListener(item.clickCallback2);
             if (set != null && set.set != null && set.set.emojis) {
                 boolean installed = MediaDataController.getInstance(adapter.currentAccount).isStickerPackInstalled(set.set.id);
-                boolean unlock = !UserConfig.getInstance(adapter.currentAccount).isPremium();
+                boolean unlock = !UserConfig.getInstance(adapter.currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
                 if (unlock) {
                     boolean premium = false;
                     for (int i = 0; i < set.documents.size(); ++i) {

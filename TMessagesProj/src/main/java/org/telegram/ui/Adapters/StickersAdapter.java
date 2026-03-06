@@ -102,7 +102,7 @@ public class StickersAdapter extends RecyclerListView.SelectionAdapter implement
                 notifyDataSetChanged();
                 delegate.needChangePanelVisibility(visible = !param.isEmpty());
             }
-        }, SharedConfig.suggestAnimatedEmoji && UserConfig.getInstance(currentAccount).isPremium());
+        }, SharedConfig.suggestAnimatedEmoji && UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false));
         if (keywordResults == null || keywordResults.isEmpty()) {
             AndroidUtilities.runOnUIThread(searchRunnable, 1000);
         } else {

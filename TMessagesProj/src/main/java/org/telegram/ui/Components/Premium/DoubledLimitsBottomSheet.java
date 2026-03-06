@@ -91,7 +91,7 @@ public class DoubledLimitsBottomSheet extends BottomSheetWithRecyclerListView im
         containerView.addView(premiumButtonView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, Gravity.BOTTOM, 16, 0, 16, 12));
 
         premiumButtonView.buttonLayout.setOnClickListener((view) -> {
-            if (!UserConfig.getInstance(currentAccount).isPremium()) {
+            if (!UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 PremiumPreviewFragment.buyPremium(fragment, selectedTier, "double_limits");
             }
             dismiss();

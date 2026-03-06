@@ -96,7 +96,7 @@ public class ArchiveSettingsActivity extends BaseFragment implements Notificatio
                 ((TextCheckCell) view).setChecked(settings.keep_archived_folders);
                 changed = true;
             } else if (item.id == 7) {
-                if (!getUserConfig().isPremium() && !getMessagesController().autoarchiveAvailable && !settings.archive_and_mute_new_noncontact_peers) {
+                if (!getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && !getMessagesController().autoarchiveAvailable && !settings.archive_and_mute_new_noncontact_peers) {
                     final Bulletin.SimpleLayout layout = new Bulletin.SimpleLayout(getContext(), getResourceProvider());
                     layout.textView.setText(AndroidUtilities.replaceSingleTag(LocaleController.getString(R.string.UnlockPremium), Theme.key_undo_cancelColor, 0, () -> {
                         presentFragment(new PremiumPreviewFragment("settings"));

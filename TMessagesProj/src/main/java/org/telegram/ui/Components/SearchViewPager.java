@@ -243,7 +243,7 @@ public class SearchViewPager extends ViewPagerFixed implements FilteredSearchVie
                     })
                     .addGap()
                     .add(R.drawable.msg_cancel, getString(R.string.RemoveAds), () -> {
-                        if (UserConfig.getInstance(currentAccount).isPremium()) {
+                        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                             fragment.getMessagesController().disableAds(true);
                             removeAllAds();
                             BulletinFactory.of(fragment)
@@ -900,7 +900,7 @@ public class SearchViewPager extends ViewPagerFixed implements FilteredSearchVie
     }
 
     private boolean isSpeedItemVisible() {
-        if (UserConfig.getInstance(currentAccount).isPremium() || MessagesController.getInstance(currentAccount).premiumFeaturesBlocked()) {
+        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || MessagesController.getInstance(currentAccount).premiumFeaturesBlocked()) {
             return false;
         }
         for (MessageObject obj : selectedFiles.values()) {

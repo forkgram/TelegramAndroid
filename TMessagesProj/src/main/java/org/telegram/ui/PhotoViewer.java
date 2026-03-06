@@ -7952,7 +7952,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             doneButtonPressed = true;
             if (videoEditedInfo != null) {
                 long sizeToCheck = (long) (videoEditedInfo.estimatedSize * 0.9f);
-                if ((sizeToCheck > FileLoader.DEFAULT_MAX_FILE_SIZE && !UserConfig.getInstance(currentAccount).isPremium()) || sizeToCheck > FileLoader.DEFAULT_MAX_FILE_SIZE_PREMIUM) {
+                if ((sizeToCheck > FileLoader.DEFAULT_MAX_FILE_SIZE && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) || sizeToCheck > FileLoader.DEFAULT_MAX_FILE_SIZE_PREMIUM) {
                     if (parentAlert != null) {
                         LimitReachedBottomSheet limitReachedBottomSheet = new LimitReachedBottomSheet(parentAlert.getBaseFragment(), parentAlert.getContainer().getContext(), LimitReachedBottomSheet.TYPE_LARGE_FILE, UserConfig.selectedAccount, null);
                         limitReachedBottomSheet.show();
@@ -22570,9 +22570,9 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             o.add(R.drawable.msg_channel, getString(R.string.SponsoredMessageSponsorReportable), () -> o.openSwipeback(info));
         }
 
-        if (!UserConfig.getInstance(account).isPremium() && !MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() && !currentMessageObject.sponsoredCanReport) {
+        if (!UserConfig.getInstance(account).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && !MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() && !currentMessageObject.sponsoredCanReport) {
             o.add(R.drawable.msg_block2, getString(R.string.HideAd), () -> {
-                if (UserConfig.getInstance(account).isPremium()) {
+                if (UserConfig.getInstance(account).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     BulletinFactory.of(containerView, resourcesProvider)
                             .createAdReportedBulletin(LocaleController.getString(R.string.AdHidden))
                             .show();
@@ -22594,7 +22594,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             if (parentFragment instanceof ChatActivity && !MessagesController.getInstance(account).premiumFeaturesBlocked()) {
                 o.addGap();
                 o.add(R.drawable.msg_cancel, getString(R.string.RemoveAds), () -> {
-                    if (UserConfig.getInstance(account).isPremium()) {
+                    if (UserConfig.getInstance(account).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                         BulletinFactory.of(containerView, resourcesProvider)
                                 .createAdReportedBulletin(LocaleController.getString(R.string.AdHidden))
                                 .show();

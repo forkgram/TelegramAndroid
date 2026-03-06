@@ -1386,7 +1386,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                             drawVerified = !forbidVerified && user.verified;
                             drawBotVerified = !forbidVerified && !UserObject.isUserSelf(user) && user.bot_verification_icon != 0;
                         }
-                        drawPremium = MessagesController.getInstance(currentAccount).isPremiumUser(user) && UserConfig.getInstance(currentAccount).clientUserId != user.id && user.id != 0;
+                        drawPremium = MessagesController.getInstance(currentAccount).isPremiumUser(user) && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && UserConfig.getInstance(currentAccount).clientUserId != user.id && user.id != 0;
                         if (drawPremium) {
                             Long emojiStatusId = UserObject.getEmojiStatusDocumentId(user);
                             emojiStatus.center = LocaleController.isRTL;

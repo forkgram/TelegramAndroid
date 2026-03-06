@@ -672,7 +672,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
                 return;
             }
             if (item.viewType == VIEW_TYPE_CHECK) {
-                if (!getUserConfig().isPremium()) {
+                if (!getUserConfig().isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     showDialog(new PremiumFeatureBottomSheet(this, PremiumPreviewFragment.PREMIUM_FEATURE_FOLDER_TAGS, true));
                     return;
                 }
@@ -718,7 +718,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
     public void createFolder(INavigationLayout navigationLayout) {
         final int count = getMessagesController().getDialogFilters().size();
         if (
-            count - 1 >= getMessagesController().dialogFiltersLimitDefault && !getUserConfig().isPremium() ||
+            count - 1 >= getMessagesController().dialogFiltersLimitDefault && !getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) ||
             count >= getMessagesController().dialogFiltersLimitPremium
         ) {
             showDialog(new LimitReachedBottomSheet(this, getContext(), LimitReachedBottomSheet.TYPE_FOLDERS, currentAccount, null));
@@ -1159,7 +1159,7 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
         }
 
         private void resetDefaultPosition() {
-            if (UserConfig.getInstance(UserConfig.selectedAccount).isPremium()) {
+            if (UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 return;
             }
             ArrayList<MessagesController.DialogFilter> filters = getMessagesController().getDialogFilters();

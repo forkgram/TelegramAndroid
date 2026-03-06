@@ -2284,7 +2284,7 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                             if (finalText != null) {
                                 entry.caption = finalText;
                             }
-                            if (!TextUtils.isEmpty(finalLink) && UserConfig.getInstance(currentAccount).isPremium()) {
+                            if (!TextUtils.isEmpty(finalLink) && UserConfig.getInstance(currentAccount).isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                                 if (entry.mediaEntities == null) entry.mediaEntities = new ArrayList<>();
                                 VideoEditedInfo.MediaEntity entity = new VideoEditedInfo.MediaEntity();
                                 entity.type = VideoEditedInfo.MediaEntity.TYPE_LINK;

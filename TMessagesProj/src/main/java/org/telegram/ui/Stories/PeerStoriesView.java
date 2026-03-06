@@ -2010,7 +2010,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
                         }
 
                         if (!unsupported && allowShare && !currentStory.isLive) {
-                            if (UserConfig.getInstance(currentAccount).isPremium()) {
+                            if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                                 ActionBarMenuItem.addItem(popupLayout, R.drawable.msg_gallery, getString(R.string.SaveToGallery), false, resourcesProvider).setOnClickListener(v -> {
                                     saveToGallery();
                                     if (popupMenu != null) {
@@ -2370,7 +2370,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
 
     private void createStealthModeItem(ActionBarPopupWindow.ActionBarPopupWindowLayout popupLayout) {
         if (isBotsPreview() || currentStory.isLive) return;
-        if (UserConfig.getInstance(currentAccount).isPremium()) {
+        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             ActionBarMenuItem.addItem(popupLayout, R.drawable.msg_stories_stealth2, getString(R.string.StealthModeButton), false, resourcesProvider).setOnClickListener(v -> {
                 if (stealthModeIsActive) {
                     StealthModeAlert.showStealthModeEnabledBulletin();
@@ -2408,7 +2408,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
 
     private void createQualityItem(ActionBarPopupWindow.ActionBarPopupWindowLayout popupLayout) {
         final boolean qualityFull = MessagesController.getInstance(currentAccount).storyQualityFull;
-        if (UserConfig.getInstance(currentAccount).isPremium() || true) {
+        if (UserConfig.getInstance(currentAccount).isPremium() || true || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             ActionBarMenuItem.addItem(popupLayout, qualityFull ? R.drawable.menu_quality_sd : R.drawable.menu_quality_hd, getString(qualityFull ? R.string.StoryQualityDecrease : R.string.StoryQualityIncrease), false, resourcesProvider).setOnClickListener(v -> {
                 final boolean newQualityFull = !qualityFull;
                 MessagesController.getInstance(currentAccount).setStoryQuality(newQualityFull);
@@ -4147,7 +4147,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
             isSelf = dialogId == UserConfig.getInstance(currentAccount).getClientUserId();
             final TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(dialogId);
             final TL_account.RequirementToContact r = MessagesController.getInstance(currentAccount).isUserContactBlocked(dialogId);
-            isPremiumBlocked = !UserConfig.getInstance(currentAccount).isPremium() && DialogObject.isPremiumBlocked(r);
+            isPremiumBlocked = !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && DialogObject.isPremiumBlocked(r);
             starsPriceBlocked = DialogObject.getMessagesStarsPrice(r);
             avatarDrawable.setInfo(currentAccount, user);
             headerView.backupImageView.getImageReceiver().setForUserOrChat(user, avatarDrawable);
@@ -4769,7 +4769,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
             delegate.showDialog(sheet);
         } else if (id == NotificationCenter.userIsPremiumBlockedUpadted) {
             final TL_account.RequirementToContact r = MessagesController.getInstance(currentAccount).isUserContactBlocked(dialogId);
-            final boolean newPremiumBlocked = dialogId >= 0 && !UserConfig.getInstance(currentAccount).isPremium() && DialogObject.isPremiumBlocked(r);
+            final boolean newPremiumBlocked = dialogId >= 0 && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && DialogObject.isPremiumBlocked(r);
             if (isPremiumBlocked != newPremiumBlocked || starsPriceBlocked != DialogObject.getMessagesStarsPrice(r)) {
                 isPremiumBlocked = newPremiumBlocked;
                 starsPriceBlocked = DialogObject.getMessagesStarsPrice(r);

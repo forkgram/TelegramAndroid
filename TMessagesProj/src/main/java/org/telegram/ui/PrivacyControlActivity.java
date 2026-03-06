@@ -639,7 +639,7 @@ public class PrivacyControlActivity extends BaseFragment implements Notification
                     cameraDrawable.setCustomEndFrame(43);
                     setAvatarCell.imageView.playAnimation();
                 }
-            } else if (rulesType == PRIVACY_RULES_TYPE_MESSAGES && (position == myContactsRow && !getMessagesController().newNoncontactPeersRequirePremiumWithoutOwnpremium) && !getUserConfig().isPremium()) {
+            } else if (rulesType == PRIVACY_RULES_TYPE_MESSAGES && (position == myContactsRow && !getMessagesController().newNoncontactPeersRequirePremiumWithoutOwnpremium) && !getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 BulletinFactory.of(this).createSimpleBulletin(
                     R.raw.star_premium_2,
                     LocaleController.getString(R.string.OptionPremiumRequiredTitle),

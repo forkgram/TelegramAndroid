@@ -142,10 +142,10 @@ public class ChannelRecommendationsCell {
                 i--;
             }
         }
-        loading = chats.isEmpty() || !UserConfig.getInstance(currentAccount).isPremium() && chats.size() == 1;
+        loading = chats.isEmpty() || !UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && chats.size() == 1;
         if (!loading) {
             int count = chats.size();
-            if (!UserConfig.getInstance(currentAccount).isPremium() && rec.more > 0) {
+            if (!UserConfig.getInstance(currentAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && rec.more > 0) {
                 count = Math.min(count - 1, MessagesController.getInstance(currentAccount).recommendedChannelsLimitDefault);
             }
             count = Math.min(count, 10);
@@ -484,7 +484,7 @@ public class ChannelRecommendationsCell {
             }
 
             nameTextPaint.setTextSize(dp(11));
-            final boolean isPremium = UserConfig.getInstance(cell.currentAccount).isPremium();
+            final boolean isPremium = UserConfig.getInstance(cell.currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
             name = LocaleController.getString(isPremium ? R.string.MoreSimilar : R.string.UnlockSimilar);
 
             subscribersStrokePaint.setStyle(Paint.Style.STROKE);

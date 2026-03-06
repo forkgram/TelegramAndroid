@@ -1266,7 +1266,7 @@ public final class BulletinFactory {
     }
 
     public boolean showForwardedBulletinWithTag(long did, int messagesCount) {
-        if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium()) {
+        if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             return false;
         }
         final Bulletin.LottieLayoutWithReactions layout = new Bulletin.LottieLayoutWithReactions(fragment, messagesCount);
@@ -1302,7 +1302,7 @@ public final class BulletinFactory {
     }
 
     public static Bulletin createForwardedBulletin(Context context, BaseFragment fragment, FrameLayout containerLayout, int dialogsCount, long did, int messagesCount, int backgroundColor, int textColor, int duration, Runnable undoAction, Runnable delayedAction) {
-        final Bulletin.LottieLayout layout = UserConfig.getInstance(UserConfig.selectedAccount).isPremium() && fragment != null && dialogsCount <= 1 && did == UserConfig.getInstance(UserConfig.selectedAccount).clientUserId ?
+        final Bulletin.LottieLayout layout = UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && fragment != null && dialogsCount <= 1 && did == UserConfig.getInstance(UserConfig.selectedAccount).clientUserId ?
             new Bulletin.LottieLayoutWithReactions(fragment, messagesCount) :
             new Bulletin.LottieLayout(context, fragment != null ? fragment.getResourceProvider() : null, backgroundColor, textColor);
         final CharSequence text;

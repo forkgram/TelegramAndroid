@@ -223,7 +223,7 @@ public class ChatAttachAlertPollLayout extends ChatAttachAlert.AttachAlertLayout
         answersChecks = new boolean[maxAnswersCount];
 
         updateRows();
-        isPremium = AccountInstance.getInstance(parentAlert.currentAccount).getUserConfig().isPremium();
+        isPremium = AccountInstance.getInstance(parentAlert.currentAccount).getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
         /*if (quiz != null) {
             quizPoll = quiz;
             quizOnly = quizPoll ? 1 : 2;

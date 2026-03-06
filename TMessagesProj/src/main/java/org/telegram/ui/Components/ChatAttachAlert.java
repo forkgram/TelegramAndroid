@@ -3056,7 +3056,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
                     writeButton.invalidate();
                 }
 
-//                if (!captionLimitBulletinShown && !MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() && !UserConfig.getInstance(currentAccount).isPremium() && codepointCount > MessagesController.getInstance(currentAccount).captionLengthLimitDefault && codepointCount < MessagesController.getInstance(currentAccount).captionLengthLimitPremium) {
+//                if (!captionLimitBulletinShown && !MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && codepointCount > MessagesController.getInstance(currentAccount).captionLengthLimitDefault && codepointCount < MessagesController.getInstance(currentAccount).captionLengthLimitPremium) {
 //                    captionLimitBulletinShown = true;
 //                    showCaptionLimitBulletin(parentFragment);
 //                }
@@ -3197,7 +3197,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
                     writeButton.invalidate();
                 }
 
-                if (!captionLimitBulletinShown && !MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() && !UserConfig.getInstance(currentAccount).isPremium() && codepointCount > MessagesController.getInstance(currentAccount).captionLengthLimitDefault && codepointCount < MessagesController.getInstance(currentAccount).captionLengthLimitPremium) {
+                if (!captionLimitBulletinShown && !MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && codepointCount > MessagesController.getInstance(currentAccount).captionLengthLimitDefault && codepointCount < MessagesController.getInstance(currentAccount).captionLengthLimitPremium) {
                     captionLimitBulletinShown = true;
                     showCaptionLimitBulletin(parentFragment);
                 }
@@ -4161,7 +4161,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
             currentAttachLayout.scrollToTop();
             return;
         }
-        if (layout == todoLayout && !UserConfig.getInstance(currentAccount).isPremium()) {
+        if (layout == todoLayout && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             new PremiumFeatureBottomSheet(baseFragment, PremiumPreviewFragment.PREMIUM_FEATURE_TODO, false).show();
             return;
         }
@@ -5839,7 +5839,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
                         needPremium = true;
                     }
                     attachButton.glassTabView.setCounter(err ? "!" : null, err, false);
-                    attachButton.glassTabView.setPremiumBadge(needPremium && !UserConfig.getInstance(currentAccount).isPremium());
+                    attachButton.glassTabView.setPremiumBadge(needPremium && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false));
                     break;
                 case VIEW_TYPE_BOT_BUTTON:
                     AttachBotButton child = (AttachBotButton) holder.itemView;

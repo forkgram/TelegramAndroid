@@ -215,7 +215,7 @@ public class StickerCell extends FrameLayout {
             showPremiumLock = false;
         }
         FrameLayout.LayoutParams layoutParams = (LayoutParams) premiumIconView.getLayoutParams();
-        if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium()) {
+        if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             layoutParams.height = layoutParams.width = AndroidUtilities.dp(24);
             layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
             layoutParams.bottomMargin = layoutParams.rightMargin = 0;
@@ -227,7 +227,7 @@ public class StickerCell extends FrameLayout {
             layoutParams.rightMargin = AndroidUtilities.dp(8);
             premiumIconView.setPadding(AndroidUtilities.dp(1), AndroidUtilities.dp(1), AndroidUtilities.dp(1), AndroidUtilities.dp(1));
         }
-        premiumIconView.setLocked(!UserConfig.getInstance(UserConfig.selectedAccount).isPremium());
+        premiumIconView.setLocked(!UserConfig.getInstance(UserConfig.selectedAccount).isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false));
         AndroidUtilities.updateViewVisibilityAnimated(premiumIconView, showPremiumLock, 0.9f, animated);
         invalidate();
     }

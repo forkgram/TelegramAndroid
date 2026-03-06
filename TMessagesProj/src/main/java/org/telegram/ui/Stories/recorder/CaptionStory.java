@@ -95,7 +95,7 @@ public class CaptionStory extends CaptionContainerView {
                 }
             };
 
-            final boolean isPremium = UserConfig.getInstance(currentAccount).isPremium();
+            final boolean isPremium = UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
 
             Utilities.Callback<Integer> showPremiumHint = isPremium ? null : period -> {
                 if (onPremiumHintShow != null) {

@@ -2946,7 +2946,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 showSelectStatusDialog();
             });
             SelectAnimatedEmojiDialog.preload(currentAccount);
-        } else if (user != null && MessagesController.getInstance(currentAccount).isPremiumUser(user)) {
+        } else if (user != null && MessagesController.getInstance(currentAccount).isPremiumUser(user) && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             if (premiumStar == null) {
                 premiumStar = getContext().getResources().getDrawable(R.drawable.msg_premium_liststar).mutate();
                 premiumStar = new AnimatedEmojiDrawable.WrapSizeDrawable(premiumStar, dp(18), dp(18)) {
@@ -3900,7 +3900,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                                 currentCount = 0;
                             }
                             int totalCount = currentCount + alwaysShow.size();
-                            if ((totalCount > getMessagesController().dialogFiltersChatsLimitDefault && !getUserConfig().isPremium()) || totalCount > getMessagesController().dialogFiltersChatsLimitPremium) {
+                            if ((totalCount > getMessagesController().dialogFiltersChatsLimitDefault && !getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) || totalCount > getMessagesController().dialogFiltersChatsLimitPremium) {
                                 showDialog(new LimitReachedBottomSheet(DialogsActivity.this, fragmentView.getContext(), LimitReachedBottomSheet.TYPE_CHATS_IN_FOLDER, currentAccount, null));
                                 return;
                             }
@@ -5696,7 +5696,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
     public boolean isPremiumRestoreHintVisible() {
         if (!MessagesController.getInstance(currentAccount).premiumFeaturesBlocked() && folderId == 0) {
-            return MessagesController.getInstance(currentAccount).pendingSuggestions.contains("PREMIUM_RESTORE") && !getUserConfig().isPremium() && MediaDataController.getInstance(currentAccount).getPremiumHintAnnualDiscount(false) != null;
+            return MessagesController.getInstance(currentAccount).pendingSuggestions.contains("PREMIUM_RESTORE") && !getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && MediaDataController.getInstance(currentAccount).getPremiumHintAnnualDiscount(false) != null;
         }
         return false;
     }
@@ -6601,7 +6601,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 break;
             }
         }
-        boolean visible = !getUserConfig().isPremium() && !getMessagesController().premiumFeaturesBlocked() && visibleByDownload && visibleByPosition;
+        boolean visible = !getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && !getMessagesController().premiumFeaturesBlocked() && visibleByDownload && visibleByPosition;
         animatorSpeedButtonVisible.setValue(visible, true);
     }
 
@@ -8516,13 +8516,13 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             if (containsFilter && filter != null) {
                 maxPinnedCount = 100 - filter.alwaysShow.size();
             } else if (folderId != 0 || filter != null) {
-                if (getUserConfig().isPremium()) {
+                if (getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     maxPinnedCount = getMessagesController().maxFolderPinnedDialogsCountPremium;
                 } else {
                     maxPinnedCount = getMessagesController().maxFolderPinnedDialogsCountDefault;
                 }
             } else {
-                if (getUserConfig().isPremium()) {
+                if (getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     maxPinnedCount = getMessagesController().maxPinnedDialogsCountPremium;
                 } else {
                     maxPinnedCount = getMessagesController().maxPinnedDialogsCountDefault;
@@ -9030,7 +9030,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             } else if (!syncPins) {
                 maxPinnedCount = 100;
             } else if (folderId != 0 || filter != null) {
-                if (UserConfig.getInstance(currentAccount).isPremium()) {
+                if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                     maxPinnedCount = getMessagesController().maxFolderPinnedDialogsCountPremium;
                 } else {
                     maxPinnedCount = getMessagesController().maxFolderPinnedDialogsCountDefault;

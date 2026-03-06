@@ -533,7 +533,7 @@ public class AvatarConstructorFragment extends BaseFragment {
     }
 
     private boolean isLocked() {
-        if (UserConfig.getInstance(currentAccount).isPremium()) return false;
+        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) return false;
         if (previewView.backgroundGradient != null && previewView.backgroundGradient.premium || previewView.isCustomGradient) {
             return true;
         }
@@ -1060,7 +1060,7 @@ public class AvatarConstructorFragment extends BaseFragment {
                     if (holder.getItemViewType() == VIEW_TYPE_GRADIENT) {
                         view.setCustom(false);
                         final BackgroundGradient gradient = gradients.get(position);
-                        view.setLocked(gradient.premium && !UserConfig.getInstance(currentAccount).isPremium());
+                        view.setLocked(gradient.premium && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false));
                         view.setGradient(gradient);
                         view.setSelectedInternal(selectedItemId == gradients.get(position).stableId, true);
                     } else {

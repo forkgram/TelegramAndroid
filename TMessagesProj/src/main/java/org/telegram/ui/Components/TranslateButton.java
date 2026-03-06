@@ -114,7 +114,7 @@ public class TranslateButton extends FrameLayout {
         menuView.setImageResource(R.drawable.msg_mini_customize);
         menuView.setOnClickListener(e -> {
             final TLRPC.Chat chat = MessagesController.getInstance(currentAccount).getChat(-dialogId);
-            if (UserConfig.getInstance(currentAccount).isPremium() || chat != null && chat.autotranslation) {
+            if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || chat != null && chat.autotranslation) {
                 onMenuClick();
             } else {
                 onCloseClick();
@@ -296,7 +296,7 @@ public class TranslateButton extends FrameLayout {
             popupLayout.getSwipeBack().openForeground(swipeBackIndex);
         });
 
-        if (UserConfig.getInstance(currentAccount).isPremium() && detectedLanguageNameAccusative != null) {
+        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) && detectedLanguageNameAccusative != null) {
             final ActionBarMenuSubItem dontTranslateButton = new ActionBarMenuSubItem(getContext(), false, false, resourcesProvider);
             String text;
             if (accusative[0]) {
