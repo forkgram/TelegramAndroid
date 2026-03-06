@@ -169,6 +169,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int disablePlayVisibleVideoOnVolumeRow;
     private int disableAds;
     private int localPremium;
+    private int disablePhoneSharePrompt;
 
     private int stickerSizeRow;
 
@@ -236,6 +237,7 @@ public class ForkSettingsActivity extends BaseFragment {
         formatWithSeconds = rowCount++;
         mentionByName = rowCount++;
         replaceForward = rowCount++;
+        disablePhoneSharePrompt = rowCount++;
         rearVideoMessages = rowCount++;
         fullRecentStickersRow = rowCount++;
         hideSendAsRow = rowCount++;
@@ -371,6 +373,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("replaceForward", view, true);
             } else if (position == mentionByName) {
                 toggleGlobalMainSetting("mentionByName", view, false);
+            } else if (position == disablePhoneSharePrompt) {
+                toggleGlobalMainSetting("disablePhoneSharePrompt", view, false);
             } else if (position == openArchiveOnPull) {
                 toggleGlobalMainSetting("openArchiveOnPull", view, false);
             } else if (position == hideStoriesInArchiveRow) {
@@ -536,6 +540,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == mentionByName) {
                         String t = LocaleController.getString("MentionByName", R.string.MentionByName);
                         textCell.setTextAndCheck(t, preferences.getBoolean("mentionByName", false), false);
+                    } else if (position == disablePhoneSharePrompt) {
+                        String t = LocaleController.getString("DisablePhoneSharePrompt", R.string.DisablePhoneSharePrompt);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("mentionByName", false), false);
                     } else if (position == openArchiveOnPull) {
                         String t = LocaleController.getString("OpenArchiveOnPull", R.string.OpenArchiveOnPull);
                         textCell.setTextAndCheck(t, preferences.getBoolean("openArchiveOnPull", true), false);
@@ -625,6 +632,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == enableLastSeenDots
                         || position == customTitleRow
                         || position == hideBottomButton
+                        || position == disablePhoneSharePrompt
                         || position == syncPinsRow
                         || position == showNotificationContent
                         || position == photoHasStickerRow
@@ -700,6 +708,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == disableGlobalSearch
                 || position == enableLastSeenDots
                 || position == hideBottomButton
+                || position == disablePhoneSharePrompt
                 || position == showNotificationContent
                 || position == photoHasStickerRow
                 || position == disableAds

@@ -10476,5 +10476,7 @@
     <string name="DisableAds">Disable Ads</string>
     <string name="LocalPremium">Telegram Local Premium</string>
     <string name="AutoLockImmediately">Immediately</string>
-    <string name="HideChatKeyboard">Hide keyboard on chat scroll</string>
+    <string name="HideChatKeyboard">Hide keyboard on Chat Scroll</string>
+    <string name="DisablePhoneSharePrompt">Disable Contact Number Sharing Prompt</string>
+
 </resources>
