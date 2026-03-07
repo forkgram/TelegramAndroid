@@ -1680,7 +1680,7 @@ public class PeerColorActivity extends BaseFragment implements NotificationCente
 
     @Override
     public boolean onBackPressed(boolean invoked) {
-        if (!isChannel && hasUnsavedChanged() && getUserConfig().isPremium()) {
+        if (!isChannel && hasUnsavedChanged() && getUserConfig().isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             if (invoked) showUnsavedAlert();
             return false;
         }
@@ -1689,7 +1689,7 @@ public class PeerColorActivity extends BaseFragment implements NotificationCente
 
     @Override
     public boolean isSwipeBackEnabled(MotionEvent event) {
-        if (!isChannel && hasUnsavedChanged() && getUserConfig().isPremium()) {
+        if (!isChannel && hasUnsavedChanged() && getUserConfig().isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             return false;
         }
         return super.isSwipeBackEnabled(event);
@@ -1720,7 +1720,7 @@ public class PeerColorActivity extends BaseFragment implements NotificationCente
         if (isChannel) {
             finishFragment();
         } else {
-            if (!getUserConfig().isPremium()) {
+            if (!getUserConfig().isPremium() || !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
                 showDialog(new PremiumFeatureBottomSheet(PeerColorActivity.this, PremiumPreviewFragment.PREMIUM_FEATURE_NAME_COLOR, true));
                 return;
             }
@@ -1787,7 +1787,7 @@ public class PeerColorActivity extends BaseFragment implements NotificationCente
     private boolean applyingName, applyingProfile;
     private boolean applying;
     private void apply() {
-        if (applying || !isChannel && !getUserConfig().isPremium()) {
+        if (applying || !isChannel && !getUserConfig().isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             return;
         }
 

@@ -2118,7 +2118,7 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
             final boolean isCollectible = user.emoji_status instanceof TLRPC.TL_emojiStatusCollectible;
             statusDrawable.set(emojiStatusId, animated);
             statusDrawable.setParticles(isCollectible, animated);
-        } else if (user != null && MessagesController.getInstance(currentAccount).isPremiumUser(user)) {
+        } else if (user != null && MessagesController.getInstance(currentAccount).isPremiumUser(user) && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             if (premiumStar == null) {
                 premiumStar = getContext().getResources().getDrawable(R.drawable.msg_premium_liststar).mutate();
                 premiumStar = new AnimatedEmojiDrawable.WrapSizeDrawable(premiumStar, dp(18), dp(18)) {

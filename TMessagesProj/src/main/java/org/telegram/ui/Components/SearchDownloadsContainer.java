@@ -676,7 +676,7 @@ public class SearchDownloadsContainer extends FrameLayout implements Notificatio
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
             boolean canMove = target.getAdapterPosition() >= downloadingFilesStartRow && target.getAdapterPosition() < downloadingFilesEndRow;
-//            boolean canMove = getUserConfig().isPremium() || !((target.itemView instanceof FiltersSetupActivity.FilterCell) && ((FiltersSetupActivity.FilterCell) target.itemView).currentFilter.isDefault());
+//            boolean canMove = getUserConfig().isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || !((target.itemView instanceof FiltersSetupActivity.FilterCell) && ((FiltersSetupActivity.FilterCell) target.itemView).currentFilter.isDefault());
             if (!canMove) {
                 return false;
             }
@@ -729,7 +729,7 @@ public class SearchDownloadsContainer extends FrameLayout implements Notificatio
     }
 
     public void checkItemsFloodWait() {
-        if (UserConfig.getInstance(currentAccount).isPremium()) return;
+        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) return;
         if (recyclerListView == null) return;
         for (int i = 0; i < recyclerListView.getChildCount(); ++i) {
             try {
@@ -758,7 +758,7 @@ public class SearchDownloadsContainer extends FrameLayout implements Notificatio
             return;
         }
         ConnectionsManager.lastPremiumFloodWaitShown = now;
-        if (UserConfig.getInstance(currentAccount).isPremium() || MessagesController.getInstance(currentAccount).premiumFeaturesBlocked()) {
+        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false) || MessagesController.getInstance(currentAccount).premiumFeaturesBlocked()) {
             return;
         }
 

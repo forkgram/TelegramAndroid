@@ -496,7 +496,7 @@ public class StoryPrivacySelector extends View {
         entry.privacy = getSaved(currentAccount);
         entry.privacyRules.clear();
         entry.privacyRules.addAll(entry.privacy.rules);
-        if (UserConfig.getInstance(currentAccount).isPremium()) {
+        if (UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) {
             entry.period = MessagesController.getInstance(currentAccount).getMainSettings().getInt("story_period", 86400);
         } else {
             entry.period = 86400;

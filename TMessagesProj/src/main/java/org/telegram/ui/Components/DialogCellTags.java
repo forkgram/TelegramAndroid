@@ -98,7 +98,7 @@ public class DialogCellTags {
         final AccountInstance account = AccountInstance.getInstance(currentAccount);
         final MessagesController controller = MessagesController.getInstance(currentAccount);
 
-        if (!(controller.folderTags && account.getUserConfig().isPremium())) {
+        if (!(controller.folderTags && account.getUserConfig().isPremium() && org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false))) {
             final boolean wasEmpty = tags.isEmpty();
             tags.clear();
             return !wasEmpty;

@@ -100,7 +100,7 @@ public class SearchAdsInfoBottomSheet extends BottomSheetWithRecyclerListView {
         FrameLayout info1 = new FeatureCell(context, R.drawable.menu_privacy, LocaleController.getString(R.string.SearchAdsAbout1Title), LocaleController.getString(R.string.SearchAdsAbout1Subtitle));
         linearLayout.addView(info1, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 0, 0, 20, 0, 0));
 
-        final boolean premium = UserConfig.getInstance(currentAccount).isPremium();
+        final boolean premium = UserConfig.getInstance(currentAccount).isPremium() || org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
         FrameLayout info2 = new FeatureCell(context, R.drawable.menu_feature_noads, LocaleController.getString(R.string.SearchAdsAbout2Title), AndroidUtilities.replaceArrows(AndroidUtilities.replaceSingleTag(getString(premium ? R.string.SearchAdsAbout2SubtitlePremium : R.string.SearchAdsAbout2Subtitle), () -> {
             if (premium) {
                 MessagesController.getInstance(currentAccount).disableAds(true);

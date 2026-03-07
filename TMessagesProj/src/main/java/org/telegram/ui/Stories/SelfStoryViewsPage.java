@@ -574,7 +574,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
             if (currentModel != null && isAttachedToWindow) {
                 currentModel.addListener(this);
             }
-            if ((currentModel != null && currentModel.isExpiredViews && !UserConfig.getInstance(currentAccount).isPremium()) || (!currentModel.loading && !currentModel.hasNext && currentModel.views.isEmpty() && currentModel.reactions.isEmpty() && TextUtils.isEmpty(currentModel.state.searchQuery))) {
+            if ((currentModel != null && currentModel.isExpiredViews && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false)) || (!currentModel.loading && !currentModel.hasNext && currentModel.views.isEmpty() && currentModel.reactions.isEmpty() && TextUtils.isEmpty(currentModel.state.searchQuery))) {
                 showSearch = false;
                 showReactionsSort = false;
                 showContactsFilter = false;
@@ -1120,7 +1120,7 @@ public class SelfStoryViewsPage extends FrameLayout implements NotificationCente
             if (totalCount < 200) {
                 useLocalFilters = true;
             }
-            isExpiredViews = StoriesUtilities.hasExpiredViews(storyItem) && !UserConfig.getInstance(currentAccount).isPremium();
+            isExpiredViews = StoriesUtilities.hasExpiredViews(storyItem) && !UserConfig.getInstance(currentAccount).isPremium() && !org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("localPremium", false);
             if (isExpiredViews && storyItem.views != null && storyItem.views.reactions_count > 0) {
                 isExpiredViews = false;
                 showReactionOnly = true;
