@@ -10478,5 +10478,6 @@
     <string name="AutoLockImmediately">Immediately</string>
     <string name="HideChatKeyboard">Hide keyboard on Chat Scroll</string>
     <string name="DisablePhoneSharePrompt">Disable Contact Number Sharing Prompt</string>
+    <string name="IsFromChannel">From Channel</string>
 
 </resources>
