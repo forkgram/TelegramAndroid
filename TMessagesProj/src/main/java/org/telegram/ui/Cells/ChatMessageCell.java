@@ -17788,6 +17788,8 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 adminString = new SpannableStringBuilder(getString(R.string.DiscussChannel));
             } else if (isMegagroup && currentChat != null && currentMessageObject.isFromChannel()) {
                 adminString = new SpannableStringBuilder(getString(R.string.IsFromChannel));
+            } else if (isMegagroup && currentChat != null && currentViaBotUser != null) {
+                adminString = new SpannableStringBuilder(getString(R.string.IsFromBot));
             } else if ((currentUser != null || currentChat != null) && !currentMessageObject.isOutOwner() && !currentMessageObject.isAnyKindOfSticker() && currentMessageObject.type != MessageObject.TYPE_ROUND_VIDEO && delegate != null && (adminLabel = delegate.getAdminRank(currentUser != null ? currentUser.id : currentChat.id)) != null) {
                 if (adminLabel.length() == 0) {
                     adminLabel = getString(R.string.ChatAdmin);
