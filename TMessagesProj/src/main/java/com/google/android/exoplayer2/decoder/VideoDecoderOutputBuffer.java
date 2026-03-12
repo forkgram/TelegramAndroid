@@ -67,6 +67,8 @@ public class VideoDecoderOutputBuffer extends DecoderOutputBuffer {
   @Override
   public void release() {
     owner.releaseOutputBuffer(this);
+      data.clear();
+      supplementalData.clear();
   }
 
   /**
@@ -95,6 +97,7 @@ public class VideoDecoderOutputBuffer extends DecoderOutputBuffer {
       supplementalData.position(0);
     } else {
       this.supplementalData = null;
+      supplementalData.clear();
     }
   }
 
@@ -120,6 +123,7 @@ public class VideoDecoderOutputBuffer extends DecoderOutputBuffer {
 
     // Initialize data.
     if (data == null || data.capacity() < minimumYuvSize) {
+      data.clear();
       data = ByteBuffer.allocateDirect(minimumYuvSize);
     } else {
       data.position(0);

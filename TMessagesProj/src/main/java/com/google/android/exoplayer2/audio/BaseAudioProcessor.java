@@ -109,6 +109,7 @@ public abstract class BaseAudioProcessor implements AudioProcessor {
    */
   protected final ByteBuffer replaceOutputBuffer(int size) {
     if (buffer.capacity() < size) {
+        buffer.clear();
       buffer = ByteBuffer.allocateDirect(size).order(ByteOrder.nativeOrder());
     } else {
       buffer.clear();
@@ -136,11 +137,11 @@ public abstract class BaseAudioProcessor implements AudioProcessor {
 
   /** Called when the processor is flushed, directly or as part of resetting. */
   protected void onFlush() {
-    // Do nothing.
+     buffer.clear();
   }
 
   /** Called when the processor is reset. */
   protected void onReset() {
-    // Do nothing.
+     buffer.clear();
   }
 }
