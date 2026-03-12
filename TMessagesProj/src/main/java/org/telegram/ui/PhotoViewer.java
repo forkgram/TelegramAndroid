@@ -83,6 +83,7 @@ import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.transition.TransitionValues;
 import android.util.FloatProperty;
+import android.util.Log;
 import android.util.Pair;
 import android.util.Property;
 import android.util.Range;
@@ -4429,10 +4430,121 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         showAlertDialog(builder);
     }
 
+	
+    private boolean checkAndShareMultiple() {
+        ArrayList<MessageObject> msgs = new ArrayList<>(1);
+        MessageObject.GroupedMessages group = parentChatActivity != null ? parentChatActivity.getGroup(currentMessageObject.getGroupId()) : null;
+        if (group != null) {
+            msgs.addAll(group.messages);
+        } else {
+            msgs.add(currentMessageObject);
+        }
+        if (msgs.size() <= 1) return false;
+        boolean isVideo_ = false;
+        for (int i = 0; i < msgs.size() && !isVideo_; ++i) {
+            if (msgs.get(i).isVideo()) {
+                isVideo_ = true;
+            }
+        }
+        final boolean isVideo = isVideo_;
+        AlertDialog dialog = new AlertDialog.Builder(parentActivity, resourcesProvider)
+                .setTitle(getString(R.string.SaveGroupMedia))
+                .setMessage(getString(R.string.ShareGroupMediaMessage))
+                .setDialogButtonColorKey(Theme.key_voipgroup_listeningText)
+                .setNegativeButton((!isVideo ? getString(R.string.ThisPhoto) : getString(R.string.ThisMedia)), (di, a) -> {
+                    if (currentMessageObject == null) return;
+                    File f;
+                    if (MessageObject.getMedia(currentMessageObject.messageOwner) instanceof TLRPC.TL_messageMediaWebPage &&
+                            MessageObject.getMedia(currentMessageObject.messageOwner).webpage != null &&
+                            MessageObject.getMedia(currentMessageObject.messageOwner).webpage.document == null) {
+                        TLObject fileLocation = getFileLocation(currentIndex, null);
+                        f = FileLoader.getInstance(currentAccount).getPathToAttach(fileLocation, true);
+                    } else {
+                        f = FileLoader.getInstance(currentAccount).getPathToMessage(currentMessageObject.messageOwner);
+                    }
+                    if (f != null && f.exists()) {
+                        onSharePressed(true);
+                    } else {
+                        showDownloadAlert();
+                    }
+                })
+                .setPositiveButton(!isVideo ? LocaleController.formatPluralString("AllNPhotos", msgs.size()) : LocaleController.formatPluralString("AllNMedia", msgs.size()), (di, a) -> {
+                    ArrayList<File> files = new ArrayList<>();
+                    for (int i = 0; i < msgs.size(); ++i) {
+                        MessageObject msg = msgs.get(i);
+                        if (msg == null) {
+                            continue;
+                        }
+                        File f;
+                        if (MessageObject.getMedia(msg.messageOwner) instanceof TLRPC.TL_messageMediaWebPage && MessageObject.getMedia(msg.messageOwner).webpage != null && MessageObject.getMedia(msg.messageOwner).webpage.document == null) {
+                            f = FileLoader.getInstance(currentAccount).getPathToAttach(getFileLocation(currentIndex, null), true);
+                        } else {
+                            f = FileLoader.getInstance(currentAccount).getPathToMessage(msg.messageOwner);
+                        }
+                        if (f == null || !f.exists()) {
+                            showDownloadAlert();
+                            return;
+                        }
+                        files.add(f);
+                    }
+                    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    if (isVideo) {
+                        intent.setType("video/mp4");
+                    } else {
+                        if (currentMessageObject != null) {
+                            intent.setType(currentMessageObject.getMimeType());
+                        } else {
+                            intent.setType("image/jpeg");
+                        }
+                    }
+                    ArrayList<Uri> sharingUris = new ArrayList<>();
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        try {
+                            for (var f : files) {
+                                sharingUris.add(FileProvider.getUriForFile(parentActivity, ApplicationLoader.getApplicationId() + ".provider", f));
+                            }
+                            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, sharingUris);
+                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        } catch (Exception ignore) {
+                            sharingUris.clear();
+                            for (var f : files) sharingUris.add(Uri.fromFile(f));
+                            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, sharingUris);
+                        }
+                    } else {
+                        for (var f : files) sharingUris.add(Uri.fromFile(f));
+                        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, sharingUris);
+                    }
+                    for (Uri u : sharingUris) {
+                        Log.d("030-share", u.toString());
+                    }
+                    parentActivity.startActivityForResult(Intent.createChooser(intent, getString("ShareFile", R.string.ShareFile)), 500);
+                })
+                .setNeutralButton(getString("Cancel", R.string.Cancel), (di, a) -> {
+                    di.dismiss();
+                }).create();
+        dialog.setBackgroundColor(getThemedColor(Theme.key_voipgroup_dialogBackground));
+        dialog.show();
+        View neutralButton = dialog.getButton(Dialog.BUTTON_NEUTRAL);
+        if (neutralButton instanceof TextView) {
+            ((TextView) neutralButton).setTextColor(getThemedColor(Theme.key_text_RedBold));
+            neutralButton.setBackground(Theme.getRoundRectSelectorDrawable(getThemedColor(Theme.key_text_RedBold)));
+            if (dialog.getButtonsLayout() instanceof LinearLayout && ((LinearLayout) dialog.getButtonsLayout()).getOrientation() == LinearLayout.VERTICAL) {
+                neutralButton.bringToFront();
+            }
+        }
+        dialog.setTextColor(getThemedColor(Theme.key_voipgroup_actionBarItems));
+        return true;
+    }
+
     private void onSharePressed() {
+        onSharePressed(false);
+    }
+
+    private void onSharePressed(boolean skipCheck) {
         if (parentActivity == null || !allowShare) {
             return;
         }
+        if (!skipCheck && checkAndShareMultiple()) return;
         try {
             File f = null;
             boolean isVideo = false;
@@ -5004,10 +5116,10 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                         }
                         final boolean isVideo = isVideo_;
                         AlertDialog dialog = new AlertDialog.Builder(parentActivity, resourcesProvider)
-                                .setTitle(getString("SaveGroupMedia", R.string.SaveGroupMedia))
-                                .setMessage(getString("SaveGroupMediaMessage", R.string.SaveGroupMediaMessage))
+                                .setTitle(getString(R.string.SaveGroupMedia))
+                                .setMessage(getString(R.string.SaveGroupMediaMessage))
                                 .setDialogButtonColorKey(Theme.key_voipgroup_listeningText)
-                                .setNegativeButton((!isVideo ? getString("ThisPhoto", R.string.ThisPhoto) : getString("ThisMedia", R.string.ThisMedia)), (di, a) -> {
+                                .setNegativeButton((!isVideo ? getString(R.string.ThisPhoto) : getString(R.string.ThisMedia)), (di, a) -> {
                                     if (currentMessageObject == null) {
                                         return;
                                     }
