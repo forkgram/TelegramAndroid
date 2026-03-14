@@ -1431,7 +1431,7 @@ public class PollCreateActivity extends BaseFragment implements NotificationCent
         }
         emojiView = new EmojiView(null, true, false, false, getContext(), true, null, null, true, resourceProvider, false);
         emojiView.fixBottomTabContainerTranslation = false;
-        emojiView.allowEmojisForNonPremium(false);
+        emojiView.allowEmojisForNonPremium(true);
         emojiView.setVisibility(View.GONE);
         if (AndroidUtilities.isTablet()) {
             emojiView.setForseMultiwindowLayout(true);

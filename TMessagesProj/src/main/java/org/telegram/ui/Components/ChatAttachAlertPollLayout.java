@@ -1343,7 +1343,7 @@ public class ChatAttachAlertPollLayout extends ChatAttachAlert.AttachAlertLayout
         emojiView.shouldLightenBackground = false;
         emojiView.fixBottomTabContainerTranslation = false;
         emojiView.setShouldDrawBackground(false);
-        emojiView.allowEmojisForNonPremium(false);
+        emojiView.allowEmojisForNonPremium(true);
         emojiView.setVisibility(GONE);
         if (AndroidUtilities.isTablet()) {
             emojiView.setForseMultiwindowLayout(true);
