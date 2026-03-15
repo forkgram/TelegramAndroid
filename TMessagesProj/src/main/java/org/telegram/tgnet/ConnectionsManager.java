@@ -1121,10 +1121,10 @@ public class ConnectionsManager extends BaseController {
             InputStream httpConnectionStream = null;
             boolean done = false;
             try {
-                URL downloadUrl = new URL("https://www.google.com/resolve?name=" + currentHostName + "&type=A");
+                URL downloadUrl = new URL("https://dns.adguard-dns.com/resolve?name=" + currentHostName + "&type=A");
                 URLConnection httpConnection = downloadUrl.openConnection();
                 httpConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0 like Mac OS X) AppleWebKit/602.1.38 (KHTML, like Gecko) Version/10.0 Mobile/14A5297c Safari/602.1");
-                httpConnection.addRequestProperty("Host", "dns.google.com");
+                httpConnection.addRequestProperty("Host", "dns.adguard-dns.com");
                 httpConnection.setConnectTimeout(1000);
                 httpConnection.setReadTimeout(2000);
                 httpConnection.connect();
@@ -1458,11 +1458,11 @@ public class ConnectionsManager extends BaseController {
                 try {
                     String googleDomain;
                     if (i == 0) {
-                        googleDomain = "www.google.com";
+                        googleDomain = "www.adguard.com";
                     } else if (i == 1) {
-                        googleDomain = "www.google.ru";
+                        googleDomain = "www.adguard.com/ru";
                     } else {
-                        googleDomain = "google.com";
+                        googleDomain = "adguard.com";
                     }
                     String domain = native_isTestBackend(currentAccount) != 0 ? "tapv3.stel.com" : AccountInstance.getInstance(currentAccount).getMessagesController().dcDomainName;
                     int len = Utilities.random.nextInt(116) + 13;
@@ -1475,7 +1475,7 @@ public class ConnectionsManager extends BaseController {
                     URL downloadUrl = new URL("https://" + googleDomain + "/resolve?name=" + domain + "&type=ANY&random_padding=" + padding);
                     URLConnection httpConnection = downloadUrl.openConnection();
                     httpConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0 like Mac OS X) AppleWebKit/602.1.38 (KHTML, like Gecko) Version/10.0 Mobile/14A5297c Safari/602.1");
-                    httpConnection.addRequestProperty("Host", "dns.google.com");
+                    httpConnection.addRequestProperty("Host", "dns.adguard-dns.com");
                     httpConnection.setConnectTimeout(5000);
                     httpConnection.setReadTimeout(5000);
                     httpConnection.connect();
