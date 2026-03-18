@@ -1669,31 +1669,10 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                         String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
 
                         if (!TextUtils.isEmpty(text)) {
-//                                Matcher m = locationRegex.matcher(text);
-//                                if (m.find()) {
-//                                    String lines[] = text.split("\\n");
-//                                    String venueTitle = null;
-//                                    String venueAddress = null;
-//                                    if (lines[0].equals("My Position")){
-//                                        // Use normal GeoPoint message (user position)
-//                                    }
-//                                    else if(!lines[0].contains("geo:")){
-//                                        venueTitle = lines[0];
-//                                        if(!lines[1].contains("geo:")){
-//                                            venueAddress = lines[1];
-//                                        }
-//                                    }
-//                                    sendingLocation = new Location("");
-//                                    sendingLocation.setLatitude(Double.parseDouble(m.group(1)));
-//                                    sendingLocation.setLongitude(Double.parseDouble(m.group(2)));
-//                                    Bundle bundle = new Bundle();
-//                                    bundle.putCharSequence("venueTitle", venueTitle);
-//                                    bundle.putCharSequence("venueAddress", venueAddress);
-//                                    sendingLocation.setExtras(bundle);
-//                                } else if ((text.startsWith("http://") || text.startsWith("https://")) && !TextUtils.isEmpty(subject)) {
-//                                text = subject + "\n" + text;
-//                            }
-//                            sendingText = text;
+                            if ((text.startsWith("http://") || text.startsWith("https://")) && !TextUtils.isEmpty(subject)) {
+                                text = subject + "\n" + text;
+                            }
+                            sendingText = text;
                         } else if (!TextUtils.isEmpty(subject)) {
                             sendingText = subject;
                         }
