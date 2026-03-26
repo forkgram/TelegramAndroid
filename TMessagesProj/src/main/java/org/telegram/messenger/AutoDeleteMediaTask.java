@@ -139,14 +139,21 @@ public class AutoDeleteMediaTask {
                 }
             //}
 
-            int maxCacheGb = SharedConfig.getPreferences().getInt("cache_limit", Integer.MAX_VALUE);
-            if (maxCacheGb != Integer.MAX_VALUE) {
-                long maxCacheSize;
-                if (maxCacheGb == 1) {
-                    maxCacheSize = 1024L * 1024L * 300L;
+            int maxCacheMb = SharedConfig.getPreferences().getInt("cache_limit_mb", 0);
+            if (maxCacheMb == 0) {
+                // migrate from old "cache_limit" (stored in GB, with 1 = 300 MB special case)
+                int oldLimit = SharedConfig.getPreferences().getInt("cache_limit", Integer.MAX_VALUE);
+                if (oldLimit == Integer.MAX_VALUE) {
+                    maxCacheMb = Integer.MAX_VALUE;
+                } else if (oldLimit == 1) {
+                    maxCacheMb = 300;
                 } else {
-                    maxCacheSize = maxCacheGb * 1024L * 1024L * 1000L;
+                    maxCacheMb = oldLimit * 1000;
                 }
+                SharedConfig.getPreferences().edit().putInt("cache_limit_mb", maxCacheMb).apply();
+            }
+            if (maxCacheMb != Integer.MAX_VALUE) {
+                long maxCacheSize = maxCacheMb * 1024L * 1024L;
                 long totalSize = 0;
                 for (int a = 0; a < paths.size(); a++) {
                     totalSize += Utilities.getDirSize(paths.valueAt(a).getAbsolutePath(), 0, true);
