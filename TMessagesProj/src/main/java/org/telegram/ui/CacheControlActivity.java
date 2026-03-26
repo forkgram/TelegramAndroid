@@ -2476,37 +2476,41 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
                     view = slideChooseView2;
 
                     float totalSizeInGb = (int) (totalDeviceSize / 1024L / 1024L) / 1000.0f;
+                    // values in MB
                     ArrayList<Integer> options = new ArrayList<>();
-//                    if (BuildVars.DEBUG_PRIVATE_VERSION) {
-//                        options.add(1);
-//                    }
-                    if (totalSizeInGb <= 17) {
-                        options.add(2);
-                    }
-                    if (totalSizeInGb > 5) {
-                        options.add(5);
-                    }
-                    if (totalSizeInGb > 16) {
-                        options.add(16);
-                    }
-                    if (totalSizeInGb > 32) {
-                        options.add(32);
+                    int[] allOptions = {100, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000};
+                    for (int opt : allOptions) {
+                        if (opt / 1000.0f < totalSizeInGb) {
+                            options.add(opt);
+                        }
                     }
                     options.add(Integer.MAX_VALUE);
                     String[] values = new String[options.size()];
                     for (int i = 0; i < options.size(); i++) {
-                        if (options.get(i) == 1) {
-                            values[i] = String.format("300 MB");
-                        } else if (options.get(i) == Integer.MAX_VALUE) {
+                        int opt = options.get(i);
+                        if (opt == Integer.MAX_VALUE) {
                             values[i] = LocaleController.getString(R.string.NoLimit);
+                        } else if (opt < 1000) {
+                            values[i] = String.format("%d MB", opt);
                         } else {
-                            values[i] = String.format("%d GB", options.get(i));
+                            values[i] = String.format("%d GB", opt / 1000);
                         }
                     }
                     slideChooseView2.setCallback(i -> {
-                        SharedConfig.getPreferences().edit().putInt("cache_limit", options.get(i)).apply();
+                        SharedConfig.getPreferences().edit().putInt("cache_limit_mb", options.get(i)).apply();
                     });
-                    int currentLimit = SharedConfig.getPreferences().getInt("cache_limit", Integer.MAX_VALUE);
+                    int currentLimit = SharedConfig.getPreferences().getInt("cache_limit_mb", 0);
+                    if (currentLimit == 0) {
+                        // migrate from old setting
+                        int oldLimit = SharedConfig.getPreferences().getInt("cache_limit", Integer.MAX_VALUE);
+                        if (oldLimit == Integer.MAX_VALUE) {
+                            currentLimit = Integer.MAX_VALUE;
+                        } else if (oldLimit == 1) {
+                            currentLimit = 300;
+                        } else {
+                            currentLimit = oldLimit * 1000;
+                        }
+                    }
                     int i = options.indexOf(currentLimit);
                     if (i < 0) {
                         i = options.size() - 1;
