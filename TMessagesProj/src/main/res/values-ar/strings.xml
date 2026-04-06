@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="QRLoginButton">تسجيل الدخول عبر رمز QR</string>
+    <string name="QRLoginOrLoginByPhone">أو سجّل الدخول باستخدام رقم هاتفك</string>
+    <string name="QRLoginStep1">افتح تيليجرام على هاتفك</string>
+    <string name="QRLoginStep2">اذهب إلى **الإعدادات** > **الأجهزة** > **ربط جهاز سطح المكتب**</string>
+    <string name="QRLoginStep3">وجّه هاتفك نحو هذه الشاشة لتأكيد تسجيل الدخول</string>
+    <string name="QRLoginSubtitle">افتح تيليجرام على جهاز آخر وامسح رمز QR هذا لتسجيل الدخول إلى حسابك.</string>
+    <string name="QRLoginTitle">تسجيل الدخول عبر رمز QR</string>
     <string name="AppNameFdroid">Forkgram</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">المظهر</string>
