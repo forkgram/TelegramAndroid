@@ -3,6 +3,7 @@
     <!--FORK CLIENT-->
     <string name="ForkSectionAppearance">المظهر</string>
     <string name="ForkSectionMedia">الصور والفيديو</string>
+    <string name="ForkSectionVoice">الصوت والترجمة</string>
     <string name="ForkSectionBots">البوتات والمتصفح</string>
     <string name="ForkSectionSystem">النظام والتحديثات</string>
     <string name="UnifiedPushDistributor">موزّعو UnifiedPush</string>
@@ -11,6 +12,10 @@
     <string name="UnifiedPushGatewayNone">غير مستخدمة (تسليم مباشر)</string>
     <string name="DisableUnifiedPush">تعطيل UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">ستصل الإشعارات عبر اتصال التطبيق الخلفي الخاص به</string>
+    <string name="VoiceQualityLow">منخفضة (16 كيلوبت/ث)</string>
+    <string name="VoiceQualityMedium">متوسطة (32 كيلوبت/ث)</string>
+    <string name="VoiceQualityHigh">عالية (64 كيلوبت/ث)</string>
+    <string name="VoiceQualityMax">قصوى (افتراضي)</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>
     <string name="OpenArchiveOnPullInfo">فتح مجلد الأرشيف عند سحب قائمة الدردشات للأسفل.</string>
     <string name="HideStoriesInArchiveInfo">إخفاء صف القصص داخل الدردشات المؤرشفة.</string>
@@ -34,6 +39,7 @@
     <string name="DisableParametersFromBotLinksInfo">إزالة معاملات البدء من روابط البوتات قبل فتحها.</string>
     <string name="DisableDefaultInAppBrowserInfo">فتح الروابط في متصفح النظام بدلاً من المتصفح المدمج.</string>
     <string name="LockPremiumInfo">إخفاء إعلانات Telegram Premium وزر الاشتراك. إعادة التشغيل مطلوبة.</string>
+    <string name="VoiceMessageQuality">جودة الرسائل الصوتية</string>
     <string name="UpdateCheckInterval">فترة التحقق من التحديثات</string>
     <string name="DisablePlayVisibleVideoOnVolume">تعطيل تشغيل الفيديو عند تغيير مستوى الصوت</string>
     <string name="ForkRestartRequired">إعادة التشغيل مطلوبة</string>

@@ -3,6 +3,7 @@
     <!--FORK CLIENT-->
     <string name="ForkSectionAppearance">Erscheinungsbild</string>
     <string name="ForkSectionMedia">Fotos und Videos</string>
+    <string name="ForkSectionVoice">Sprache und Übersetzung</string>
     <string name="ForkSectionBots">Bots und Browser</string>
     <string name="ForkSectionSystem">System und Updates</string>
     <string name="UnifiedPushDistributor">UnifiedPush-Distributoren</string>
@@ -11,6 +12,10 @@
     <string name="UnifiedPushGatewayNone">Nicht verwendet (direkte Zustellung)</string>
     <string name="DisableUnifiedPush">UnifiedPush deaktivieren</string>
     <string name="DisableUnifiedPushInfo">Benachrichtigungen kommen dann über die eigene Hintergrundverbindung der App</string>
+    <string name="VoiceQualityLow">Niedrig (16 kbit/s)</string>
+    <string name="VoiceQualityMedium">Mittel (32 kbit/s)</string>
+    <string name="VoiceQualityHigh">Hoch (64 kbit/s)</string>
+    <string name="VoiceQualityMax">Maximal (Standard)</string>
     <string name="HideBottomButtonInfo">Die untere Leistenschaltfläche (Stumm, Beitreten) leeren und Tippen darauf ignorieren.</string>
     <string name="OpenArchiveOnPullInfo">Den Archivordner öffnen, wenn die Chatliste nach unten gezogen wird.</string>
     <string name="HideStoriesInArchiveInfo">Die Storys-Zeile in archivierten Chats ausblenden.</string>
@@ -34,6 +39,7 @@
     <string name="DisableParametersFromBotLinksInfo">Start-Parameter aus Bot-Links vor dem Öffnen entfernen.</string>
     <string name="DisableDefaultInAppBrowserInfo">Links im Systembrowser statt im integrierten Browser öffnen.</string>
     <string name="LockPremiumInfo">Telegram-Premium-Werbung und die Abo-Schaltfläche ausblenden. Neustart erforderlich.</string>
+    <string name="VoiceMessageQuality">Qualität der Sprachnachrichten</string>
     <string name="UpdateCheckInterval">Intervall der Update-Prüfung</string>
     <string name="DisablePlayVisibleVideoOnVolume">Videowiedergabe bei Lautstärkeänderung deaktivieren</string>
     <string name="ForkRestartRequired">Neustart erforderlich</string>
