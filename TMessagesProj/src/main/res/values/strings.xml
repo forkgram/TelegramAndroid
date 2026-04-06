@@ -5401,6 +5401,13 @@
     <string name="TerminateOldSessionHeader">Automatically terminate old sessions</string>
     <string name="IfInactiveFor">if inactive for</string>
     <string name="AuthAnotherClientInfo5">Go to *getdesktop.telegram.org* or *web.telegram.org* to get a QR code</string>
+    <string name="QRLoginTitle">Log in by QR Code</string>
+    <string name="QRLoginSubtitle">Open Telegram on another device and scan this QR code to log in to your account.</string>
+    <string name="QRLoginStep1">Open Telegram on your phone</string>
+    <string name="QRLoginStep2">Go to **Settings** > **Devices** > **Link Desktop Device**</string>
+    <string name="QRLoginStep3">Point your phone at this screen to confirm login</string>
+    <string name="QRLoginButton">Log in by QR Code</string>
+    <string name="QRLoginOrLoginByPhone">Or log in using your phone number</string>
     <string name="SessionsListInfo">The official Telegram app is available for Android, iPhone, iPad, Windows, macOS and Linux.</string>
     <string name="MigrateOldFolder">Migrate old folder to Scoped Storage</string>
     <string name="SelectThisDay">Select this day</string>
