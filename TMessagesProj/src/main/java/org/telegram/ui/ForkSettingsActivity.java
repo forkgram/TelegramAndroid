@@ -38,6 +38,9 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Cells.ChatMessageCell;
 import org.telegram.ui.Components.SeekBarView;
+import org.telegram.ui.ActionBar.AlertDialog;
+import org.telegram.ui.Cells.RadioColorCell;
+import android.widget.LinearLayout;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -169,6 +172,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int disableDefaultInAppBrowser;
     private int hideStoriesInArchiveRow;
     private int disablePlayVisibleVideoOnVolumeRow;
+    private int voiceQualityRow;
     private int updateCheckIntervalRow;
     private int lastFmLoginRow;
 
@@ -221,6 +225,75 @@ public class ForkSettingsActivity extends BaseFragment {
         }
     }
 
+    private String getVoiceQualityText() {
+        int bitrate = MessagesController.getGlobalMainSettings().getInt("voiceQualityBitrate", -1);
+        if (bitrate == -1) return "Max (default)";
+        if (bitrate <= 16000) return "Low (16 kbps)";
+        if (bitrate <= 32000) return "Medium (32 kbps)";
+        if (bitrate <= 64000) return "High (64 kbps)";
+        return "Max";
+    }
+
+    private void showVoiceQualityDialog() {
+        String[] options = {
+            "Low (16 kbps)",
+            "Medium (32 kbps)",
+            "High (64 kbps)",
+            "Max (default)"
+        };
+
+        int[] bitrates = {
+            16000,
+            32000,
+            64000,
+            -1
+        };
+
+        SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        int currentBitrate = preferences.getInt("voiceQualityBitrate", -1);
+
+        int selectedIndex = 3;
+        for (int i = 0; i < bitrates.length; i++) {
+            if (bitrates[i] == currentBitrate) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        LinearLayout linearLayout = new LinearLayout(getParentActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+        builder.setTitle("Voice Message Quality");
+
+        for (int i = 0; i < options.length; i++) {
+            RadioColorCell cell = new RadioColorCell(getParentActivity());
+            cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
+            cell.setTag(i);
+            cell.setCheckColor(Theme.getColor(Theme.key_radioBackground), Theme.getColor(Theme.key_dialogRadioBackgroundChecked));
+            cell.setTextAndValue(options[i], selectedIndex == i);
+            cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
+            linearLayout.addView(cell);
+
+            cell.setOnClickListener(v -> {
+                int index = (Integer) v.getTag();
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("voiceQualityBitrate", bitrates[index]);
+                editor.commit();
+
+                RecyclerListView.Holder holder = (RecyclerListView.Holder) listView.findViewHolderForAdapterPosition(voiceQualityRow);
+                if (holder != null && holder.itemView instanceof TextSettingsCell) {
+                    ((TextSettingsCell) holder.itemView).getValueTextView().setText(getVoiceQualityText());
+                }
+
+                builder.getDismissRunnable().run();
+            });
+        }
+
+        builder.setView(linearLayout);
+        builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
+        builder.show();
+    }
+
     private void showUpdateIntervalDialog() {
         String[] options = {
             "Disabled",
@@ -261,21 +334,37 @@ public class ForkSettingsActivity extends BaseFragment {
             }
         }
 
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getParentActivity());
+        LinearLayout linearLayout = new LinearLayout(getParentActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
         builder.setTitle("Update Check Interval");
-        builder.setSingleChoiceItems(options, selectedIndex, (dialog, which) -> {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putLong("updateForkCheckInterval", intervals[which]);
-            editor.commit();
 
-            RecyclerListView.Holder holder = (RecyclerListView.Holder) listView.findViewHolderForAdapterPosition(updateCheckIntervalRow);
-            if (holder != null && holder.itemView instanceof TextSettingsCell) {
-                ((TextSettingsCell) holder.itemView).getValueTextView().setText(getUpdateIntervalText());
-            }
+        for (int i = 0; i < options.length; i++) {
+            RadioColorCell cell = new RadioColorCell(getParentActivity());
+            cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
+            cell.setTag(i);
+            cell.setCheckColor(Theme.getColor(Theme.key_radioBackground), Theme.getColor(Theme.key_dialogRadioBackgroundChecked));
+            cell.setTextAndValue(options[i], selectedIndex == i);
+            cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
+            linearLayout.addView(cell);
 
-            dialog.dismiss();
-        });
-        builder.setNegativeButton("Cancel", null);
+            cell.setOnClickListener(v -> {
+                int index = (Integer) v.getTag();
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putLong("updateForkCheckInterval", intervals[index]);
+                editor.commit();
+
+                RecyclerListView.Holder holder = (RecyclerListView.Holder) listView.findViewHolderForAdapterPosition(updateCheckIntervalRow);
+                if (holder != null && holder.itemView instanceof TextSettingsCell) {
+                    ((TextSettingsCell) holder.itemView).getValueTextView().setText(getUpdateIntervalText());
+                }
+
+                builder.getDismissRunnable().run();
+            });
+        }
+
+        builder.setView(linearLayout);
+        builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
         builder.show();
     }
 
@@ -323,6 +412,7 @@ public class ForkSettingsActivity extends BaseFragment {
         disableRecentFilesAttachment = rowCount++;
         disableDefaultInAppBrowser = rowCount++;
         disablePlayVisibleVideoOnVolumeRow = rowCount++;
+        voiceQualityRow = rowCount++;
 
         emptyRows.add(rowCount++);
         botSkipShare = rowCount++;
@@ -503,6 +593,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         }
                         return null;
                     });
+            } else if (position == voiceQualityRow) {
+                showVoiceQualityDialog();
             } else if (position == updateCheckIntervalRow) {
                 showUpdateIntervalDialog();
             } else if (position == lastFmLoginRow) {
@@ -543,6 +635,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("EditAdminRank", R.string.EditAdminRank);
                         final String v = MessagesController.getGlobalMainSettings().getString("forkCustomTitle", "Fork Client");
                         textCell.setTextAndValue(t, v, false);
+                    } else if (position == voiceQualityRow) {
+                        textCell.setTextAndValue("Voice Message Quality", getVoiceQualityText(), false);
                     } else if (position == updateCheckIntervalRow) {
                         String t = "Update Check Interval";
                         String v = getUpdateIntervalText();
@@ -717,6 +811,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == syncPinsRow
                         || position == showNotificationContent
                         || position == photoHasStickerRow
+                        || position == voiceQualityRow
                         || position == updateCheckIntervalRow
                         || position == lastFmLoginRow
                         || position == disableUnifiedPushRow;
@@ -757,7 +852,7 @@ public class ForkSettingsActivity extends BaseFragment {
         public int getItemViewType(int position) {
             if (emptyRows.contains(position)) {
                 return 1;
-            } else if (position == customTitleRow || position == updateCheckIntervalRow || position == lastFmLoginRow) {
+            } else if (position == customTitleRow || position == voiceQualityRow || position == updateCheckIntervalRow || position == lastFmLoginRow) {
                 return 2;
             } else if (position == squareAvatarsRow
                 || position == hideSensitiveDataRow
