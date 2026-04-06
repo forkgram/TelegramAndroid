@@ -80,6 +80,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DELETE_ALL_UNPINNED = 34;
     public static final int ID_DISABLE_SLIDE_TO_NEXT_CHANNEL = 35;
     public static final int ID_FORMAT_WITH_SECONDS = 36;
+    public static final int ID_HIDE_AI_EDITOR = 37;
 
     public static final int ID_DISABLE_QUICK_REACTION = 40;
     public static final int ID_DISABLE_LOCKED_ANIMATED_EMOJI = 43;
@@ -431,6 +432,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("disableSlideToNextChannel", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_FORMAT_WITH_SECONDS, LocaleController.getString(R.string.FormatWithSeconds), LocaleController.getString(R.string.FormatWithSecondsInfo))
             .setChecked(pref("formatWithSeconds", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_HIDE_AI_EDITOR, LocaleController.getString(R.string.HideAiEditor), LocaleController.getString(R.string.HideAiEditorInfo))
+            .setChecked(pref("hideAiEditor", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.Reactions)));
@@ -563,6 +566,9 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("disableSlideToNextChannel", item, view);
         } else if (id == ID_FORMAT_WITH_SECONDS) {
             toggle("formatWithSeconds", item, view);
+        } else if (id == ID_HIDE_AI_EDITOR) {
+            toggle("hideAiEditor", item, view);
+
         } else if (id == ID_DISABLE_QUICK_REACTION) {
             toggle("disableQuickReaction", item, view);
         } else if (id == ID_DISABLE_LOCKED_ANIMATED_EMOJI) {

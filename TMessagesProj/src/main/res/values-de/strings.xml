@@ -21,6 +21,7 @@
     <string name="HideSendAsInfo">Die Senden-als-Schaltfläche im Nachrichtenfeld ausblenden.</string>
     <string name="DisableSlideToNextChannelInfo">Beim Scrollen über das Ende hinaus nicht zum nächsten Kanal wechseln.</string>
     <string name="FormatWithSecondsInfo">Sekunden in Nachrichtenzeiten und anderen Zeitangaben anzeigen.</string>
+    <string name="HideAiEditorInfo">Die KI-Umschreiben-Schaltfläche in Nachrichten- und Bildunterschriftfeldern ausblenden.</string>
     <string name="DisableQuickReactionInfo">Beim Doppeltippen auf eine Nachricht keine Reaktion senden.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Gesperrte Premium-Emoji-Pakete ausblenden. Betrifft nur Konten ohne Premium.</string>
     <string name="FullRecentStickersInfo">Alle zuletzt verwendeten Sticker anzeigen statt nur der letzten 20.</string>
@@ -85,6 +86,7 @@
     <string name="ReallySure">Sind Sie **wirklich sicher**?</string>
     <string name="DisableGlobalSearch">Globale Suche deaktivieren</string>
     <string name="DisableQuickReaction">Schnelle Reaktion deaktivieren</string>
+    <string name="HideAiEditor">KI-Editor-Button ausblenden</string>
     <string name="DisableLockedAnimatedEmoji">Gesperrte animierte Emojis in der Leiste ausblenden</string>
     <string name="DisableParametersFromBotLinks">Parameter von Bot-Links deaktivieren</string>
     <string name="LockPremium">Premium-Funktionen sperren</string>
