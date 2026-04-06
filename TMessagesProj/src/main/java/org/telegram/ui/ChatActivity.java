@@ -33960,6 +33960,7 @@ public class ChatActivity extends BaseFragment implements
                 break;
             }
             case OPTION_COPY_LINK: {
+                if (!copyPrivateLink(selectedObject)) {
                 TLRPC.TL_channels_exportMessageLink req = new TLRPC.TL_channels_exportMessageLink();
                 if (selectedObject == replyingMessageObject && isComments) {
                     req.id = replyOriginalMessageId;
@@ -33985,6 +33986,7 @@ public class ChatActivity extends BaseFragment implements
                     }
 
                 }));
+                }
                 break;
             }
             case OPTION_REPORT_CHAT: {
@@ -45685,7 +45687,8 @@ public class ChatActivity extends BaseFragment implements
                     options.add(OPTION_VIEW_REPLIES_OR_THREAD);
                     icons.add(R.drawable.msg_viewreplies);
                 }
-                if (!selectedObject.isSponsored() && chatMode != MODE_SCHEDULED && ChatObject.isChannel(currentChat) && !ChatObject.isMonoForum(currentChat) && selectedObject.getDialogId() != mergeDialogId) {
+                if ((!selectedObject.isSponsored() && chatMode != MODE_SCHEDULED && ChatObject.isChannel(currentChat) && !ChatObject.isMonoForum(currentChat) && selectedObject.getDialogId() != mergeDialogId)
+                    || canCopyPrivateLink(selectedObject)) {
                     items.add(LocaleController.getString(R.string.CopyLink));
                     options.add(OPTION_COPY_LINK);
                     icons.add(R.drawable.msg_link);
@@ -46995,5 +46998,56 @@ public class ChatActivity extends BaseFragment implements
 
         abstract void drawChatBackgroundElements(Canvas canvas, @Nullable RectF position);
         abstract void drawChatForegroundElements(Canvas canvas, @Nullable RectF position);
+    }
+
+    private boolean canCopyPrivateLink(MessageObject message) {
+        return message != null
+            && !message.isSponsored()
+            && chatMode != MODE_SCHEDULED
+            && currentEncryptedChat == null
+            && !ChatObject.isChannel(currentChat)
+            && !ChatObject.isMonoForum(currentChat)
+            && message.getDialogId() != mergeDialogId
+            && (currentChat != null || currentUser != null);
+    }
+
+    private boolean copyPrivateLink(MessageObject message) {
+        if (message == null || ChatObject.isChannel(currentChat) || ChatObject.isMonoForum(currentChat)) {
+            return false;
+        }
+        String linkPrefix = getMessagesController().linkPrefix;
+        String link = null;
+        if (currentChat != null) {
+            String username = ChatObject.getPublicUsername(currentChat);
+            if (!TextUtils.isEmpty(username)) {
+                link = "https://" + linkPrefix + "/" + username;
+            } else {
+                link = "https://" + linkPrefix + "/c/" + currentChat.id;
+            }
+            long topicId = getTopicId();
+            if (topicId != 0) {
+                link += "/" + topicId;
+            }
+            link += "/" + message.getId();
+        } else if (currentUser != null) {
+            String username = UserObject.getPublicUsername(currentUser);
+            if (!TextUtils.isEmpty(username)) {
+                link = "https://" + linkPrefix + "/" + username + "/" + message.getId();
+            } else {
+                link = "tg://openmessage?user_id=" + currentUser.id + "&message_id=" + message.getId();
+            }
+        }
+        if (TextUtils.isEmpty(link)) {
+            return false;
+        }
+        try {
+            AndroidUtilities.addToClipboard(link);
+            if (BulletinFactory.canShowBulletin(ChatActivity.this)) {
+                BulletinFactory.of(ChatActivity.this).createCopyLinkBulletin(link.contains("/c/") || link.startsWith("tg://openmessage")).show();
+            }
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+        return true;
     }
 }
