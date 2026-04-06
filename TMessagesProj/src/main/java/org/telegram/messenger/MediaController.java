@@ -139,7 +139,7 @@ import java.util.concurrent.CountDownLatch;
 @OptIn(markerClass = UnstableApi.class)
 public class MediaController implements AudioManager.OnAudioFocusChangeListener, NotificationCenter.NotificationCenterDelegate, SensorEventListener {
 
-    private native int startRecord(String path, int sampleRate);
+    private native int startRecord(String path, int sampleRate, int bitrate);
 
     private native int writeFrame(ByteBuffer frame, int len);
 
@@ -4702,7 +4702,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                             return super.delete();
                         }
                     };
-                    if (startRecord(recordingAudioFile.getPath(), sampleRate) == 0) {
+                    if (startRecord(recordingAudioFile.getPath(), sampleRate, MessagesController.getGlobalMainSettings().getInt("voiceQualityBitrate", -1)) == 0) {
                         AndroidUtilities.runOnUIThread(() -> {
                             recordStartRunnable = null;
                             NotificationCenter.getInstance(recordingCurrentAccount).postNotificationName(NotificationCenter.recordStartError, recordingGuid);
@@ -4782,7 +4782,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
             }
             AutoDeleteMediaTask.lockFile(recordingAudioFile);
             try {
-                if (startRecord(recordingAudioFile.getPath(), sampleRate) == 0) {
+                if (startRecord(recordingAudioFile.getPath(), sampleRate, MessagesController.getGlobalMainSettings().getInt("voiceQualityBitrate", -1)) == 0) {
                     AndroidUtilities.runOnUIThread(() -> {
                         recordStartRunnable = null;
                         NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.recordStartError, guid);
