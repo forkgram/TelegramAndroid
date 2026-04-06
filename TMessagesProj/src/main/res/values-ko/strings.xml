@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="QRLoginButton">QR 코드로 로그인</string>
+    <string name="QRLoginOrLoginByPhone">또는 전화번호로 로그인</string>
+    <string name="QRLoginStep1">휴대전화에서 텔레그램을 여세요</string>
+    <string name="QRLoginStep2">**설정** > **기기** > **데스크톱 기기 연결**로 이동하세요</string>
+    <string name="QRLoginStep3">휴대전화를 이 화면에 비추어 로그인을 확인하세요</string>
+    <string name="QRLoginSubtitle">다른 기기에서 텔레그램을 열고 이 QR 코드를 스캔하여 계정에 로그인하세요.</string>
+    <string name="QRLoginTitle">QR 코드로 로그인</string>
     <string name="AppNameFdroid">Forkgram</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">모양</string>
