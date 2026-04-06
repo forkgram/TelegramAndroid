@@ -3,6 +3,7 @@
     <!--FORK CLIENT-->
     <string name="ForkSectionAppearance">Внешний вид</string>
     <string name="ForkSectionMedia">Фото и видео</string>
+    <string name="ForkSectionVoice">Голос и перевод</string>
     <string name="ForkSectionBots">Боты и браузер</string>
     <string name="ForkSectionSystem">Система и обновления</string>
     <string name="UnifiedPushDistributor">Дистрибьюторы UnifiedPush</string>
@@ -11,6 +12,10 @@
     <string name="UnifiedPushGatewayNone">Не используется (прямая доставка)</string>
     <string name="DisableUnifiedPush">Отключить UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">Уведомления будут приходить через собственное фоновое соединение приложения</string>
+    <string name="VoiceQualityLow">Низкое (16 кбит/с)</string>
+    <string name="VoiceQualityMedium">Среднее (32 кбит/с)</string>
+    <string name="VoiceQualityHigh">Высокое (64 кбит/с)</string>
+    <string name="VoiceQualityMax">Максимальное (по умолчанию)</string>
     <string name="HideBottomButtonInfo">Очищать нижнюю кнопку (Выключить звук, Вступить) и игнорировать нажатия по ней.</string>
     <string name="OpenArchiveOnPullInfo">Открывать папку «Архив» при потягивании списка чатов вниз.</string>
     <string name="HideStoriesInArchiveInfo">Скрывать ленту историй внутри архива чатов.</string>
@@ -34,6 +39,7 @@
     <string name="DisableParametersFromBotLinksInfo">Убирать start-параметры из ссылок на ботов перед открытием.</string>
     <string name="DisableDefaultInAppBrowserInfo">Открывать ссылки в системном браузере вместо встроенного.</string>
     <string name="LockPremiumInfo">Скрывать рекламу Telegram Premium и кнопку подписки. Требуется перезапуск.</string>
+    <string name="VoiceMessageQuality">Качество голосовых сообщений</string>
     <string name="UpdateCheckInterval">Интервал проверки обновлений</string>
     <string name="DisablePlayVisibleVideoOnVolume">Отключить воспроизведение видео при изменении громкости</string>
     <string name="ForkRestartRequired">Требуется перезапуск</string>
