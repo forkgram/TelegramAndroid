@@ -1,0 +1,7 @@
+[
+    {
+        "key": "f16",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Deploy (sync + build + install)"
+    }
+]
