@@ -4,8 +4,13 @@
     <!--FORK CLIENT-->
     <string name="ForkSectionAppearance">Appearance</string>
     <string name="ForkSectionMedia">Photos and video</string>
+    <string name="ForkSectionVoice">Voice and translation</string>
     <string name="ForkSectionBots">Bots and browser</string>
     <string name="ForkSectionSystem">System and updates</string>
+    <string name="VoiceQualityLow">Low (16 kbps)</string>
+    <string name="VoiceQualityMedium">Medium (32 kbps)</string>
+    <string name="VoiceQualityHigh">High (64 kbps)</string>
+    <string name="VoiceQualityMax">Max (default)</string>
     <string name="HideBottomButtonInfo">Blank the bottom bar button (Mute, Join) and ignore taps on it.</string>
     <string name="OpenArchiveOnPullInfo">Open the Archive folder when the chat list is pulled down.</string>
     <string name="HideStoriesInArchiveInfo">Hide the stories row inside Archived Chats.</string>
@@ -29,6 +34,7 @@
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
     <string name="DisableDefaultInAppBrowserInfo">Open links in your system browser instead of the in-app one.</string>
     <string name="LockPremiumInfo">Hide Telegram Premium ads and the subscribe button. Restart required.</string>
+    <string name="VoiceMessageQuality">Voice Message Quality</string>
     <string name="UpdateCheckInterval">Update Check Interval</string>
     <string name="DisablePlayVisibleVideoOnVolume">Disable play video on volume change</string>
     <string name="ForkRestartRequired">Restart required</string>
