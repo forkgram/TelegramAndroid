@@ -1,0 +1,76 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Deploy (sync + build + install)",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/remote-build.sh",
+            "args": ["deploy"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build only (sync + build)",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/remote-build.sh",
+            "args": ["build"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Install last APK",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/remote-build.sh",
+            "args": ["install"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Sync files only",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/remote-build.sh",
+            "args": ["sync"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Setup Docker image (one-time)",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/remote-build.sh",
+            "args": ["setup"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Check prerequisites",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/remote-build.sh",
+            "args": ["check"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
