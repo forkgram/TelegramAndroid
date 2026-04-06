@@ -94,6 +94,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_PLAY_VISIBLE_VIDEO_ON_VOLUME = 56;
     public static final int ID_DISABLE_RECENT_FILES_ATTACHMENT = 57;
 
+    public static final int ID_VOICE_QUALITY = 60;
+
     public static final int ID_BOT_SKIP_SHARE = 70;
     public static final int ID_BOT_SKIP_FULLSCREEN = 71;
     public static final int ID_DISABLE_PARAMETERS_FROM_BOT_LINKS = 72;
@@ -221,6 +223,15 @@ public class ForkSettingsActivity extends BaseFragment {
         } else {
             return LocaleController.formatPluralString("Days", (int) (interval / (24 * 60 * 60 * 1000)));
         }
+    }
+
+    private static String getVoiceQualityText() {
+        int bitrate = prefs().getInt("voiceQualityBitrate", -1);
+        if (bitrate <= 0) return LocaleController.getString(R.string.VoiceQualityMax);
+        if (bitrate <= 16000) return LocaleController.getString(R.string.VoiceQualityLow);
+        if (bitrate <= 32000) return LocaleController.getString(R.string.VoiceQualityMedium);
+        if (bitrate <= 64000) return LocaleController.getString(R.string.VoiceQualityHigh);
+        return LocaleController.getString(R.string.VoiceQualityMax);
     }
 
     @Override
@@ -460,6 +471,10 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("disableRecentFilesAttachment", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
+        items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionVoice)));
+        items.add(UItem.asSettingsCell(ID_VOICE_QUALITY, LocaleController.getString(R.string.VoiceMessageQuality), getVoiceQualityText()));
+        items.add(UItem.asShadow(null));
+
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionBots)));
         items.add(UItem.asButtonCheck(ID_BOT_SKIP_SHARE, LocaleController.getString(R.string.BotSkipShare), LocaleController.getString(R.string.BotSkipShareInfo))
             .setChecked(pref("botSkipShare", false)).setMultiline(true));
@@ -572,6 +587,8 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_DISABLE_RECENT_FILES_ATTACHMENT) {
             toggle("disableRecentFilesAttachment", item, view);
 
+        } else if (id == ID_VOICE_QUALITY) {
+            showVoiceQualityDialog();
         } else if (id == ID_BOT_SKIP_SHARE) {
             toggle("botSkipShare", item, view);
         } else if (id == ID_BOT_SKIP_FULLSCREEN) {
@@ -647,6 +664,32 @@ public class ForkSettingsActivity extends BaseFragment {
         builder.setView(linearLayout);
         builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
         builder.show();
+    }
+
+    private void showVoiceQualityDialog() {
+        final String[] options = {
+            LocaleController.getString(R.string.VoiceQualityLow),
+            LocaleController.getString(R.string.VoiceQualityMedium),
+            LocaleController.getString(R.string.VoiceQualityHigh),
+            LocaleController.getString(R.string.VoiceQualityMax)
+        };
+        final int[] bitrates = {16000, 32000, 64000, -1};
+
+        int currentBitrate = prefs().getInt("voiceQualityBitrate", -1);
+        int selectedIndex = bitrates.length - 1;
+        for (int i = 0; i < bitrates.length; i++) {
+            if (bitrates[i] == currentBitrate) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        showRadioDialog(LocaleController.getString(R.string.VoiceMessageQuality), options, selectedIndex, index -> {
+            SharedPreferences.Editor editor = prefs().edit();
+            editor.putInt("voiceQualityBitrate", bitrates[index]);
+            editor.commit();
+            listView.adapter.update(false);
+        });
     }
 
     private void showUpdateIntervalDialog() {

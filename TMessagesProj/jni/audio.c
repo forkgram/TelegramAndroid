@@ -222,7 +222,7 @@ static int writeOggPage(ogg_page *page, FILE *os) {
     return written;
 }
 
-const opus_int32 bitrate = 30 * 1024;
+opus_int32 bitrate = 30 * 1024;
 static const int opus_application = OPUS_APPLICATION_AUDIO;
 const opus_int32 frame_size = 960;
 const int with_cvbr = 1;
@@ -299,11 +299,12 @@ void cleanupRecorder() {
     memset(&og, 0, sizeof(ogg_page));
 }
 
-int initRecorder(const char *path, opus_int32 sampleRate) {
+int initRecorder(const char *path, opus_int32 sampleRate, opus_int32 bitrateParam) {
     cleanupRecorder();
 
     coding_rate = sampleRate;
     rate = sampleRate;
+    bitrate = bitrateParam;
 
     if (!path) {
         LOGE("path is null");
@@ -515,10 +516,10 @@ int writeFrame(uint8_t *framePcmBytes, uint32_t frameByteCount, int end) {
     return 1;
 }
 
-JNIEXPORT jint Java_org_telegram_messenger_MediaController_startRecord(JNIEnv *env, jclass class, jstring path, jint sampleRate) {
+JNIEXPORT jint Java_org_telegram_messenger_MediaController_startRecord(JNIEnv *env, jclass class, jstring path, jint sampleRate, jint bitrate) {
     const char *pathStr = (*env)->GetStringUTFChars(env, path, 0);
 
-    int32_t result = initRecorder(pathStr, sampleRate);
+    int32_t result = initRecorder(pathStr, sampleRate, bitrate);
 
     if (pathStr != 0) {
         (*env)->ReleaseStringUTFChars(env, path, pathStr);
@@ -969,7 +970,7 @@ int cropOpusAudio(const char *inputPath, const char *outputPath, float startTime
         return 0;
     }
 
-    if (!initRecorder(outputPath, rate)) {
+    if (!initRecorder(outputPath, rate, OPUS_BITRATE_MAX)) {
         LOGE("Failed to init recorder");
         op_free(opusFile);
         return 0;
@@ -1079,7 +1080,7 @@ int joinOpusAudios(const char* file1, const char* file2, const char* dest) {
     int channels = MIN(head1->channel_count, head2->channel_count);
     opus_int32 rate = 48000;
 
-    if (!initRecorder(dest, rate)) {
+    if (!initRecorder(dest, rate, OPUS_BITRATE_MAX)) {
         LOGE("Failed to init recorder");
         op_free(opusFile1);
         op_free(opusFile2);
