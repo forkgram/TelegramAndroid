@@ -3,8 +3,13 @@
     <!--FORK CLIENT-->
     <string name="ForkSectionAppearance">Aparência</string>
     <string name="ForkSectionMedia">Fotos e vídeos</string>
+    <string name="ForkSectionVoice">Voz e tradução</string>
     <string name="ForkSectionBots">Bots e navegador</string>
     <string name="ForkSectionSystem">Sistema e atualizações</string>
+    <string name="VoiceQualityLow">Baixa (16 kbps)</string>
+    <string name="VoiceQualityMedium">Média (32 kbps)</string>
+    <string name="VoiceQualityHigh">Alta (64 kbps)</string>
+    <string name="VoiceQualityMax">Máxima (padrão)</string>
     <string name="HideBottomButtonInfo">Esvaziar o botão da barra inferior (Silenciar, Entrar) e ignorar toques nele.</string>
     <string name="OpenArchiveOnPullInfo">Abrir a pasta Arquivadas ao puxar a lista de conversas para baixo.</string>
     <string name="HideStoriesInArchiveInfo">Ocultar a linha de stories dentro das conversas arquivadas.</string>
@@ -28,6 +33,7 @@
     <string name="DisableParametersFromBotLinksInfo">Remover os parâmetros de início dos links de bots antes de abri-los.</string>
     <string name="DisableDefaultInAppBrowserInfo">Abrir os links no navegador do sistema em vez do navegador interno.</string>
     <string name="LockPremiumInfo">Ocultar os anúncios do Telegram Premium e o botão de assinatura. Reinício necessário.</string>
+    <string name="VoiceMessageQuality">Qualidade das mensagens de voz</string>
     <string name="UpdateCheckInterval">Intervalo de verificação de atualizações</string>
     <string name="DisablePlayVisibleVideoOnVolume">Desativar reprodução de vídeo ao alterar o volume</string>
     <string name="ForkRestartRequired">Reinício necessário</string>
