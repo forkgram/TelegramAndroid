@@ -162,6 +162,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int hideSendAsRow;
     private int disableQuickReactionRow;
     private int disableLockedAnimatedEmoji;
+    private int hideAiEditorRow;
     private int disableParametersFromBotLinks;
     private int lockPremium;
     private int addItemToDeleteAllUnpinnedMessages;
@@ -406,6 +407,7 @@ public class ForkSettingsActivity extends BaseFragment {
         hideSendAsRow = rowCount++;
         disableQuickReactionRow = rowCount++;
         disableLockedAnimatedEmoji = rowCount++;
+        hideAiEditorRow = rowCount++;
         disableParametersFromBotLinks = rowCount++;
         addItemToDeleteAllUnpinnedMessages = rowCount++;
         disableSlideToNextChannel = rowCount++;
@@ -524,6 +526,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("disableQuickReaction", view, false);
             } else if (position == disableLockedAnimatedEmoji) {
                 toggleGlobalMainSetting("disableLockedAnimatedEmoji", view, false);
+            } else if (position == hideAiEditorRow) {
+                toggleGlobalMainSetting("hideAiEditor", view, false);
             } else if (position == disableParametersFromBotLinks) {
                 toggleGlobalMainSetting("disableParametersFromBotLinks", view, false);
             } else if (position == addItemToDeleteAllUnpinnedMessages) {
@@ -689,6 +693,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableLockedAnimatedEmoji) {
                         String t = LocaleController.getString("DisableLockedAnimatedEmoji", R.string.DisableLockedAnimatedEmoji);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableLockedAnimatedEmoji", false), false);
+                    } else if (position == hideAiEditorRow) {
+                        String t = LocaleController.getString("HideAiEditor", R.string.HideAiEditor);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("hideAiEditor", false), false);
                     } else if (position == disableParametersFromBotLinks) {
                         String t = LocaleController.getString("DisableParametersFromBotLinks", R.string.DisableParametersFromBotLinks);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableParametersFromBotLinks", false), false);
@@ -788,6 +795,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == hideSendAsRow
                         || position == disableQuickReactionRow
                         || position == disableLockedAnimatedEmoji
+                        || position == hideAiEditorRow
                         || position == disableParametersFromBotLinks
                         || position == addItemToDeleteAllUnpinnedMessages
                         || position == disableSlideToNextChannel
@@ -865,6 +873,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == hideSendAsRow
                 || position == disableQuickReactionRow
                 || position == disableLockedAnimatedEmoji
+                || position == hideAiEditorRow
                 || position == disableParametersFromBotLinks
                 || position == addItemToDeleteAllUnpinnedMessages
                 || position == disableSlideToNextChannel
