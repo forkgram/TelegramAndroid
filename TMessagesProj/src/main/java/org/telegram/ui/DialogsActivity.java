@@ -498,6 +498,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private ActionBarMenuSubItem proxyMenuSubItem;
     private HintView2 storyHint;
     private HintView2 storyPremiumHint;
+    private HintView2 forkTitleHint;
     private boolean canShowStoryHint;
     private boolean storyHintShown;
     private FragmentFloatingButton floatingButton3;
@@ -4765,6 +4766,22 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
         }
 
+        if (!isArchive() && initialDialogsType == DIALOGS_TYPE_DEFAULT) {
+            if (MessagesController.getGlobalMainSettings().getBoolean("forktitlehint", true)) {
+                forkTitleHint = new HintView2(context, HintView2.DIRECTION_TOP)
+                    .setRounding(8)
+                    .setDuration(15_000)
+                    .setCloseButton(true)
+                    .setMaxWidth(300)
+                    .setMultilineText(true)
+                    .setText("Long-press the title to toggle the bottom tab bar.\nLong-press \u22EE to quickly open Settings.")
+                    .setJoint(0, 40)
+                    .setBgColor(getThemedColor(Theme.key_undo_background))
+                    .setOnHiddenListener(() -> MessagesController.getGlobalMainSettings().edit().putBoolean("forktitlehint", false).apply());
+                contentView.addView(forkTitleHint, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 100, Gravity.TOP | Gravity.FILL_HORIZONTAL, 0, 56, 0, 0));
+            }
+        }
+
         updateStoriesPosting();
 
         searchTabsView = null;
@@ -7296,6 +7313,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             storyHintShown = true;
             canShowStoryHint = false;
             storyHint.show();
+        }
+        if (forkTitleHint != null) {
+            final HintView2 hint = forkTitleHint;
+            forkTitleHint = null;
+            AndroidUtilities.runOnUIThread(hint::show, 1500);
         }
         AndroidUtilities.runOnUIThread(this::createSearchViewPager, 200);
     }
