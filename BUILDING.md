@@ -37,3 +37,59 @@
 The project can be built with Android Studio or from the command line with gradle:
 
 `./gradlew assembleAfatRelease`
+
+## Reproducible builds
+
+The repository ships a pinned Docker image and a build script that produce
+byte-for-byte identical APKs across machines, given the same git revision and
+signing key.
+
+Pinned in [docker/Dockerfile](docker/Dockerfile):
+
+- Ubuntu 22.04, JDK 17, UTC timezone, `C.UTF-8` locale
+- Android command-line tools `11076708`
+- SDK platform 35, Build Tools 35.0.0
+- NDK `21.4.7075529` (native dependency scripts), `23.2.8568313`, `27.2.12479018` (gradle `externalNativeBuild`)
+- CMake `3.10.2.4988404`
+
+### Building
+
+```
+scripts/reproducible-build.sh
+```
+
+`SOURCE_DATE_EPOCH` is taken from `git log -1 --format=%ct HEAD`, then exported
+into the container. The script applies [reproducible.gradle](reproducible.gradle)
+as an init script, which forces `preserveFileTimestamps = false` and
+`reproducibleFileOrder = true` on every archive task (AGP 8 already does this
+for APKs and AABs; the init script covers custom Zip/Jar tasks).
+
+To build a non-default target:
+
+```
+scripts/reproducible-build.sh :TMessagesProj_App:bundleBundleAfatRelease
+```
+
+### Verifying a published APK
+
+```
+scripts/verify-apk.sh path/to/published.apk \
+    TMessagesProj_App/build/outputs/apk/afat/release/app.apk
+```
+
+The script delegates to [apkdiff.py](apkdiff.py) which ignores the v1 signature
+block (`META-INF/MANIFEST.MF`, `META-INF/CERT.RSA`, `META-INF/CERT.SF`) since
+those depend on the signing key, not on the source.
+
+### Known caveats
+
+- **Build host OS leaks into the APK.** `Utilities.parseInt` branches on
+  `BuildConfig.BUILD_HOST_IS_WINDOWS`, which is set at build time. The
+  reproducible image is Linux, so the canonical value is always `false`.
+  Builds run directly on Windows will diverge.
+- **Signing key.** Two builds signed with different keys will differ in the
+  signature blocks. Use `scripts/verify-apk.sh` to compare ignoring those
+  entries, or sign the rebuilt APK with the same key before comparing.
+- **NDK / AGP upgrades.** Bumping `ndkVersion`, `buildToolsVersion`, or the
+  AGP/Kotlin plugin versions invalidates the reproducibility baseline. Update
+  the Docker image in the same commit and rebuild the reference APK.
