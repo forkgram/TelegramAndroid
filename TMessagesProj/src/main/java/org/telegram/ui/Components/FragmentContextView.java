@@ -845,6 +845,36 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
             }
         });
 
+        setOnLongClickListener(v -> {
+            if (currentStyle == STYLE_AUDIO_PLAYER) {
+                MessageObject messageObject = MediaController.getInstance().getPlayingMessageObject();
+                if (messageObject == null) {
+                    return false;
+                }
+                if (messageObject.currentAccount != UserConfig.selectedAccount) {
+                    if (LaunchActivity.instance != null) {
+                        LaunchActivity.instance.switchToAccount(messageObject.currentAccount, true);
+                    }
+                }
+                long dialogId = messageObject.getDialogId();
+                Bundle args = new Bundle();
+                if (DialogObject.isEncryptedDialog(dialogId)) {
+                    args.putInt("enc_id", DialogObject.getEncryptedChatId(dialogId));
+                } else if (DialogObject.isUserDialog(dialogId)) {
+                    args.putLong("user_id", dialogId);
+                } else {
+                    args.putLong("chat_id", -dialogId);
+                }
+                args.putInt("message_id", messageObject.getId());
+                BaseFragment lastFragment = LaunchActivity.getSafeLastFragment();
+                if (lastFragment != null) {
+                    lastFragment.presentFragment(new ChatActivity(args));
+                }
+                return true;
+            }
+            return false;
+        });
+
         setLeftMargin(leftMargin);
     }
 
