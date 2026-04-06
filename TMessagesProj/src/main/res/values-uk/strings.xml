@@ -27,6 +27,7 @@
     <string name="HideSendAsInfo">Приховувати кнопку вибору відправника в полі повідомлення.</string>
     <string name="DisableSlideToNextChannelInfo">Не переходити до наступного каналу під час прокручування за кінець чату.</string>
     <string name="FormatWithSecondsInfo">Показувати секунди в часі повідомлень та інших позначках часу.</string>
+    <string name="HideAiEditorInfo">Приховувати кнопку ШІ-редактора в полях повідомлення та підпису.</string>
     <string name="DisableQuickReactionInfo">Не надсилати реакцію під час подвійного натискання на повідомлення.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Приховувати заблоковані преміум-набори емодзі. Лише для акаунтів без Premium.</string>
     <string name="FullRecentStickersInfo">Показувати всі нещодавні стікери замість останніх 20.</string>
@@ -91,6 +92,7 @@
     <string name="ReallySure">Ви **справді впевнені**?</string>
     <string name="DisableGlobalSearch">Вимкнути глобальний пошук</string>
     <string name="DisableQuickReaction">Вимкнути швидку реакцію</string>
+    <string name="HideAiEditor">Сховати кнопку ШІ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Сховати заблоковані анімовані емодзі в панелі</string>
     <string name="DisableParametersFromBotLinks">Вимкнути параметри з посилань ботів</string>
     <string name="LockPremium">Заблокувати преміум-функції</string>
