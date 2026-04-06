@@ -10,8 +10,11 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -27,7 +30,9 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.VideoEditedInfo;
 import org.telegram.ui.ActionBar.AlertDialog;
+import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.BubbleActivity;
+import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.PaintingOverlay;
 import org.telegram.ui.Components.VideoEditTextureView;
 
@@ -69,6 +74,8 @@ public class CropView extends FrameLayout implements CropAreaView.AreaViewListen
     private boolean hasAspectRatioDialog;
 
     private boolean isVisible;
+
+    private ImageView squareCropButton;
 
     protected int bitmapRotation;
 
@@ -271,6 +278,22 @@ public class CropView extends FrameLayout implements CropAreaView.AreaViewListen
         areaView = new CropAreaView(context);
         areaView.setListener(this);
         addView(areaView);
+
+        squareCropButton = new ImageView(context);
+        squareCropButton.setImageResource(R.drawable.msg_photo_cropsquare);
+        squareCropButton.setBackgroundDrawable(Theme.createSelectorDrawable(Theme.ACTION_BAR_WHITE_SELECTOR_COLOR));
+        squareCropButton.setScaleType(ImageView.ScaleType.CENTER);
+        squareCropButton.setClickable(true);
+        squareCropButton.setOnClickListener(v -> {
+            toggleSquareCrop();
+            updateSquareCropButtonState();
+        });
+        squareCropButton.setContentDescription(LocaleController.getString(R.string.CropSquare));
+        int statusBarH = Build.VERSION.SDK_INT >= 21 && !inBubbleMode ? AndroidUtilities.statusBarHeight : 0;
+        FrameLayout.LayoutParams lp = LayoutHelper.createFrame(48, 48, Gravity.RIGHT | Gravity.TOP);
+        lp.topMargin = statusBarH + AndroidUtilities.dp(8);
+        lp.rightMargin = AndroidUtilities.dp(8);
+        addView(squareCropButton, lp);
     }
 
     public boolean isReady() {
@@ -507,6 +530,8 @@ public class CropView extends FrameLayout implements CropAreaView.AreaViewListen
         updateMatrix(force);
 
         resetRotationStartScale();
+
+        updateSquareCropButtonState();
 
         if (listener != null) {
             listener.onChange(true);
@@ -928,7 +953,14 @@ public class CropView extends FrameLayout implements CropAreaView.AreaViewListen
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (squareCropButton != null && isPointInsideView(ev.getX(), ev.getY(), squareCropButton)) {
+            return false;
+        }
         return true;
+    }
+
+    private boolean isPointInsideView(float x, float y, android.view.View view) {
+        return x >= view.getLeft() && x <= view.getRight() && y >= view.getTop() && y <= view.getBottom();
     }
 
     @Override
@@ -1278,6 +1310,36 @@ public class CropView extends FrameLayout implements CropAreaView.AreaViewListen
         if (listener != null) {
             listener.onChange(false);
             listener.onAspectLock(true);
+        }
+    }
+
+    public boolean isSquareCropActive() {
+        return Math.abs(areaView.getLockAspectRatio() - 1.0f) < EPSILON;
+    }
+
+    public void toggleSquareCrop() {
+        if (state == null) {
+            return;
+        }
+        if (isSquareCropActive()) {
+            areaView.setLockedAspectRatio(0);
+            float w = state.getBaseRotation() % 180 != 0 ? state.getHeight() : state.getWidth();
+            float h = state.getBaseRotation() % 180 != 0 ? state.getWidth() : state.getHeight();
+            RectF targetRect = new RectF();
+            areaView.calculateRect(targetRect, w / h);
+            fillAreaView(targetRect, true);
+            if (listener != null) {
+                listener.onChange(false);
+                listener.onAspectLock(false);
+            }
+        } else {
+            setLockedAspectRatio(1.0f);
+        }
+    }
+
+    private void updateSquareCropButtonState() {
+        if (squareCropButton != null) {
+            squareCropButton.setColorFilter(isSquareCropActive() ? new PorterDuffColorFilter(0xff51bdf3, PorterDuff.Mode.MULTIPLY) : null);
         }
     }
 
