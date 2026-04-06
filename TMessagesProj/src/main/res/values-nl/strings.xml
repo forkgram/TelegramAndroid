@@ -27,6 +27,7 @@
     <string name="HideSendAsInfo">De knop Verzenden als in het berichtveld verbergen.</string>
     <string name="DisableSlideToNextChannelInfo">Niet naar het volgende kanaal gaan bij doorscrollen voorbij het einde.</string>
     <string name="FormatWithSecondsInfo">Seconden tonen in berichttijden en andere tijden.</string>
+    <string name="HideAiEditorInfo">De AI-herschrijfknop in bericht- en bijschriftvelden verbergen.</string>
     <string name="DisableQuickReactionInfo">Geen reactie versturen bij dubbeltikken op een bericht.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Vergrendelde premium-emojipakketten verbergen. Alleen voor accounts zonder Premium.</string>
     <string name="FullRecentStickersInfo">Alle recente stickers tonen in plaats van de laatste 20.</string>
@@ -91,6 +92,7 @@
     <string name="ReallySure">Ben je **echt zeker**?</string>
     <string name="DisableGlobalSearch">Globale zoekfunctie uitschakelen</string>
     <string name="DisableQuickReaction">Snelle reactie uitschakelen</string>
+    <string name="HideAiEditor">Knop AI-editor verbergen</string>
     <string name="DisableLockedAnimatedEmoji">Vergrendelde geanimeerde emoji in het paneel verbergen</string>
     <string name="DisableParametersFromBotLinks">Parameters van botlinks uitschakelen</string>
     <string name="LockPremium">Premium functies vergrendelen</string>
