@@ -21,6 +21,7 @@
     <string name="HideSendAsInfo">إخفاء زر الإرسال باسم في حقل الرسالة.</string>
     <string name="DisableSlideToNextChannelInfo">عدم الانتقال إلى القناة التالية عند التمرير بعد النهاية.</string>
     <string name="FormatWithSecondsInfo">إظهار الثواني في أوقات الرسائل والأوقات الأخرى.</string>
+    <string name="HideAiEditorInfo">إخفاء زر إعادة الصياغة بالذكاء الاصطناعي في حقول الرسالة والتسمية.</string>
     <string name="DisableQuickReactionInfo">عدم إرسال تفاعل عند النقر المزدوج على رسالة.</string>
     <string name="DisableLockedAnimatedEmojiInfo">إخفاء حزم الإيموجي المميزة المقفلة. يؤثر على الحسابات غير المميزة فقط.</string>
     <string name="FullRecentStickersInfo">إظهار جميع الملصقات الأخيرة بدلاً من آخر 20 فقط.</string>
@@ -85,6 +86,7 @@
     <string name="ReallySure">هل أنت **متأكد حقًا**؟</string>
     <string name="DisableGlobalSearch">تعطيل البحث العالمي</string>
     <string name="DisableQuickReaction">تعطيل رد الفعل السريع</string>
+    <string name="HideAiEditor">إخفاء زر محرر الذكاء الاصطناعي</string>
     <string name="DisableLockedAnimatedEmoji">إخفاء الرموز التعبيرية المتحركة المقفلة في اللوحة</string>
     <string name="DisableParametersFromBotLinks">تعطيل المعلمات من روابط الروبوت</string>
     <string name="LockPremium">قفل الميزات المميزة</string>

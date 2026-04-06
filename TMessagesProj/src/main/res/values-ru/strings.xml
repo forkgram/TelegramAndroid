@@ -21,6 +21,7 @@
     <string name="HideSendAsInfo">Скрывать кнопку выбора отправителя в поле сообщения.</string>
     <string name="DisableSlideToNextChannelInfo">Не переходить к следующему каналу при прокрутке за конец чата.</string>
     <string name="FormatWithSecondsInfo">Показывать секунды во времени сообщений и других отметках времени.</string>
+    <string name="HideAiEditorInfo">Скрывать кнопку ИИ-редактора в полях сообщения и подписи.</string>
     <string name="DisableQuickReactionInfo">Не отправлять реакцию при двойном нажатии на сообщение.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Скрывать заблокированные премиум-наборы эмодзи. Только для аккаунтов без Premium.</string>
     <string name="FullRecentStickersInfo">Показывать все недавние стикеры вместо последних 20.</string>
@@ -85,6 +86,7 @@
     <string name="ReallySure">Вы **действительно уверены**?</string>
     <string name="DisableGlobalSearch">Отключить глобальный поиск</string>
     <string name="DisableQuickReaction">Отключить быструю реакцию</string>
+    <string name="HideAiEditor">Скрыть кнопку ИИ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Скрыть заблокированные анимированные эмодзи в панели</string>
     <string name="DisableParametersFromBotLinks">Отключить параметры из ссылок бота</string>
     <string name="LockPremium">Заблокировать премиум функции</string>

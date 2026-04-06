@@ -22,6 +22,7 @@
     <string name="HideSendAsInfo">Hide the send-as avatar button in the message field.</string>
     <string name="DisableSlideToNextChannelInfo">Do not slide to the next channel when scrolling past the end.</string>
     <string name="FormatWithSecondsInfo">Show seconds in message timestamps and other times.</string>
+    <string name="HideAiEditorInfo">Hide the AI rewrite button in message and caption fields.</string>
     <string name="DisableQuickReactionInfo">Do not send a reaction when a message is double-tapped.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Hide locked premium emoji packs. Affects non-Premium accounts only.</string>
     <string name="FullRecentStickersInfo">Show all recent stickers instead of the last 20.</string>
@@ -86,6 +87,7 @@
     <string name="ReallySure">Are you **really sure**?</string>
     <string name="DisableGlobalSearch">Disable Global Search</string>
     <string name="DisableQuickReaction">Disable quick reaction</string>
+    <string name="HideAiEditor">Hide AI Editor button</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
     <string name="DisableParametersFromBotLinks">Disable parameters from bot links</string>
     <string name="LockPremium">Lock premium features</string>
