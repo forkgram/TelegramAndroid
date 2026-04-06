@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="QRLoginButton">Accedi con codice QR</string>
+    <string name="QRLoginOrLoginByPhone">Oppure accedi con il tuo numero di telefono</string>
+    <string name="QRLoginStep1">Apri Telegram sul tuo telefono</string>
+    <string name="QRLoginStep2">Vai in **Impostazioni** > **Dispositivi** > **Collega dispositivo desktop**</string>
+    <string name="QRLoginStep3">Inquadra questo schermo con il telefono per confermare l\'accesso</string>
+    <string name="QRLoginSubtitle">Apri Telegram su un altro dispositivo e scansiona questo codice QR per accedere al tuo account.</string>
+    <string name="QRLoginTitle">Accedi con codice QR</string>
     <string name="AppNameFdroid">Forkgram</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Aspetto</string>
