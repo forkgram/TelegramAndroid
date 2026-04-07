@@ -2,10 +2,18 @@ name: Fork Client
 
 on: [push]
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   linux:
     name: Build
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/forkgram-builder:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         type: [debug, release]
@@ -19,41 +27,19 @@ jobs:
             name: " compressed"
             updates: 1
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Free up some disk space.
-        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
-        with:
-          tool-cache: false
-          android: false
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - uses: nttld/setup-ndk@v1.4.2
-        id: setup-ndk-r21e
-        with:
-          ndk-version: r21e
-          link-to-sdk: true
-
-      - uses: nttld/setup-ndk@v1.4.2
-        id: setup-ndk-r23c
-        with:
-          ndk-version: r23c
-          link-to-sdk: true
       - name: Prepare additional build number.
         env:
           ADDITIONAL_BUILD: ${{ secrets.ADDITIONAL_BUILD_NUMBER }}
         run: |
           result=$((ADDITIONAL_BUILD / 10000))
-          echo "ADDITIONAL_BUILD_NUMBER = $result should be between 0 and 10!"
           echo "ADDITIONAL_BUILD_NUMBER=$result" >> $GITHUB_ENV
           echo "USER_REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
           echo "CHECK_UPDATES=${{ matrix.updates }}" >> $GITHUB_ENV
       - name: Build.
         run: |
-          ###
           vars=gradle.properties
 
           echo "DUMMY_CONST=0" >> $vars
@@ -71,20 +57,21 @@ jobs:
           echo "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}" >> $vars
           echo "LASTFM_API_SECRET=${{ secrets.LASTFM_API_SECRET }}" >> $vars
 
-          ###
-          echo $ADDITIONAL_BUILD_NUMBER
-          sudo apt update
-          sudo apt -y install ninja-build meson unzip pip gperf
-          ./gradlew :TMessagesProj_App:${{ matrix.afat }}
+          if [ -d /prebuilt/arm64-v8a ]; then
+            NATIVE_FLAG="-PprebuiltNativeDir=/prebuilt"
+            echo "Using prebuilt native libraries from Docker image"
+          else
+            NATIVE_FLAG=""
+            echo "Building native libraries from source"
+          fi
 
-          #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
+          ./gradlew :TMessagesProj_App:${{ matrix.afat }} $NATIVE_FLAG
+
           grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/${{ matrix.type }}/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
 
           mkdir -p artifact
           mv TMessagesProj_App/build/outputs/apk/afat/${{ matrix.type }}/app.apk app.apk
           cp app.apk "artifact/ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
-          mkdir -p tag_asset
-          cp app.apk "tag_asset/ForkClient_$(cat ver.txt)${{ matrix.name }}.apk"
 
           # Upload to channel.
           set +x
@@ -92,10 +79,8 @@ jobs:
           cp app.apk "ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
           echo "${{ secrets.BASE64_ZIP }}" | base64 --decode > output.zip
           unzip -j output.zip -d .
-          ls
           python3 upload.py
           set -x
-          ###
 
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
 
@@ -113,7 +98,7 @@ jobs:
     needs: linux
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v4
       - name: Download debug artifact
         uses: actions/download-artifact@v4.3.0
         with:
