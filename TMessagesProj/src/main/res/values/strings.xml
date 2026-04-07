@@ -7,6 +7,10 @@
     <string name="HideTitle">Hide title</string>
     <string name="RemoveFromHideMode">Remove from Hide Mode</string>
     <string name="AddToHideMode">Add to Hide Mode</string>
+    <!--fork settings view-->
+    <string name="ForkSettingsTitle">Fork Client Settings</string>
+    <string name="InAppCamera">Enable In-App Camera</string>
+    <string name="InAppCameraInfo">In Attachments</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">English</string>
