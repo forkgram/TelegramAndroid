@@ -42,13 +42,14 @@ public class ForkSettingsActivity extends BaseFragment {
     private ListAdapter listAdapter;
 
     private ArrayList<Integer> sectionRows = new ArrayList<Integer>();
-    private String[] sectionStrings = {"General"};
+    private String[] sectionStrings = {"General", "ChatCamera"};
 
     private int rowCount;
 
     private int hideSensitiveDataRow;
     private int squareAvatarsRow;
     private int inappCameraRow;
+    private int systemCameraRow;
     private int photoHasStickerRow;
     private int unmutedOnTopRow;
     private int rearVideoMessages;
@@ -88,11 +89,15 @@ public class ForkSettingsActivity extends BaseFragment {
         sectionRows.add(rowCount++);
         hideSensitiveDataRow = SharedConfig.isUserOwner() ? -1 : rowCount++;
         squareAvatarsRow = rowCount++;
-        inappCameraRow = rowCount++;
         photoHasStickerRow = rowCount++;
         unmutedOnTopRow = rowCount++;
         rearVideoMessages = rowCount++;
         replaceForward = rowCount++;
+    
+        emptyRows.add(rowCount++);
+        sectionRows.add(rowCount++);
+        inappCameraRow = rowCount++;
+        systemCameraRow = rowCount++;
 
         emptyRows.add(rowCount++);
         syncPinsRow = rowCount++;
@@ -110,6 +115,10 @@ public class ForkSettingsActivity extends BaseFragment {
             ((TextCheckCell) view).setChecked(!optionBool);
         }
         return !optionBool;
+    }
+
+    private void checkEnabledSystemCamera(TextCheckCell t) {
+        t.setEnabled(SharedConfig.inappCamera, null);
     }
 
     @Override
@@ -155,6 +164,18 @@ public class ForkSettingsActivity extends BaseFragment {
                 SharedConfig.toggleInappCamera();
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(SharedConfig.inappCamera);
+                }
+
+                RecyclerListView.Holder holder = (RecyclerListView.Holder) listView.findViewHolderForAdapterPosition(systemCameraRow);
+                if (holder != null) {
+                    checkEnabledSystemCamera((TextCheckCell) holder.itemView);
+                }
+                
+            } else if (position == systemCameraRow) {
+                if (view instanceof TextCheckCell) {
+                    if (((TextCheckCell) view).isFakeEnabled()) {
+                        toggleGlobalMainSetting("systemCamera", view, false);
+                    }
                 }
             } else if (position == photoHasStickerRow) {
                 toggleGlobalMainSetting("photoHasSticker", view, true);
@@ -214,6 +235,11 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("InAppCamera", R.string.InAppCamera);
                         String info = LocaleController.getString("InAppCameraInfo", R.string.InAppCameraInfo);
                         textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("inappCamera", true), false, false);
+                    } else if (position == systemCameraRow) {
+                        String t = LocaleController.getString("SystemCamera", R.string.SystemCamera);
+                        String info = LocaleController.getString("SystemCameraInfo", R.string.SystemCameraInfo);
+                        textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("systemCamera", false), false, false);
+                        checkEnabledSystemCamera(textCell);
                     } else if (position == photoHasStickerRow) {
                         String t = LocaleController.getString("PhotoHasSticker", R.string.PhotoHasSticker);
                         String info = LocaleController.getString("PhotoHasStickerInfo", R.string.PhotoHasStickerInfo);
@@ -257,6 +283,7 @@ public class ForkSettingsActivity extends BaseFragment {
             boolean fork = position == squareAvatarsRow
                         || position == hideSensitiveDataRow
                         || position == inappCameraRow
+                        || position == systemCameraRow
                         || position == unmutedOnTopRow
                         || position == rearVideoMessages
                         || position == replaceForward
@@ -306,6 +333,7 @@ public class ForkSettingsActivity extends BaseFragment {
             } else if (position == squareAvatarsRow
                 || position == hideSensitiveDataRow
                 || position == inappCameraRow
+                || position == systemCameraRow
                 || position == unmutedOnTopRow
                 || position == syncPinsRow
                 || position == rearVideoMessages
