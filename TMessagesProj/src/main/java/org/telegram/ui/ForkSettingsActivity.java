@@ -69,6 +69,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_REPLACE_FORWARD = 30;
 
     public static final int ID_INAPP_CAMERA = 50;
+    public static final int ID_SYSTEM_CAMERA = 51;
     public static final int ID_PHOTO_HAS_STICKER = 52;
     public static final int ID_REAR_VIDEO_MESSAGES = 55;
 
@@ -267,6 +268,10 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionMedia)));
         items.add(UItem.asButtonCheck(ID_INAPP_CAMERA, LocaleController.getString(R.string.InAppCamera), LocaleController.getString(R.string.InAppCameraInfo))
             .setChecked(pref("inappCamera", true)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_SYSTEM_CAMERA, LocaleController.getString(R.string.SystemCamera), LocaleController.getString(R.string.SystemCameraInfo))
+            .setChecked(pref("systemCamera", false))
+            .setEnabled(SharedConfig.inappCamera)
+            .setMultiline(true));
         items.add(UItem.asButtonCheck(ID_PHOTO_HAS_STICKER, LocaleController.getString(R.string.PhotoHasSticker), LocaleController.getString(R.string.PhotoHasStickerInfo))
             .setChecked(pref("photoHasSticker", true)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_REAR_VIDEO_MESSAGES, LocaleController.getString(R.string.RearVideoMessages), LocaleController.getString(R.string.RearVideoMessagesInfo))
@@ -311,6 +316,10 @@ public class ForkSettingsActivity extends BaseFragment {
             SharedConfig.toggleInappCamera();
             setCellChecked(view, SharedConfig.inappCamera);
             listView.adapter.update(true);
+        } else if (id == ID_SYSTEM_CAMERA) {
+            if (SharedConfig.inappCamera) {
+                toggle("systemCamera", item, view);
+            }
         } else if (id == ID_PHOTO_HAS_STICKER) {
             toggle("photoHasSticker", item, view);
         } else if (id == ID_REAR_VIDEO_MESSAGES) {
