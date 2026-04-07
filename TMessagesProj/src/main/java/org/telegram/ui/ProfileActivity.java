@@ -157,6 +157,7 @@ import org.telegram.messenger.SendMessagesHelper;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.SvgHelper;
 import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.browser.Browser;
@@ -10593,10 +10594,17 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     setAvatarRow = rowCount++;
                     setAvatarSectionRow = rowCount++;
                 }
-                numberSectionRow = rowCount++;
-                numberRow = rowCount++;
-                setUsernameRow = rowCount++;
-                bioRow = rowCount++;
+                if (SharedConfig.hideSensitiveData()) {
+                    numberSectionRow = -1;
+                    numberRow = -1;
+                    setUsernameRow = -1;
+                    bioRow = -1;
+                } else {
+                    numberSectionRow = rowCount++;
+                    numberRow = rowCount++;
+                    setUsernameRow = rowCount++;
+                    bioRow = rowCount++;
+                }
 
                 settingsSectionRow = rowCount++;
 
@@ -11242,7 +11250,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         } else if (currentConnectionState == ConnectionsManager.ConnectionStateUpdating) {
             onlineTextOverride = LocaleController.getString(R.string.Updating);
         } else if (currentConnectionState == ConnectionsManager.ConnectionStateConnectingToProxy) {
-            onlineTextOverride = "...";
+            onlineTextOverride = SharedConfig.hideSensitiveData()
+                ? "..."
+                : LocaleController.getString("ConnectingToProxy", R.string.ConnectingToProxy);
         } else {
             onlineTextOverride = null;
         }
@@ -14787,6 +14797,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     new SearchResult(404, getString(R.string.PrivacyPolicy), getString(R.string.SettingsHelp), R.drawable.msg2_help, () -> Browser.openUrl(f.getParentActivity(), getString(R.string.PrivacyPolicyUrl))).withLink("tg://settings/privacy-policy"),
 
                     new SearchResult(1000, getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity())),
+                    new SearchResult(1001, getString(R.string.HideSensitiveData), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_HIDE_SENSITIVE_DATA))),
                     new SearchResult(1010, getString(R.string.SyncPins), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_SYNC_PINS))),
                     new SearchResult(1011, getString(R.string.UnmutedOnTop), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_UNMUTED_ON_TOP))),
                     new SearchResult(1018, getString(R.string.ReplaceForward), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_REPLACE_FORWARD))),
