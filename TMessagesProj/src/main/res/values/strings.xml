@@ -22,6 +22,8 @@
     <string name="PhotoHasStickerInfo">When using Stickers on Photo</string>
     <string name="UnmutedOnTop">Unmuted Messages are Primary</string>
     <string name="UnmutedOnTopInfo">Unmuted Messages will be under pinned dialogs</string>
+    <string name="SyncPins">Sync Pinned Dialogs</string>
+    <string name="SyncPinsInfo">Sync off allows to pin unlimited amount of dialogs</string>
     <string name="PinDialogsOrder">Pin Dialogs Order</string>
     <string name="RearVideoMessages">Rear camera in Video Messages</string>
     <string name="AppName">Fork Client</string>
