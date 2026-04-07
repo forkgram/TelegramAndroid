@@ -739,7 +739,7 @@ public class UniversalAdapter extends AdapterWithDiffUtils {
             }
             case VIEW_TYPE_TEXT_CHECK:
                 NotificationsCheckCell checkCell1 = (NotificationsCheckCell) holder.itemView;
-                final boolean multiline = item.subtext != null && item.subtext.toString().contains("\n");
+                final boolean multiline = item.subtext != null && (item.multiline || item.subtext.toString().contains("\n"));
                 checkCell1.setTextAndValueAndCheck(item.text, item.subtext, item.checked, 0, multiline, divider);
                 break;
             case VIEW_TYPE_ICON_TEXT_CHECK:
