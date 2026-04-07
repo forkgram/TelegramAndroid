@@ -33,13 +33,18 @@ import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.RecyclerListView;
 
+import java.lang.reflect.*;
+import java.util.ArrayList;
+
 public class ForkSettingsActivity extends BaseFragment {
 
     private RecyclerListView listView;
     private ListAdapter listAdapter;
 
+    private ArrayList<Integer> sectionRows = new ArrayList<Integer>();
+    private String[] sectionStrings = {"General"};
+
     private int rowCount;
-    private int sectionRow1;
 
     private int hideSensitiveDataRow;
     private int squareAvatarsRow;
@@ -49,8 +54,30 @@ public class ForkSettingsActivity extends BaseFragment {
     private int rearVideoMessages;
     private int replaceForward;
 
-    private int emptyRow;
+    private ArrayList<Integer> emptyRows = new ArrayList<Integer>();
     private int syncPinsRow;
+
+    private static int getIntLocale(String str) {
+        try {
+            try {
+                return Class.forName("R")
+                    .getDeclaredField("string")
+                    .getDeclaringClass()
+                    .getDeclaredField(str).getInt(null);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private static String getLocale(String s) {
+        return LocaleController.getString(s, 0);
+    }
 
     @Override
     public boolean onFragmentCreate() {
@@ -58,7 +85,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
         rowCount = 0;
         
-        sectionRow1 = rowCount++;
+        sectionRows.add(rowCount++);
         hideSensitiveDataRow = SharedConfig.isUserOwner() ? -1 : rowCount++;
         squareAvatarsRow = rowCount++;
         inappCameraRow = rowCount++;
@@ -67,7 +94,7 @@ public class ForkSettingsActivity extends BaseFragment {
         rearVideoMessages = rowCount++;
         replaceForward = rowCount++;
 
-        emptyRow = rowCount++;
+        emptyRows.add(rowCount++);
         syncPinsRow = rowCount++;
 
         return true;
@@ -213,10 +240,12 @@ public class ForkSettingsActivity extends BaseFragment {
                     break;
                 }
                 case 4: {
-                    HeaderCell headerCell = (HeaderCell) holder.itemView;
-                    if (position == sectionRow1) {
-                        headerCell.setText(LocaleController.getString("General", R.string.General));
+                    int i = sectionRows.indexOf(position);
+                    if (i == -1) {
+                        break;
                     }
+                    HeaderCell headerCell = (HeaderCell) holder.itemView;
+                    headerCell.setText(getLocale(sectionStrings[i]));
                     break;
                 }
             }
@@ -270,7 +299,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == emptyRow) {
+            if (emptyRows.contains(position)) {
                 return 1;
             } else if (0 == 1) {
                 return 2;
@@ -283,7 +312,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == replaceForward
                 || position == photoHasStickerRow) {
                 return 3;
-            } else if (position == sectionRow1) {
+            } else if (sectionRows.contains(position)) {
                 return 4;
             }
             return 6;
