@@ -61,6 +61,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_SQUARE_AVATARS = 14;
 
+    public static final int ID_SYNC_PINS = 20;
     public static final int ID_UNMUTED_ON_TOP = 21;
 
     public static final int ID_REPLACE_FORWARD = 30;
@@ -243,6 +244,8 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ChatList)));
+        items.add(UItem.asButtonCheck(ID_SYNC_PINS, LocaleController.getString(R.string.SyncPins), LocaleController.getString(R.string.SyncPinsInfo))
+            .setChecked(pref("syncPins", true)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_UNMUTED_ON_TOP, LocaleController.getString(R.string.UnmutedOnTop), LocaleController.getString(R.string.UnmutedOnTopInfo))
             .setChecked(pref("unmutedOnTop", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -286,6 +289,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
         if (id == ID_SQUARE_AVATARS) {
             toggle("squareAvatars", item, view);
+        } else if (id == ID_SYNC_PINS) {
+            toggle("syncPins", item, view);
         } else if (id == ID_UNMUTED_ON_TOP) {
             toggle("unmutedOnTop", item, view);
             MessagesController.getInstance(currentAccount).sortDialogs(null);
