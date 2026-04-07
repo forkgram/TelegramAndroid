@@ -10,7 +10,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/${{ github.repository }}/forkgram-builder:latest
+      image: ghcr.io/forkgram/telegramandroid/forkgram-builder:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -57,15 +57,22 @@ jobs:
           echo "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}" >> $vars
           echo "LASTFM_API_SECRET=${{ secrets.LASTFM_API_SECRET }}" >> $vars
 
-          if [ -d /prebuilt/arm64-v8a ]; then
-            NATIVE_FLAG="-PprebuiltNativeDir=/prebuilt"
-            echo "Using prebuilt native libraries from Docker image"
-          else
-            NATIVE_FLAG=""
-            echo "Building native libraries from source"
+          if [ -d /prebuilt/boringssl ]; then
+            echo "Copying cached Phase 1 native artifacts from Docker image"
+            for lib in boringssl ffmpeg libvpx dav1d; do
+              if [ -d "/prebuilt/$lib/build" ]; then
+                cp -r /prebuilt/$lib/build TMessagesProj/jni/$lib/
+              fi
+            done
+            for arch in arm64-v8a armeabi-v7a; do
+              if [ -d "/prebuilt/tde2e/$arch" ]; then
+                mkdir -p TMessagesProj/jni/tde2e/$arch
+                cp /prebuilt/tde2e/$arch/*.a TMessagesProj/jni/tde2e/$arch/
+              fi
+            done
           fi
 
-          ./gradlew :TMessagesProj_App:${{ matrix.afat }} $NATIVE_FLAG
+          ./gradlew :TMessagesProj_App:${{ matrix.afat }}
 
           grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/${{ matrix.type }}/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
 

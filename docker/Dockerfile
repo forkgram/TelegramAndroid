@@ -61,6 +61,7 @@ RUN yes | sdkmanager --licenses > /dev/null 2>&1 && \
       "ndk;23.2.8568313" \
       "cmake;3.10.2.4988404"
 
+# Make SDK cmake available as system cmake
 RUN ln -sf /opt/android-sdk/cmake/3.10.2.4988404/bin/cmake /usr/local/bin/cmake && \
     ln -sf /opt/android-sdk/cmake/3.10.2.4988404/bin/cmake /usr/local/bin/cmake3
 
@@ -72,35 +73,56 @@ FROM base AS native-builder
 COPY TMessagesProj/jni/ /build/jni/
 WORKDIR /build/jni
 
-# Phase 1: prepare.py (boringssl, ffmpeg, libvpx, dav1d, tde2e)
-# Stub out git — prepare.py runs "git submodule update" and "git reset --hard"
-# but the sources are already in place via COPY.
-RUN mv /usr/bin/git /usr/bin/git.real && \
-    printf '#!/bin/sh\ntrue\n' > /usr/bin/git && chmod +x /usr/bin/git && \
-    python3 prepare.py arm64 arm ndk=$ANDROID_NDK_HOME silent && \
-    mv /usr/bin/git.real /usr/bin/git
+# Phase 1: Build static libraries directly (bypasses prepare.py which
+# assumes git submodules and rm/re-checkout cycle unsuitable for Docker).
+ENV NDK=$ANDROID_NDK_HOME
+ENV NINJA_PATH=/usr/bin/ninja
 
-# Phase 2: CMake build of libtmessages.49.so per ABI
-RUN for abi in arm64-v8a armeabi-v7a; do \
-      mkdir -p /build/cmake-build/$abi && \
-      cd /build/cmake-build/$abi && \
-      cmake \
-        -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DANDROID_ABI=$abi \
-        -DANDROID_STL=c++_static \
-        -DANDROID_PLATFORM=android-21 \
-        /build/jni/ && \
-      make -j$(nproc); \
+RUN ./build_dav1d_clang.sh arm64 arm
+
+RUN ./build_libvpx_clang.sh arm64 arm
+
+RUN ./build_ffmpeg_clang.sh arm64 arm && ./patch_ffmpeg.sh
+
+RUN ./patch_boringssl.sh && ./build_boringssl.sh arm64 arm
+
+RUN tde2e_dir=$(pwd)/tde2e && \
+    source_dir=$(pwd)/tde2e_source && \
+    boringssl_dir=$(pwd)/boringssl && \
+    for arch in arm64-v8a armeabi-v7a; do \
+      mkdir -p $source_dir/example/android/third-party/openssl/$arch/lib/ && \
+      cp "$boringssl_dir/build/$arch/crypto/libcrypto.a" "$source_dir/example/android/third-party/openssl/$arch/lib/" && \
+      cp "$boringssl_dir/build/$arch/ssl/libssl.a" "$source_dir/example/android/third-party/openssl/$arch/lib/" && \
+      cp -R "$boringssl_dir/include" "$source_dir/example/android/third-party/openssl/$arch/"; \
+    done && \
+    cp "$tde2e_dir/build-tdlib.sh" "$source_dir/example/android/." && \
+    cp "$tde2e_dir/CMakeLists.txt" "$source_dir/example/android/." && \
+    sed -i "s/ php//g" "$source_dir/example/android/check-environment.sh" && \
+    sed -i "s/PHP_EXECUTABLE/FALSE/g" "$source_dir/td/generate/CMakeLists.txt" && \
+    cd "$source_dir/example/android" && \
+    SED_CMDS="s/x86_64//g;s/x86//g;s/rm tdlib/# rm tdlib/g;s/jar/# jar/g;s/mv tdlib/# mv tdlib/g;" && \
+    sed "$SED_CMDS" ./build-tdlib.sh | bash -s -- "$NDK/../.." && \
+    for arch in arm64-v8a armeabi-v7a; do \
+      mkdir -p $tde2e_dir/$arch && \
+      cp "$source_dir/example/android/build-$arch-Java/td/tde2e/libtde2e.a" $tde2e_dir/$arch && \
+      cp "$source_dir/example/android/build-$arch-Java/td/tdutils/libtdutils.a" $tde2e_dir/$arch; \
     done
 
-# Collect .so files
-RUN mkdir -p /prebuilt/arm64-v8a /prebuilt/armeabi-v7a && \
-    cp /build/cmake-build/arm64-v8a/lib*.so /prebuilt/arm64-v8a/ && \
-    cp /build/cmake-build/armeabi-v7a/lib*.so /prebuilt/armeabi-v7a/
+# Collect Phase 1 artifacts (.a files) for CI reuse
+RUN mkdir -p /prebuilt && \
+    for lib in boringssl ffmpeg libvpx dav1d tde2e; do \
+      if [ -d "/build/jni/$lib/build" ]; then \
+        mkdir -p /prebuilt/$lib && cp -r /build/jni/$lib/build /prebuilt/$lib/; \
+      fi; \
+    done && \
+    for arch in arm64-v8a armeabi-v7a; do \
+      if [ -d "/build/jni/tde2e/$arch" ]; then \
+        mkdir -p /prebuilt/tde2e/$arch && cp /build/jni/tde2e/$arch/*.a /prebuilt/tde2e/$arch/; \
+      fi; \
+    done
 
 # ============================================================
-# Stage 3: Final image (tools + prebuilt .so)
+# Stage 3: Final image (tools + prebuilt Phase 1 .a files)
 # ============================================================
 FROM base AS final
 

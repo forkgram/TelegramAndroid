@@ -5,10 +5,19 @@ on:
     paths:
       - 'docker/Dockerfile'
       - '.github/workflows/docker-builder.yml'
+      - 'TMessagesProj/jni/boringssl'
+      - 'TMessagesProj/jni/ffmpeg'
+      - 'TMessagesProj/jni/libvpx'
+      - 'TMessagesProj/jni/dav1d'
+      - 'TMessagesProj/jni/tde2e_source'
+      - 'TMessagesProj/jni/patches/**'
+      - 'TMessagesProj/jni/build_*.sh'
+      - 'TMessagesProj/jni/prepare.py'
+      - 'TMessagesProj/jni/CMakeLists.txt'
+      - 'TMessagesProj/jni/voip/**'
     branches:
       - dev
   schedule:
-    # First Sunday of each month at 03:00 UTC
     - cron: '0 3 1-7 * 0'
   workflow_dispatch:
 
@@ -23,8 +32,23 @@ jobs:
       packages: write
 
     steps:
+      - name: Free up disk space
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+        with:
+          tool-cache: true
+          android: true
+
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Clone untracked submodules (boringssl, ffmpeg)
+        run: |
+          git clone https://github.com/google/boringssl TMessagesProj/jni/boringssl
+          cd TMessagesProj/jni/boringssl && git checkout a6d321b11fa80496b7c8ae6405468c212d4f5c87 && cd -
+          git clone https://github.com/FFmpeg/FFmpeg TMessagesProj/jni/ffmpeg
+          cd TMessagesProj/jni/ffmpeg && git checkout 71fb6132637a2a430375c24afc381fff8b854fe7 && cd -
 
       - name: Lowercase image name
         id: lower
@@ -40,7 +64,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: docker
+          context: .
           file: docker/Dockerfile
           push: true
           tags: |
