@@ -49,8 +49,7 @@ typedef struct VideoInfo {
 
     ~VideoInfo() {
         if (video_dec_ctx) {
-            avcodec_close(video_dec_ctx);
-            video_dec_ctx = nullptr;
+            avcodec_free_context(&video_dec_ctx);
         }
         if (fmt_ctx) {
             avformat_close_input(&fmt_ctx);
@@ -983,21 +982,7 @@ extern "C" JNIEXPORT jint JNICALL Java_org_telegram_ui_Components_AnimatedFileNa
     //info->has_decoded_frames = false;
     while (!info->stopped && triesCount != 0) {
         if (info->stream != nullptr) {
-            JNIEnv *jniEnv = nullptr;
-            JavaVMAttachArgs jvmArgs;
-            jvmArgs.version = JNI_VERSION_1_6;
-
-            bool attached;
-            if (JNI_EDETACHED == javaVm->GetEnv((void **) &jniEnv, JNI_VERSION_1_6)) {
-                javaVm->AttachCurrentThread(&jniEnv, &jvmArgs);
-                attached = true;
-            } else {
-                attached = false;
-            }
-            jboolean canceled = jniEnv->CallBooleanMethod(info->stream, jclass_AnimatedFileDrawableStream_isCanceled);
-            if (attached) {
-                javaVm->DetachCurrentThread();
-            }
+            jboolean canceled = env->CallBooleanMethod(info->stream, jclass_AnimatedFileDrawableStream_isCanceled);
             if (canceled) {
                 return 0;
             }
