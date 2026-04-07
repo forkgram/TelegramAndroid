@@ -43,6 +43,7 @@ public class UItem extends AdapterWithDiffUtils.Item {
     public CharSequence animatedText;
     public String[] texts;
     public boolean accent, red, transparent, locked;
+    public boolean multiline;
     public int spanCount = MAX_SPAN_COUNT;
     public int parentSpanCount;
 
@@ -651,6 +652,11 @@ public class UItem extends AdapterWithDiffUtils.Item {
         if (viewType == UniversalAdapter.VIEW_TYPE_FILTER_CHAT) {
             viewType = UniversalAdapter.VIEW_TYPE_FILTER_CHAT_CHECK;
         }
+        return this;
+    }
+
+    public UItem setMultiline(boolean multiline) {
+        this.multiline = multiline;
         return this;
     }
 
