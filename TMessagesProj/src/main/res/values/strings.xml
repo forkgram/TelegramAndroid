@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--FORK CLIENT-->
+    <string name="BottomDialogs">Tap here to start a new chat.</string>
     <string name="AppName">Telegram</string>
     <string name="AppNameBeta">Telegram Beta</string>
     <string name="LanguageName">English</string>
