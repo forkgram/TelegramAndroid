@@ -60,9 +60,12 @@ jobs:
           if [ -d /prebuilt/boringssl ]; then
             echo "Copying cached Phase 1 native artifacts from Docker image"
             for lib in boringssl ffmpeg libvpx dav1d; do
-              if [ -d "/prebuilt/$lib/build" ]; then
-                cp -r /prebuilt/$lib/build TMessagesProj/jni/$lib/
-              fi
+              mkdir -p TMessagesProj/jni/$lib
+              for subdir in build include; do
+                if [ -d "/prebuilt/$lib/$subdir" ]; then
+                  cp -r /prebuilt/$lib/$subdir TMessagesProj/jni/$lib/
+                fi
+              done
             done
             for arch in arm64-v8a armeabi-v7a; do
               if [ -d "/prebuilt/tde2e/$arch" ]; then
@@ -70,6 +73,7 @@ jobs:
                 cp /prebuilt/tde2e/$arch/*.a TMessagesProj/jni/tde2e/$arch/
               fi
             done
+            echo "Verifying: $(ls TMessagesProj/jni/boringssl/build/arm64-v8a/crypto/libcrypto.a 2>&1)"
           fi
 
           ./gradlew :TMessagesProj_App:${{ matrix.afat }}
@@ -92,7 +96,7 @@ jobs:
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
 
           tempVer=$(cat ver.txt)
-          tempVer=${tempVer::-2}
+          tempVer=$(echo "$tempVer" | sed 's/..$//')
           echo "NEW_OFFICIAL_TAG_TEXT=$tempVer" >> $GITHUB_ENV
       - uses: actions/upload-artifact@master
         name: Upload artifact

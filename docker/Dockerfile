@@ -114,6 +114,9 @@ RUN mkdir -p /prebuilt && \
       if [ -d "/build/jni/$lib/build" ]; then \
         mkdir -p /prebuilt/$lib && cp -r /build/jni/$lib/build /prebuilt/$lib/; \
       fi; \
+      if [ -d "/build/jni/$lib/include" ]; then \
+        cp -r /build/jni/$lib/include /prebuilt/$lib/; \
+      fi; \
     done && \
     for arch in arm64-v8a armeabi-v7a; do \
       if [ -d "/build/jni/tde2e/$arch" ]; then \

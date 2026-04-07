@@ -250,12 +250,17 @@ def getProps(String propName) {
 
 task buildNativeDeps(description: 'Build native dependencies.') {
     doFirst {
-        exec {
-            def ndkDir = android.ndkDirectory
-            println "NDK Directory: ${ndkDir}"
-            println "Working Directory: ${projectDir}/jni"
-            workingDir "${projectDir}/jni"
-            commandLine 'python3', 'prepare.py', 'silent', 'ndk=' + ndkDir, 'arm', 'arm64'
+        def boringsslLib = file("${projectDir}/jni/boringssl/build/arm64-v8a/crypto/libcrypto.a")
+        if (boringsslLib.exists()) {
+            println "Phase 1 native artifacts already present, skipping prepare.py"
+        } else {
+            exec {
+                def ndkDir = android.ndkDirectory
+                println "NDK Directory: ${ndkDir}"
+                println "Working Directory: ${projectDir}/jni"
+                workingDir "${projectDir}/jni"
+                commandLine 'python3', 'prepare.py', 'silent', 'ndk=' + ndkDir, 'arm', 'arm64'
+            }
         }
     }
 }
