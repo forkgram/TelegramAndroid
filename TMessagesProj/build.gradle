@@ -71,11 +71,15 @@ android {
     buildToolsVersion '35.0.0'
     ndkVersion "21.4.7075529" // 26.3.11579264
 
-    sourceSets.main.jniLibs.srcDirs = ['./jni/']
+    if (project.hasProperty('prebuiltNativeDir')) {
+        sourceSets.main.jniLibs.srcDirs = [project.property('prebuiltNativeDir')]
+    } else {
+        sourceSets.main.jniLibs.srcDirs = ['./jni/']
 
-    externalNativeBuild {
-        cmake {
-            path 'jni/CMakeLists.txt'
+        externalNativeBuild {
+            cmake {
+                path 'jni/CMakeLists.txt'
+            }
         }
     }
 
@@ -123,16 +127,18 @@ android {
         buildConfigField 'boolean', 'SKIP_INTERNAL_BROWSER_BY_DEFAULT', (Utils['isFdroid']() ? 'true' : 'false')
         manifestPlaceholders = [appLabel: Utils['isFdroid']() ? "@string/AppNameFdroid" : "@string/AppName"]
 
-        externalNativeBuild {
-            cmake {
-                version '3.10.2'
-                arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21' //, '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
-                if (project.hasProperty("armeabi-v7a")) {
-                    abiFilters 'armeabi-v7a'
-                } else if (project.hasProperty("arm64-v8a")) {
-                    abiFilters 'arm64-v8a'
-                } else {
-                    abiFilters 'armeabi-v7a', 'arm64-v8a'
+        if (!project.hasProperty('prebuiltNativeDir')) {
+            externalNativeBuild {
+                cmake {
+                    version '3.10.2'
+                    arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21' //, '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
+                    if (project.hasProperty("armeabi-v7a")) {
+                        abiFilters 'armeabi-v7a'
+                    } else if (project.hasProperty("arm64-v8a")) {
+                        abiFilters 'arm64-v8a'
+                    } else {
+                        abiFilters 'armeabi-v7a', 'arm64-v8a'
+                    }
                 }
             }
         }
