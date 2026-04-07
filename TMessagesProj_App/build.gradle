@@ -23,7 +23,7 @@ android {
     compileSdkVersion 36
     buildToolsVersion '36.0.0'
 
-    defaultConfig.applicationId = APP_PACKAGE
+    defaultConfig.applicationId = "org.forkclient.messenger"
 
     sourceSets.main.jniLibs.srcDirs = ['../TMessagesProj/jni/']
 
