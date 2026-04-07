@@ -11176,7 +11176,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         } else if (currentConnectionState == ConnectionsManager.ConnectionStateUpdating) {
             onlineTextOverride = LocaleController.getString(R.string.Updating);
         } else if (currentConnectionState == ConnectionsManager.ConnectionStateConnectingToProxy) {
-            onlineTextOverride = "...";
+            onlineTextOverride = SharedConfig.hideSensitiveData()
+                ? "..."
+                : LocaleController.getString("ConnectingToProxy", R.string.ConnectingToProxy);
         } else {
             onlineTextOverride = null;
         }
