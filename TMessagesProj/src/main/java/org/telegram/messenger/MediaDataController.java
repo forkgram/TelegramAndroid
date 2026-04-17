@@ -4998,7 +4998,7 @@ public class MediaDataController extends BaseController {
         // Get available accounts instead of hints
         ArrayList<Integer> accountsList = new ArrayList<>();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
+            if (HiddenAccountHelper.isVisibleActivatedAccount(a)) {
                 accountsList.add(a);
                 if (accountsList.size() >= maxShortcuts) {
                     break;
