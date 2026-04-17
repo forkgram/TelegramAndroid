@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">숨겨진 계정</string>
+    <string name="HiddenAccountsAccounts">계정</string>
+    <string name="HiddenAccountsAccountsInfo">숨겨진 계정에만 별도의 잠금 해제 코드가 적용됩니다. 계정 중 최소 하나는 계속 표시되어야 합니다.</string>
+    <string name="HiddenAccountsChangeUnlockCode">잠금 해제 코드 변경</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">현재 잠금 해제 코드 확인</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">이 숨겨진 계정을 변경하려면 먼저 현재 잠금 해제 코드를 입력하세요.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">잠금 해제 코드 확인</string>
+    <string name="HiddenAccountsCurrentUnlockCode">현재 잠금 해제 코드</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">숨겨진 계정이 있고 앱 암호가 꺼져 있는 동안에는 스텔스 모드를 끌 수 없습니다.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">이 잠금 해제 코드는 이미 다른 숨겨진 계정에서 사용 중입니다.</string>
+    <string name="HiddenAccountsEnterUnlockCode">4자리 잠금 해제 코드를 입력하세요</string>
+    <string name="HiddenAccountsHideAccount">계정 숨기기</string>
+    <string name="HiddenAccountsHideAccountAction">숨기기</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">현재 잠금 해제 코드가 올바르지 않습니다.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">숫자 4자리를 정확히 입력하세요.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">로그인한 계정 중 최소 하나는 계속 표시되어야 합니다.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">계정을 숨기려면 먼저 텔레그램 암호나 스텔스 모드를 켜세요.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">숨겨진 계정을 사용할 때만 설정 표시</string>
+    <string name="HiddenAccountsOptions">옵션</string>
+    <string name="HiddenAccountsPasscodeModeInfo">숨겨진 계정은 별도의 4자리 잠금 해제 코드를 사용합니다. 앱 암호가 켜져 있으면 암호 입력 화면에 숨겨진 계정의 코드를 입력해 현재 세션 동안 해당 계정을 열 수 있습니다.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">숨겨진 계정 목록에서 제거</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">이 계정이 계정 전환 메뉴, 설정, 알림에 다시 표시됩니다.</string>
+    <string name="HiddenAccountsShowAccount">계정 표시</string>
+    <string name="HiddenAccountsStateHidden">숨김</string>
+    <string name="HiddenAccountsStateVisible">표시</string>
+    <string name="HiddenAccountsStealthMode">스텔스 모드</string>
+    <string name="HiddenAccountsStealthModeInfo">스텔스 모드는 일반 앱 암호를 켜지 않고도 숨겨진 계정을 가립니다. 채팅 검색창에 숨겨진 계정의 코드를 입력하면 현재 세션 동안 해당 계정이 열립니다.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">스텔스 모드를 켜려면 먼저 텔레그램 암호를 끄세요.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">이 계정에는 별도의 4자리 코드를 사용합니다. 숨겨진 계정의 코드는 서로 달라야 하며 앱 암호와 같을 수 없습니다.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">이 잠금 해제 코드는 앱 암호와 같습니다. 다른 코드를 사용하세요.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">잠금 해제 코드가 일치하지 않습니다.</string>
     <string name="AppUpdateSkipVersion">이 버전 건너뛰기</string>
     <string name="AppUpdateSkipVersionMessage">%1$s 버전은 더 새로운 버전이 나올 때까지 표시되지 않습니다.</string>
     <string name="QRLoginButton">QR 코드로 로그인</string>

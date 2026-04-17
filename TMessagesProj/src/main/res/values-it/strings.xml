@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">Account nascosti</string>
+    <string name="HiddenAccountsAccounts">Account</string>
+    <string name="HiddenAccountsAccountsInfo">Solo gli account nascosti hanno un codice di sblocco aggiuntivo. Almeno un account deve restare visibile.</string>
+    <string name="HiddenAccountsChangeUnlockCode">Cambia il codice di sblocco</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">Conferma il codice di sblocco attuale</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">Inserisci il codice di sblocco attuale prima di modificare questo account nascosto.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">Conferma il codice di sblocco</string>
+    <string name="HiddenAccountsCurrentUnlockCode">Codice di sblocco attuale</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">Non puoi disattivare la modalità invisibile finché esistono account nascosti e il codice di accesso dell\'app è disattivato.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">Questo codice di sblocco è già usato da un altro account nascosto.</string>
+    <string name="HiddenAccountsEnterUnlockCode">Inserisci il codice di sblocco di 4 cifre</string>
+    <string name="HiddenAccountsHideAccount">Nascondi account</string>
+    <string name="HiddenAccountsHideAccountAction">Nascondi</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">Codice di sblocco attuale errato.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">Inserisci esattamente 4 cifre.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">Almeno un account connesso deve restare visibile.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">Attiva il codice di accesso di Telegram o la modalità invisibile prima di nascondere gli account.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">Mostra le impostazioni solo quando usi un account nascosto</string>
+    <string name="HiddenAccountsOptions">Opzioni</string>
+    <string name="HiddenAccountsPasscodeModeInfo">Gli account nascosti usano un codice di sblocco separato di 4 cifre. Quando il codice di accesso dell\'app è attivo, inserire il codice di un account nascosto nella richiesta del codice di accesso apre quell\'account per la sessione corrente.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">Rimuovi account nascosto</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">Questo account tornerà visibile nei selettori degli account, nelle impostazioni e nelle notifiche.</string>
+    <string name="HiddenAccountsShowAccount">Mostra account</string>
+    <string name="HiddenAccountsStateHidden">Nascosto</string>
+    <string name="HiddenAccountsStateVisible">Visibile</string>
+    <string name="HiddenAccountsStealthMode">Modalità invisibile</string>
+    <string name="HiddenAccountsStealthModeInfo">La modalità invisibile nasconde gli account nascosti senza attivare il normale codice di accesso dell\'app. Inserisci il codice di un account nascosto nel campo di ricerca delle chat per aprire quell\'account per la sessione corrente.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">Disattiva il codice di accesso di Telegram prima di attivare la modalità invisibile.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">Usa un codice separato di 4 cifre per questo account. I codici degli account nascosti devono essere unici e non possono coincidere con il codice di accesso dell\'app.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">Questo codice di sblocco coincide con il codice di accesso dell\'app. Usa un codice diverso.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">I codici di sblocco non corrispondono.</string>
     <string name="AppUpdateSkipVersion">Salta questa versione</string>
     <string name="AppUpdateSkipVersionMessage">La versione %1$s resterà nascosta finché non ne uscirà una più recente.</string>
     <string name="QRLoginButton">Accedi con codice QR</string>

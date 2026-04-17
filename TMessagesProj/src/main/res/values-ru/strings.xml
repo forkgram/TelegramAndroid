@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">Скрытые аккаунты</string>
+    <string name="HiddenAccountsAccounts">Аккаунты</string>
+    <string name="HiddenAccountsAccountsInfo">Дополнительный код разблокировки есть только у скрытых аккаунтов. Хотя бы один аккаунт должен оставаться видимым.</string>
+    <string name="HiddenAccountsChangeUnlockCode">Изменить код разблокировки</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">Подтвердите текущий код</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">Введите текущий код разблокировки, чтобы изменить этот скрытый аккаунт.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">Повторите код</string>
+    <string name="HiddenAccountsCurrentUnlockCode">Текущий код</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">Нельзя отключить режим невидимки, пока есть скрытые аккаунты, а код-пароль выключен.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">Этот код уже используется другим скрытым аккаунтом.</string>
+    <string name="HiddenAccountsEnterUnlockCode">Введите код из 4 цифр</string>
+    <string name="HiddenAccountsHideAccount">Скрыть аккаунт</string>
+    <string name="HiddenAccountsHideAccountAction">Скрыть</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">Неверный текущий код.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">Введите ровно 4 цифры.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">Хотя бы один добавленный аккаунт должен оставаться видимым.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">Чтобы скрывать аккаунты, включите код-пароль Telegram или режим невидимки.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">Показывать настройки только в скрытом аккаунте</string>
+    <string name="HiddenAccountsOptions">Параметры</string>
+    <string name="HiddenAccountsPasscodeModeInfo">Скрытые аккаунты используют отдельный код из 4 цифр. Если включён код-пароль, ввод кода скрытого аккаунта на экране код-пароля открывает этот аккаунт на текущий сеанс.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">Убрать из скрытых аккаунтов</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">Аккаунт снова будет виден в переключателе аккаунтов, настройках и уведомлениях.</string>
+    <string name="HiddenAccountsShowAccount">Показать аккаунт</string>
+    <string name="HiddenAccountsStateHidden">Скрыт</string>
+    <string name="HiddenAccountsStateVisible">Виден</string>
+    <string name="HiddenAccountsStealthMode">Режим невидимки</string>
+    <string name="HiddenAccountsStealthModeInfo">Режим невидимки прячет скрытые аккаунты без обычного код-пароля. Введите код скрытого аккаунта в поле поиска чатов, чтобы открыть этот аккаунт на текущий сеанс.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">Отключите код-пароль Telegram, прежде чем включать режим невидимки.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">Отдельный код из 4 цифр для этого аккаунта. Коды скрытых аккаунтов не должны повторяться и совпадать с код-паролем.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">Этот код совпадает с код-паролем. Выберите другой.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">Коды не совпадают.</string>
     <string name="AppUpdateSkipVersion">Пропустить эту версию</string>
     <string name="AppUpdateSkipVersionMessage">Версия %1$s будет скрыта, пока не выйдет более новая.</string>
     <string name="QRLoginButton">Войти по QR-коду</string>
