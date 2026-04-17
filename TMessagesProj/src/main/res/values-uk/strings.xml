@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">Приховані акаунти</string>
+    <string name="HiddenAccountsAccounts">Акаунти</string>
+    <string name="HiddenAccountsAccountsInfo">Додатковий код розблокування отримують лише приховані акаунти. Принаймні один акаунт має залишатися видимим.</string>
+    <string name="HiddenAccountsChangeUnlockCode">Змінити код розблокування</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">Підтвердження поточного коду</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">Введіть поточний код розблокування, перш ніж змінювати цей прихований акаунт.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">Повторіть код розблокування</string>
+    <string name="HiddenAccountsCurrentUnlockCode">Поточний код розблокування</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">Не можна вимкнути режим невидимки, доки є приховані акаунти, а код-пароль застосунку вимкнено.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">Цей код розблокування вже використовує інший прихований акаунт.</string>
+    <string name="HiddenAccountsEnterUnlockCode">Введіть 4-значний код розблокування</string>
+    <string name="HiddenAccountsHideAccount">Приховати акаунт</string>
+    <string name="HiddenAccountsHideAccountAction">Приховати</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">Неправильний поточний код розблокування.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">Введіть рівно 4 цифри.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">Принаймні один авторизований акаунт має залишатися видимим.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">Перш ніж приховувати акаунти, увімкніть код-пароль Telegram або режим невидимки.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">Показувати налаштування лише в прихованому акаунті</string>
+    <string name="HiddenAccountsOptions">Параметри</string>
+    <string name="HiddenAccountsPasscodeModeInfo">Приховані акаунти використовують окремий 4-значний код розблокування. Коли увімкнено код-пароль застосунку, введення коду прихованого акаунта на екрані код-пароля відкриває цей акаунт на поточний сеанс.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">Прибрати з прихованих</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">Цей акаунт знову буде видно в перемикачі акаунтів, налаштуваннях і сповіщеннях.</string>
+    <string name="HiddenAccountsShowAccount">Показати акаунт</string>
+    <string name="HiddenAccountsStateHidden">Прихований</string>
+    <string name="HiddenAccountsStateVisible">Видимий</string>
+    <string name="HiddenAccountsStealthMode">Режим невидимки</string>
+    <string name="HiddenAccountsStealthModeInfo">Режим невидимки приховує акаунти, не вмикаючи звичайний код-пароль застосунку. Введіть код прихованого акаунта в полі пошуку чатів, щоб відкрити цей акаунт на поточний сеанс.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">Перш ніж вмикати режим невидимки, вимкніть код-пароль Telegram.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">Використовуйте окремий 4-значний код для цього акаунта. Коди прихованих акаунтів мають бути унікальними й не можуть збігатися з код-паролем застосунку.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">Цей код розблокування збігається з код-паролем застосунку. Виберіть інший код.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">Коди розблокування не збігаються.</string>
     <string name="AppUpdateSkipVersion">Пропустити цю версію</string>
     <string name="AppUpdateSkipVersionMessage">Версію %1$s буде приховано, доки не вийде новіша.</string>
     <string name="QRLoginButton">Увійти за QR-кодом</string>

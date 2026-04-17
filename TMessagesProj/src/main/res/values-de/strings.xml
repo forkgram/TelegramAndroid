@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">Versteckte Konten</string>
+    <string name="HiddenAccountsAccounts">Konten</string>
+    <string name="HiddenAccountsAccountsInfo">Nur versteckte Konten erhalten einen zusätzlichen Entsperrcode. Mindestens ein Konto muss sichtbar bleiben.</string>
+    <string name="HiddenAccountsChangeUnlockCode">Entsperrcode ändern</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">Aktuellen Entsperrcode bestätigen</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">Gib den aktuellen Entsperrcode ein, bevor du dieses versteckte Konto änderst.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">Entsperrcode bestätigen</string>
+    <string name="HiddenAccountsCurrentUnlockCode">Aktueller Entsperrcode</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">Du kannst den Tarnmodus nicht ausschalten, solange es versteckte Konten gibt und der App-Pincode ausgeschaltet ist.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">Dieser Entsperrcode wird bereits von einem anderen versteckten Konto verwendet.</string>
+    <string name="HiddenAccountsEnterUnlockCode">4-stelligen Entsperrcode eingeben</string>
+    <string name="HiddenAccountsHideAccount">Konto verstecken</string>
+    <string name="HiddenAccountsHideAccountAction">Verstecken</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">Der aktuelle Entsperrcode ist falsch.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">Gib genau 4 Ziffern ein.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">Mindestens ein angemeldetes Konto muss sichtbar bleiben.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">Aktiviere den Telegram-Pincode oder den Tarnmodus, bevor du Konten versteckst.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">Einstellungen nur in einem versteckten Konto anzeigen</string>
+    <string name="HiddenAccountsOptions">Optionen</string>
+    <string name="HiddenAccountsPasscodeModeInfo">Versteckte Konten verwenden einen separaten 4-stelligen Entsperrcode. Wenn der App-Pincode aktiviert ist, öffnet die Eingabe des Codes eines versteckten Kontos in der Pincode-Abfrage dieses Konto für die aktuelle Sitzung.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">Verstecktes Konto entfernen</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">Dieses Konto wird in der Kontoauswahl, in den Einstellungen und in Benachrichtigungen wieder sichtbar.</string>
+    <string name="HiddenAccountsShowAccount">Konto anzeigen</string>
+    <string name="HiddenAccountsStateHidden">Versteckt</string>
+    <string name="HiddenAccountsStateVisible">Sichtbar</string>
+    <string name="HiddenAccountsStealthMode">Tarnmodus</string>
+    <string name="HiddenAccountsStealthModeInfo">Der Tarnmodus blendet versteckte Konten aus, ohne den normalen App-Pincode zu aktivieren. Gib den Code eines versteckten Kontos in das Suchfeld der Chatliste ein, um dieses Konto für die aktuelle Sitzung zu öffnen.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">Schalte den Telegram-Pincode aus, bevor du den Tarnmodus aktivierst.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">Verwende für dieses Konto einen separaten 4-stelligen Code. Die Codes versteckter Konten müssen eindeutig sein und dürfen nicht mit dem App-Pincode übereinstimmen.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">Dieser Entsperrcode stimmt mit dem App-Pincode überein. Verwende einen anderen Code.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">Die Entsperrcodes stimmen nicht überein.</string>
     <string name="AppUpdateSkipVersion">Diese Version überspringen</string>
     <string name="AppUpdateSkipVersionMessage">Version %1$s bleibt ausgeblendet, bis eine neuere erscheint.</string>
     <string name="QRLoginButton">Per QR-Code anmelden</string>

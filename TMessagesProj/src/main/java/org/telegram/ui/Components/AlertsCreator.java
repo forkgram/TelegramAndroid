@@ -103,6 +103,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.browser.Browser;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.utils.pip.PipEnvironment;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.SerializedData;
@@ -7683,7 +7684,7 @@ public class AlertsCreator {
     }
 
     public static AlertDialog createAccountSelectDialog(Activity parentActivity, final AccountSelectDelegate delegate) {
-        if (UserConfig.getActivatedAccountsCount() < 2) {
+        if (UserConfig.getVisibleAccountsCount() < 2) {
             return null;
         }
 
@@ -7693,7 +7694,9 @@ public class AlertsCreator {
 
         final LinearLayout linearLayout = new LinearLayout(parentActivity);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+        ArrayList<Integer> accountNumbers = new ArrayList<>();
+        HiddenAccountHelper.collectVisibleAccountNumbers(accountNumbers);
+        for (int a : accountNumbers) {
             TLRPC.User u = UserConfig.getInstance(a).getCurrentUser();
             if (u != null) {
                 AccountSelectCell cell = new AccountSelectCell(parentActivity, false);
