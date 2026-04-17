@@ -33,6 +33,7 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
@@ -62,6 +63,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_HIDE_SENSITIVE_DATA = 1;
     public static final int ID_SHOW_NOTIFICATION_CONTENT = 3;
     public static final int ID_DROP_SCREENSHOT_CAPTION = 4;
+    public static final int ID_HIDDEN_ACCOUNTS = 5;
 
     public static final int ID_HIDE_BOTTOM_BUTTON = 11;
     public static final int ID_CUSTOM_TITLE = 12;
@@ -236,6 +238,11 @@ public class ForkSettingsActivity extends BaseFragment {
         return LocaleController.getString(R.string.VoiceQualityMax);
     }
 
+    private String getHiddenAccountsText() {
+        int hiddenCount = HiddenAccountHelper.getHiddenAccountsCount();
+        return hiddenCount > 0 ? Integer.toString(hiddenCount) : LocaleController.getString(R.string.PasswordOff);
+    }
+
     @Override
     public View createView(Context context) {
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
@@ -393,6 +400,9 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("showNotificationContent", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DROP_SCREENSHOT_CAPTION, LocaleController.getString(R.string.DropScreenshotCaption), LocaleController.getString(R.string.DropScreenshotCaptionInfo))
             .setChecked(pref("dropScreenshotCaption", true)).setMultiline(true));
+        if (HiddenAccountHelper.shouldShowSettingsEntry(currentAccount)) {
+            items.add(UItem.asSettingsCell(ID_HIDDEN_ACCOUNTS, LocaleController.getString(R.string.HiddenAccounts), getHiddenAccountsText()));
+        }
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionAppearance)));
@@ -535,6 +545,9 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("showNotificationContent", item, view);
         } else if (id == ID_DROP_SCREENSHOT_CAPTION) {
             toggle("dropScreenshotCaption", item, view);
+        } else if (id == ID_HIDDEN_ACCOUNTS) {
+            presentFragment(new HiddenAccountsActivity());
+
         } else if (id == ID_SQUARE_AVATARS) {
             toggle("squareAvatars", item, view);
         } else if (id == ID_HIDE_BOTTOM_BUTTON) {

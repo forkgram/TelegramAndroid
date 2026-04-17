@@ -130,6 +130,7 @@ import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.XiaomiUtilities;
 import org.telegram.messenger.browser.Browser;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.utils.FBool;
 import org.telegram.messenger.utils.GradientProtectionDrawable;
 import org.telegram.messenger.utils.SearchTextWatcher;
@@ -158,6 +159,7 @@ import org.telegram.ui.ActionBar.ThemeDescription;
 import org.telegram.ui.Adapters.DialogsAdapter;
 import org.telegram.ui.Adapters.DialogsSearchAdapter;
 import org.telegram.ui.Adapters.FiltersView;
+import org.telegram.ui.Cells.AccountSelectCell;
 import org.telegram.ui.Cells.ActiveGiftAuctionsHintCell;
 import org.telegram.ui.Cells.AnimatedStatusView;
 import org.telegram.ui.Cells.ArchiveHintInnerCell;
@@ -3426,6 +3428,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             @Override
             public void onTextChanged(EditText editText) {
                 String text = editText.getText().toString();
+                int hiddenAccount = HiddenAccountHelper.tryUnlockFromSearch(text.trim());
+                if (hiddenAccount >= 0) {
+                    actionBar.closeSearchField();
+                    if (LaunchActivity.instance != null) {
+                        LaunchActivity.instance.switchToAccount(hiddenAccount, true);
+                    }
+                    return;
+                }
                 if (!text.isEmpty() || (searchViewPager != null && searchViewPager.dialogsSearchAdapter != null && searchViewPager.dialogsSearchAdapter.hasRecentSearch()) || searchFiltersWasShowed || hasStories) {
                     searchWas = true;
                     if (!searchIsShowed) {
@@ -3878,7 +3888,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             });
         }
 
-        if (allowSwitchAccount && UserConfig.getActivatedAccountsCount() > 1) {
+        if (allowSwitchAccount && (UserConfig.getVisibleAccountsCount() > 1 || HiddenAccountHelper.getVisibleAccountsCountExcluding(currentAccount) > 0)) {
             switchItem = menu.addItemWithWidth(11, 0, dp(56));
             AvatarDrawable avatarDrawable = new AvatarDrawable();
             avatarDrawable.setTextSize(dp(12));
@@ -3894,6 +3904,17 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             imageView.getImageReceiver().setCurrentAccount(currentAccount);
             Drawable thumb = user != null && user.photo != null && user.photo.strippedBitmap != null ? user.photo.strippedBitmap : avatarDrawable;
             imageView.setImage(ImageLocation.getForUserOrChat(currentAccount, user, ImageLocation.TYPE_SMALL), "50_50", ImageLocation.getForUserOrChat(user, ImageLocation.TYPE_STRIPPED), "50_50", thumb, user);
+
+            ArrayList<Integer> accountNumbers = new ArrayList<>();
+            HiddenAccountHelper.collectVisibleAccountNumbers(accountNumbers);
+            for (int a : accountNumbers) {
+                TLRPC.User u = AccountInstance.getInstance(a).getUserConfig().getCurrentUser();
+                if (u != null) {
+                    AccountSelectCell cell = new AccountSelectCell(context, false);
+                    cell.setAccount(a, true);
+                    switchItem.addSubItem(10 + a, cell, dp(230), dp(48));
+                }
+            }
         }
 
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
@@ -14434,22 +14455,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private boolean openAccountSelector(View view) {
         final ArrayList<Integer> accountNumbers = new ArrayList<>();
 
-        accountNumbers.clear();
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
-                accountNumbers.add(a);
-            }
-        }
-        Collections.sort(accountNumbers, (o1, o2) -> {
-            long l1 = UserConfig.getInstance(o1).loginTime;
-            long l2 = UserConfig.getInstance(o2).loginTime;
-            if (l1 > l2) {
-                return 1;
-            } else if (l1 < l2) {
-                return -1;
-            }
-            return 0;
-        });
+        HiddenAccountHelper.collectVisibleAccountNumbers(accountNumbers);
 
         ItemOptions o = ItemOptions.makeOptions(this, view);
         if (accountNumbers.size() > 0) {
