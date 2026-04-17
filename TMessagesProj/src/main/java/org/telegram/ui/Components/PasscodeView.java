@@ -68,6 +68,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.support.fingerprint.FingerprintManagerCompat;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.LaunchActivity;
@@ -465,6 +466,7 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
     private ImageView fingerprintImage;
     private View border;
     private int keyboardHeight = 0;
+    private boolean skipFingerprintOnce;
 
     private boolean selfCancelled;
     private FingerprintDialog fingerprintDialog;
@@ -949,6 +951,11 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
                 return;
             }
             if (!SharedConfig.checkPasscode(password)) {
+                if (HiddenAccountHelper.prepareHiddenUnlockFromPasscode(password) >= 0) {
+                    skipFingerprintOnce = true;
+                    finishPasscodeAccepted();
+                    return;
+                }
                 SharedConfig.increaseBadPasscodeTries();
                 if (SharedConfig.passcodeRetryInMs > 0) {
                     checkRetryTextView();
@@ -969,6 +976,10 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
                 return;
             }
         }
+        finishPasscodeAccepted();
+    }
+
+    private void finishPasscodeAccepted() {
         SharedConfig.badPasscodeTries = 0;
         passwordEditText.clearFocus();
         AndroidUtilities.hideKeyboard(passwordEditText);
@@ -1181,6 +1192,10 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
     }
 
     private void checkFingerprint() {
+        if (skipFingerprintOnce) {
+            skipFingerprintOnce = false;
+            return;
+        }
         if (Build.VERSION.SDK_INT < 23) {
             return;
         }
