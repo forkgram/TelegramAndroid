@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">Verborgen accounts</string>
+    <string name="HiddenAccountsAccounts">Accounts</string>
+    <string name="HiddenAccountsAccountsInfo">Alleen verborgen accounts krijgen een extra ontgrendelcode. Ten minste één account moet zichtbaar blijven.</string>
+    <string name="HiddenAccountsChangeUnlockCode">Ontgrendelcode wijzigen</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">Huidige ontgrendelcode bevestigen</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">Voer de huidige ontgrendelcode in voordat je dit verborgen account wijzigt.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">Ontgrendelcode bevestigen</string>
+    <string name="HiddenAccountsCurrentUnlockCode">Huidige ontgrendelcode</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">Je kunt de stealthmodus niet uitschakelen zolang er verborgen accounts zijn en de toegangscode van de app uit staat.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">Deze ontgrendelcode wordt al door een ander verborgen account gebruikt.</string>
+    <string name="HiddenAccountsEnterUnlockCode">Voer een 4-cijferige ontgrendelcode in</string>
+    <string name="HiddenAccountsHideAccount">Account verbergen</string>
+    <string name="HiddenAccountsHideAccountAction">Verbergen</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">Onjuiste huidige ontgrendelcode.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">Voer precies 4 cijfers in.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">Ten minste één ingelogd account moet zichtbaar blijven.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">Schakel de Telegram-toegangscode of de stealthmodus in voordat je accounts verbergt.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">Instellingen alleen tonen bij gebruik van een verborgen account</string>
+    <string name="HiddenAccountsOptions">Opties</string>
+    <string name="HiddenAccountsPasscodeModeInfo">Verborgen accounts gebruiken een aparte 4-cijferige ontgrendelcode. Wanneer de toegangscode van de app is ingeschakeld, opent de code van een verborgen account bij het toegangscodescherm dat account voor de huidige sessie.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">Verborgen account verwijderen</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">Dit account wordt weer zichtbaar in de accountwisselaar, de instellingen en de meldingen.</string>
+    <string name="HiddenAccountsShowAccount">Account tonen</string>
+    <string name="HiddenAccountsStateHidden">Verborgen</string>
+    <string name="HiddenAccountsStateVisible">Zichtbaar</string>
+    <string name="HiddenAccountsStealthMode">Stealthmodus</string>
+    <string name="HiddenAccountsStealthModeInfo">De stealthmodus verbergt verborgen accounts zonder dat je de gewone toegangscode van de app inschakelt. Voer de code van een verborgen account in het zoekveld van de chatlijst in om dat account voor de huidige sessie te openen.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">Schakel de Telegram-toegangscode uit voordat je de stealthmodus inschakelt.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">Gebruik een aparte 4-cijferige code voor dit account. Codes van verborgen accounts moeten uniek zijn en mogen niet gelijk zijn aan de toegangscode van de app.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">Deze ontgrendelcode is gelijk aan de toegangscode van de app. Kies een andere code.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">De ontgrendelcodes komen niet overeen.</string>
     <string name="AppUpdateSkipVersion">Deze versie overslaan</string>
     <string name="AppUpdateSkipVersionMessage">Versie %1$s blijft verborgen totdat er een nieuwere wordt uitgebracht.</string>
     <string name="QRLoginButton">Inloggen met QR-code</string>

@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">Contas ocultas</string>
+    <string name="HiddenAccountsAccounts">Contas</string>
+    <string name="HiddenAccountsAccountsInfo">Somente as contas ocultas recebem um código de desbloqueio adicional. Pelo menos uma conta deve permanecer visível.</string>
+    <string name="HiddenAccountsChangeUnlockCode">Alterar código de desbloqueio</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">Confirmar código de desbloqueio atual</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">Digite o código de desbloqueio atual antes de alterar esta conta oculta.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">Confirmar código de desbloqueio</string>
+    <string name="HiddenAccountsCurrentUnlockCode">Código de desbloqueio atual</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">Não é possível desativar o modo furtivo enquanto houver contas ocultas e a senha de bloqueio do app estiver desativada.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">Este código de desbloqueio já é usado por outra conta oculta.</string>
+    <string name="HiddenAccountsEnterUnlockCode">Digite o código de desbloqueio de 4 dígitos</string>
+    <string name="HiddenAccountsHideAccount">Ocultar conta</string>
+    <string name="HiddenAccountsHideAccountAction">Ocultar</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">Código de desbloqueio atual incorreto.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">Digite exatamente 4 dígitos.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">Pelo menos uma conta conectada deve permanecer visível.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">Ative a senha de bloqueio do Telegram ou o modo furtivo antes de ocultar contas.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">Mostrar as configurações apenas ao usar uma conta oculta</string>
+    <string name="HiddenAccountsOptions">Opções</string>
+    <string name="HiddenAccountsPasscodeModeInfo">As contas ocultas usam um código de desbloqueio de 4 dígitos separado. Quando a senha de bloqueio do app está ativada, digitar o código de uma conta oculta na tela da senha abre essa conta na sessão atual.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">Remover conta oculta</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">Esta conta voltará a aparecer nos seletores de conta, nas configurações e nas notificações.</string>
+    <string name="HiddenAccountsShowAccount">Mostrar conta</string>
+    <string name="HiddenAccountsStateHidden">Oculta</string>
+    <string name="HiddenAccountsStateVisible">Visível</string>
+    <string name="HiddenAccountsStealthMode">Modo furtivo</string>
+    <string name="HiddenAccountsStealthModeInfo">O modo furtivo oculta as contas ocultas sem ativar a senha de bloqueio comum do app. Digite o código de uma conta oculta no campo de busca de conversas para abrir essa conta na sessão atual.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">Desative a senha de bloqueio do Telegram antes de ativar o modo furtivo.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">Use um código de 4 dígitos separado para esta conta. Os códigos das contas ocultas devem ser únicos e não podem coincidir com a senha de bloqueio do app.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">Este código de desbloqueio é igual à senha de bloqueio do app. Use um código diferente.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">Os códigos de desbloqueio não coincidem.</string>
     <string name="AppUpdateSkipVersion">Ignorar esta versão</string>
     <string name="AppUpdateSkipVersionMessage">A versão %1$s ficará oculta até que uma mais nova seja lançada.</string>
     <string name="QRLoginButton">Entrar com código QR</string>
