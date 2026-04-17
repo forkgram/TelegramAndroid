@@ -18,6 +18,7 @@ import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.SerializedData;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_account;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 
 import java.util.Arrays;
 
@@ -106,6 +107,10 @@ public class UserConfig extends BaseController {
             }
         }
         return count;
+    }
+
+    public static int getVisibleAccountsCount() {
+        return HiddenAccountHelper.getVisibleAccountsCount();
     }
 
     public UserConfig(int instance) {
@@ -460,6 +465,7 @@ public class UserConfig extends BaseController {
 
     public void clearConfig() {
         getPreferences().edit().clear().apply();
+        HiddenAccountHelper.clearAccount(currentAccount);
 
         sharingMyLocationUntil = 0;
         lastMyLocationShareTime = 0;

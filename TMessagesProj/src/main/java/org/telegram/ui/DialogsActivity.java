@@ -125,6 +125,7 @@ import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.XiaomiUtilities;
 import org.telegram.messenger.browser.Browser;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.utils.GradientProtectionDrawable;
 import org.telegram.messenger.utils.SearchTextWatcher;
 import org.telegram.tgnet.ConnectionsManager;
@@ -3380,6 +3381,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             @Override
             public void onTextChanged(EditText editText) {
                 String text = editText.getText().toString();
+                int hiddenAccount = HiddenAccountHelper.tryUnlockFromSearch(text.trim());
+                if (hiddenAccount >= 0) {
+                    actionBar.closeSearchField();
+                    if (LaunchActivity.instance != null) {
+                        LaunchActivity.instance.switchToAccount(hiddenAccount, true);
+                    }
+                    return;
+                }
                 if (!text.isEmpty() || (searchViewPager != null && searchViewPager.dialogsSearchAdapter != null && searchViewPager.dialogsSearchAdapter.hasRecentSearch()) || searchFiltersWasShowed || hasStories) {
                     searchWas = true;
                     if (!searchIsShowed) {
@@ -3823,7 +3832,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             });
         }
 
-        if (allowSwitchAccount && UserConfig.getActivatedAccountsCount() > 1) {
+        if (allowSwitchAccount && (UserConfig.getVisibleAccountsCount() > 1 || HiddenAccountHelper.getVisibleAccountsCountExcluding(currentAccount) > 0)) {
             switchItem = menu.addItemWithWidth(1, 0, dp(56));
             AvatarDrawable avatarDrawable = new AvatarDrawable();
             avatarDrawable.setTextSize(dp(12));
@@ -3838,7 +3847,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             Drawable thumb = user != null && user.photo != null && user.photo.strippedBitmap != null ? user.photo.strippedBitmap : avatarDrawable;
             imageView.setImage(ImageLocation.getForUserOrChat(user, ImageLocation.TYPE_SMALL), "50_50", ImageLocation.getForUserOrChat(user, ImageLocation.TYPE_STRIPPED), "50_50", thumb, user);
 
-            for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            ArrayList<Integer> accountNumbers = new ArrayList<>();
+            HiddenAccountHelper.collectVisibleAccountNumbers(accountNumbers);
+            for (int a : accountNumbers) {
                 TLRPC.User u = AccountInstance.getInstance(a).getUserConfig().getCurrentUser();
                 if (u != null) {
                     AccountSelectCell cell = new AccountSelectCell(context, false);

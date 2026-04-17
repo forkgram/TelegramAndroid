@@ -23,6 +23,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
@@ -183,6 +184,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int syncPinsRow;
 
     private int disableUnifiedPushRow;
+    private int hiddenAccountsRow;
 
     private static int getIntLocale(String str) {
         try {
@@ -233,6 +235,11 @@ public class ForkSettingsActivity extends BaseFragment {
         if (bitrate <= 32000) return "Medium (32 kbps)";
         if (bitrate <= 64000) return "High (64 kbps)";
         return "Max";
+    }
+
+    private String getHiddenAccountsText() {
+        int hiddenCount = HiddenAccountHelper.getHiddenAccountsCount();
+        return hiddenCount > 0 ? Integer.toString(hiddenCount) : LocaleController.getString(R.string.PasswordOff);
     }
 
     private void showVoiceQualityDialog() {
@@ -372,18 +379,25 @@ public class ForkSettingsActivity extends BaseFragment {
     @Override
     public boolean onFragmentCreate() {
         super.onFragmentCreate();
+        rebuildRows();
+        return true;
+    }
 
+    private void rebuildRows() {
         rowCount = 0;
-        
+        sectionRows.clear();
+        emptyRows.clear();
+
         sectionRows.add(rowCount++);
         hideSensitiveDataRow = SharedConfig.isUserOwner() ? -1 : rowCount++;
         squareAvatarsRow = rowCount++;
         photoHasStickerRow = rowCount++;
         showNotificationContent = rowCount++;
+        hiddenAccountsRow = HiddenAccountHelper.shouldShowSettingsEntry(currentAccount) ? rowCount++ : -1;
         hideBottomButton = SharedConfig.isUserOwner() ? rowCount++ : -1;
         lockPremium = rowCount++;
         disableUnifiedPushRow = rowCount++;
-    
+
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
         syncPinsRow = rowCount++;
@@ -395,7 +409,7 @@ public class ForkSettingsActivity extends BaseFragment {
         enableLastSeenDots = rowCount++;
         customTitleRow = rowCount++;
         updateCheckIntervalRow = rowCount++;
-    
+
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
         disableFlipPhotos = rowCount++;
@@ -419,7 +433,7 @@ public class ForkSettingsActivity extends BaseFragment {
         emptyRows.add(rowCount++);
         botSkipShare = rowCount++;
         botSkipFullscreen = rowCount++;
-    
+
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
         inappCameraRow = rowCount++;
@@ -431,10 +445,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
-        lastFmLoginRow = (BuildVars.LASTFM_API_KEY != null && BuildVars.LASTFM_API_KEY.length() > 2 && 
+        lastFmLoginRow = (BuildVars.LASTFM_API_KEY != null && BuildVars.LASTFM_API_KEY.length() > 2 &&
                           BuildVars.LASTFM_API_SECRET != null && BuildVars.LASTFM_API_SECRET.length() > 2) ? rowCount++ : -1;
-
-        return true;
     }
 
     public boolean toggleGlobalMainSetting(String option, View view, boolean byDefault) {
@@ -572,6 +584,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("hideSensitiveData", view, false);
             } else if (position == disableUnifiedPushRow) {
                 toggleGlobalMainSetting("disableUnifiedPush", view, false);
+            } else if (position == hiddenAccountsRow) {
+                presentFragment(new HiddenAccountsActivity());
             } else if (position == customTitleRow) {
                 final String defaultValue = "Fork Client";
                 org.telegram.messenger.forkgram.ForkDialogs.CreateFieldAlert(
@@ -613,6 +627,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (listAdapter != null) {
+            rebuildRows();
             listAdapter.notifyDataSetChanged();
         }
     }
@@ -639,6 +654,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("EditAdminRank", R.string.EditAdminRank);
                         final String v = MessagesController.getGlobalMainSettings().getString("forkCustomTitle", "Fork Client");
                         textCell.setTextAndValue(t, v, false);
+                    } else if (position == hiddenAccountsRow) {
+                        textCell.setTextAndValue(LocaleController.getString(R.string.HiddenAccounts), getHiddenAccountsText(), false);
                     } else if (position == voiceQualityRow) {
                         textCell.setTextAndValue("Voice Message Quality", getVoiceQualityText(), false);
                     } else if (position == updateCheckIntervalRow) {
@@ -818,6 +835,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == hideBottomButton
                         || position == syncPinsRow
                         || position == showNotificationContent
+                        || position == hiddenAccountsRow
                         || position == photoHasStickerRow
                         || position == voiceQualityRow
                         || position == updateCheckIntervalRow
@@ -860,7 +878,7 @@ public class ForkSettingsActivity extends BaseFragment {
         public int getItemViewType(int position) {
             if (emptyRows.contains(position)) {
                 return 1;
-            } else if (position == customTitleRow || position == voiceQualityRow || position == updateCheckIntervalRow || position == lastFmLoginRow) {
+            } else if (position == customTitleRow || position == hiddenAccountsRow || position == voiceQualityRow || position == updateCheckIntervalRow || position == lastFmLoginRow) {
                 return 2;
             } else if (position == squareAvatarsRow
                 || position == hideSensitiveDataRow
