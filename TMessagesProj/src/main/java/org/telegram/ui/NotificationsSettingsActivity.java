@@ -180,7 +180,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
         MessagesController.getInstance(currentAccount).loadSignUpNotificationsSettings();
         loadExceptions(null);
 
-        if (UserConfig.getActivatedAccountsCount() > 1) {
+        if (UserConfig.getVisibleAccountsCount() > 1) {
             accountsSectionRow = rowCount++;
             accountsAllRow = rowCount++;
             accountsInfoRow = rowCount++;
