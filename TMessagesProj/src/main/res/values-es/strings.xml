@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">Cuentas ocultas</string>
+    <string name="HiddenAccountsAccounts">Cuentas</string>
+    <string name="HiddenAccountsAccountsInfo">Solo las cuentas ocultas tienen un código de desbloqueo adicional. Al menos una cuenta debe permanecer visible.</string>
+    <string name="HiddenAccountsChangeUnlockCode">Cambiar el código de desbloqueo</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">Confirmar el código de desbloqueo actual</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">Pon el código de desbloqueo actual antes de cambiar esta cuenta oculta.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">Confirmar el código de desbloqueo</string>
+    <string name="HiddenAccountsCurrentUnlockCode">Código de desbloqueo actual</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">No puedes desactivar el modo sigiloso mientras haya cuentas ocultas y el código de acceso de la app esté desactivado.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">Otra cuenta oculta ya usa este código de desbloqueo.</string>
+    <string name="HiddenAccountsEnterUnlockCode">Pon un código de desbloqueo de 4 dígitos</string>
+    <string name="HiddenAccountsHideAccount">Ocultar cuenta</string>
+    <string name="HiddenAccountsHideAccountAction">Ocultar</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">El código de desbloqueo actual es incorrecto.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">Pon exactamente 4 dígitos.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">Al menos una cuenta con sesión iniciada debe permanecer visible.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">Activa el código de acceso de Telegram o el modo sigiloso antes de ocultar cuentas.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">Mostrar los ajustes solo al usar una cuenta oculta</string>
+    <string name="HiddenAccountsOptions">Opciones</string>
+    <string name="HiddenAccountsPasscodeModeInfo">Las cuentas ocultas usan un código de desbloqueo de 4 dígitos aparte. Cuando el código de acceso de la app está activado, poner el código de una cuenta oculta en la pantalla del código de acceso abre esa cuenta durante la sesión actual.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">Quitar de las cuentas ocultas</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">Esta cuenta volverá a verse en los selectores de cuenta, los ajustes y las notificaciones.</string>
+    <string name="HiddenAccountsShowAccount">Mostrar cuenta</string>
+    <string name="HiddenAccountsStateHidden">Oculta</string>
+    <string name="HiddenAccountsStateVisible">Visible</string>
+    <string name="HiddenAccountsStealthMode">Modo sigiloso</string>
+    <string name="HiddenAccountsStealthModeInfo">El modo sigiloso oculta las cuentas ocultas sin activar el código de acceso normal de la app. Pon el código de una cuenta oculta en el campo de búsqueda de chats para abrir esa cuenta durante la sesión actual.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">Desactiva el código de acceso de Telegram antes de activar el modo sigiloso.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">Usa un código de 4 dígitos aparte para esta cuenta. Los códigos de las cuentas ocultas deben ser únicos y no pueden coincidir con el código de acceso de la app.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">Este código de desbloqueo coincide con el código de acceso de la app. Usa un código diferente.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">Los códigos de desbloqueo no coinciden.</string>
     <string name="AppUpdateSkipVersion">Omitir esta versión</string>
     <string name="AppUpdateSkipVersionMessage">La versión %1$s quedará oculta hasta que se publique una más reciente.</string>
     <string name="QRLoginButton">Iniciar sesión con código QR</string>
