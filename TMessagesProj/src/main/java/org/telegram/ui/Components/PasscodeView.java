@@ -70,6 +70,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.support.fingerprint.FingerprintManagerCompat;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.blur3.BlurredBackgroundDrawableViewFactory;
@@ -475,6 +476,7 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
     private ImageView fingerprintImage;
     private View border;
     private int keyboardHeight = 0;
+    private boolean skipFingerprintOnce;
 
     // glass of the number buttons, as on the QR screen: the background keeps a low-res copy of itself
     // that is used directly as the blur source
@@ -1108,6 +1110,11 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
                 return;
             }
             if (!SharedConfig.checkPasscode(password)) {
+                if (HiddenAccountHelper.prepareHiddenUnlockFromPasscode(password) >= 0) {
+                    skipFingerprintOnce = true;
+                    finishPasscodeAccepted();
+                    return;
+                }
                 SharedConfig.increaseBadPasscodeTries();
                 if (SharedConfig.passcodeRetryInMs > 0) {
                     checkRetryTextView();
@@ -1121,8 +1128,13 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
                 return;
             }
         }
+        finishPasscodeAccepted();
+    }
+
+    private void finishPasscodeAccepted() {
         dismissing = true;
         onPause();
+
         SharedConfig.badPasscodeTries = 0;
         passwordEditText.clearFocus();
         AndroidUtilities.hideKeyboard(passwordEditText);
@@ -1380,6 +1392,11 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
 
     protected void checkFingerprint() {
         if (dismissing) return;
+        if (skipFingerprintOnce) {
+            skipFingerprintOnce = false;
+            return;
+        }
+
         if (Build.VERSION.SDK_INT < 23) {
             return;
         }

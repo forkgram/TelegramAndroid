@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="HiddenAccounts">الحسابات المخفية</string>
+    <string name="HiddenAccountsAccounts">الحسابات</string>
+    <string name="HiddenAccountsAccountsInfo">الحسابات المخفية وحدها تحصل على رمز فتح إضافي. يجب أن يبقى حساب واحد على الأقل ظاهرًا.</string>
+    <string name="HiddenAccountsChangeUnlockCode">تغيير رمز الفتح</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCode">تأكيد رمز الفتح الحالي</string>
+    <string name="HiddenAccountsConfirmCurrentUnlockCodeInfo">أدخل رمز الفتح الحالي قبل تغيير هذا الحساب المخفي.</string>
+    <string name="HiddenAccountsConfirmUnlockCode">تأكيد رمز الفتح</string>
+    <string name="HiddenAccountsCurrentUnlockCode">رمز الفتح الحالي</string>
+    <string name="HiddenAccountsDisableStealthNeedsPasscode">لا يمكنك تعطيل الوضع الخفي ما دامت هناك حسابات مخفية ورمز مرور التطبيق معطّل.</string>
+    <string name="HiddenAccountsDuplicateUnlockCode">رمز الفتح هذا مستخدم بالفعل في حساب مخفي آخر.</string>
+    <string name="HiddenAccountsEnterUnlockCode">أدخل رمز فتح من 4 أرقام</string>
+    <string name="HiddenAccountsHideAccount">إخفاء الحساب</string>
+    <string name="HiddenAccountsHideAccountAction">إخفاء</string>
+    <string name="HiddenAccountsIncorrectCurrentUnlockCode">رمز الفتح الحالي غير صحيح.</string>
+    <string name="HiddenAccountsInvalidUnlockCode">أدخل 4 أرقام بالضبط.</string>
+    <string name="HiddenAccountsNeedVisibleAccount">يجب أن يبقى ظاهرًا حساب واحد على الأقل من الحسابات المسجَّل دخولها.</string>
+    <string name="HiddenAccountsNeedsPasscodeOrStealthMode">فعّل رمز مرور تيليجرام أو الوضع الخفي قبل إخفاء الحسابات.</string>
+    <string name="HiddenAccountsOnlyShowWhenSignedInAsHiddenAccount">إظهار الإعدادات فقط عند استخدام حساب مخفي</string>
+    <string name="HiddenAccountsOptions">الخيارات</string>
+    <string name="HiddenAccountsPasscodeModeInfo">تستخدم الحسابات المخفية رمز فتح منفصلًا من 4 أرقام. عند تفعيل رمز مرور التطبيق، يؤدي إدخال رمز حساب مخفي في شاشة رمز المرور إلى فتح ذلك الحساب للجلسة الحالية.</string>
+    <string name="HiddenAccountsRemoveHiddenAccount">إزالة الحساب المخفي</string>
+    <string name="HiddenAccountsRemoveHiddenAccountConfirm">سيعود هذا الحساب للظهور في قوائم تبديل الحسابات والإعدادات والإشعارات.</string>
+    <string name="HiddenAccountsShowAccount">إظهار الحساب</string>
+    <string name="HiddenAccountsStateHidden">مخفي</string>
+    <string name="HiddenAccountsStateVisible">ظاهر</string>
+    <string name="HiddenAccountsStealthMode">الوضع الخفي</string>
+    <string name="HiddenAccountsStealthModeInfo">يخفي الوضع الخفي الحسابات المخفية دون تفعيل رمز مرور التطبيق العادي. أدخل رمز حساب مخفي في حقل بحث الدردشات لفتح ذلك الحساب للجلسة الحالية.</string>
+    <string name="HiddenAccountsStealthModeRequiresPasscodeOff">أوقف رمز مرور تيليجرام قبل تفعيل الوضع الخفي.</string>
+    <string name="HiddenAccountsUnlockCodeInfo">استخدم رمزًا منفصلًا من 4 أرقام لهذا الحساب. يجب أن تكون رموز الحسابات المخفية فريدة ولا يمكن أن تطابق رمز مرور التطبيق.</string>
+    <string name="HiddenAccountsUnlockCodeMatchesAppPasscode">رمز الفتح هذا يطابق رمز مرور التطبيق. استخدم رمزًا مختلفًا.</string>
+    <string name="HiddenAccountsUnlockCodesDoNotMatch">رمزا الفتح غير متطابقين.</string>
     <string name="AppUpdateSkipVersion">تخطي هذا الإصدار</string>
     <string name="AppUpdateSkipVersionMessage">سيبقى الإصدار %1$s مخفيًا حتى يصدر إصدار أحدث.</string>
     <string name="QRLoginButton">تسجيل الدخول عبر رمز QR</string>
