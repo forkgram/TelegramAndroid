@@ -35,6 +35,7 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.tl.TL_account;
 import org.telegram.ui.ActionBar.AlertDialog;
@@ -261,7 +262,7 @@ public class ExternalActionActivity extends Activity implements INavigationLayou
         }
         if ("org.telegram.passport.AUTHORIZE".equals(intent.getAction())) {
             if (state == 0) {
-                int activatedAccountsCount = UserConfig.getActivatedAccountsCount();
+                int activatedAccountsCount = UserConfig.getVisibleAccountsCount();
                 if (activatedAccountsCount == 0) {
                     passcodeSaveIntent = intent;
                     passcodeSaveIntentIsNew = isNew;

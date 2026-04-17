@@ -139,6 +139,7 @@ import org.telegram.messenger.voip.VoIPPendingCall;
 import org.telegram.messenger.voip.VoIPPreNotificationService;
 import org.telegram.messenger.voip.VoIPService;
 import org.telegram.messenger.forkgram.AppUpdater;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLParseException;
@@ -1194,8 +1195,11 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     }
 
     public void switchToAccount(int account, boolean removeAll, GenericProvider<Void, MainTabsActivity> dialogsActivityProvider) {
-        if (account == UserConfig.selectedAccount || !UserConfig.isValidAccount(account)) {
+        if (account == UserConfig.selectedAccount || !UserConfig.isValidAccount(account) || HiddenAccountHelper.isAccountHidden(account) && !HiddenAccountHelper.isUnlockedHiddenAccount(account)) {
             return;
+        }
+        if (HiddenAccountHelper.isUnlockedHiddenAccount(currentAccount) && currentAccount != account) {
+            HiddenAccountHelper.clearUnlockedHiddenAccount();
         }
         switchingAccount = true;
 
@@ -1240,11 +1244,13 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     }
 
     private void switchToAvailableAccountOrLogout() {
-        int account = -1;
-        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
-                account = a;
-                break;
+        int account = HiddenAccountHelper.getFallbackVisibleAccount(-1);
+        if (account < 0) {
+            for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                if (UserConfig.getInstance(a).isClientActivated()) {
+                    account = a;
+                    break;
+                }
             }
         }
         if (termsOfServiceView != null) {
@@ -1471,6 +1477,13 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         SharedConfig.isWaitingForPasscodeEnter = true;
         PasscodeView.PasscodeViewDelegate delegate = view -> {
             SharedConfig.isWaitingForPasscodeEnter = false;
+            int hiddenAccount = HiddenAccountHelper.consumePendingUnlockAccount();
+            if (hiddenAccount >= 0) {
+                HiddenAccountHelper.setUnlockedHiddenAccount(hiddenAccount);
+                if (UserConfig.selectedAccount != hiddenAccount) {
+                    switchToAccount(hiddenAccount, true);
+                }
+            }
             if (passcodeSaveIntent != null) {
                 handleIntent(passcodeSaveIntent, passcodeSaveIntentIsNew, passcodeSaveIntentIsRestore, true, null, false, true);
                 passcodeSaveIntent = null;
@@ -3987,7 +4000,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             progress.onCancel(() -> AndroidUtilities.cancelRunOnUIThread(runnable));
             AndroidUtilities.runOnUIThread(runnable, 7500);
             return;
-        } else if (state == 0 && UserConfig.getActivatedAccountsCount() >= 2 && auth != null) {
+        } else if (state == 0 && UserConfig.getVisibleAccountsCount() >= 2 && auth != null) {
             AlertsCreator.createAccountSelectDialog(this, account -> {
                 if (account != intentAccount) {
                     switchToAccount(account, true);
@@ -6810,6 +6823,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         pipActivityHandler.onStop();
         Browser.unbindCustomTabsService(this);
         ApplicationLoader.mainInterfaceStopped = true;
+        if (!isChangingConfigurations() && HiddenAccountHelper.isUnlockedHiddenAccount(currentAccount)) {
+            HiddenAccountHelper.clearUnlockedHiddenAccount();
+        }
         GroupCallPip.updateVisibility(this);
         if (GroupCallActivity.groupCallInstance != null) {
             GroupCallActivity.groupCallInstance.onPause();
