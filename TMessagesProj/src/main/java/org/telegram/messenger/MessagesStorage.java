@@ -3934,6 +3934,8 @@ public class MessagesStorage extends BaseController {
                 }
                 Collections.reverse(messages);
 
+                HashSet<Long> loadedUserIds = new HashSet<>(usersToLoad);
+                HashSet<Long> loadedChatIds = new HashSet<>(chatsToLoad);
                 usersToLoad.clear();
                 chatsToLoad.clear();
                 cursor = database.queryFinalized("SELECT uid, sid, date, expire_date, localName, flags FROM story_pushes");
@@ -3941,12 +3943,13 @@ public class MessagesStorage extends BaseController {
                 while (cursor.next()) {
                     long dialogId = cursor.longValue(0);
                     if (dialogId >= 0) {
-                        if (!usersToLoad.contains(dialogId)) {
+                        if (!loadedUserIds.contains(dialogId) && !usersToLoad.contains(dialogId)) {
                             usersToLoad.add(dialogId);
                         }
                     } else {
-                        if (!chatsToLoad.contains(dialogId)) {
-                            chatsToLoad.add(dialogId);
+                        long chatId = -dialogId;
+                        if (!loadedChatIds.contains(chatId) && !chatsToLoad.contains(chatId)) {
+                            chatsToLoad.add(chatId);
                         }
                     }
                     int id = cursor.intValue(1);
