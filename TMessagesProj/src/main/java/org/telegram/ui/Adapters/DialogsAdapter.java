@@ -94,7 +94,6 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
             VIEW_TYPE_SHADOW = 8,
     //            VIEW_TYPE_ARCHIVE = 9,
             VIEW_TYPE_LAST_EMPTY = 10,
-            VIEW_TYPE_NEW_CHAT_HINT = 11,
             VIEW_TYPE_TEXT = 12,
             VIEW_TYPE_CONTACTS_FLICKER = 13,
             VIEW_TYPE_HEADER_2 = 14,
@@ -133,7 +132,6 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
     ArrayList<ItemInternal> itemInternals = new ArrayList<>();
     ArrayList<ItemInternal> oldItems = new ArrayList<>();
 
-    private Drawable arrowDrawable;
 
     private DialogsPreloader preloader;
     private boolean forceShowEmptyCell;
@@ -573,7 +571,7 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
         int viewType = holder.getItemViewType();
         return viewType != VIEW_TYPE_FLICKER && viewType != VIEW_TYPE_EMPTY && viewType != VIEW_TYPE_DIVIDER &&
                 viewType != VIEW_TYPE_SHADOW && viewType != VIEW_TYPE_HEADER &&
-                viewType != VIEW_TYPE_LAST_EMPTY && viewType != VIEW_TYPE_NEW_CHAT_HINT && viewType != VIEW_TYPE_CONTACTS_FLICKER &&
+                viewType != VIEW_TYPE_LAST_EMPTY && viewType != VIEW_TYPE_CONTACTS_FLICKER &&
                 viewType != VIEW_TYPE_REQUIREMENTS && viewType != VIEW_TYPE_REQUIRED_EMPTY && viewType != VIEW_TYPE_STORIES && viewType != VIEW_TYPE_ARCHIVE_FULLSCREEN && viewType != VIEW_TYPE_GRAY_SECTION;
     }
 
@@ -705,61 +703,6 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
                 break;
             case VIEW_TYPE_LAST_EMPTY: {
                 view = new LastEmptyView(mContext);
-                break;
-            }
-            case VIEW_TYPE_NEW_CHAT_HINT: {
-                view = new TextInfoPrivacyCell(mContext) {
-
-                    private int movement;
-                    private float moveProgress;
-                    private long lastUpdateTime;
-                    private int originalX;
-                    private int originalY;
-
-                    @Override
-                    protected void afterTextDraw() {
-                        if (arrowDrawable != null) {
-                            Rect bounds = arrowDrawable.getBounds();
-                            arrowDrawable.setBounds(originalX, originalY, originalX + bounds.width(), originalY + bounds.height());
-                        }
-                    }
-
-                    @Override
-                    protected void onTextDraw() {
-                        if (arrowDrawable != null) {
-                            Rect bounds = arrowDrawable.getBounds();
-                            int dx = (int) (moveProgress * AndroidUtilities.dp(3));
-                            originalX = bounds.left;
-                            originalY = bounds.top;
-                            arrowDrawable.setBounds(originalX + dx, originalY + AndroidUtilities.dp(1), originalX + dx + bounds.width(), originalY + AndroidUtilities.dp(1) + bounds.height());
-
-                            long newUpdateTime = SystemClock.elapsedRealtime();
-                            long dt = newUpdateTime - lastUpdateTime;
-                            if (dt > 17) {
-                                dt = 17;
-                            }
-                            lastUpdateTime = newUpdateTime;
-                            if (movement == 0) {
-                                moveProgress += dt / 664.0f;
-                                if (moveProgress >= 1.0f) {
-                                    movement = 1;
-                                    moveProgress = 1.0f;
-                                }
-                            } else {
-                                moveProgress -= dt / 664.0f;
-                                if (moveProgress <= 0.0f) {
-                                    movement = 0;
-                                    moveProgress = 0.0f;
-                                }
-                            }
-                            getTextView().invalidate();
-                        }
-                    }
-                };
-                Drawable drawable = Theme.getThemedDrawableByKey(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow);
-                CombinedDrawable combinedDrawable = new CombinedDrawable(new ColorDrawable(Theme.getColor(Theme.key_windowBackgroundGray)), drawable);
-                combinedDrawable.setFullsize(true);
-                view.setBackgroundDrawable(combinedDrawable);
                 break;
             }
             case VIEW_TYPE_FOLDER_UPDATE_HINT:
@@ -1025,19 +968,6 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
                         cell.setText(getString(R.string.ReplyDialogYourChats));
                     }
                 }
-                break;
-            }
-            case VIEW_TYPE_NEW_CHAT_HINT: {
-                TextInfoPrivacyCell cell = (TextInfoPrivacyCell) holder.itemView;
-                cell.setText(getString(R.string.TapOnThePencilButton));
-                if (arrowDrawable == null) {
-                    arrowDrawable = mContext.getResources().getDrawable(R.drawable.arrow_newchat);
-                    arrowDrawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText4), PorterDuff.Mode.MULTIPLY));
-                }
-                TextView textView = cell.getTextView();
-                textView.setCompoundDrawablePadding(AndroidUtilities.dp(4));
-                textView.setCompoundDrawablesWithIntrinsicBounds(null, null, parentFragment != null && parentFragment.storiesEnabled ? null : arrowDrawable, null);
-                textView.getLayoutParams().width = LayoutHelper.WRAP_CONTENT;
                 break;
             }
             case VIEW_TYPE_TEXT: {
@@ -1633,9 +1563,6 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
                     itemInternals.add(new ItemInternal(VIEW_TYPE_EMPTY, dialogsEmptyType()));
                 }
             } else {
-                if (folderId == 0 && dialogsCount > 10 && dialogsType == DialogsActivity.DIALOGS_TYPE_DEFAULT) {
-                    itemInternals.add(new ItemInternal(VIEW_TYPE_NEW_CHAT_HINT));
-                }
                 itemInternals.add(new ItemInternal(VIEW_TYPE_LAST_EMPTY));
             }
         }
