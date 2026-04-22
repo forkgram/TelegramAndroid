@@ -4835,13 +4835,19 @@ public class NotificationsController extends BaseController implements Notificat
             sortedDialogs.add(new DialogKey(0, 0, true));
         }
         LongSparseArray<ArrayList<MessageObject>> messagesByDialogs = new LongSparseArray<>();
+        int skippedCount = 0;
+        LongSparseArray<Integer> dismissDateCache = new LongSparseArray<>();
         for (int a = 0; a < pushMessages.size(); a++) {
             MessageObject messageObject = pushMessages.get(a);
             long dialog_id = messageObject.getDialogId();
             long topicId = MessageObject.getTopicId(currentAccount, messageObject.messageOwner, getMessagesController().isForum(messageObject));
-            int dismissDate = preferences.getInt("dismissDate" + dialog_id, 0);
+            int idx = dismissDateCache.indexOfKey(dialog_id);
+            int dismissDate = idx >= 0 ? dismissDateCache.valueAt(idx) : preferences.getInt("dismissDate" + dialog_id, 0);
+            if (idx < 0) {
+                dismissDateCache.put(dialog_id, dismissDate);
+            }
             if (!messageObject.isStoryPush && messageObject.messageOwner.date <= dismissDate) {
-                FileLog.d("showExtraNotifications: dialog " + dialog_id + " is skipped, message date (" + messageObject.messageOwner.date + " <= " + dismissDate + ")");
+                skippedCount++;
                 continue;
             }
 
@@ -4849,10 +4855,12 @@ public class NotificationsController extends BaseController implements Notificat
             if (arrayList == null) {
                 arrayList = new ArrayList<>();
                 messagesByDialogs.put(dialog_id, arrayList);
-                FileLog.d("showExtraNotifications: sortedDialogs += " + dialog_id);
                 sortedDialogs.add(new DialogKey(dialog_id, topicId, false));
             }
             arrayList.add(messageObject);
+        }
+        if (skippedCount > 0) {
+            FileLog.d("showExtraNotifications: skipped " + skippedCount + " dismissed messages, " + sortedDialogs.size() + " dialogs remain");
         }
 
         LongSparseArray<Integer> oldIdsWear = new LongSparseArray<>();
