@@ -863,6 +863,7 @@ public class HintView2 extends View {
             AndroidUtilities.cancelRunOnUIThread(onHidden);
         }
         shown = false;
+        flicker = false;
         if (!animated) {
             show.set(shown, false);
         }
@@ -937,6 +938,7 @@ public class HintView2 extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        flicker = false;
         AnimatedEmojiSpan.release(this, emojiGroupedSpans);
     }
 
