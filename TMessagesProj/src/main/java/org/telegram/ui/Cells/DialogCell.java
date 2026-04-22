@@ -4174,7 +4174,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                             canvas.translate(statusDrawableLeft, top + (dp(18) - statusDrawable.getIntrinsicHeight()) / 2f);
                         }
                         statusDrawable.draw(canvas);
-                        invalidate();
+                        needInvalidate = true;
                         canvas.restore();
                     }
                 }
@@ -6160,8 +6160,8 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
             } else {
                 if (System.currentTimeMillis() - startWaitingTime > 100) {
                     waitngNewMessageFroTypingAnimation = false;
+                    invalidate();
                 }
-                invalidate();
             }
         }
     }
