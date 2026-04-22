@@ -90,14 +90,18 @@ jobs:
           cp app.apk "tag_asset/ForkClient_$(cat ver.txt)${{ matrix.name }}.apk"
 
           # Upload to channel.
-          set +x
-          pip install requests tgcrypto-pyrofork Kurigram
-          cp app.apk "ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
-          echo "${{ secrets.BASE64_ZIP }}" | base64 --decode > output.zip
-          unzip -j output.zip -d .
-          ls
-          python3 upload.py
-          set -x
+          if [[ "${{ contains(github.event.head_commit.message, '[artifacts-only]') }}" == "true" ]]; then
+            echo "Skipping channel upload due to [artifacts-only] marker in commit message."
+          else
+            set +x
+            pip install requests tgcrypto-pyrofork Kurigram
+            cp app.apk "ForkClient $(cat ver.txt)${{ matrix.name }}.apk"
+            echo "${{ secrets.BASE64_ZIP }}" | base64 --decode > output.zip
+            unzip -j output.zip -d .
+            ls
+            python3 upload.py
+            set -x
+          fi
           ###
 
           echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
@@ -114,6 +118,7 @@ jobs:
   release:
     name: Create Release.
     needs: linux
+    if: ${{ !contains(github.event.head_commit.message, '[artifacts-only]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.1.0
