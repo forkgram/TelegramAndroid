@@ -92,6 +92,7 @@ public class UnifiedPushService extends PushService {
         cancelRegistrationRetry();
         AndroidUtilities.runOnUIThread(() -> {
             ApplicationLoader.postInitApplication();
+            ApplicationLoader.startPushService();
             Utilities.globalQueue.postRunnable(() -> {
                 SharedConfig.pushStringGetTimeEnd = SystemClock.elapsedRealtime();
 
@@ -174,16 +175,22 @@ public class UnifiedPushService extends PushService {
         if (reason == FailedReason.NETWORK || reason == FailedReason.INTERNAL_ERROR) {
             scheduleRegistrationRetry();
         }
+        AndroidUtilities.runOnUIThread(ApplicationLoader::startPushService);
     }
 
     @Override
     public void onUnregistered(String instance){
-        cancelRegistrationRetry();
         SharedConfig.pushStringStatus = "__UNIFIEDPUSH_FAILED__";
         Utilities.globalQueue.postRunnable(() -> {
             SharedConfig.pushStringGetTimeEnd = SystemClock.elapsedRealtime();
 
             PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, null);
         });
+        if (SharedConfig.disableUnifiedPush) {
+            cancelRegistrationRetry();
+        } else {
+            scheduleRegistrationRetry();
+        }
+        AndroidUtilities.runOnUIThread(ApplicationLoader::startPushService);
     }
 }

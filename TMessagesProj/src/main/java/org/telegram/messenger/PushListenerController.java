@@ -1661,10 +1661,21 @@ public class PushListenerController {
     @Keep
     public interface IPushListenerServiceProvider {
         boolean hasServices();
+        boolean needsPushToken();
         String getLogTitle();
         void onRequestPushToken();
         @PushType
         int getPushType();
+    }
+
+    private static boolean hasUnregisteredAccount() {
+        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            UserConfig userConfig = UserConfig.getInstance(a);
+            if (userConfig.isClientActivated() && !userConfig.registeredForPush) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public final static class GooglePushListenerServiceProvider implements IPushListenerServiceProvider {
@@ -1673,6 +1684,11 @@ public class PushListenerController {
         private Boolean hasServices;
 
         private GooglePushListenerServiceProvider() {}
+
+        @Override
+        public boolean needsPushToken() {
+            return TextUtils.isEmpty(SharedConfig.pushString) || hasUnregisteredAccount();
+        }
 
         @Override
         public String getLogTitle() {
@@ -1746,6 +1762,21 @@ public class PushListenerController {
         @Override
         public boolean hasServices() {
             return !UnifiedPush.getDistributors(ApplicationLoader.applicationContext).isEmpty();
+        }
+
+        @Override
+        public boolean needsPushToken() {
+            if (SharedConfig.disableUnifiedPush) {
+                return false;
+            }
+            try {
+                if (UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext) == null) {
+                    return true;
+                }
+            } catch (Throwable e) {
+                return true;
+            }
+            return TextUtils.isEmpty(SharedConfig.pushString) || hasUnregisteredAccount();
         }
 
         @Override
