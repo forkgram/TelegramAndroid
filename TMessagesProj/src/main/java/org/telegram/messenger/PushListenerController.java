@@ -60,6 +60,9 @@ public class PushListenerController {
             SharedConfig.pushString = token;
             SharedConfig.pushType = pushType;
             for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                    continue;
+                }
                 UserConfig userConfig = UserConfig.getInstance(a);
                 userConfig.registeredForPush = false;
                 userConfig.saveConfig(false);
