@@ -261,6 +261,47 @@ public class ApplicationLoader extends Application {
             ContactsController.getInstance(a).checkAppAccount();
             DownloadController.getInstance(a);
         }
+
+        Utilities.globalQueue.postRunnable(ApplicationLoader::cleanupUnusedAccountDirs);
+    }
+
+    private static void cleanupUnusedAccountDirs() {
+        SharedPreferences prefs = applicationContext.getSharedPreferences("fork_cleanup", Context.MODE_PRIVATE);
+        if (prefs.getBoolean("empty_account_dirs_cleaned_v1", false)) {
+            return;
+        }
+        try {
+            File filesDir = getFilesDirFixed();
+            int deleted = 0;
+            for (int a = 1; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                if (UserConfig.getInstance(a).isClientActivated()) {
+                    continue;
+                }
+                File accountDir = new File(filesDir, "account" + a);
+                if (accountDir.exists() && accountDir.isDirectory() && deleteRecursively(accountDir)) {
+                    deleted++;
+                }
+            }
+            if (BuildVars.LOGS_ENABLED) {
+                FileLog.d("Cleaned up " + deleted + " unused account directories");
+            }
+        } catch (Exception e) {
+            FileLog.e(e);
+        } finally {
+            prefs.edit().putBoolean("empty_account_dirs_cleaned_v1", true).apply();
+        }
+    }
+
+    private static boolean deleteRecursively(File file) {
+        if (file.isDirectory()) {
+            File[] children = file.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    deleteRecursively(child);
+                }
+            }
+        }
+        return file.delete();
     }
 
     public ApplicationLoader() {
