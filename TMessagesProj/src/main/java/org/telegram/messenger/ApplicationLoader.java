@@ -206,6 +206,9 @@ public class ApplicationLoader extends Application {
 
                     boolean isSlow = isConnectionSlow();
                     for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                        if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                            continue;
+                        }
                         ConnectionsManager.getInstance(a).checkConnection();
                         FileLoader.getInstance(a).onNetworkChanged(isSlow);
                     }
@@ -241,14 +244,24 @@ public class ApplicationLoader extends Application {
         SharedConfig.loadConfig();
         SharedPrefsHelper.init(applicationContext);
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) { //TODO improve account
-            UserConfig.getInstance(a).loadConfig();
+            if (a != 0 && !UserConfig.hasStoredConfig(a)) {
+                continue;
+            }
+            UserConfig userConfig = UserConfig.getInstance(a);
+            userConfig.loadConfig();
+            if (a != 0 && !userConfig.isClientActivated()) {
+                continue;
+            }
             MessagesController.getInstance(a);
+            if (a != 0) {
+                ImageLoader.getInstance().setupFileLoaderDelegate(a);
+            }
             if (a == 0) {
                 SharedConfig.pushStringStatus = "__FIREBASE_GENERATING_SINCE_" + ConnectionsManager.getInstance(a).getCurrentTime() + "__";
             } else {
                 ConnectionsManager.getInstance(a);
             }
-            TLRPC.User user = UserConfig.getInstance(a).getCurrentUser();
+            TLRPC.User user = userConfig.getCurrentUser();
             if (user != null) {
                 MessagesController.getInstance(a).putUser(user, true);
                 SendMessagesHelper.getInstance(a).checkUnsentMessages();
@@ -263,6 +276,9 @@ public class ApplicationLoader extends Application {
 
         MediaController.getInstance();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) { //TODO improve account
+            if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                continue;
+            }
             ContactsController.getInstance(a).checkAppAccount();
             DownloadController.getInstance(a);
         }
@@ -270,6 +286,47 @@ public class ApplicationLoader extends Application {
         // frame does not wait for it.
         AndroidUtilities.runOnUIThread(() -> Utilities.globalQueue.postRunnable(
                 () -> org.telegram.utils.twidget.WidgetSandboxSession.prewarmEngine(applicationContext)), 3000);
+
+        Utilities.globalQueue.postRunnable(ApplicationLoader::cleanupUnusedAccountDirs);
+    }
+
+    private static void cleanupUnusedAccountDirs() {
+        SharedPreferences prefs = applicationContext.getSharedPreferences("fork_cleanup", Context.MODE_PRIVATE);
+        if (prefs.getBoolean("empty_account_dirs_cleaned_v2", false)) {
+            return;
+        }
+        try {
+            File filesDir = getFilesDirFixed();
+            int deleted = 0;
+            for (int a = 1; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                if (UserConfig.getInstance(a).isClientActivated()) {
+                    continue;
+                }
+                File accountDir = new File(filesDir, "account" + a);
+                if (accountDir.exists() && accountDir.isDirectory() && deleteRecursively(accountDir)) {
+                    deleted++;
+                }
+            }
+            if (BuildVars.LOGS_ENABLED) {
+                FileLog.d("Cleaned up " + deleted + " unused account directories");
+            }
+        } catch (Exception e) {
+            FileLog.e(e);
+        } finally {
+            prefs.edit().putBoolean("empty_account_dirs_cleaned_v2", true).apply();
+        }
+    }
+
+    private static boolean deleteRecursively(File file) {
+        if (file.isDirectory()) {
+            File[] children = file.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    deleteRecursively(child);
+                }
+            }
+        }
+        return file.delete();
     }
 
     public ApplicationLoader() {

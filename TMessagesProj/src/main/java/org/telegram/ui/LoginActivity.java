@@ -122,6 +122,7 @@ import org.telegram.messenger.FileLog;
 import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.firebase.pnv.VerificationSupportResult;
 import org.telegram.messenger.FirebasePhoneNumberVerificationHelper;
+import org.telegram.messenger.ImageLoader;
 import org.telegram.messenger.ImageLocation;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MediaDataController;
@@ -1684,6 +1685,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         MessagesStorage.getInstance(currentAccount).putUsersAndChats(users, null, true, true);
         MessagesController.getInstance(currentAccount).putUser(res.user, false);
         ContactsController.getInstance(currentAccount).checkAppAccount();
+        ImageLoader.getInstance().setupFileLoaderDelegate(currentAccount);
         MessagesController.getInstance(currentAccount).checkPromoInfo(true);
         ConnectionsManager.getInstance(currentAccount).updateDcSettings();
         MessagesController.getInstance(currentAccount).loadAppConfig();
