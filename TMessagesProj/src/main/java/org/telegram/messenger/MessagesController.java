@@ -16257,6 +16257,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 SharedConfig.pushString = regid;
                 SharedConfig.pushType = pushType;
                 getUserConfig().saveConfig(false);
+                AndroidUtilities.runOnUIThread(ApplicationLoader::startPushService);
             }
             AndroidUtilities.runOnUIThread(() -> registeringForPush = false);
         });
