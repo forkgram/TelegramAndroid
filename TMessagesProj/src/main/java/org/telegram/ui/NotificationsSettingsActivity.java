@@ -859,7 +859,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                 List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext);
                 CharSequence[] items = distributors.toArray(new CharSequence[distributors.size()]);
 
-                String distributor = UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext);
+                String distributor = UnifiedPush.getSavedDistributor(ApplicationLoader.applicationContext);
 
                 for (int i = 0; i < items.length; ++i) {
                     final int index = i;
@@ -871,10 +871,8 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                     linearLayout.addView(cell);
                     cell.setOnClickListener(v -> {
                         UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, items[index].toString());
-                        UnifiedPush.register(ApplicationLoader.applicationContext,
-                                "default",
-                                "Telegram Simple Push",
-                                null);
+                        ApplicationLoader.getPushProvider().onRequestPushToken();
+                        ApplicationLoader.startPushService();
                         updateUnifiedPushDistributor = true;
                         adapter.notifyItemChanged(position);
                         dialogRef.get().dismiss();
@@ -899,10 +897,8 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                                 value += "/";
                             }
                             SharedConfig.setUnifiedPushGateway(value);
-                            UnifiedPush.register(ApplicationLoader.applicationContext,
-                                    "default",
-                                    "Telegram Simple Push",
-                                    null);
+                            ApplicationLoader.getPushProvider().onRequestPushToken();
+                            ApplicationLoader.startPushService();
                             updateUnifiedPushGateway = true;
                             adapter.notifyItemChanged(position);
                             return null;
@@ -1179,7 +1175,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                     if (position == resetNotificationsRow) {
                         settingsCell.setTextAndValue(getString("ResetAllNotifications", R.string.ResetAllNotifications), getString("UndoAllCustom", R.string.UndoAllCustom), false);
                     } else if (position == unifiedPushDistributorRow) {
-                        String value = UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext);
+                        String value = UnifiedPush.getSavedDistributor(ApplicationLoader.applicationContext);
                         settingsCell.setTextAndValue(LocaleController.getString("UnifiedPushDistributor", R.string.UnifiedPushDistributor), value, false);
                         updateUnifiedPushDistributor = false;
                     } else if (position == unifiedPushGatewayRow) {
