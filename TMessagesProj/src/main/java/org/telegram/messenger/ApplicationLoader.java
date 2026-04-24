@@ -419,22 +419,40 @@ public class ApplicationLoader extends Application {
             pendingIntentFlags = PendingIntent.FLAG_MUTABLE;
         }
         if (enabled) {
+            final boolean unifiedPushActive = PushListenerController.isUnifiedPushActive();
             Log.d("TFOSS", "Trying to start push service every minute");
             // Telegram-FOSS: unconditionally enable push service
             AlarmManager am = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
-            Intent i = new Intent(applicationContext, NotificationsService.class);
+            Intent i = new Intent(applicationContext, AppStartReceiver.class).setAction(AppStartReceiver.ACTION_KEEP_ALIVE);
+            final long interval = unifiedPushActive ? AlarmManager.INTERVAL_HOUR : AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+            try {
+                PendingIntent undeliverable = PendingIntent.getBroadcast(applicationContext, 0, new Intent(applicationContext, NotificationsService.class), pendingIntentFlags | PendingIntent.FLAG_NO_CREATE);
+                if (undeliverable != null) {
+                    am.cancel(undeliverable);
+                    undeliverable.cancel();
+                }
+            } catch (Throwable ignore) {
+            }
             try {
             pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, i, pendingIntentFlags);
 
             am.cancel(pendingIntent);
             am.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                System.currentTimeMillis() + interval,
+                interval,
                 pendingIntent
             );
             } catch (Throwable ignore) {
                 Log.d("Fork Client", "Failed to set intent");
+            }
+            if (unifiedPushActive) {
+                Log.d("Fork Client", "UnifiedPush is active, skipping push service watchdog");
+                try {
+                    applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
+                } catch (Throwable ignore) {
+                }
+                return;
             }
             try {
                 Log.d("TFOSS", "Starting push service...");

@@ -20,12 +20,14 @@ public class UnifiedPushService extends PushService {
 
     private static final String NTFY_DISTRIBUTOR = "io.heckel.ntfy";
     private static final long MAX_REGISTRATION_RETRY_DELAY = 15 * 60 * 1000L;
+    private static final long REGISTRATION_ANSWER_TIMEOUT = 30 * 1000L;
 
     private static long lastReceivedNotification = 0;
     private static long numOfReceivedNotifications = 0;
 
     private static int registrationRetries = 0;
     private static Runnable registrationRetryRunnable;
+    private static Runnable registrationTimeoutRunnable;
 
     public static long getLastReceivedNotification() {
         return lastReceivedNotification;
@@ -35,9 +37,38 @@ public class UnifiedPushService extends PushService {
         return numOfReceivedNotifications;
     }
 
+    public static void awaitRegistrationAnswer() {
+        AndroidUtilities.runOnUIThread(() -> {
+            cancelRegistrationTimeout();
+            registrationTimeoutRunnable = () -> {
+                registrationTimeoutRunnable = null;
+                if (SharedConfig.disableUnifiedPush) {
+                    return;
+                }
+                if (UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext) != null) {
+                    return;
+                }
+                if (BuildVars.LOGS_ENABLED) {
+                    FileLog.d("UnifiedPush distributor did not answer the registration");
+                }
+                scheduleRegistrationRetry();
+                ApplicationLoader.startPushService();
+            };
+            AndroidUtilities.runOnUIThread(registrationTimeoutRunnable, REGISTRATION_ANSWER_TIMEOUT);
+        });
+    }
+
+    private static void cancelRegistrationTimeout() {
+        if (registrationTimeoutRunnable != null) {
+            AndroidUtilities.cancelRunOnUIThread(registrationTimeoutRunnable);
+            registrationTimeoutRunnable = null;
+        }
+    }
+
     private static void cancelRegistrationRetry() {
         AndroidUtilities.runOnUIThread(() -> {
             registrationRetries = 0;
+            cancelRegistrationTimeout();
             if (registrationRetryRunnable != null) {
                 AndroidUtilities.cancelRunOnUIThread(registrationRetryRunnable);
                 registrationRetryRunnable = null;
@@ -92,6 +123,7 @@ public class UnifiedPushService extends PushService {
         cancelRegistrationRetry();
         AndroidUtilities.runOnUIThread(() -> {
             ApplicationLoader.postInitApplication();
+            ApplicationLoader.startPushService();
             Utilities.globalQueue.postRunnable(() -> {
                 SharedConfig.pushStringGetTimeEnd = SystemClock.elapsedRealtime();
 
@@ -165,6 +197,7 @@ public class UnifiedPushService extends PushService {
         if (BuildVars.LOGS_ENABLED) {
             FileLog.d("Failed to get endpoint: " + reason);
         }
+        AndroidUtilities.runOnUIThread(UnifiedPushService::cancelRegistrationTimeout);
         SharedConfig.pushStringStatus = "__UNIFIEDPUSH_FAILED__";
         Utilities.globalQueue.postRunnable(() -> {
             SharedConfig.pushStringGetTimeEnd = SystemClock.elapsedRealtime();
@@ -174,16 +207,23 @@ public class UnifiedPushService extends PushService {
         if (reason == FailedReason.NETWORK || reason == FailedReason.INTERNAL_ERROR) {
             scheduleRegistrationRetry();
         }
+        AndroidUtilities.runOnUIThread(ApplicationLoader::startPushService);
     }
 
     @Override
     public void onUnregistered(String instance){
-        cancelRegistrationRetry();
+        AndroidUtilities.runOnUIThread(UnifiedPushService::cancelRegistrationTimeout);
         SharedConfig.pushStringStatus = "__UNIFIEDPUSH_FAILED__";
         Utilities.globalQueue.postRunnable(() -> {
             SharedConfig.pushStringGetTimeEnd = SystemClock.elapsedRealtime();
 
             PushListenerController.sendRegistrationToServer(PushListenerController.PUSH_TYPE_SIMPLE, null);
         });
+        if (SharedConfig.disableUnifiedPush) {
+            cancelRegistrationRetry();
+        } else {
+            scheduleRegistrationRetry();
+        }
+        AndroidUtilities.runOnUIThread(ApplicationLoader::startPushService);
     }
 }
