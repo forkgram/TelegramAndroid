@@ -257,6 +257,10 @@ public class DownloadController extends BaseController implements NotificationCe
         return localInstance;
     }
 
+    public static boolean hasInstance(int num) {
+        return Instance[num] != null;
+    }
+
     public DownloadController(int instance) {
         super(instance);
         SharedPreferences preferences = MessagesController.getMainSettings(currentAccount);
