@@ -15,19 +15,24 @@ import android.content.Intent;
 public class AppStartReceiver extends BroadcastReceiver {
 
     public void onReceive(Context context, Intent intent) {
-        if (intent != null && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            AndroidUtilities.runOnUIThread(() -> {
-                SharedConfig.loadConfig();
-                if (SharedConfig.passcodeHash.length() > 0) {
-                    SharedConfig.appLocked = true;
-                    SharedConfig.saveConfig();
-                }
-                ApplicationLoader.startPushService();
-                PushListenerController.IPushListenerServiceProvider provider = ApplicationLoader.getPushProvider();
-                if (provider.hasServices()) {
-                    provider.onRequestPushToken();
-                }
-            });
+        if (intent == null) {
+            return;
         }
+        final String action = intent.getAction();
+        if (!Intent.ACTION_BOOT_COMPLETED.equals(action) && !Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
+            return;
+        }
+        AndroidUtilities.runOnUIThread(() -> {
+            SharedConfig.loadConfig();
+            if (SharedConfig.passcodeHash.length() > 0) {
+                SharedConfig.appLocked = true;
+                SharedConfig.saveConfig();
+            }
+            ApplicationLoader.startPushService();
+            PushListenerController.IPushListenerServiceProvider provider = ApplicationLoader.getPushProvider();
+            if (provider.hasServices() && provider.needsPushToken()) {
+                provider.onRequestPushToken();
+            }
+        });
     }
 }
