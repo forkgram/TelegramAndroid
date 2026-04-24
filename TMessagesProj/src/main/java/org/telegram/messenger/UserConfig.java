@@ -19,6 +19,7 @@ import org.telegram.tgnet.SerializedData;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_account;
 
+import java.io.File;
 import java.util.Arrays;
 
 public class UserConfig extends BaseController {
@@ -124,6 +125,17 @@ public class UserConfig extends BaseController {
 
     public static int getMaxAccountCount() {
         return MAX_ACCOUNT_COUNT;
+    }
+
+    public static boolean hasStoredConfig(int account) {
+        try {
+            String name = account == 0 ? "userconfing" : "userconfig" + account;
+            File dataDir = new File(ApplicationLoader.applicationContext.getApplicationInfo().dataDir);
+            return new File(new File(dataDir, "shared_prefs"), name + ".xml").exists();
+        } catch (Throwable e) {
+            FileLog.e(e);
+            return true;
+        }
     }
 
     public int getNewMessageId() {
@@ -462,6 +474,7 @@ public class UserConfig extends BaseController {
     }
 
     public void clearConfig() {
+        loadConfig();
         getPreferences().edit().clear().apply();
 
         sharingMyLocationUntil = 0;
