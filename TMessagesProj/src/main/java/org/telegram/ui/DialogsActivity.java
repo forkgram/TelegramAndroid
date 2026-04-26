@@ -4450,23 +4450,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (contentView != null) {
+                    if (contentView != null && (SharedConfig.chatBlurEnabled() || LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS))) {
                         contentView.updateBlurContent();
                     }
                     viewPage.dialogsItemAnimator.onListScroll(-dy);
-                    int firstVisiblePosition = -1;
-                    int lastVisiblePosition = -1;
-                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
-                        int position = recyclerView.getChildAdapterPosition(recyclerView.getChildAt(i));
-                        if (position >= 0) {
-                            if (lastVisiblePosition == -1 || position > lastVisiblePosition) {
-                                lastVisiblePosition = position;
-                            }
-                            if (firstVisiblePosition == -1 || position < firstVisiblePosition) {
-                                firstVisiblePosition = position;
-                            }
-                        }
-                    }
+                    final int firstVisiblePosition = viewPage.layoutManager.findFirstVisibleItemPosition();
                     checkListLoad(viewPage);
                     invalidateScrollY = true;
                     if (fragmentView != null) {
@@ -4505,12 +4493,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                                 RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(child);
                                 if (holder.getAdapterPosition() == 0) {
                                     int visiblePartAfterScroll = child.getMeasuredHeight() + (child.getTop() - recyclerView.getPaddingTop());
-                                    if (visiblePartAfterScroll + dy > 0) {
-                                        if (visiblePartAfterScroll < 0) {
-                                            dy = -visiblePartAfterScroll;
-                                        } else {
-                                            return;
-                                        }
+                                    if (visiblePartAfterScroll >= 0 && visiblePartAfterScroll + dy > 0) {
+                                        return;
                                     }
                                 }
                             }
@@ -13932,6 +13916,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
     private void invalidateBlurCaptures(int flags) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || scrollableViewNoiseSuppressor == null) {
+            return;
+        }
+        if (!SharedConfig.chatBlurEnabled() && !LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS)) {
             return;
         }
 
