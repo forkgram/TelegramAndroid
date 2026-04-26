@@ -16,6 +16,7 @@
     <string name="VoiceQualityMedium">متوسطة (32 كيلوبت/ث)</string>
     <string name="VoiceQualityHigh">عالية (64 كيلوبت/ث)</string>
     <string name="VoiceQualityMax">قصوى (افتراضي)</string>
+    <string name="DropScreenshotCaptionInfo">إزالة التسمية التوضيحية عند مشاركة لقطة شاشة من تطبيق آخر.</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>
     <string name="OpenArchiveOnPullInfo">فتح مجلد الأرشيف عند سحب قائمة الدردشات للأسفل.</string>
     <string name="HideStoriesInArchiveInfo">إخفاء صف القصص داخل الدردشات المؤرشفة.</string>
@@ -42,6 +43,7 @@
     <string name="LockPremiumInfo">إخفاء إعلانات Telegram Premium وزر الاشتراك. إعادة التشغيل مطلوبة.</string>
     <string name="VoiceMessageQuality">جودة الرسائل الصوتية</string>
     <string name="UpdateCheckInterval">فترة التحقق من التحديثات</string>
+    <string name="DropScreenshotCaption">إزالة التسمية التوضيحية للقطة الشاشة</string>
     <string name="DisablePlayVisibleVideoOnVolume">تعطيل تشغيل الفيديو عند تغيير مستوى الصوت</string>
     <string name="ForkRestartRequired">إعادة التشغيل مطلوبة</string>
     <string name="BottomDialogs">اضغط هنا لبدء محادثة جديدة.</string>

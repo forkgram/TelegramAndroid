@@ -16,6 +16,7 @@
     <string name="VoiceQualityMedium">Середня (32 кбіт/с)</string>
     <string name="VoiceQualityHigh">Висока (64 кбіт/с)</string>
     <string name="VoiceQualityMax">Максимальна (за умовчанням)</string>
+    <string name="DropScreenshotCaptionInfo">Прибирати підпис, коли знімок екрана надсилається з іншого застосунку.</string>
     <string name="HideBottomButtonInfo">Очищати нижню кнопку (Вимкнути звук, Приєднатися) та ігнорувати натискання на неї.</string>
     <string name="OpenArchiveOnPullInfo">Відкривати теку «Архів» під час потягування списку чатів униз.</string>
     <string name="HideStoriesInArchiveInfo">Приховувати стрічку історій усередині архіву чатів.</string>
@@ -42,6 +43,7 @@
     <string name="LockPremiumInfo">Приховувати рекламу Telegram Premium і кнопку підписки. Потрібен перезапуск.</string>
     <string name="VoiceMessageQuality">Якість голосових повідомлень</string>
     <string name="UpdateCheckInterval">Інтервал перевірки оновлень</string>
+    <string name="DropScreenshotCaption">Прибирати підпис зі скриншотів</string>
     <string name="DisablePlayVisibleVideoOnVolume">Вимкнути відтворення відео при зміні гучності</string>
     <string name="ForkRestartRequired">Потрібен перезапуск</string>
     <string name="BottomDialogs">Торкніться тут, щоб розпочати новий чат.</string>

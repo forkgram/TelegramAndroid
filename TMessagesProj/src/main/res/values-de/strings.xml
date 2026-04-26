@@ -16,6 +16,7 @@
     <string name="VoiceQualityMedium">Mittel (32 kbit/s)</string>
     <string name="VoiceQualityHigh">Hoch (64 kbit/s)</string>
     <string name="VoiceQualityMax">Maximal (Standard)</string>
+    <string name="DropScreenshotCaptionInfo">Bildunterschrift entfernen, wenn ein Screenshot aus einer anderen App geteilt wird.</string>
     <string name="HideBottomButtonInfo">Die untere Leistenschaltfläche (Stumm, Beitreten) leeren und Tippen darauf ignorieren.</string>
     <string name="OpenArchiveOnPullInfo">Den Archivordner öffnen, wenn die Chatliste nach unten gezogen wird.</string>
     <string name="HideStoriesInArchiveInfo">Die Storys-Zeile in archivierten Chats ausblenden.</string>
@@ -42,6 +43,7 @@
     <string name="LockPremiumInfo">Telegram-Premium-Werbung und die Abo-Schaltfläche ausblenden. Neustart erforderlich.</string>
     <string name="VoiceMessageQuality">Qualität der Sprachnachrichten</string>
     <string name="UpdateCheckInterval">Intervall der Update-Prüfung</string>
+    <string name="DropScreenshotCaption">Screenshot-Beschriftung entfernen</string>
     <string name="DisablePlayVisibleVideoOnVolume">Videowiedergabe bei Lautstärkeänderung deaktivieren</string>
     <string name="ForkRestartRequired">Neustart erforderlich</string>
     <string name="BottomDialogs">Tippen Sie hier, um einen neuen Chat zu starten.</string>
