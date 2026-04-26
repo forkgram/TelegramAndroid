@@ -1450,6 +1450,29 @@ public class LocaleController {
         return getStringInternal(key, null, 0, res);
     }
 
+    private android.content.Context cachedLocalizedAppContext;
+    private Locale cachedLocalizedAppContextLocale;
+
+    // Returns an applicationContext whose Resources are pinned to currentLocale, regardless of
+    // whether the global applicationContext Configuration has drifted (e.g., FingerprintController
+    // briefly toggling Locale, or system Configuration events arriving before our
+    // onConfigurationChanged listener has reapplied the override). Cloud-loaded strings live in
+    // localeValues so they are immune; locally-shipped strings fall through to context.getString
+    // and are the ones that occasionally rendered in the wrong language without this.
+    private synchronized android.content.Context getLocalizedAppContext() {
+        final android.content.Context appContext = ApplicationLoader.applicationContext;
+        if (currentLocale == null) {
+            return appContext;
+        }
+        if (cachedLocalizedAppContext == null || !currentLocale.equals(cachedLocalizedAppContextLocale)) {
+            android.content.res.Configuration config = new android.content.res.Configuration(appContext.getResources().getConfiguration());
+            config.setLocale(currentLocale);
+            cachedLocalizedAppContext = appContext.createConfigurationContext(config);
+            cachedLocalizedAppContextLocale = currentLocale;
+        }
+        return cachedLocalizedAppContext;
+    }
+
     private String getStringInternal(String key, String fallback, int fallbackRes, int res) {
         String value = BuildVars.USE_CLOUD_STRINGS ? localeValues.get(key) : null;
         if (value == null) {
@@ -1458,11 +1481,11 @@ public class LocaleController {
             }
             if (value == null) {
                 try {
-                    value = ApplicationLoader.applicationContext.getString(res);
+                    value = getLocalizedAppContext().getString(res);
                 } catch (Exception e) {
                     if (fallbackRes != 0) {
                         try {
-                            value = ApplicationLoader.applicationContext.getString(fallbackRes);
+                            value = getLocalizedAppContext().getString(fallbackRes);
                         } catch (Exception ignored) {}
                     }
                     FileLog.e(e);
