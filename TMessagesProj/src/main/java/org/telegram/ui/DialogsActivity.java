@@ -4472,19 +4472,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         contentView.updateBlurContent();
                     }
                     viewPage.dialogsItemAnimator.onListScroll(-dy);
-                    int firstVisiblePosition = -1;
-                    int lastVisiblePosition = -1;
-                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
-                        int position = recyclerView.getChildAdapterPosition(recyclerView.getChildAt(i));
-                        if (position >= 0) {
-                            if (lastVisiblePosition == -1 || position > lastVisiblePosition) {
-                                lastVisiblePosition = position;
-                            }
-                            if (firstVisiblePosition == -1 || position < firstVisiblePosition) {
-                                firstVisiblePosition = position;
-                            }
-                        }
-                    }
+                    final int firstVisiblePosition = viewPage.layoutManager.findFirstVisibleItemPosition();
                     checkListLoad(viewPage);
                     invalidateScrollY = true;
                     if (fragmentView != null) {
