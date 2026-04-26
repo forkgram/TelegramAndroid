@@ -10,6 +10,7 @@
     <string name="VoiceQualityMedium">Gemiddeld (32 kbps)</string>
     <string name="VoiceQualityHigh">Hoog (64 kbps)</string>
     <string name="VoiceQualityMax">Maximaal (standaard)</string>
+    <string name="DropScreenshotCaptionInfo">Bijschrift verwijderen wanneer een schermafbeelding vanuit een andere app wordt gedeeld.</string>
     <string name="HideBottomButtonInfo">De knop in de onderste balk (Dempen, Deelnemen) leegmaken en tikken negeren.</string>
     <string name="OpenArchiveOnPullInfo">De map Archief openen wanneer de chatlijst omlaag wordt getrokken.</string>
     <string name="HideStoriesInArchiveInfo">De storyrij in gearchiveerde chats verbergen.</string>
@@ -36,6 +37,7 @@
     <string name="LockPremiumInfo">Telegram Premium-advertenties en de abonneerknop verbergen. Herstart vereist.</string>
     <string name="VoiceMessageQuality">Kwaliteit van spraakberichten</string>
     <string name="UpdateCheckInterval">Interval voor controle op updates</string>
+    <string name="DropScreenshotCaption">Bijschrift van schermafbeelding verwijderen</string>
     <string name="DisablePlayVisibleVideoOnVolume">Video afspelen bij volumeverandering uitschakelen</string>
     <string name="ForkRestartRequired">Herstart vereist</string>
     <string name="BottomDialogs">Tik hier om een nieuwe chat te starten.</string>

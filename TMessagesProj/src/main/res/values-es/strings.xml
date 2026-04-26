@@ -10,6 +10,7 @@
     <string name="VoiceQualityMedium">Media (32 kbps)</string>
     <string name="VoiceQualityHigh">Alta (64 kbps)</string>
     <string name="VoiceQualityMax">Máxima (predeterminada)</string>
+    <string name="DropScreenshotCaptionInfo">Quitar el texto cuando se comparte una captura de pantalla desde otra aplicación.</string>
     <string name="HideBottomButtonInfo">Vaciar el botón de la barra inferior (Silenciar, Unirse) e ignorar los toques en él.</string>
     <string name="OpenArchiveOnPullInfo">Abrir la carpeta Archivados al deslizar hacia abajo la lista de chats.</string>
     <string name="HideStoriesInArchiveInfo">Ocultar la fila de historias dentro de los chats archivados.</string>
@@ -36,6 +37,7 @@
     <string name="LockPremiumInfo">Ocultar los anuncios de Telegram Premium y el botón de suscripción. Reinicio requerido.</string>
     <string name="VoiceMessageQuality">Calidad de los mensajes de voz</string>
     <string name="UpdateCheckInterval">Intervalo de comprobación de actualizaciones</string>
+    <string name="DropScreenshotCaption">Quitar la leyenda de las capturas</string>
     <string name="DisablePlayVisibleVideoOnVolume">Desactivar reproducción de video al cambiar el volumen</string>
     <string name="ForkRestartRequired">Reinicio requerido</string>
     <string name="BottomDialogs">Toca aquí para iniciar un nuevo chat.</string>
