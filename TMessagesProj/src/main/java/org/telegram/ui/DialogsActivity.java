@@ -4468,7 +4468,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (contentView != null) {
+                    if (contentView != null && (SharedConfig.chatBlurEnabled() || LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS))) {
                         contentView.updateBlurContent();
                     }
                     viewPage.dialogsItemAnimator.onListScroll(-dy);
