@@ -4511,41 +4511,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                                 RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(child);
                                 if (holder.getAdapterPosition() == 0) {
                                     int visiblePartAfterScroll = child.getMeasuredHeight() + (child.getTop() - recyclerView.getPaddingTop());
-                                    if (visiblePartAfterScroll + dy > 0) {
-                                        if (visiblePartAfterScroll < 0) {
-                                            dy = -visiblePartAfterScroll;
-                                        } else {
-                                            return;
-                                        }
+                                    if (visiblePartAfterScroll >= 0 && visiblePartAfterScroll + dy > 0) {
+                                        return;
                                     }
                                 }
                             }
                         }
-                        float currentTranslation = scrollYOffset;
-                        float newTranslation = currentTranslation - dy;
-                        boolean applyScrollY = true;
-                        applyScrollY = false;
-                        invalidateScrollY = true;
-                        if (fragmentView != null) {
-                            fragmentView.invalidate();
-                        }
-                        if (applyScrollY) {
-                            int maxScrollYOffset = getMaxScrollYOffset();
-                            if (!(filterTabsView != null && filterTabsView.getVisibility() == View.VISIBLE && animatorFilterTabsVisible.getValue())) {
-                                maxScrollYOffset = dp(SEARCH_FIELD_HEIGHT);
-                            }
-                            if (newTranslation < -maxScrollYOffset) {
-                                newTranslation = -maxScrollYOffset;
-                            } else if (newTranslation > 0) {
-                                newTranslation = 0;
-                            }
-                            if (newTranslation != currentTranslation) {
-                                setScrollY(newTranslation);
-                            }
-                        }
-                    }
-                    if (fragmentView != null) {
-                        blur3_InvalidateBlur();
                     }
                     if (rightSlidingDialogContainer != null && rightSlidingDialogContainer.hasFragment() && viewPage.listView != null) {
                         viewPage.listView.invalidate();
