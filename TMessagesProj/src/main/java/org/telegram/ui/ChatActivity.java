@@ -4180,8 +4180,6 @@ public class ChatActivity extends BaseFragment implements
                     }
                 } else if (id == chat_menu_topic_create) {
                     presentFragment(TopicCreateFragment.create(-dialog_id, 0).setOpenInChatActivity(ChatActivity.this));
-                } else if (id == 888) {
-                    dumpCanvas();
                 } else if (id == hideTitle) {
                     SharedConfig.hideTitleDialog = !SharedConfig.hideTitleDialog;
                     updateTitle(false);
@@ -4674,10 +4672,6 @@ public class ChatActivity extends BaseFragment implements
             if (attachItem != null) {
                 attachItem.setAlpha(0.0f);
             }
-        }
-
-        if (BuildConfig.DEBUG_PRIVATE_VERSION && headerItem != null) {
-            headerItem.addSubItem(888, R.drawable.menu_download_round, "Dump Canvas");
         }
 
         actionModeViews.clear();
