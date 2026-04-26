@@ -1697,6 +1697,13 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                     SendMessagesHelper.SendingMediaInfo info = new SendMessagesHelper.SendingMediaInfo();
                                     info.uri = uri;
                                     photoPathsArray.add(info);
+                                    if (sendingText != null
+                                        && MessagesController.getGlobalMainSettings().getBoolean("dropScreenshotCaption", true)) {
+                                        final String s = sendingText.toString().toLowerCase();
+                                        if (s.startsWith("screenshot ") || s.startsWith("screenshot_") || s.startsWith("screenshot(")) {
+                                            sendingText = null;
+                                        }
+                                    }
                                 } else {
                                     String originalPath = uri.toString();
                                     if (dialogId == 0 && originalPath != null) {
