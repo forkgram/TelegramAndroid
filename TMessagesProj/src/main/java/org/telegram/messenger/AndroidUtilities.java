@@ -6956,16 +6956,8 @@ public class AndroidUtilities {
     }
 
     public static void dumpCanvas(View v) {
-        if (!BuildConfig.DEBUG_PRIVATE_VERSION) {
-            return;
-        }
-
-        final Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-        final DebugRecordingCanvas c = new DebugRecordingCanvas(b);
-        v.draw(c);
-        c.logCommands();
-
-        LaunchActivity.instance.presentFragment(new DebugRecordingCanvasReplayFragment(c));
+        // Disabled in forkgram: too expensive (full software re-render + deep-copy of every
+        // Paint/Matrix/Path/Bitmap per draw command) and not useful for our debug builds.
     }
 
     public static <A, B> B find(List<A> array, Class<B> clazz) {
