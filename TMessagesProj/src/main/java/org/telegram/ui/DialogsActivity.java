@@ -13920,6 +13920,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || scrollableViewNoiseSuppressor == null || fragmentView == null || actionBar == null) {
             return;
         }
+        if (!SharedConfig.chatBlurEnabled() && !LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS)) {
+            return;
+        }
 
         final int additionalList = dp(48);
         final int mainTabBottom = fragmentView.getMeasuredHeight() - navigationBarHeight - dp(DialogsActivity.MAIN_TABS_MARGIN);
