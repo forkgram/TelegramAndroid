@@ -230,6 +230,18 @@ android {
                 abiVersionCode = 8
             }
         }
+        forkTest {
+            ndk {
+                abiFilters "arm64-v8a"
+            }
+            applicationId "org.forkclient.messenger.test"
+            sourceSets.debug {
+                manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
+            }
+            ext {
+                abiVersionCode = 11
+            }
+        }
 //
     }
 
@@ -253,7 +265,7 @@ android {
 
     variantFilter { variant ->
         def names = variant.flavors*.name
-        if (variant.buildType.name != "release" && !names.contains("afat")) {
+        if (variant.buildType.name != "release" && !names.contains("afat") && !names.contains("forkTest")) {
             setIgnore(true)
         }
     }
