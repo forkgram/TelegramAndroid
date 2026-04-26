@@ -4543,7 +4543,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                         thumbSpoiler.setColor(ColorUtils.setAlphaComponent(sColor, (int) (Color.alpha(sColor) * 0.325f)));
                         thumbSpoiler.setBounds((int) thumbImage[i].getImageX(), (int) thumbImage[i].getImageY(), (int) thumbImage[i].getImageX2(), (int) thumbImage[i].getImageY2());
                         thumbSpoiler.draw(canvas);
-                        invalidate();
+                        needInvalidate = true;
 
                         canvas.restore();
                     }
