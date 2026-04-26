@@ -59,7 +59,10 @@ public class FingerprintController {
         KeyPairGenerator generator = getKeyPairGenerator();
         if (generator != null) {
             try {
-                Locale realLocale = Locale.getDefault();
+                Locale realLocale = LocaleController.getInstance().getCurrentLocale();
+                if (realLocale == null) {
+                    realLocale = Locale.getDefault();
+                }
                 // A workaround for AndroidKeyStore bug in RTL languages
                 setLocale(Locale.ENGLISH);
 
