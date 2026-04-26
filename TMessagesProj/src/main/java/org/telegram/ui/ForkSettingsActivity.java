@@ -168,6 +168,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int addItemToDeleteAllUnpinnedMessages;
     private int disableSlideToNextChannel;
     private int disableRecentFilesAttachment;
+    private int dropScreenshotCaptionRow;
     private int botSkipShare;
     private int botSkipFullscreen;
     private int disableDefaultInAppBrowser;
@@ -412,6 +413,7 @@ public class ForkSettingsActivity extends BaseFragment {
         addItemToDeleteAllUnpinnedMessages = rowCount++;
         disableSlideToNextChannel = rowCount++;
         disableRecentFilesAttachment = rowCount++;
+        dropScreenshotCaptionRow = rowCount++;
         disableDefaultInAppBrowser = rowCount++;
         disablePlayVisibleVideoOnVolumeRow = rowCount++;
         voiceQualityRow = rowCount++;
@@ -536,6 +538,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("disableSlideToNextChannel", view, false);
             } else if (position == disableRecentFilesAttachment) {
                 toggleGlobalMainSetting("disableRecentFilesAttachment", view, false);
+            } else if (position == dropScreenshotCaptionRow) {
+                toggleGlobalMainSetting("dropScreenshotCaption", view, true);
             } else if (position == disableDefaultInAppBrowser) {
                 toggleGlobalMainSetting("disableDefaultInAppBrowser", view, org.telegram.messenger.BuildConfig.SKIP_INTERNAL_BROWSER_BY_DEFAULT);
             } else if (position == disablePlayVisibleVideoOnVolumeRow) {
@@ -709,6 +713,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableRecentFilesAttachment) {
                         String t = LocaleController.getString("DisableRecentFilesAttachment", R.string.DisableRecentFilesAttachment);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableRecentFilesAttachment", false), false);
+                    } else if (position == dropScreenshotCaptionRow) {
+                        String t = "Drop screenshot caption";
+                        textCell.setTextAndCheck(t, preferences.getBoolean("dropScreenshotCaption", true), false);
                     } else if (position == disableDefaultInAppBrowser) {
                         String t = LocaleController.getString("DisableDefaultInAppBrowser", R.string.DisableDefaultInAppBrowser);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableDefaultInAppBrowser", org.telegram.messenger.BuildConfig.SKIP_INTERNAL_BROWSER_BY_DEFAULT), false);
@@ -800,6 +807,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == addItemToDeleteAllUnpinnedMessages
                         || position == disableSlideToNextChannel
                         || position == disableRecentFilesAttachment
+                        || position == dropScreenshotCaptionRow
                         || position == disableDefaultInAppBrowser
                         || position == disablePlayVisibleVideoOnVolumeRow
                         || position == botSkipShare
@@ -878,6 +886,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == addItemToDeleteAllUnpinnedMessages
                 || position == disableSlideToNextChannel
                 || position == disableRecentFilesAttachment
+                || position == dropScreenshotCaptionRow
                 || position == disableDefaultInAppBrowser
                 || position == disablePlayVisibleVideoOnVolumeRow
                 || position == botSkipShare
