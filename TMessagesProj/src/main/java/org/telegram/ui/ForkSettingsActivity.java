@@ -61,6 +61,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_HIDE_SENSITIVE_DATA = 1;
     public static final int ID_SHOW_NOTIFICATION_CONTENT = 3;
+    public static final int ID_DROP_SCREENSHOT_CAPTION = 4;
 
     public static final int ID_HIDE_BOTTOM_BUTTON = 11;
     public static final int ID_CUSTOM_TITLE = 12;
@@ -390,6 +391,8 @@ public class ForkSettingsActivity extends BaseFragment {
         }
         items.add(UItem.asButtonCheck(ID_SHOW_NOTIFICATION_CONTENT, LocaleController.getString(R.string.ShowNotificationContent), LocaleController.getString(R.string.ShowNotificationContentInfo))
             .setChecked(pref("showNotificationContent", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_DROP_SCREENSHOT_CAPTION, LocaleController.getString(R.string.DropScreenshotCaption), LocaleController.getString(R.string.DropScreenshotCaptionInfo))
+            .setChecked(pref("dropScreenshotCaption", true)).setMultiline(true));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionAppearance)));
@@ -530,6 +533,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideSensitiveData", item, view);
         } else if (id == ID_SHOW_NOTIFICATION_CONTENT) {
             toggle("showNotificationContent", item, view);
+        } else if (id == ID_DROP_SCREENSHOT_CAPTION) {
+            toggle("dropScreenshotCaption", item, view);
         } else if (id == ID_SQUARE_AVATARS) {
             toggle("squareAvatars", item, view);
         } else if (id == ID_HIDE_BOTTOM_BUTTON) {
