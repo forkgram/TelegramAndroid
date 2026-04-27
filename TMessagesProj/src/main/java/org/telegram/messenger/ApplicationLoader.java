@@ -270,7 +270,7 @@ public class ApplicationLoader extends Application {
 
     private static void cleanupUnusedAccountDirs() {
         SharedPreferences prefs = applicationContext.getSharedPreferences("fork_cleanup", Context.MODE_PRIVATE);
-        if (prefs.getBoolean("empty_account_dirs_cleaned_v1", false)) {
+        if (prefs.getBoolean("empty_account_dirs_cleaned_v2", false)) {
             return;
         }
         try {
@@ -291,7 +291,7 @@ public class ApplicationLoader extends Application {
         } catch (Exception e) {
             FileLog.e(e);
         } finally {
-            prefs.edit().putBoolean("empty_account_dirs_cleaned_v1", true).apply();
+            prefs.edit().putBoolean("empty_account_dirs_cleaned_v2", true).apply();
         }
     }
 
