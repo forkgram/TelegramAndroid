@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="AppUpdateSkipVersion">Salta questa versione</string>
+    <string name="AppUpdateSkipVersionMessage">La versione %1$s resterà nascosta finché non ne uscirà una più recente.</string>
     <string name="QRLoginButton">Accedi con codice QR</string>
     <string name="QRLoginOrLoginByPhone">Oppure accedi con il tuo numero di telefono</string>
     <string name="QRLoginStep1">Apri Telegram sul tuo telefono</string>

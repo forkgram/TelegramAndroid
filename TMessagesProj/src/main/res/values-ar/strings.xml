@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="AppUpdateSkipVersion">تخطي هذا الإصدار</string>
+    <string name="AppUpdateSkipVersionMessage">سيبقى الإصدار %1$s مخفيًا حتى يصدر إصدار أحدث.</string>
     <string name="QRLoginButton">تسجيل الدخول عبر رمز QR</string>
     <string name="QRLoginOrLoginByPhone">أو سجّل الدخول باستخدام رقم هاتفك</string>
     <string name="QRLoginStep1">افتح تيليجرام على هاتفك</string>
