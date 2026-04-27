@@ -11155,6 +11155,16 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             musicView.invalidate();
             balanceView.invalidate();
         }
+        if (listView != null && infoStartRow >= 0 && infoEndRow >= infoStartRow) {
+            if (listView.forcedSections == null) {
+                listView.forcedSections = new ArrayList<>();
+            } else {
+                listView.forcedSections.clear();
+            }
+            listView.forcedSections.add(AndroidUtilities.pack(infoStartRow, infoEndRow));
+        } else if (listView != null && listView.forcedSections != null) {
+            listView.forcedSections.clear();
+        }
     }
 
     private Drawable getScamDrawable(int type) {
