@@ -130,6 +130,9 @@ public class NotificationPermissionDialog extends BottomSheet implements Notific
     public void updateCounter() {
         int counter = 0;
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; ++a) {
+            if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                continue;
+            }
             MessagesStorage messagesStorage = MessagesStorage.getInstance(a);
             if (messagesStorage != null) {
                 counter += messagesStorage.getMainUnreadCount();
