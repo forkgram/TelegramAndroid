@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="AppUpdateSkipVersion">이 버전 건너뛰기</string>
+    <string name="AppUpdateSkipVersionMessage">%1$s 버전은 더 새로운 버전이 나올 때까지 표시되지 않습니다.</string>
     <string name="QRLoginButton">QR 코드로 로그인</string>
     <string name="QRLoginOrLoginByPhone">또는 전화번호로 로그인</string>
     <string name="QRLoginStep1">휴대전화에서 텔레그램을 여세요</string>
