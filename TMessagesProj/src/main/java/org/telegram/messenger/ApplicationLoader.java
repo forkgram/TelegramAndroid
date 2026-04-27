@@ -229,6 +229,9 @@ public class ApplicationLoader extends Application {
         SharedConfig.loadConfig();
         SharedPrefsHelper.init(applicationContext);
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) { //TODO improve account
+            if (a != 0 && !UserConfig.hasStoredConfig(a)) {
+                continue;
+            }
             UserConfig userConfig = UserConfig.getInstance(a);
             userConfig.loadConfig();
             if (a != 0 && !userConfig.isClientActivated()) {
