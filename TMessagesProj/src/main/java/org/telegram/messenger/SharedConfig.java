@@ -818,10 +818,22 @@ public class SharedConfig {
         if (update.version == null || versionBiggerOrEqual(updateVersionString, update.version)) {
             return false;
         }
+        String skippedVersion = MessagesController.getGlobalMainSettings().getString("skippedAppVersion", null);
+        if (skippedVersion != null && skippedVersion.equals(update.version)) {
+            return false;
+        }
         pendingAppUpdate = update;
         pendingAppUpdateBuildVersion = versionCode;
         saveConfig();
         return true;
+    }
+
+    public static void skipPendingAppUpdate() {
+        if (pendingAppUpdate != null && pendingAppUpdate.version != null) {
+            MessagesController.getGlobalMainSettings().edit().putString("skippedAppVersion", pendingAppUpdate.version).apply();
+        }
+        pendingAppUpdate = null;
+        saveConfig();
     }
 
     // returns a >= b

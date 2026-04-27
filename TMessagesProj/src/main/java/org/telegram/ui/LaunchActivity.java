@@ -5986,8 +5986,22 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
     private boolean firstAppUpdateCheck = true;
     public void checkAppUpdate(boolean force, Browser.Progress progress) {
+        final int accountNum = currentAccount;
         AppUpdater.checkNewVersion(this, getBaseContext(), (builder) -> {
             showAlertDialog(builder);
+            return 0;
+        }, (update) -> {
+            if (update == null) {
+                return 0;
+            }
+            if (SharedConfig.pendingAppUpdate != null && SharedConfig.pendingAppUpdate.version != null
+                    && SharedConfig.pendingAppUpdate.version.equals(update.version)) {
+                return 0;
+            }
+            if (SharedConfig.setNewAppVersionAvailable(update)) {
+                ApplicationLoader.applicationLoaderInstance.showUpdateAppPopup(LaunchActivity.this, update, accountNum);
+                NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.appUpdateAvailable);
+            }
             return 0;
         }, force);
     }
