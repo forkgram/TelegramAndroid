@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="AppUpdateSkipVersion">Deze versie overslaan</string>
+    <string name="AppUpdateSkipVersionMessage">Versie %1$s blijft verborgen totdat er een nieuwere wordt uitgebracht.</string>
     <string name="QRLoginButton">Inloggen met QR-code</string>
     <string name="QRLoginOrLoginByPhone">Of log in met je telefoonnummer</string>
     <string name="QRLoginStep1">Open Telegram op je telefoon</string>

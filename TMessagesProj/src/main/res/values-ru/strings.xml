@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="AppUpdateSkipVersion">Пропустить эту версию</string>
+    <string name="AppUpdateSkipVersionMessage">Версия %1$s будет скрыта, пока не выйдет более новая.</string>
     <string name="QRLoginButton">Войти по QR-коду</string>
     <string name="QRLoginOrLoginByPhone">Или войдите по номеру телефона</string>
     <string name="QRLoginStep1">Откройте Telegram на телефоне</string>
