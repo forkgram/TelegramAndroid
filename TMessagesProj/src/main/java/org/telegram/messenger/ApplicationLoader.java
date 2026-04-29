@@ -238,6 +238,9 @@ public class ApplicationLoader extends Application {
                 continue;
             }
             MessagesController.getInstance(a);
+            if (a != 0) {
+                ImageLoader.getInstance().setupFileLoaderDelegate(a);
+            }
             if (a == 0) {
                 SharedConfig.pushStringStatus = "__FIREBASE_GENERATING_SINCE_" + ConnectionsManager.getInstance(a).getCurrentTime() + "__";
             } else {
