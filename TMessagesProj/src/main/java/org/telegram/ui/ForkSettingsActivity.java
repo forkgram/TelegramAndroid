@@ -99,6 +99,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_RECENT_FILES_ATTACHMENT = 57;
 
     public static final int ID_VOICE_QUALITY = 60;
+    public static final int ID_CLOUDFLARE_ENABLE_STT = 63;
+    public static final int ID_CLOUDFLARE_CREDENTIALS = 64;
 
     public static final int ID_BOT_SKIP_SHARE = 70;
     public static final int ID_BOT_SKIP_FULLSCREEN = 71;
@@ -489,6 +491,9 @@ public class ForkSettingsActivity extends BaseFragment {
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionVoice)));
         items.add(UItem.asSettingsCell(ID_VOICE_QUALITY, LocaleController.getString(R.string.VoiceMessageQuality), getVoiceQualityText()));
+        items.add(UItem.asCheck(ID_CLOUDFLARE_ENABLE_STT, LocaleController.getString(R.string.CloudflareEnableSTT))
+            .setChecked(SharedConfig.cfEnableStt));
+        items.add(UItem.asSettingsCell(ID_CLOUDFLARE_CREDENTIALS, LocaleController.getString(R.string.CloudflareCredentials), ""));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionBots)));
@@ -613,6 +618,16 @@ public class ForkSettingsActivity extends BaseFragment {
 
         } else if (id == ID_VOICE_QUALITY) {
             showVoiceQualityDialog();
+        } else if (id == ID_CLOUDFLARE_ENABLE_STT) {
+            if (!SharedConfig.cfEnableStt && (android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) || android.text.TextUtils.isEmpty(SharedConfig.cfApiToken))) {
+                showCfCredentialsDialog();
+                return;
+            }
+            SharedConfig.cfEnableStt = !SharedConfig.cfEnableStt;
+            SharedConfig.saveConfig();
+            setCellChecked(view, SharedConfig.cfEnableStt);
+        } else if (id == ID_CLOUDFLARE_CREDENTIALS) {
+            showCfCredentialsDialog();
         } else if (id == ID_BOT_SKIP_SHARE) {
             toggle("botSkipShare", item, view);
         } else if (id == ID_BOT_SKIP_FULLSCREEN) {
@@ -658,6 +673,95 @@ public class ForkSettingsActivity extends BaseFragment {
                 }
                 return null;
             });
+    }
+
+    private void showCfCredentialsDialog() {
+        var context = getParentActivity();
+        if (context == null) {
+            return;
+        }
+        var builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString(R.string.CloudflareCredentials));
+        builder.setMessage(LocaleController.getString(R.string.CloudflareCredentialsDialog));
+        builder.setCustomViewOffset(0);
+
+        var ll = new LinearLayout(context);
+        ll.setOrientation(LinearLayout.VERTICAL);
+
+        var editTextAccountId = new EditTextBoldCursor(context) {
+            @Override
+            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(64), MeasureSpec.EXACTLY));
+            }
+        };
+        editTextAccountId.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        editTextAccountId.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+        editTextAccountId.setText(SharedConfig.cfAccountID);
+        editTextAccountId.setHintText(LocaleController.getString(R.string.CloudflareAccountID));
+        editTextAccountId.setHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
+        editTextAccountId.setHeaderHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueHeader));
+        editTextAccountId.setSingleLine(true);
+        editTextAccountId.setFocusable(true);
+        editTextAccountId.setTransformHintToHeader(true);
+        editTextAccountId.setLineColors(Theme.getColor(Theme.key_windowBackgroundWhiteInputField), Theme.getColor(Theme.key_windowBackgroundWhiteInputFieldActivated), Theme.getColor(Theme.key_text_RedRegular));
+        editTextAccountId.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        editTextAccountId.setBackground(null);
+        editTextAccountId.requestFocus();
+        editTextAccountId.setPadding(0, 0, 0, 0);
+        ll.addView(editTextAccountId, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 0, 24, 0, 24, 0));
+
+        var editTextApiToken = new EditTextBoldCursor(context) {
+            @Override
+            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(64), MeasureSpec.EXACTLY));
+            }
+        };
+        editTextApiToken.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        editTextApiToken.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+        editTextApiToken.setText(SharedConfig.cfApiToken);
+        editTextApiToken.setHintText(LocaleController.getString(R.string.CloudflareAPIToken));
+        editTextApiToken.setHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
+        editTextApiToken.setHeaderHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueHeader));
+        editTextApiToken.setSingleLine(true);
+        editTextApiToken.setFocusable(true);
+        editTextApiToken.setTransformHintToHeader(true);
+        editTextApiToken.setLineColors(Theme.getColor(Theme.key_windowBackgroundWhiteInputField), Theme.getColor(Theme.key_windowBackgroundWhiteInputFieldActivated), Theme.getColor(Theme.key_text_RedRegular));
+        editTextApiToken.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editTextApiToken.setBackground(null);
+        editTextApiToken.requestFocus();
+        editTextApiToken.setPadding(0, 0, 0, 0);
+        ll.addView(editTextApiToken, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 0, 24, 0, 24, 0));
+
+        builder.setView(ll);
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        builder.setPositiveButton(LocaleController.getString(R.string.OK), null);
+        var dialog = builder.create();
+        showDialog(dialog);
+        var button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (button != null) {
+            button.setOnClickListener(v -> {
+                var accountId = editTextAccountId.getText();
+                if (!android.text.TextUtils.isEmpty(accountId) && accountId.length() != 32) {
+                    AndroidUtilities.shakeViewSpring(editTextAccountId, -6);
+                    BotWebViewVibrationEffect.APP_ERROR.vibrate();
+                    return;
+                }
+                var apiToken = editTextApiToken.getText();
+                if (!android.text.TextUtils.isEmpty(apiToken) && apiToken.length() < 40) {
+                    AndroidUtilities.shakeViewSpring(editTextApiToken, -6);
+                    BotWebViewVibrationEffect.APP_ERROR.vibrate();
+                    return;
+                }
+                SharedConfig.cfAccountID = accountId == null ? "" : accountId.toString();
+                SharedConfig.cfApiToken = apiToken == null ? "" : apiToken.toString();
+                if (!android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) && !android.text.TextUtils.isEmpty(SharedConfig.cfApiToken)) {
+                    SharedConfig.cfEnableStt = true;
+                }
+                SharedConfig.saveConfig();
+                listView.adapter.update(false);
+                dialog.dismiss();
+            });
+        }
     }
 
     private void showRadioDialog(CharSequence title, String[] options, int selectedIndex, Utilities.Callback<Integer> onSelected) {

@@ -65,6 +65,10 @@ public class SharedConfig {
             PASSCODE_TYPE_PASSWORD = 1;
     private static int legacyDevicePerformanceClass = -1;
 
+    public static String cfAccountID = "";
+    public static String cfApiToken = "";
+    public static boolean cfEnableStt = false;
+
     public static boolean loopStickers() {
         return LiteMode.isEnabled(LiteMode.FLAG_ANIMATED_STICKERS_CHAT);
     }
@@ -490,6 +494,9 @@ public class SharedConfig {
                 editor.putString("storageCacheDir", !TextUtils.isEmpty(storageCacheDir) ? storageCacheDir : "");
                 editor.putBoolean("proxyRotationEnabled", proxyRotationEnabled);
                 editor.putInt("proxyRotationTimeout", proxyRotationTimeout);
+                editor.putString("cfAccountID", cfAccountID);
+                editor.putString("cfApiToken", cfApiToken);
+                editor.putBoolean("cfEnableStt", cfEnableStt);
 
                 if (pendingAppUpdate != null) {
                     try {
@@ -557,6 +564,9 @@ public class SharedConfig {
             storageCacheDir = preferences.getString("storageCacheDir", null);
             proxyRotationEnabled = preferences.getBoolean("proxyRotationEnabled", false);
             proxyRotationTimeout = preferences.getInt("proxyRotationTimeout", ProxyRotationController.DEFAULT_TIMEOUT_INDEX);
+            cfAccountID = preferences.getString("cfAccountID", "");
+            cfApiToken = preferences.getString("cfApiToken", "");
+            cfEnableStt = preferences.getBoolean("cfEnableStt", false);
             String authKeyString = preferences.getString("pushAuthKey", null);
             if (!TextUtils.isEmpty(authKeyString)) {
                 pushAuthKey = Base64.decode(authKeyString, Base64.DEFAULT);
