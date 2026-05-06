@@ -13,6 +13,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.util.TypedValue;
+import android.view.inputmethod.EditorInfo;
+import org.telegram.messenger.BotWebViewVibrationEffect;
+import org.telegram.ui.Components.EditTextBoldCursor;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -166,26 +171,28 @@ public class ForkSettingsActivity extends BaseFragment {
     private int hideAiEditorRow;
     private int disableParametersFromBotLinks;
     private int lockPremium;
+    private int disableUnifiedPushRow;
+    private int cloudflareSTTRow;
+    private int cloudflareEnableSTTRow;
+
+    private int syncPinsRow;
+
+    private int hiddenAccountsRow;
+    private int hideStoriesInArchiveRow;
+    private int updateCheckIntervalRow;
     private int addItemToDeleteAllUnpinnedMessages;
     private int disableSlideToNextChannel;
     private int disableRecentFilesAttachment;
     private int dropScreenshotCaptionRow;
-    private int botSkipShare;
-    private int botSkipFullscreen;
     private int disableDefaultInAppBrowser;
-    private int hideStoriesInArchiveRow;
     private int disablePlayVisibleVideoOnVolumeRow;
     private int voiceQualityRow;
-    private int updateCheckIntervalRow;
+    private int botSkipShare;
+    private int botSkipFullscreen;
+    private int stickerSizeRow;
     private int lastFmLoginRow;
 
-    private int stickerSizeRow;
-
-    private ArrayList<Integer> emptyRows = new ArrayList<Integer>();
-    private int syncPinsRow;
-
-    private int disableUnifiedPushRow;
-    private int hiddenAccountsRow;
+    private ArrayList<Integer> emptyRows = new ArrayList<>();
 
     private static int getIntLocale(String str) {
         try {
@@ -241,6 +248,95 @@ public class ForkSettingsActivity extends BaseFragment {
     private String getHiddenAccountsText() {
         int hiddenCount = HiddenAccountHelper.getHiddenAccountsCount();
         return hiddenCount > 0 ? Integer.toString(hiddenCount) : LocaleController.getString(R.string.PasswordOff);
+    }
+
+    private void showCfCredentialsDialog() {
+        var context = getParentActivity();
+        var builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString("CloudflareCredentials", R.string.CloudflareCredentials));
+        builder.setMessage(LocaleController.getString("CloudflareCredentialsDialog", R.string.CloudflareCredentialsDialog));
+        builder.setCustomViewOffset(0);
+
+        var ll = new LinearLayout(context);
+        ll.setOrientation(LinearLayout.VERTICAL);
+
+        var editTextAccountId = new EditTextBoldCursor(context) {
+            @Override
+            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(64), MeasureSpec.EXACTLY));
+            }
+        };
+        editTextAccountId.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        editTextAccountId.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+        editTextAccountId.setText(SharedConfig.cfAccountID);
+        editTextAccountId.setHintText(LocaleController.getString("CloudflareAccountID", R.string.CloudflareAccountID));
+        editTextAccountId.setHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
+        editTextAccountId.setHeaderHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueHeader));
+        editTextAccountId.setSingleLine(true);
+        editTextAccountId.setFocusable(true);
+        editTextAccountId.setTransformHintToHeader(true);
+        editTextAccountId.setLineColors(Theme.getColor(Theme.key_windowBackgroundWhiteInputField), Theme.getColor(Theme.key_windowBackgroundWhiteInputFieldActivated), Theme.getColor(Theme.key_text_RedRegular));
+        editTextAccountId.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        editTextAccountId.setBackground(null);
+        editTextAccountId.requestFocus();
+        editTextAccountId.setPadding(0, 0, 0, 0);
+        ll.addView(editTextAccountId, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 0, 24, 0, 24, 0));
+
+        var editTextApiToken = new EditTextBoldCursor(context) {
+            @Override
+            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(64), MeasureSpec.EXACTLY));
+            }
+        };
+        editTextApiToken.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        editTextApiToken.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+        editTextApiToken.setText(SharedConfig.cfApiToken);
+        editTextApiToken.setHintText(LocaleController.getString("CloudflareAPIToken", R.string.CloudflareAPIToken));
+        editTextApiToken.setHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
+        editTextApiToken.setHeaderHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueHeader));
+        editTextApiToken.setSingleLine(true);
+        editTextApiToken.setFocusable(true);
+        editTextApiToken.setTransformHintToHeader(true);
+        editTextApiToken.setLineColors(Theme.getColor(Theme.key_windowBackgroundWhiteInputField), Theme.getColor(Theme.key_windowBackgroundWhiteInputFieldActivated), Theme.getColor(Theme.key_text_RedRegular));
+        editTextApiToken.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editTextApiToken.setBackground(null);
+        editTextApiToken.requestFocus();
+        editTextApiToken.setPadding(0, 0, 0, 0);
+        ll.addView(editTextApiToken, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 0, 24, 0, 24, 0));
+
+        builder.setView(ll);
+        builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
+        builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
+        var dialog = builder.create();
+        showDialog(dialog);
+        var button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (button != null) {
+            button.setOnClickListener(v -> {
+                var accountId = editTextAccountId.getText();
+                if (!android.text.TextUtils.isEmpty(accountId) && accountId.length() != 32) {
+                    AndroidUtilities.shakeViewSpring(editTextAccountId, -6);
+                    BotWebViewVibrationEffect.APP_ERROR.vibrate();
+                    return;
+                }
+                var apiToken = editTextApiToken.getText();
+                if (!android.text.TextUtils.isEmpty(apiToken) && apiToken.length() < 40) {
+                    AndroidUtilities.shakeViewSpring(editTextApiToken, -6);
+                    BotWebViewVibrationEffect.APP_ERROR.vibrate();
+                    return;
+                }
+                SharedConfig.cfAccountID = accountId == null ? "" : accountId.toString();
+                SharedConfig.cfApiToken = apiToken == null ? "" : apiToken.toString();
+                if (!android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) && !android.text.TextUtils.isEmpty(SharedConfig.cfApiToken)) {
+                    SharedConfig.cfEnableStt = true;
+                }
+                SharedConfig.saveConfig();
+                RecyclerListView.Holder holder = (RecyclerListView.Holder) listView.findViewHolderForAdapterPosition(cloudflareEnableSTTRow);
+                if (holder != null && holder.itemView instanceof TextCheckCell) {
+                    ((TextCheckCell) holder.itemView).setChecked(SharedConfig.cfEnableStt);
+                }
+                dialog.dismiss();
+            });
+        }
     }
 
     private void showVoiceQualityDialog() {
@@ -447,6 +543,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
+        cloudflareEnableSTTRow = rowCount++;
+        cloudflareSTTRow = rowCount++;
         lastFmLoginRow = (BuildVars.LASTFM_API_KEY != null && BuildVars.LASTFM_API_KEY.length() > 2 &&
                           BuildVars.LASTFM_API_SECRET != null && BuildVars.LASTFM_API_SECRET.length() > 2) ? rowCount++ : -1;
     }
@@ -588,6 +686,18 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("hideSensitiveData", view, false);
             } else if (position == disableUnifiedPushRow) {
                 toggleGlobalMainSetting("disableUnifiedPush", view, false);
+            } else if (position == cloudflareEnableSTTRow) {
+                if (!SharedConfig.cfEnableStt && (android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) || android.text.TextUtils.isEmpty(SharedConfig.cfApiToken))) {
+                    showCfCredentialsDialog();
+                    return;
+                }
+                SharedConfig.cfEnableStt = !SharedConfig.cfEnableStt;
+                SharedConfig.saveConfig();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(SharedConfig.cfEnableStt);
+                }
+            } else if (position == cloudflareSTTRow) {
+                showCfCredentialsDialog();
             } else if (position == hiddenAccountsRow) {
                 presentFragment(new HiddenAccountsActivity());
             } else if (position == customTitleRow) {
@@ -660,6 +770,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         textCell.setTextAndValue(t, v, false);
                     } else if (position == hiddenAccountsRow) {
                         textCell.setTextAndValue(LocaleController.getString(R.string.HiddenAccounts), getHiddenAccountsText(), false);
+                    } else if (position == cloudflareSTTRow) {
+                        textCell.setTextAndValue(LocaleController.getString("CloudflareCredentials", R.string.CloudflareCredentials), "", false);
                     } else if (position == voiceQualityRow) {
                         textCell.setTextAndValue("Voice Message Quality", getVoiceQualityText(), false);
                     } else if (position == updateCheckIntervalRow) {
@@ -791,6 +903,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("DisableUnifiedPush", R.string.DisableUnifiedPush);
                         String info = LocaleController.getString("DisableUnifiedPushInfo", R.string.DisableUnifiedPushInfo);
                         textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("disableUnifiedPush", true), true, false);
+                    } else if (position == cloudflareEnableSTTRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("CloudflareEnableSTT", R.string.CloudflareEnableSTT), SharedConfig.cfEnableStt, false);
                     }
                     break;
                 }
@@ -811,6 +925,9 @@ public class ForkSettingsActivity extends BaseFragment {
             int position = holder.getAdapterPosition();
             boolean fork = position == squareAvatarsRow
                         || position == hideSensitiveDataRow
+                        || position == disableUnifiedPushRow
+                        || position == cloudflareSTTRow
+                        || position == cloudflareEnableSTTRow
                         || position == inappCameraRow
                         || position == systemCameraRow
                         || position == unmutedOnTopRow
@@ -847,6 +964,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == photoHasStickerRow
                         || position == voiceQualityRow
                         || position == updateCheckIntervalRow
+                        || position == cloudflareSTTRow
+                        || position == cloudflareEnableSTTRow
                         || position == lastFmLoginRow
                         || position == disableUnifiedPushRow;
             return fork;
@@ -886,7 +1005,7 @@ public class ForkSettingsActivity extends BaseFragment {
         public int getItemViewType(int position) {
             if (emptyRows.contains(position)) {
                 return 1;
-            } else if (position == customTitleRow || position == hiddenAccountsRow || position == voiceQualityRow || position == updateCheckIntervalRow || position == lastFmLoginRow) {
+            } else if (position == customTitleRow || position == hiddenAccountsRow || position == cloudflareSTTRow || position == voiceQualityRow || position == updateCheckIntervalRow || position == lastFmLoginRow) {
                 return 2;
             } else if (position == squareAvatarsRow
                 || position == hideSensitiveDataRow
@@ -922,6 +1041,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == hideBottomButton
                 || position == showNotificationContent
                 || position == photoHasStickerRow
+                || position == cloudflareEnableSTTRow
                 || position == disableUnifiedPushRow) {
                 return 3;
             } else if (sectionRows.contains(position)) {
