@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="CloudflareAPIToken">رمز API</string>
+    <string name="CloudflareAccountID">معرف الحساب</string>
+    <string name="CloudflareCredentials">بيانات اعتماد Cloudflare</string>
+    <string name="CloudflareCredentialsDialog">اضبط معرف الحساب ورمز API الخاصين بـ Cloudflare.</string>
+    <string name="CloudflareCredentialsNotSet">لم يتم ضبط بيانات اعتماد Cloudflare.</string>
+    <string name="CloudflareEnableSTT">استخدام Cloudflare لتحويل الصوت إلى نص</string>
     <string name="HiddenAccounts">الحسابات المخفية</string>
     <string name="HiddenAccountsAccounts">الحسابات</string>
     <string name="HiddenAccountsAccountsInfo">الحسابات المخفية وحدها تحصل على رمز فتح إضافي. يجب أن يبقى حساب واحد على الأقل ظاهرًا.</string>
