@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="CloudflareAPIToken">API-токен</string>
+    <string name="CloudflareAccountID">ID аккаунта</string>
+    <string name="CloudflareCredentials">Учётные данные Cloudflare</string>
+    <string name="CloudflareCredentialsDialog">Укажите ID аккаунта и API-токен Cloudflare.</string>
+    <string name="CloudflareCredentialsNotSet">Учётные данные Cloudflare не указаны.</string>
+    <string name="CloudflareEnableSTT">Расшифровывать голосовые через Cloudflare</string>
     <string name="HiddenAccounts">Скрытые аккаунты</string>
     <string name="HiddenAccountsAccounts">Аккаунты</string>
     <string name="HiddenAccountsAccountsInfo">Дополнительный код разблокировки есть только у скрытых аккаунтов. Хотя бы один аккаунт должен оставаться видимым.</string>

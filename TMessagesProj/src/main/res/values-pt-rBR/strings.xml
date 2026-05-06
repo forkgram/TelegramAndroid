@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="CloudflareAPIToken">Token da API</string>
+    <string name="CloudflareAccountID">ID da conta</string>
+    <string name="CloudflareCredentials">Credenciais da Cloudflare</string>
+    <string name="CloudflareCredentialsDialog">Configure o ID da conta e o token da API da Cloudflare.</string>
+    <string name="CloudflareCredentialsNotSet">As credenciais da Cloudflare não estão configuradas.</string>
+    <string name="CloudflareEnableSTT">Usar a Cloudflare para converter voz em texto</string>
     <string name="HiddenAccounts">Contas ocultas</string>
     <string name="HiddenAccountsAccounts">Contas</string>
     <string name="HiddenAccountsAccountsInfo">Somente as contas ocultas recebem um código de desbloqueio adicional. Pelo menos uma conta deve permanecer visível.</string>
