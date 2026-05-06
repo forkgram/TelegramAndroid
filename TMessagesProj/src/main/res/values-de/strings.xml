@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="CloudflareAPIToken">API-Token</string>
+    <string name="CloudflareAccountID">Konto-ID</string>
+    <string name="CloudflareCredentials">Cloudflare-Zugangsdaten</string>
+    <string name="CloudflareCredentialsDialog">Trage die Konto-ID und den API-Token von Cloudflare ein.</string>
+    <string name="CloudflareCredentialsNotSet">Die Cloudflare-Zugangsdaten sind nicht eingerichtet.</string>
+    <string name="CloudflareEnableSTT">Cloudflare für Sprache-zu-Text verwenden</string>
     <string name="HiddenAccounts">Versteckte Konten</string>
     <string name="HiddenAccountsAccounts">Konten</string>
     <string name="HiddenAccountsAccountsInfo">Nur versteckte Konten erhalten einen zusätzlichen Entsperrcode. Mindestens ein Konto muss sichtbar bleiben.</string>
