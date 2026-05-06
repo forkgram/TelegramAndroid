@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="CloudflareAPIToken">API 토큰</string>
+    <string name="CloudflareAccountID">계정 ID</string>
+    <string name="CloudflareCredentials">Cloudflare 인증 정보</string>
+    <string name="CloudflareCredentialsDialog">Cloudflare 계정 ID와 API 토큰을 입력하세요.</string>
+    <string name="CloudflareCredentialsNotSet">Cloudflare 인증 정보가 설정되지 않았습니다.</string>
+    <string name="CloudflareEnableSTT">음성-텍스트 변환에 Cloudflare 사용</string>
     <string name="HiddenAccounts">숨겨진 계정</string>
     <string name="HiddenAccountsAccounts">계정</string>
     <string name="HiddenAccountsAccountsInfo">숨겨진 계정에만 별도의 잠금 해제 코드가 적용됩니다. 계정 중 최소 하나는 계속 표시되어야 합니다.</string>
