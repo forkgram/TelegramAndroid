@@ -34,6 +34,7 @@ import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.MessagesStorage;
@@ -48,6 +49,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.ChatMessageCell;
 import org.telegram.ui.PremiumPreviewFragment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -116,7 +118,7 @@ public class TranscribeButton {
 
         this.isOpen = false;
         this.shouldBeOpen = false;
-        premium = parent.getMessageObject() != null && UserConfig.getInstance(parent.getMessageObject().currentAccount).isPremium();
+        premium = parent.getMessageObject() != null && (UserConfig.getInstance(parent.getMessageObject().currentAccount).isPremium() || org.telegram.messenger.CloudflareSTT.isConfigured());
 
         loadingFloat = new AnimatedFloat(parent, 250, CubicBezierInterpolator.EASE_OUT_QUINT);
         animatedDrawLock = new AnimatedFloat(parent, 250, CubicBezierInterpolator.EASE_OUT_QUINT);
@@ -309,7 +311,7 @@ public class TranscribeButton {
         this.radius = Math.min(Math.min(w, h) / 2, r);
         this.diameter = this.radius * 2;
     }
-    
+
     public int width() {
         return this.bounds.width();
     }
@@ -678,6 +680,63 @@ public class TranscribeButton {
                 if (BuildVars.LOGS_ENABLED) {
                     FileLog.d("sending Transcription request, msg_id=" + messageId + " dialog_id=" + dialogId);
                 }
+                if (org.telegram.messenger.CloudflareSTT.isConfigured()) {
+                    File path = null;
+                    String attachPath = messageObject.messageOwner.attachPath;
+                    if (!TextUtils.isEmpty(attachPath)) {
+                        File temp = new File(attachPath);
+                        if (temp.exists()) {
+                            path = temp;
+                        }
+                    }
+                    if (path == null) {
+                        path = org.telegram.messenger.FileLoader.getInstance(account).getPathToMessage(messageObject.messageOwner);
+                        if (path != null && !path.exists()) {
+                            path = null;
+                        }
+                    }
+                    if (path == null) {
+                        path = org.telegram.messenger.FileLoader.getInstance(account).getPathToAttach(messageObject.getDocument(), true);
+                    }
+                    if (path == null || !path.exists()) {
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject);
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.updateTranscriptionLock);
+                        NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_ERROR, LocaleController.getString(R.string.PleaseDownload));
+                        return;
+                    }
+                    long id = org.telegram.messenger.Utilities.random.nextLong();
+                    if (transcribeOperationsByDialogPosition == null) {
+                        transcribeOperationsByDialogPosition = new HashMap<>();
+                    }
+                    transcribeOperationsByDialogPosition.put(reqInfoHash(messageObject), messageObject);
+                    org.telegram.messenger.CloudflareSTT.requestWorkersAi(path.getAbsolutePath(), messageObject.isRoundVideo(), (text, exception) -> {
+                        if (text != null) {
+                            if (transcribeOperationsById == null) {
+                                transcribeOperationsById = new HashMap<>();
+                            }
+                            transcribeOperationsById.put(id, messageObject);
+                            messageObject.messageOwner.voiceTranscriptionId = id;
+
+                            final long duration = SystemClock.elapsedRealtime() - start;
+                            TranscribeButton.openVideoTranscription(messageObject);
+                            messageObject.messageOwner.voiceTranscriptionOpen = true;
+                            messageObject.messageOwner.voiceTranscriptionFinal = true;
+
+                            MessagesStorage.getInstance(account).updateMessageVoiceTranscription(dialogId, messageId, text, messageObject.messageOwner);
+                            AndroidUtilities.runOnUIThread(() -> finishTranscription(messageObject, id, text), Math.max(0, minDuration - duration));
+                        } else {
+                            AndroidUtilities.runOnUIThread(() -> {
+                                if (transcribeOperationsByDialogPosition != null) {
+                                    transcribeOperationsByDialogPosition.remove(reqInfoHash(messageObject));
+                                }
+                                NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject);
+                                NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.updateTranscriptionLock);
+                                org.telegram.messenger.CloudflareSTT.showErrorDialog(exception);
+                            });
+                        }
+                    });
+                    return;
+                }
                 TLRPC.TL_messages_transcribeAudio req = new TLRPC.TL_messages_transcribeAudio();
                 req.peer = peer;
                 req.msg_id = messageId;
@@ -846,6 +905,9 @@ public class TranscribeButton {
 
     public static boolean showTranscribeLock(MessageObject messageObject) {
         if (messageObject == null || messageObject.messageOwner == null) {
+            return false;
+        }
+        if (org.telegram.messenger.CloudflareSTT.isConfigured()) {
             return false;
         }
         if (isFreeTranscribeInChat(messageObject)) {
