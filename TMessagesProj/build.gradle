@@ -102,6 +102,10 @@ android {
         coreLibraryDesugaringEnabled true
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+
     defaultConfig.versionCode = Integer.parseInt(Utils['getVersionCode']())
 
     defaultConfig {
