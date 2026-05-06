@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="CloudflareAPIToken">API-token</string>
+    <string name="CloudflareAccountID">Account-ID</string>
+    <string name="CloudflareCredentials">Cloudflare-inloggegevens</string>
+    <string name="CloudflareCredentialsDialog">Stel je Cloudflare-account-ID en API-token in.</string>
+    <string name="CloudflareCredentialsNotSet">De Cloudflare-inloggegevens zijn niet ingesteld.</string>
+    <string name="CloudflareEnableSTT">Cloudflare gebruiken voor spraak-naar-tekst</string>
     <string name="HiddenAccounts">Verborgen accounts</string>
     <string name="HiddenAccountsAccounts">Accounts</string>
     <string name="HiddenAccountsAccountsInfo">Alleen verborgen accounts krijgen een extra ontgrendelcode. Ten minste één account moet zichtbaar blijven.</string>
