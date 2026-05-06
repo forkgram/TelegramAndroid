@@ -326,7 +326,14 @@ public class ForkSettingsActivity extends BaseFragment {
                 }
                 SharedConfig.cfAccountID = accountId == null ? "" : accountId.toString();
                 SharedConfig.cfApiToken = apiToken == null ? "" : apiToken.toString();
+                if (!android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) && !android.text.TextUtils.isEmpty(SharedConfig.cfApiToken)) {
+                    SharedConfig.cfEnableStt = true;
+                }
                 SharedConfig.saveConfig();
+                RecyclerListView.Holder holder = (RecyclerListView.Holder) listView.findViewHolderForAdapterPosition(cloudflareEnableSTTRow);
+                if (holder != null && holder.itemView instanceof TextCheckCell) {
+                    ((TextCheckCell) holder.itemView).setChecked(SharedConfig.cfEnableStt);
+                }
                 dialog.dismiss();
             });
         }
@@ -680,6 +687,10 @@ public class ForkSettingsActivity extends BaseFragment {
             } else if (position == disableUnifiedPushRow) {
                 toggleGlobalMainSetting("disableUnifiedPush", view, false);
             } else if (position == cloudflareEnableSTTRow) {
+                if (!SharedConfig.cfEnableStt && (android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) || android.text.TextUtils.isEmpty(SharedConfig.cfApiToken))) {
+                    showCfCredentialsDialog();
+                    return;
+                }
                 SharedConfig.cfEnableStt = !SharedConfig.cfEnableStt;
                 SharedConfig.saveConfig();
                 if (view instanceof TextCheckCell) {

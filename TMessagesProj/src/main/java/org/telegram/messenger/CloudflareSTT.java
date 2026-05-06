@@ -53,51 +53,57 @@ public class CloudflareSTT {
 
     private static void extractAudio(String inputFilePath, String outputFilePath) throws IOException {
         var extractor = new MediaExtractor();
-        extractor.setDataSource(inputFilePath);
+        MediaMuxer muxer = null;
+        try {
+            extractor.setDataSource(inputFilePath);
 
-        MediaFormat audioFormat = null;
-        int audioTrackIndex = -1;
-        for (int i = 0; i < extractor.getTrackCount(); i++) {
-            var format = extractor.getTrackFormat(i);
-            var mime = format.getString(MediaFormat.KEY_MIME);
-            if (mime != null && mime.startsWith("audio/")) {
-                audioFormat = format;
-                audioTrackIndex = i;
-                break;
-            }
-        }
-
-        if (audioFormat == null) {
-            throw new IOException("No audio track found in " + inputFilePath);
-        }
-
-        var muxer = new MediaMuxer(outputFilePath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
-        var trackIndex = muxer.addTrack(audioFormat);
-        muxer.start();
-
-        extractor.selectTrack(audioTrackIndex);
-
-        var bufferInfo = new MediaCodec.BufferInfo();
-        var buffer = ByteBuffer.allocate(65536);
-
-        while (true) {
-            var sampleSize = extractor.readSampleData(buffer, 0);
-            if (sampleSize < 0) {
-                break;
+            MediaFormat audioFormat = null;
+            int audioTrackIndex = -1;
+            for (int i = 0; i < extractor.getTrackCount(); i++) {
+                var format = extractor.getTrackFormat(i);
+                var mime = format.getString(MediaFormat.KEY_MIME);
+                if (mime != null && mime.startsWith("audio/")) {
+                    audioFormat = format;
+                    audioTrackIndex = i;
+                    break;
+                }
             }
 
-            bufferInfo.offset = 0;
-            bufferInfo.size = sampleSize;
-            bufferInfo.presentationTimeUs = extractor.getSampleTime();
-            bufferInfo.flags = 0;
+            if (audioFormat == null) {
+                throw new IOException("No audio track found in " + inputFilePath);
+            }
 
-            muxer.writeSampleData(trackIndex, buffer, bufferInfo);
-            extractor.advance();
+            muxer = new MediaMuxer(outputFilePath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+            var trackIndex = muxer.addTrack(audioFormat);
+            muxer.start();
+
+            extractor.selectTrack(audioTrackIndex);
+
+            var bufferInfo = new MediaCodec.BufferInfo();
+            var buffer = ByteBuffer.allocate(65536);
+
+            while (true) {
+                var sampleSize = extractor.readSampleData(buffer, 0);
+                if (sampleSize < 0) {
+                    break;
+                }
+
+                bufferInfo.offset = 0;
+                bufferInfo.size = sampleSize;
+                bufferInfo.presentationTimeUs = extractor.getSampleTime();
+                bufferInfo.flags = 0;
+
+                muxer.writeSampleData(trackIndex, buffer, bufferInfo);
+                extractor.advance();
+            }
+
+            muxer.stop();
+        } finally {
+            if (muxer != null) {
+                muxer.release();
+            }
+            extractor.release();
         }
-
-        muxer.stop();
-        muxer.release();
-        extractor.release();
     }
 
     public static void requestWorkersAi(String path, boolean video, BiConsumer<String, Exception> callback) {
@@ -113,8 +119,10 @@ public class CloudflareSTT {
                     extractAudio(path, audioFile.getAbsolutePath());
                 } catch (IOException e) {
                     FileLog.e(e);
+                    callback.accept(null, e);
+                    return;
                 }
-                audioPath = audioFile.exists() ? audioFile : new File(path);
+                audioPath = audioFile;
             } else {
                 audioPath = new File(path);
             }

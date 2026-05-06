@@ -63,7 +63,7 @@ public class SharedConfig {
 
     public static String cfAccountID = "";
     public static String cfApiToken = "";
-    public static boolean cfEnableStt = true;
+    public static boolean cfEnableStt = false;
 
     public static boolean loopStickers() {
         return LiteMode.isEnabled(LiteMode.FLAG_ANIMATED_STICKERS_CHAT);
@@ -553,7 +553,7 @@ public class SharedConfig {
             proxyRotationTimeout = preferences.getInt("proxyRotationTimeout", ProxyRotationController.DEFAULT_TIMEOUT_INDEX);
             cfAccountID = preferences.getString("cfAccountID", "");
             cfApiToken = preferences.getString("cfApiToken", "");
-            cfEnableStt = preferences.getBoolean("cfEnableStt", true);
+            cfEnableStt = preferences.getBoolean("cfEnableStt", false);
             String authKeyString = preferences.getString("pushAuthKey", null);
             if (!TextUtils.isEmpty(authKeyString)) {
                 pushAuthKey = Base64.decode(authKeyString, Base64.DEFAULT);
