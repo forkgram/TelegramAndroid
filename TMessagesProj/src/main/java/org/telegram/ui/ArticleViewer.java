@@ -8392,7 +8392,7 @@ public class ArticleViewer implements NotificationCenter.NotificationCenterDeleg
                 webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
                 webView.addJavascriptInterface(new TelegramWebviewProxy(), "TelegramWebviewProxy");
 
-                webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+                webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
                 CookieManager cookieManager = CookieManager.getInstance();
                 cookieManager.setAcceptThirdPartyCookies(webView, true);
 
