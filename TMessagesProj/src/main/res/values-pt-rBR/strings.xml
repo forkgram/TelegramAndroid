@@ -116,6 +116,7 @@
     <string name="ThirdParty">Terceiros</string>
     <string name="EnableLastSeenDots">Marcadores coloridos para visto por último</string>
     <string name="HideStoriesInArchive">Ocultar Stories no Arquivo</string>
+    <string name="ExtractMediaFromPreview">Enviar mídia da visualização do link como anexo</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Português (Brasil)</string>
