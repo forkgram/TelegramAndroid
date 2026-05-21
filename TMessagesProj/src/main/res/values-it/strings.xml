@@ -116,6 +116,7 @@
     <string name="ThirdParty">Di terze parti</string>
     <string name="EnableLastSeenDots">Abilita i puntini colorati dell\'ultimo accesso</string>
     <string name="HideStoriesInArchive">Nascondi le storie nell\'archivio</string>
+    <string name="ExtractMediaFromPreview">Invia i media dall\'anteprima del link come allegato</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
