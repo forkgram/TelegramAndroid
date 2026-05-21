@@ -110,6 +110,7 @@
     <string name="ThirdParty">서드파티</string>
     <string name="EnableLastSeenDots">마지막 접속 색상 점 활성화</string>
     <string name="HideStoriesInArchive">보관함에서 스토리 숨기기</string>
+    <string name="ExtractMediaFromPreview">링크 미리보기의 미디어를 첨부 파일로 전송</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

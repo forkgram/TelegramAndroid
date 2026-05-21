@@ -110,6 +110,7 @@
     <string name="ThirdParty">Drittanbieter</string>
     <string name="EnableLastSeenDots">Farbige Punkte für „Zuletzt gesehen“ aktivieren</string>
     <string name="HideStoriesInArchive">Stories im Archiv ausblenden</string>
+    <string name="ExtractMediaFromPreview">Medien aus der Linkvorschau als Anhang senden</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
