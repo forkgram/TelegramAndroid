@@ -110,6 +110,7 @@
     <string name="ThirdParty">Сторонние</string>
     <string name="EnableLastSeenDots">Включить цветные точки последнего входа</string>
     <string name="HideStoriesInArchive">Скрыть истории в архиве</string>
+    <string name="ExtractMediaFromPreview">Отправлять медиа из превью ссылки как вложение</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
