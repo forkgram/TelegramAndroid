@@ -116,6 +116,7 @@
     <string name="ThirdParty">Van derden</string>
     <string name="EnableLastSeenDots">Gekleurde stippen voor laatst gezien inschakelen</string>
     <string name="HideStoriesInArchive">Verhalen in archief verbergen</string>
+    <string name="ExtractMediaFromPreview">Media uit linkvoorbeeld als bijlage verzenden</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
