@@ -116,6 +116,7 @@
     <string name="ThirdParty">De terceros</string>
     <string name="EnableLastSeenDots">Activar puntos de color de última conexión</string>
     <string name="HideStoriesInArchive">Ocultar historias en el archivo</string>
+    <string name="ExtractMediaFromPreview">Enviar medios de la vista previa del enlace como adjunto</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Español</string>
