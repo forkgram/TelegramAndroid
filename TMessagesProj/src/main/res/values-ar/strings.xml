@@ -116,6 +116,7 @@
     <string name="ThirdParty">طرف ثالث</string>
     <string name="EnableLastSeenDots">تفعيل نقاط ملونة لآخر ظهور</string>
     <string name="HideStoriesInArchive">إخفاء القصص في الأرشيف</string>
+    <string name="ExtractMediaFromPreview">إرسال الوسائط من معاينة الرابط كمرفق</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
