@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
+import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_account;
 import org.telegram.ui.ActionBar.SimpleTextView;
@@ -33,6 +35,8 @@ import org.telegram.ui.ActionBar.ThemeBind;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 
 public class ShareTopView extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
@@ -63,6 +67,9 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
     private final HashMap<String, TLRPC.WebPage> linkPreviewCache = new HashMap<>();
 
     private TLRPC.WebPage loadedWebPage;
+    private TLRPC.WebPage extractedWebPage;
+    private final Supplier<CharSequence> shareText;
+    private final Consumer<TLRPC.WebPage> removeShareLink;
     private int linkRequestId;
     private int linkRequestSerial;
 
@@ -73,9 +80,11 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
     private OnClickListener layoutClickListener;
     private OnModeChangeListener modeChangeListener;
 
-    public ShareTopView(Context context, Theme.ResourcesProvider resourcesProvider) {
+    public ShareTopView(Context context, Theme.ResourcesProvider resourcesProvider, Supplier<CharSequence> shareText, Consumer<TLRPC.WebPage> removeShareLink) {
         super(context);
         this.resourcesProvider = resourcesProvider;
+        this.shareText = shareText;
+        this.removeShareLink = removeShareLink;
 
         for (int i = 0; i < layouts.length; i++) {
             layouts[i] = new Layout(context, resourcesProvider);
@@ -101,7 +110,7 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
     @Override
     public void didReceivedNotification(int id, int account, Object... args) {
         if (id != NotificationCenter.didReceivedWebpagesInUpdates) return;
-        if (loadedWebPage == null || account != currentAccount) return;
+        if (loadedWebPage == null || extractedWebPage != null || account != currentAccount) return;
         @SuppressWarnings("unchecked")
         final LongSparseArray<TLRPC.WebPage> map = (LongSparseArray<TLRPC.WebPage>) args[0];
         for (int i = 0; i < map.size(); i++) {
@@ -137,6 +146,44 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
         return loadedWebPage;
     }
 
+    public TLRPC.WebPage getExtractedWebPage() {
+        return extractedWebPage;
+    }
+
+    private boolean selectExtractedWebPage() {
+        if (extractedWebPage != null) return true;
+        if (shareText == null || currentMode != MODE_LINK || !ExtractMediaFromPreview.hasMedia(loadedWebPage)) return false;
+        extractedWebPage = loadedWebPage;
+        cancelLinkRequest();
+        bindExtractMediaButton(current(), extractedWebPage);
+        return true;
+    }
+
+    private void toggleExtractedWebPage() {
+        if (extractedWebPage == null) {
+            selectExtractedWebPage();
+        } else {
+            extractedWebPage = null;
+            doLinkSearch(shareText.get(), true);
+        }
+    }
+
+    private boolean extractWithoutLink(View button) {
+        if (!selectExtractedWebPage()) return false;
+        removeShareLink.accept(extractedWebPage);
+        button.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        return true;
+    }
+
+    private void bindExtractMediaButton(Layout layout, TLRPC.WebPage webPage) {
+        final boolean visible = shareText != null && ExtractMediaFromPreview.hasMedia(webPage);
+        layout.extractMediaButton.setVisibility(visible ? VISIBLE : GONE);
+        final boolean active = visible && extractedWebPage != null;
+        layout.extractMediaButton.setSelected(active);
+        final int color = Theme.getColor(active ? Theme.key_chat_messageLinkIn : Theme.key_glass_defaultIcon, resourcesProvider);
+        layout.extractMediaButton.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
+    }
+
     public boolean hasLink() {
         return currentMode == MODE_LINK;
     }
@@ -165,6 +212,7 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
         this.mediaEntries = entries;
         this.linkSearchEnabled = false;
         this.loadedWebPage = null;
+        this.extractedWebPage = null;
         cancelLinkRequest();
         foundUrls.clear();
 
@@ -203,6 +251,7 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
         this.previewEnabled = true;
         this.dismissedMessage = null;
         this.loadedWebPage = null;
+        this.extractedWebPage = null;
         cancelLinkRequest();
         foundUrls.clear();
     }
@@ -213,6 +262,8 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
 
     public void dismissWebPagePreview() {
         if (foundUrls.isEmpty()) return;
+        extractedWebPage = null;
+        bindExtractMediaButton(current(), null);
         dismissedMessage = TextUtils.join(" ", foundUrls).toString();
         previewEnabled = false;
         cancelLinkRequest();
@@ -225,7 +276,7 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
     }
 
     public void onTextChanged(CharSequence text, boolean force) {
-        if (!linkSearchEnabled) return;
+        if (!linkSearchEnabled || extractedWebPage != null) return;
         doLinkSearch(text, force);
     }
 
@@ -424,6 +475,7 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
         layout.linkImage.setVisibility(GONE);
         layout.imagesContainer.setVisibility(VISIBLE);
         layout.closeButton.setVisibility(GONE);
+        bindExtractMediaButton(layout, null);
         layout.container.setClickable(true);
 
         final ArrayList<MediaController.PhotoEntry> entries = mediaEntries;
@@ -454,6 +506,8 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
     }
 
     private void bindLinkLoading(Layout layout, String url) {
+        loadedWebPage = null;
+        bindExtractMediaButton(layout, null);
         layout.icon.setImageResource(R.drawable.msg_link2);
         layout.icon.setVisibility(VISIBLE);
         layout.imagesContainer.setVisibility(GONE);
@@ -465,6 +519,7 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
     }
 
     private void bindLinkLoaded(Layout layout, TLRPC.WebPage webPage, String url) {
+        bindExtractMediaButton(layout, webPage);
         layout.icon.setImageResource(R.drawable.msg_link2);
         layout.icon.setVisibility(VISIBLE);
         layout.imagesContainer.setVisibility(GONE);
@@ -615,6 +670,7 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
         public final BackupImageView[] images;
         public final BackupImageView linkImage;
         public final ImageView closeButton;
+        private final ImageView extractMediaButton;
 
         public Layout(Context context, Theme.ResourcesProvider resourcesProvider) {
             super(context);
@@ -673,6 +729,16 @@ public class ShareTopView extends FrameLayout implements NotificationCenter.Noti
             closeButton.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector, resourcesProvider), 1, dp(18)));
             closeButton.setVisibility(GONE);
             closeButton.setOnClickListener(v -> dismissWebPagePreview());
+
+            extractMediaButton = new ImageView(context);
+            extractMediaButton.setImageResource(R.drawable.input_extract_media);
+            extractMediaButton.setScaleType(ImageView.ScaleType.CENTER);
+            extractMediaButton.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector, resourcesProvider), 1, dp(19)));
+            extractMediaButton.setContentDescription(LocaleController.getString(R.string.ExtractMediaFromPreview));
+            extractMediaButton.setVisibility(GONE);
+            extractMediaButton.setOnClickListener(v -> toggleExtractedWebPage());
+            extractMediaButton.setOnLongClickListener(ShareTopView.this::extractWithoutLink);
+            container.addView(extractMediaButton, LayoutHelper.createLinear(44, 36, Gravity.RIGHT | Gravity.CENTER_VERTICAL, 0, 0, 4, 0));
             container.addView(closeButton, LayoutHelper.createLinear(36, 36, Gravity.RIGHT | Gravity.CENTER_VERTICAL, 0, 0, 4, 0));
         }
     }

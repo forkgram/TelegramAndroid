@@ -11438,6 +11438,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         return shareTopView != null ? shareTopView.getLoadedWebPage() : null;
     }
 
+    public TLRPC.WebPage getSharedExtractedWebPage() {
+        return shareTopView != null ? shareTopView.getExtractedWebPage() : null;
+    }
+
     public boolean isWebPagePreviewEnabled() {
         return shareTopView == null || shareTopView.isPreviewEnabled();
     }
@@ -11452,7 +11456,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             return;
         }
         if (shareTopView == null) {
-            shareTopView = new ShareTopView(getParentActivity(), getResourceProvider());
+            final boolean allowExtraction = arguments.getBoolean("externalShareAllowWebPageMediaExtraction");
+            shareTopView = new ShareTopView(getParentActivity(), getResourceProvider(),
+                allowExtraction ? commentView::getFieldText : null, allowExtraction ? commentView::forkRemoveWebPageLink : null);
             shareTopView.setLayoutClickListener(v -> {
                 if (hasSharedMediaEntries()) openSharedMediaEditor();
             });
