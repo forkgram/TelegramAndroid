@@ -133,6 +133,7 @@ import org.telegram.messenger.LiteMode;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MediaDataController;
+import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.MessageSuggestionParams;
 import org.telegram.messenger.MessagesController;
@@ -7123,6 +7124,22 @@ public class ChatActivityEnterView extends FrameLayout implements
             if (checkPremiumAnimatedEmoji(currentAccount, dialog_id, parentFragment, null, message)) {
                 return;
             }
+            if (parentFragment != null && parentFragment.forkIsExtractMediaActive()
+                    && ExtractMediaFromPreview.hasMedia(parentFragment.forkExtractMediaFrozenWebPage)) {
+                boolean forkSent = forkTrySendExtractedMedia(message, notify, scheduleDate, scheduleRepeatPeriod, payStars);
+                if (forkSent) {
+                    if (messageEditText != null) {
+                        messageEditText.setText("");
+                    }
+                    hideTopView(true);
+                    if (delegate != null) {
+                        delegate.onMessageSend(message, notify, scheduleDate, scheduleRepeatPeriod, payStars);
+                    }
+                    lastTypingTimeSend = 0;
+                }
+                updateSendButtonPaid();
+                return;
+            }
             if (processSendingText(message, notify, scheduleDate, scheduleRepeatPeriod, payStars)) {
                 if (delegate.hasForwardingMessages() || (scheduleDate != 0 && !isInScheduleMode()) || isInScheduleMode()) {
                     if (messageEditText != null) {
@@ -7667,6 +7684,41 @@ public class ChatActivityEnterView extends FrameLayout implements
             return true;
         }
         return false;
+    }
+
+    private boolean forkTrySendExtractedMedia(CharSequence message, boolean notify, int scheduleDate, int scheduleRepeatPeriod, long payStars) {
+        if (parentFragment == null) {
+            return false;
+        }
+        TLRPC.WebPage webPage = parentFragment.forkExtractMediaFrozenWebPage;
+        if (!ExtractMediaFromPreview.hasMedia(webPage)) {
+            return false;
+        }
+        boolean isDocument = ExtractMediaFromPreview.isDocument(webPage);
+        TLRPC.Chat chat = parentFragment.getCurrentChat();
+        if (chat != null) {
+            if (isDocument && !ChatObject.canSendDocument(chat)) {
+                BulletinFactory.of(parentFragment).createErrorBulletin(ChatObject.getRestrictedErrorText(chat, ChatObject.ACTION_SEND_DOCUMENTS)).show();
+                return false;
+            }
+            if (!isDocument && !ChatObject.canSendPhoto(chat)) {
+                BulletinFactory.of(parentFragment).createErrorBulletin(ChatObject.getRestrictedErrorText(chat, ChatObject.ACTION_SEND_PHOTO)).show();
+                return false;
+            }
+        }
+        CharSequence trimmed = AndroidUtilities.getTrimmedString(message == null ? "" : message);
+        CharSequence[] msg = new CharSequence[]{ trimmed };
+        ArrayList<TLRPC.MessageEntity> entities = MediaDataController.getInstance(currentAccount).getEntities(msg, supportsSendingNewEntities());
+        String caption = msg[0].toString();
+        MessageObject replyToTopMsg = getThreadMessage();
+        if (replyToTopMsg == null && replyingTopMessage != null) {
+            replyToTopMsg = replyingTopMessage;
+        }
+        boolean sent = ExtractMediaFromPreview.send(currentAccount, dialog_id, webPage, caption, entities, replyingMessageObject, replyToTopMsg, notify, scheduleDate, scheduleRepeatPeriod, payStars);
+        if (sent) {
+            parentFragment.forkResetExtractMediaAfterSend();
+        }
+        return sent;
     }
 
     public long getSendMonoForumPeerId() {

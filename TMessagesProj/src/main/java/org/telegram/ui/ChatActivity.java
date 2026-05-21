@@ -186,6 +186,7 @@ import org.telegram.messenger.VideoEditedInfo;
 import org.telegram.messenger.browser.Browser;
 import org.telegram.messenger.camera.CameraView;
 import org.telegram.messenger.forkgram.ForkUtils;
+import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.messenger.support.LongSparseIntArray;
 import org.telegram.messenger.utils.OnPostDrawView;
 import org.telegram.messenger.utils.PhotoUtilities;
@@ -802,6 +803,9 @@ public class ChatActivity extends BaseFragment implements
     private TLObject pinnedImageLocationObject;
     private int linkSearchRequestId;
     public TLRPC.WebPage foundWebPage;
+    public boolean forkExtractMediaActive;
+    public TLRPC.WebPage forkExtractMediaFrozenWebPage;
+    private ImageView forkExtractMediaButton;
     private ArrayList<CharSequence> foundUrls;
     private String pendingLinkSearchString;
     private Runnable pendingWebPageTimeoutRunnable;
@@ -8311,6 +8315,8 @@ public class ChatActivity extends BaseFragment implements
             } else if (fieldPanelShown == 3) {
                 openAnotherForward();
             } else if (fieldPanelShown == 4) {
+                forkExtractMediaActive = false;
+                forkExtractMediaFrozenWebPage = null;
                 foundWebPage = null;
                 if (messagePreviewParams != null) {
                     messagePreviewParams.updateLink(currentAccount, null, null, replyingMessageObject == threadMessageObject ? null : replyingMessageObject, replyingQuote, editingMessageObject);
@@ -8329,6 +8335,15 @@ public class ChatActivity extends BaseFragment implements
             }
         });
 
+        forkExtractMediaButton = new ImageView(context);
+        forkExtractMediaButton.setImageResource(R.drawable.input_extract_media);
+        forkExtractMediaButton.setScaleType(ImageView.ScaleType.CENTER);
+        forkExtractMediaButton.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_glass_defaultIcon), PorterDuff.Mode.MULTIPLY));
+        forkExtractMediaButton.setBackgroundDrawable(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), 1, AndroidUtilities.dp(19)));
+        forkExtractMediaButton.setContentDescription(LocaleController.getString(R.string.ExtractMediaFromPreview));
+        forkExtractMediaButton.setVisibility(View.GONE);
+        chatActivityEnterTopView.addView(forkExtractMediaButton, LayoutHelper.createFrame(52, 46, Gravity.RIGHT | Gravity.TOP, 0, 0.5f, 52, 0));
+        forkExtractMediaButton.setOnClickListener(v -> forkToggleExtractMedia());
         contentView.addView(
             suggestEmojiPanel = new SuggestEmojiView(context, currentAccount, chatActivityEnterView, themeDelegate),
             LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 160, Gravity.LEFT | Gravity.BOTTOM, 7, 0, 7, 0)
@@ -10922,6 +10937,59 @@ public class ChatActivity extends BaseFragment implements
         } else {
             showFieldPanelForWebPage(false, null, true);
         }
+    }
+
+    public TLRPC.WebPage forkExtractMediaEffectiveWebPage() {
+        return forkExtractMediaFrozenWebPage != null ? forkExtractMediaFrozenWebPage : foundWebPage;
+    }
+
+    public boolean forkExtractMediaAvailable() {
+        return fieldPanelShown == 4 && ExtractMediaFromPreview.hasMedia(forkExtractMediaEffectiveWebPage());
+    }
+
+    public boolean forkIsExtractMediaActive() {
+        return forkExtractMediaActive && forkExtractMediaFrozenWebPage != null;
+    }
+
+    private void forkToggleExtractMedia() {
+        if (forkExtractMediaActive) {
+            forkExtractMediaActive = false;
+            forkExtractMediaFrozenWebPage = null;
+            if (chatActivityEnterView != null) {
+                searchLinks(chatActivityEnterView.getFieldText(), true);
+            }
+        } else if (!forkExtractMediaAvailable()) {
+            forkExtractMediaActive = false;
+            forkExtractMediaFrozenWebPage = null;
+        } else {
+            forkExtractMediaActive = true;
+            forkExtractMediaFrozenWebPage = foundWebPage;
+        }
+        forkUpdateExtractMediaButton();
+    }
+
+    public void forkUpdateExtractMediaButton() {
+        if (forkExtractMediaButton == null) {
+            return;
+        }
+        boolean visible = forkExtractMediaAvailable() || forkIsExtractMediaActive();
+        forkExtractMediaButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+        int color = getThemedColor(forkExtractMediaActive ? Theme.key_chat_messageLinkIn : Theme.key_glass_defaultIcon);
+        forkExtractMediaButton.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
+    }
+
+    public void forkResetExtractMediaAfterSend() {
+        forkExtractMediaActive = false;
+        forkExtractMediaFrozenWebPage = null;
+        foundWebPage = null;
+        if (messagePreviewParams != null) {
+            messagePreviewParams.updateLink(currentAccount, null, "", null, null, null);
+        }
+        if (chatActivityEnterView != null) {
+            chatActivityEnterView.setWebPage(null, true);
+        }
+        fallbackFieldPanel();
+        forkUpdateExtractMediaButton();
     }
 
     private boolean keyboardWasVisible;
@@ -14051,6 +14119,9 @@ public class ChatActivity extends BaseFragment implements
     }
 
     public void checkEditLinkRemoved(final CharSequence charSequence) {
+        if (forkExtractMediaFrozenWebPage != null) {
+            return;
+        }
         final boolean manual = editingMessageObject != null && editingMessageObject.messageOwner != null && editingMessageObject.messageOwner.media != null && editingMessageObject.messageOwner.media.webpage != null && !(editingMessageObject.messageOwner.media.webpage instanceof TLRPC.TL_webPageEmpty) && editingMessageObject.messageOwner.media.manual;
         if (messagePreviewParams != null && editingMessageObject != null && (editingMessageObject.type == MessageObject.TYPE_TEXT || editingMessageObject.type == MessageObject.TYPE_EMOJIS) && foundWebPage != null) {
             if (messagePreviewParams.hasLink(charSequence, foundWebPage.url)) {
@@ -14071,6 +14142,9 @@ public class ChatActivity extends BaseFragment implements
     }
 
     public void searchLinks(final CharSequence charSequence, final boolean force) {
+        if (forkExtractMediaFrozenWebPage != null) {
+            return;
+        }
         if (currentEncryptedChat != null && getMessagesController().secretWebpagePreview == 0 || editingMessageObject != null && (!editingMessageObject.isWebpage() || editingMessageObject.messageOwner.media.webpage instanceof TLRPC.TL_webPagePending)) {
             return;
         }
@@ -14217,6 +14291,9 @@ public class ChatActivity extends BaseFragment implements
             final int myId = ++waitingForWebpageId;
             requestLinkPreviewCached(req, (success, webpage) -> AndroidUtilities.runOnUIThread(() -> {
                 if (waitingForWebpageId != myId) {
+                    return;
+                }
+                if (forkExtractMediaFrozenWebPage != null) {
                     return;
                 }
                 if (success) {
@@ -15503,6 +15580,7 @@ public class ChatActivity extends BaseFragment implements
         if (chatActivityEnterView != null) {
             chatActivityEnterView.updateSendButtonPaid();
         }
+        forkUpdateExtractMediaButton();
     }
 
     private void moveScrollToLastMessage(boolean skipSponsored) {
@@ -23354,7 +23432,7 @@ public class ChatActivity extends BaseFragment implements
                 updateVisibleRows();
             }
         } else if (id == NotificationCenter.didReceivedWebpagesInUpdates) {
-            if (foundWebPage != null) {
+            if (foundWebPage != null && forkExtractMediaFrozenWebPage == null) {
                 LongSparseArray<TLRPC.WebPage> hashMap = (LongSparseArray<TLRPC.WebPage>) args[0];
                 for (int a = 0; a < hashMap.size(); a++) {
                     TLRPC.WebPage webPage = hashMap.valueAt(a);
