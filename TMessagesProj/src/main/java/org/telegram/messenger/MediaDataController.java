@@ -50,6 +50,7 @@ import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.SQLite.SQLiteDatabase;
 import org.telegram.SQLite.SQLiteException;
 import org.telegram.SQLite.SQLitePreparedStatement;
+import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.ringtone.RingtoneDataStore;
 import org.telegram.messenger.ringtone.RingtoneUploader;
 import org.telegram.tgnet.ConnectionsManager;
@@ -4994,8 +4995,7 @@ public class MediaDataController extends BaseController {
         if (maxShortcuts <= 0) {
             maxShortcuts = 5;
         }
-        
-        // Get available accounts instead of hints
+
         ArrayList<Integer> accountsList = new ArrayList<>();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
             if (HiddenAccountHelper.isVisibleActivatedAccount(a)) {
@@ -5003,6 +5003,13 @@ public class MediaDataController extends BaseController {
                 if (accountsList.size() >= maxShortcuts) {
                     break;
                 }
+            }
+        }
+        ArrayList<TLRPC.TL_topPeer> hintsFinal = new ArrayList<>();
+        if (SharedConfig.directShare && SharedConfig.passcodeHash.length() <= 0 && !HiddenAccountHelper.isAccountHidden(currentAccount)) {
+            int maxHints = maxShortcuts - accountsList.size();
+            for (int a = 0; a < hints.size() && hintsFinal.size() < maxHints; a++) {
+                hintsFinal.add(hints.get(a));
             }
         }
         boolean recreateShortcuts = Build.VERSION.SDK_INT >= 30;
@@ -5024,6 +5031,9 @@ public class MediaDataController extends BaseController {
                     if (currentShortcuts != null && !currentShortcuts.isEmpty()) {
                         for (int a = 0; a < accountsList.size(); a++) {
                             newShortcutsIds.add("account_" + accountsList.get(a));
+                        }
+                        for (int a = 0; a < hintsFinal.size(); a++) {
+                            newShortcutsIds.add("did3_" + MessageObject.getPeerId(hintsFinal.get(a).peer));
                         }
                         for (int a = 0; a < currentShortcuts.size(); a++) {
                             String id = currentShortcuts.get(a).getId();
@@ -5105,6 +5115,113 @@ public class MediaDataController extends BaseController {
                             .setRank(a)
                             .setIntent(shortcutIntent);
                     
+                    if (bitmap != null) {
+                        builder.setIcon(IconCompat.createWithBitmap(bitmap));
+                    } else {
+                        builder.setIcon(IconCompat.createWithResource(ApplicationLoader.applicationContext, R.drawable.shortcut_user));
+                    }
+
+                    if (recreateShortcuts) {
+                        ShortcutManagerCompat.pushDynamicShortcut(ApplicationLoader.applicationContext, builder.build());
+                    } else {
+                        arrayList.add(builder.build());
+                        if (shortcutsToUpdate.contains(id)) {
+                            ShortcutManagerCompat.updateShortcuts(ApplicationLoader.applicationContext, arrayList);
+                        } else {
+                            ShortcutManagerCompat.addDynamicShortcuts(ApplicationLoader.applicationContext, arrayList);
+                        }
+                        arrayList.clear();
+                    }
+                }
+
+                HashSet<String> category = new HashSet<>(1);
+                category.add(SHORTCUT_CATEGORY);
+
+                for (int a = 0; a < hintsFinal.size(); a++) {
+                    Intent shortcutIntent = new Intent(ApplicationLoader.applicationContext, OpenChatReceiver.class);
+                    TLRPC.TL_topPeer hint = hintsFinal.get(a);
+
+                    TLRPC.User user = null;
+                    TLRPC.Chat chat = null;
+                    long peerId = MessageObject.getPeerId(hint.peer);
+                    if (DialogObject.isUserDialog(peerId)) {
+                        shortcutIntent.putExtra("userId", peerId);
+                        user = getMessagesController().getUser(peerId);
+                    } else {
+                        chat = getMessagesController().getChat(-peerId);
+                        shortcutIntent.putExtra("chatId", -peerId);
+                    }
+                    if ((user == null || UserObject.isDeleted(user)) && chat == null) {
+                        continue;
+                    }
+
+                    String name;
+                    TLRPC.FileLocation photo = null;
+
+                    if (user != null) {
+                        name = ContactsController.formatName(user.first_name, user.last_name);
+                        if (user.photo != null) {
+                            photo = user.photo.photo_small;
+                        }
+                    } else {
+                        name = chat.title;
+                        if (chat.photo != null) {
+                            photo = chat.photo.photo_small;
+                        }
+                    }
+
+                    shortcutIntent.putExtra("currentAccount", currentAccount);
+                    shortcutIntent.setAction("com.tmessages.openchat" + peerId);
+                    shortcutIntent.putExtra("dialogId", peerId);
+                    shortcutIntent.putExtra("hash", SharedConfig.directShareHash);
+                    shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    Bitmap bitmap = null;
+                    if (photo != null) {
+                        try {
+                            File path = getFileLoader().getPathToAttach(photo, true);
+                            bitmap = BitmapFactory.decodeFile(path.toString());
+                            if (bitmap != null) {
+                                int size = AndroidUtilities.dp(48);
+                                Bitmap result = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+                                Canvas canvas = new Canvas(result);
+                                if (roundPaint == null) {
+                                    roundPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+                                    bitmapRect = new RectF();
+                                    erasePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                                    erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                                    roundPath = new Path();
+                                    roundPath.addCircle(size / 2, size / 2, size / 2 - AndroidUtilities.dp(2), Path.Direction.CW);
+                                    roundPath.toggleInverseFillType();
+                                }
+                                bitmapRect.set(AndroidUtilities.dp(2), AndroidUtilities.dp(2), AndroidUtilities.dp(46), AndroidUtilities.dp(46));
+                                canvas.drawBitmap(bitmap, null, bitmapRect, roundPaint);
+                                canvas.drawPath(roundPath, erasePaint);
+                                try {
+                                    canvas.setBitmap(null);
+                                } catch (Exception ignore) {
+
+                                }
+                                bitmap = result;
+                            }
+                        } catch (Throwable e) {
+                            FileLog.e(e);
+                        }
+                    }
+
+                    String id = "did3_" + peerId;
+                    if (TextUtils.isEmpty(name)) {
+                        name = " ";
+                    }
+                    ShortcutInfoCompat.Builder builder = new ShortcutInfoCompat.Builder(ApplicationLoader.applicationContext, id)
+                            .setShortLabel(name)
+                            .setLongLabel(name)
+                            .setRank(accountsList.size() + a)
+                            .setCategories(category)
+                            .setIntent(shortcutIntent);
+                    if (Build.VERSION.SDK_INT >= 33) {
+                        builder.setExcludedFromSurfaces(ShortcutInfoCompat.SURFACE_LAUNCHER);
+                    }
                     if (bitmap != null) {
                         builder.setIcon(IconCompat.createWithBitmap(bitmap));
                     } else {
