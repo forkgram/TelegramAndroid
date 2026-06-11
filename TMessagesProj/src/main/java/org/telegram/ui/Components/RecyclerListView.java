@@ -41,6 +41,7 @@ import android.util.Pair;
 import android.util.SparseIntArray;
 import android.util.StateSet;
 import android.view.HapticFeedbackConstants;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
@@ -2154,6 +2155,35 @@ public class RecyclerListView extends RecyclerView implements IBlur3Capture {
             requestDisallowInterceptTouchEvent(this, true);
         }
         return onInterceptTouchListener != null && onInterceptTouchListener.onInterceptTouchEvent(e) || super.onInterceptTouchEvent(e);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (super.dispatchKeyEvent(event)) {
+            return true;
+        }
+        if (isEnabled() && event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
+            int keyCode = event.getKeyCode();
+            if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER) {
+                View focusedChild = getFocusedChild();
+                if (focusedChild != null && focusedChild.isFocused() && focusedChild.isEnabled() && allowSelectChildAtPosition(focusedChild) && (onItemClickListener != null || onItemClickListenerExtended != null)) {
+                    int position = useLayoutPositionOnClick ? getChildLayoutPosition(focusedChild) : getChildAdapterPosition(focusedChild);
+                    if (position != -1) {
+                        try {
+                            focusedChild.playSoundEffect(SoundEffectConstants.CLICK);
+                        } catch (Exception ignore) {}
+                        focusedChild.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_CLICKED);
+                        if (onItemClickListener != null) {
+                            onItemClickListener.onItemClick(focusedChild, position);
+                        } else {
+                            onItemClickListenerExtended.onItemClick(focusedChild, position, focusedChild.getWidth() / 2f, focusedChild.getHeight() / 2f);
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private int activeTouches;

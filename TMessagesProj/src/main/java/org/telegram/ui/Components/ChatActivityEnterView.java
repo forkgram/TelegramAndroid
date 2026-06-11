@@ -10654,6 +10654,10 @@ public class ChatActivityEnterView extends FrameLayout implements
         return messageEditText;
     }
 
+    public boolean isFieldFocusAllowed() {
+        return messageEditText != null && (sendPlainEnabled || isEditingMessage());
+    }
+
     public SenderSelectView getSenderSelectView() {
         return senderSelectView;
     }
