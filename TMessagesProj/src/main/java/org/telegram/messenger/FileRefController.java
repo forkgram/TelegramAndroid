@@ -357,6 +357,12 @@ public class FileRefController extends BaseController {
             sendErrorToObject(args, 0);
             return;
         }
+        if (parentObject instanceof String && ((String) parentObject).startsWith("avatar_") && Utilities.parseLong((String) parentObject) > 0) {
+            long photoId = getRequestedPhotoId(args[0]);
+            if (photoId != 0) {
+                parentKey += "_" + photoId;
+            }
+        }
 
         Requester requester = new Requester();
         requester.args = args;
@@ -595,9 +601,16 @@ public class FileRefController extends BaseController {
                 long id = Utilities.parseLong(string);
                 if (id > 0) {
                     TLRPC.TL_photos_getUserPhotos req = new TLRPC.TL_photos_getUserPhotos();
-                    req.limit = 80;
-                    req.offset = 0;
-                    req.max_id = 0;
+                    long photoId = getRequestedPhotoId(args[0]);
+                    if (photoId != 0) {
+                        req.limit = 1;
+                        req.offset = -1;
+                        req.max_id = photoId;
+                    } else {
+                        req.limit = 80;
+                        req.offset = 0;
+                        req.max_id = 0;
+                    }
                     req.user_id = getMessagesController().getInputUser(id);
                     getConnectionsManager().sendRequest(req, (response, error) -> onRequestComplete(locationKey, parentKey, response, error, true, false));
                 } else {
@@ -650,6 +663,16 @@ public class FileRefController extends BaseController {
         } else {
             sendErrorToObject(args, 0);
         }
+    }
+
+    private static long getRequestedPhotoId(Object arg) {
+        if (arg instanceof TLRPC.TL_inputPhotoFileLocation) {
+            return ((TLRPC.TL_inputPhotoFileLocation) arg).id;
+        }
+        if (arg instanceof TLRPC.TL_inputPeerPhotoFileLocation) {
+            return ((TLRPC.TL_inputPeerPhotoFileLocation) arg).photo_id;
+        }
+        return 0;
     }
 
     private boolean isSameReference(byte[] oldRef, byte[] newRef) {
