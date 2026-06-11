@@ -17228,12 +17228,12 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                     }
                 } else if (avatarsDialogId != 0) {
                     if (avatarsDialogId > 0) {
-                        parentObject = MessagesController.getInstance(currentAccount).getUser(avatarsDialogId);
+                        parentObject = "avatar_" + avatarsDialogId;
                     } else {
                         parentObject = MessagesController.getInstance(currentAccount).getChat(-avatarsDialogId);
-                    }
-                    if (photoObject != null) {
-                        parentObject = photoObject;
+                        if (photoObject != null) {
+                            parentObject = photoObject;
+                        }
                     }
                     if (placeHolder == null && thumbLocation instanceof TLRPC.TL_photoStrippedSize) {
                         placeHolder = new ImageReceiver.BitmapHolder(ImageLoader.getStrippedPhotoBitmap(thumbLocation.bytes, "b"));
