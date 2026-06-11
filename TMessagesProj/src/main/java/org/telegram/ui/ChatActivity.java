@@ -964,6 +964,9 @@ public class ChatActivity extends BaseFragment implements
     public int highlightMessageQuoteOffset = -1;
     private int scrollToMessagePosition = -10000;
     private Runnable unselectRunnable;
+    private int dpadSelectedMessageId = Integer.MAX_VALUE;
+    private int dpadConsumedKeyCode;
+    private boolean dpadComposerFocused;
 
     private String currentPicturePath;
 
@@ -7063,6 +7066,10 @@ public class ChatActivity extends BaseFragment implements
                     if (!wasManualScroll && dy != 0) {
                         wasManualScroll = true;
                     }
+                    if (isDpadMessageSelected()) {
+                        clearDpadSelection();
+                    }
+                    dpadComposerFocused = false;
                 }
                 if (dy != 0) {
                     invalidateMergedVisibleBlurredPositionsAndSources(BLUR_INVALIDATE_FLAG_SCROLL);
@@ -16943,6 +16950,241 @@ public class ChatActivity extends BaseFragment implements
         highlightPollOptionId = null;
     }
 
+    private boolean isDpadMessageSelected() {
+        return dpadSelectedMessageId != Integer.MAX_VALUE;
+    }
+
+    private boolean isComposerActivelyFocused() {
+        return chatActivityEnterView != null && chatActivityEnterView.getEditField() != null
+                && chatActivityEnterView.getEditField().isFocused()
+                && (chatActivityEnterView.isKeyboardVisible() || chatActivityEnterView.getEditField().length() > 0);
+    }
+
+    private boolean isDpadNavigationKey(int keyCode) {
+        return keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_DOWN
+                || keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER
+                || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER;
+    }
+
+    private void clearDpadSelection() {
+        if (dpadSelectedMessageId == Integer.MAX_VALUE) {
+            return;
+        }
+        dpadSelectedMessageId = Integer.MAX_VALUE;
+        updateVisibleRows();
+    }
+
+    private int findDpadSelectableIndex(int fromIndex, int step) {
+        for (int i = fromIndex; i >= 0 && i < messages.size(); i += step) {
+            MessageObject messageObject = messages.get(i);
+            if (messageObject != null && messageObject.getId() != 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int dpadTopmostVisibleIndex() {
+        if (chatListView == null) {
+            return -1;
+        }
+        int best = -1;
+        float bestY = Float.MAX_VALUE;
+        float clipTop = chatListViewPaddingTop - chatListViewPaddingVisibleOffset;
+        for (int a = 0, n = chatListView.getChildCount(); a < n; a++) {
+            View child = chatListView.getChildAt(a);
+            MessageObject messageObject = null;
+            if (child instanceof ChatMessageCell) {
+                messageObject = ((ChatMessageCell) child).getMessageObject();
+            } else if (child instanceof ChatActionCell) {
+                messageObject = ((ChatActionCell) child).getMessageObject();
+            }
+            if (messageObject == null || messageObject.getId() == 0) {
+                continue;
+            }
+            int index = messages.indexOf(messageObject);
+            if (index < 0) {
+                continue;
+            }
+            if (child.getY() + child.getMeasuredHeight() <= clipTop) {
+                continue;
+            }
+            if (child.getY() < bestY) {
+                bestY = child.getY();
+                best = index;
+            }
+        }
+        return best;
+    }
+
+    private boolean dpadEnterListFromHeader() {
+        if (chatListView == null || messages.isEmpty()) {
+            return dpadFocusEnterView();
+        }
+        int index = dpadTopmostVisibleIndex();
+        if (index < 0) {
+            index = findDpadSelectableIndex(messages.size() - 1, -1);
+        }
+        if (index < 0) {
+            return dpadFocusEnterView();
+        }
+        if (chatActivityEnterView != null) {
+            chatActivityEnterView.setFieldFocused(false);
+        }
+        dpadComposerFocused = false;
+        actionBar.clearFocus();
+        chatListView.requestFocus();
+        dpadSelectedMessageId = messages.get(index).getId();
+        dpadEnsureSelectionVisible();
+        updateVisibleRows();
+        return true;
+    }
+
+    private boolean dpadEnterListFromComposer() {
+        if (chatListView == null || messages.isEmpty()) {
+            return false;
+        }
+        int index = findDpadSelectableIndex(0, 1);
+        if (index < 0) {
+            return false;
+        }
+        if (chatActivityEnterView != null) {
+            chatActivityEnterView.setFieldFocused(false);
+            chatActivityEnterView.closeKeyboard();
+        }
+        dpadComposerFocused = false;
+        chatListView.requestFocus();
+        dpadSelectedMessageId = messages.get(index).getId();
+        dpadEnsureSelectionVisible();
+        updateVisibleRows();
+        return true;
+    }
+
+    private boolean dpadMoveSelection(int step) {
+        if (!isDpadMessageSelected()) {
+            return false;
+        }
+        int currentIndex = -1;
+        for (int i = 0; i < messages.size(); i++) {
+            MessageObject messageObject = messages.get(i);
+            if (messageObject != null && messageObject.getId() == dpadSelectedMessageId) {
+                currentIndex = i;
+                break;
+            }
+        }
+        if (currentIndex < 0) {
+            clearDpadSelection();
+            return false;
+        }
+        int nextIndex = findDpadSelectableIndex(currentIndex + step, step);
+        if (nextIndex < 0) {
+            if (step < 0) {
+                clearDpadSelection();
+                return dpadFocusEnterView();
+            }
+            dpadEnsureSelectionVisible();
+            return true;
+        }
+        dpadSelectedMessageId = messages.get(nextIndex).getId();
+        dpadEnsureSelectionVisible();
+        updateVisibleRows();
+        return true;
+    }
+
+    private void dpadEnsureSelectionVisible() {
+        if (chatListView == null || chatLayoutManager == null || chatAdapter == null || !isDpadMessageSelected()) {
+            return;
+        }
+        int index = -1;
+        for (int i = 0; i < messages.size(); i++) {
+            MessageObject messageObject = messages.get(i);
+            if (messageObject != null && messageObject.getId() == dpadSelectedMessageId) {
+                index = i;
+                break;
+            }
+        }
+        if (index < 0) {
+            return;
+        }
+        BaseCell cell = findMessageCell(dpadSelectedMessageId, false);
+        float topBound = chatListViewPaddingTop - chatListViewPaddingVisibleOffset + AndroidUtilities.dp(12);
+        float bottomBound = chatListView.getMeasuredHeight() - blurredViewBottomOffset - AndroidUtilities.dp(12);
+        if (cell == null) {
+            int position = chatAdapter.messagesStartRow + index;
+            chatLayoutManager.scrollToPositionWithOffset(position, (int) (chatListView.getMeasuredHeight() - chatListViewPaddingTop) / 2);
+            return;
+        }
+        float cellTop = cell.getY();
+        float cellBottom = cell.getY() + cell.getMeasuredHeight();
+        if (cellTop < topBound) {
+            chatListView.smoothScrollBy(0, (int) (cellTop - topBound));
+        } else if (cellBottom > bottomBound) {
+            chatListView.smoothScrollBy(0, (int) (cellBottom - bottomBound));
+        }
+    }
+
+    private boolean dpadFocusEnterView() {
+        if (chatActivityEnterView == null || chatActivityEnterView.getVisibility() != View.VISIBLE || !chatActivityEnterView.isFieldFocusAllowed() || chatActivityEnterView.getEditField() == null) {
+            return false;
+        }
+        clearDpadSelection();
+        dpadComposerFocused = true;
+        actionBar.clearFocus();
+        chatActivityEnterView.getEditField().requestFocus();
+        chatActivityEnterView.openKeyboard();
+        return true;
+    }
+
+    private boolean dpadOpenSelectedMessageMenu() {
+        if (!isDpadMessageSelected()) {
+            return false;
+        }
+        BaseCell cell = findMessageCell(dpadSelectedMessageId, true);
+        if (cell == null) {
+            return false;
+        }
+        return createMenu(cell, true, true, cell.getWidth() / 2f, cell.getHeight() / 2f, true);
+    }
+
+    private boolean dpadHandleKeyDown(int keyCode) {
+        if (chatListView == null || inPreviewMode || isInsideContainer || actionBar.isActionModeShowed() || isReport()) {
+            return false;
+        }
+        if (scrimPopupWindow != null && scrimPopupWindow.isShowing()) {
+            return false;
+        }
+        if (textSelectionHelper != null && textSelectionHelper.isInSelectionMode()) {
+            return false;
+        }
+        if (chatActivityEnterView != null && (chatActivityEnterView.isPopupShowing() || chatActivityEnterView.isRecordingAudioVideo())) {
+            return false;
+        }
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                if (!isDpadMessageSelected()) {
+                    if (dpadComposerFocused || isComposerActivelyFocused()) {
+                        return false;
+                    }
+                    return dpadEnterListFromHeader();
+                }
+                return dpadMoveSelection(-1);
+            case KeyEvent.KEYCODE_DPAD_UP:
+                if (!isDpadMessageSelected()) {
+                    if (dpadComposerFocused && chatActivityEnterView != null && !chatActivityEnterView.isKeyboardVisible()
+                            && chatActivityEnterView.getEditField() != null && chatActivityEnterView.getEditField().length() == 0) {
+                        return dpadEnterListFromComposer();
+                    }
+                    return false;
+                }
+                return dpadMoveSelection(1);
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_ENTER:
+            case KeyEvent.KEYCODE_NUMPAD_ENTER:
+                return dpadOpenSelectedMessageMenu();
+        }
+        return false;
+    }
+
     private AlertDialog progressDialog;
     private int nextScrollToMessageId;
     private int nextScrollFromMessageId;
@@ -18849,6 +19091,16 @@ public class ChatActivity extends BaseFragment implements
             if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == 1 && forwardingPreviewView != null && forwardingPreviewView.isShowing()) {
                 forwardingPreviewView.dismiss(true);
                 return true;
+            }
+            if (isDpadNavigationKey(event.getKeyCode())) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && dpadHandleKeyDown(event.getKeyCode())) {
+                    dpadConsumedKeyCode = event.getKeyCode();
+                    return true;
+                }
+                if (event.getAction() == KeyEvent.ACTION_UP && dpadConsumedKeyCode == event.getKeyCode()) {
+                    dpadConsumedKeyCode = 0;
+                    return true;
+                }
             }
             return super.dispatchKeyEvent(event);
         }
@@ -34955,8 +35207,9 @@ public class ChatActivity extends BaseFragment implements
                 if (cell != scrimView) {
                     cell.setCheckPressed(!disableSelection, disableSelection && selected);
                 }
-                cell.setHighlighted(highlightMessageId != Integer.MAX_VALUE && messageObject != null && messageObject.getId() == highlightMessageId);
-                if (highlightMessageId != Integer.MAX_VALUE) {
+                boolean dpadSelected = dpadSelectedMessageId != Integer.MAX_VALUE && messageObject != null && messageObject.getId() == dpadSelectedMessageId;
+                cell.setHighlighted(dpadSelected || (highlightMessageId != Integer.MAX_VALUE && messageObject != null && messageObject.getId() == highlightMessageId));
+                if (highlightMessageId != Integer.MAX_VALUE && !dpadSelected) {
                     startMessageUnselect();
                 }
                 if (cell.isHighlighted() && highlightMessageQuote != null) {
@@ -37780,7 +38033,7 @@ public class ChatActivity extends BaseFragment implements
                     messageCell.setShowTopic(true);
                     messageCell.setMessageObject(message, groupedMessages, pinnedBottom, pinnedTop, firstInChat, lastInChatList);
                     messageCell.setSpoilersSuppressed(chatListView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE);
-                    messageCell.setHighlighted(highlightMessageId != Integer.MAX_VALUE && message.getId() == highlightMessageId);
+                    messageCell.setHighlighted(dpadSelectedMessageId != Integer.MAX_VALUE && message.getId() == dpadSelectedMessageId || highlightMessageId != Integer.MAX_VALUE && message.getId() == highlightMessageId);
                     if (messageCell.isHighlighted() && highlightMessageQuote != null) {
                         final long now = System.currentTimeMillis();
                         messageCell.setHighlightedText(highlightMessageQuote, true, highlightMessageQuoteOffset, highlightMessageQuoteFirst || now - highlightMessageQuoteFirstTime < 200);
@@ -38183,7 +38436,7 @@ public class ChatActivity extends BaseFragment implements
                 }
 
                 if (!inPreviewMode || !messageCell.isHighlighted()) {
-                    messageCell.setHighlighted(highlightMessageId != Integer.MAX_VALUE && (messageCell.getMessageObject() != null && messageCell.getMessageObject().getId() == highlightMessageId || messageCell.getCurrentMessagesGroup() != null && messageCell.getCurrentMessagesGroup().contains(highlightMessageId)));
+                    messageCell.setHighlighted(dpadSelectedMessageId != Integer.MAX_VALUE && messageCell.getMessageObject() != null && messageCell.getMessageObject().getId() == dpadSelectedMessageId || highlightMessageId != Integer.MAX_VALUE && (messageCell.getMessageObject() != null && messageCell.getMessageObject().getId() == highlightMessageId || messageCell.getCurrentMessagesGroup() != null && messageCell.getCurrentMessagesGroup().contains(highlightMessageId)));
                     if (messageCell.isHighlighted() && highlightMessageQuote != null) {
                         final long now = System.currentTimeMillis();
                         if (!messageCell.setHighlightedText(highlightMessageQuote, true, highlightMessageQuoteOffset, highlightMessageQuoteFirst || now - highlightMessageQuoteFirstTime < 200) && showNoQuoteAlert) {
