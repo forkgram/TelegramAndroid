@@ -27,6 +27,25 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 }
 
+def readBuildProp = { String key, Object fallback ->
+    if (project.hasProperty(key)) {
+        def pv = project.property(key)
+        if (pv != null && pv.toString().trim()) {
+            return pv
+        }
+    }
+    def f = rootProject.file('local.properties')
+    if (f.exists()) {
+        def p = new Properties()
+        p.load(new FileInputStream(f))
+        def lv = p[key]
+        if (lv != null && lv.toString().trim()) {
+            return lv
+        }
+    }
+    return fallback
+}
+
 android {
     compileSdkVersion 35
     buildToolsVersion '35.0.0'
@@ -71,25 +90,32 @@ android {
                 keyPassword ""
             }
         } else {
+            def releaseKeystore = readBuildProp('RELEASE_KEYSTORE_FILE', null)
+            def useRealKeystore = releaseKeystore != null
+            def keystorePath = useRealKeystore ? releaseKeystore.toString() : "${rootProject.projectDir}/TMessagesProj/config/test.keystore"
+            def storePw = useRealKeystore ? readBuildProp('RELEASE_STORE_PASSWORD', '') : 'ILRvukMS1XoArnMbCmdMeu3RDigo'
+            def keyPw = useRealKeystore ? readBuildProp('RELEASE_KEY_PASSWORD', '') : 'ILRvukMS1XoArnMbCmdMeu3RDigo'
+            def keyAliasName = useRealKeystore ? readBuildProp('RELEASE_KEY_ALIAS', '') : 'telegramtest'
+
             debug {
-                storeFile file("../TMessagesProj/config/release.keystore")
-                storePassword RELEASE_STORE_PASSWORD
-                keyAlias RELEASE_KEY_ALIAS
-                keyPassword RELEASE_KEY_PASSWORD
+                storeFile file(keystorePath)
+                storePassword storePw
+                keyAlias keyAliasName
+                keyPassword keyPw
             }
 
             release {
-                storeFile file("../TMessagesProj/config/release.keystore")
-                storePassword RELEASE_STORE_PASSWORD
-                keyAlias RELEASE_KEY_ALIAS
-                keyPassword RELEASE_KEY_PASSWORD
+                storeFile file(keystorePath)
+                storePassword storePw
+                keyAlias keyAliasName
+                keyPassword keyPw
             }
         }
     }
 
     buildTypes {
         debug {
-            debuggable true
+            debuggable false
             jniDebuggable true
             signingConfig signingConfigs.debug
             applicationIdSuffix appSuffix
