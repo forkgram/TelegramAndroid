@@ -12,6 +12,7 @@
     <string name="UnifiedPushGatewayNone">Nicht verwendet (direkte Zustellung)</string>
     <string name="DisableUnifiedPush">UnifiedPush deaktivieren</string>
     <string name="DisableUnifiedPushInfo">Benachrichtigungen kommen dann über die eigene Hintergrundverbindung der App</string>
+    <string name="ForkSectionBackup">Sicherung</string>
     <string name="VoiceQualityLow">Niedrig (16 kbit/s)</string>
     <string name="VoiceQualityMedium">Mittel (32 kbit/s)</string>
     <string name="VoiceQualityHigh">Hoch (64 kbit/s)</string>

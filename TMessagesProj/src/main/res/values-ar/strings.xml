@@ -12,6 +12,7 @@
     <string name="UnifiedPushGatewayNone">غير مستخدمة (تسليم مباشر)</string>
     <string name="DisableUnifiedPush">تعطيل UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">ستصل الإشعارات عبر اتصال التطبيق الخلفي الخاص به</string>
+    <string name="ForkSectionBackup">نسخة احتياطية</string>
     <string name="VoiceQualityLow">منخفضة (16 كيلوبت/ث)</string>
     <string name="VoiceQualityMedium">متوسطة (32 كيلوبت/ث)</string>
     <string name="VoiceQualityHigh">عالية (64 كيلوبت/ث)</string>

@@ -12,6 +12,7 @@
     <string name="UnifiedPushGatewayNone">Niet gebruikt (directe bezorging)</string>
     <string name="DisableUnifiedPush">UnifiedPush uitschakelen</string>
     <string name="DisableUnifiedPushInfo">Meldingen komen dan via de eigen achtergrondverbinding van de app</string>
+    <string name="ForkSectionBackup">Back-up</string>
     <string name="VoiceQualityLow">Laag (16 kbps)</string>
     <string name="VoiceQualityMedium">Gemiddeld (32 kbps)</string>
     <string name="VoiceQualityHigh">Hoog (64 kbps)</string>

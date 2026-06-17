@@ -12,6 +12,7 @@
     <string name="UnifiedPushGatewayNone">Sin usar (entrega directa)</string>
     <string name="DisableUnifiedPush">Desactivar UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">Las notificaciones llegarán por la propia conexión en segundo plano de la app</string>
+    <string name="ForkSectionBackup">Copia de seguridad</string>
     <string name="VoiceQualityLow">Baja (16 kbps)</string>
     <string name="VoiceQualityMedium">Media (32 kbps)</string>
     <string name="VoiceQualityHigh">Alta (64 kbps)</string>
