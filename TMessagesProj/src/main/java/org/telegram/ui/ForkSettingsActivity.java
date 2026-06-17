@@ -34,6 +34,7 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
+import org.telegram.messenger.forkgram.SettingsBackup;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
@@ -113,7 +114,13 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_LASTFM_LOGIN = 90;
 
+    public static final int ID_EXPORT_SETTINGS = 95;
+    public static final int ID_IMPORT_SETTINGS = 96;
+
     private static final int MENU_SEARCH = 100;
+
+    private static final int REQUEST_EXPORT_SETTINGS = 7311;
+    private static final int REQUEST_IMPORT_SETTINGS = 7312;
 
     private UniversalRecyclerView listView;
     private ActionBarMenuItem searchItem;
@@ -521,6 +528,10 @@ public class ForkSettingsActivity extends BaseFragment {
             items.add(UItem.asShadow(null));
         }
 
+        items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionBackup)));
+        items.add(UItem.asSettingsCell(ID_EXPORT_SETTINGS, LocaleController.getString(R.string.ExportSettings), ""));
+        items.add(UItem.asSettingsCell(ID_IMPORT_SETTINGS, LocaleController.getString(R.string.ImportSettings), ""));
+        items.add(UItem.asShadow(null));
     }
 
     private boolean toggle(String option, UItem item, View view) {
@@ -647,6 +658,10 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_LASTFM_LOGIN) {
             presentFragment(new LastFmLoginActivity());
 
+        } else if (id == ID_EXPORT_SETTINGS) {
+            exportSettings();
+        } else if (id == ID_IMPORT_SETTINGS) {
+            importSettings();
         }
     }
 
@@ -872,7 +887,74 @@ public class ForkSettingsActivity extends BaseFragment {
         }
     }
 
+    private void exportSettings() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("application/json");
+            intent.putExtra(Intent.EXTRA_TITLE, "forkgram_settings.json");
+            startActivityForResult(intent, REQUEST_EXPORT_SETTINGS);
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+    }
+
+    private void importSettings() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            startActivityForResult(intent, REQUEST_IMPORT_SETTINGS);
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+    }
+
+    private void showSettingsBackupInfo(String message) {
+        if (getParentActivity() == null) {
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+        builder.setTitle(LocaleController.getString(R.string.ForkSettingsTitle));
+        builder.setMessage(message);
+        builder.setPositiveButton(LocaleController.getString(R.string.OK), null);
+        showDialog(builder.create());
+    }
+
     @Override
+    public void onActivityResultFragment(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null || data.getData() == null) {
+            return;
+        }
+        Uri uri = data.getData();
+        Context context = ApplicationLoader.applicationContext;
+        if (requestCode == REQUEST_EXPORT_SETTINGS) {
+            try (OutputStream out = context.getContentResolver().openOutputStream(uri)) {
+                if (out != null) {
+                    out.write(SettingsBackup.export(context).getBytes(StandardCharsets.UTF_8));
+                    out.flush();
+                }
+                showSettingsBackupInfo(LocaleController.getString(R.string.ExportSettingsDone));
+            } catch (Exception e) {
+                FileLog.e(e);
+                showSettingsBackupInfo(LocaleController.getString(R.string.ImportSettingsError));
+            }
+        } else if (requestCode == REQUEST_IMPORT_SETTINGS) {
+            try (InputStream in = context.getContentResolver().openInputStream(uri)) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int read;
+                while (in != null && (read = in.read(buffer)) != -1) {
+                    baos.write(buffer, 0, read);
+                }
+                boolean ok = SettingsBackup.restore(context, new String(baos.toByteArray(), StandardCharsets.UTF_8));
+                showSettingsBackupInfo(LocaleController.getString(ok ? R.string.ImportSettingsRestart : R.string.ImportSettingsError));
+            } catch (Exception e) {
+                FileLog.e(e);
+                showSettingsBackupInfo(LocaleController.getString(R.string.ImportSettingsError));
+            }
+        }
+    }
 
     public static String GetBotPlatform(int currentAccount, long botId) {
         return MessagesController.getMainSettings(currentAccount).getString("bot_platform_" + botId, "android");

@@ -12,6 +12,7 @@
     <string name="UnifiedPushGatewayNone">Не используется (прямая доставка)</string>
     <string name="DisableUnifiedPush">Отключить UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">Уведомления будут приходить через собственное фоновое соединение приложения</string>
+    <string name="ForkSectionBackup">Резервная копия</string>
     <string name="VoiceQualityLow">Низкое (16 кбит/с)</string>
     <string name="VoiceQualityMedium">Среднее (32 кбит/с)</string>
     <string name="VoiceQualityHigh">Высокое (64 кбит/с)</string>
