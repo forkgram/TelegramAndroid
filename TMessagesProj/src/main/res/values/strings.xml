@@ -2847,6 +2847,11 @@
     <string name="AppUpdateRemindMeLater">Remind me later</string>
     <string name="AppUpdateSkipVersion">Skip this version</string>
     <string name="AppUpdateSkipVersionMessage">Version %1$s will stay hidden until a newer one is released.</string>
+    <string name="ExportSettings">Export settings</string>
+    <string name="ImportSettings">Import settings</string>
+    <string name="ExportSettingsDone">Settings exported.</string>
+    <string name="ImportSettingsError">Couldn\'t import settings from this file.</string>
+    <string name="ImportSettingsRestart">Settings imported. Restart the app to apply them.</string>
     <string name="AppUpdateChangelogEmpty">**What\'s new?**\n\n• Bug fixes and improvements.</string>
     <string name="Permanent">Permanent</string>
     <string name="LinkHashExpired">Link is no longer active</string>

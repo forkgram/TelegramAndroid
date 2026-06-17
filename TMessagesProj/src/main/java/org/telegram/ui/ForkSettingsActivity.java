@@ -29,6 +29,16 @@ import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
+import org.telegram.messenger.forkgram.SettingsBackup;
+import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.FileLog;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
@@ -191,6 +201,8 @@ public class ForkSettingsActivity extends BaseFragment {
     private int botSkipFullscreen;
     private int stickerSizeRow;
     private int lastFmLoginRow;
+    private int exportSettingsRow;
+    private int importSettingsRow;
 
     private ArrayList<Integer> emptyRows = new ArrayList<>();
 
@@ -547,6 +559,10 @@ public class ForkSettingsActivity extends BaseFragment {
         cloudflareSTTRow = rowCount++;
         lastFmLoginRow = (BuildVars.LASTFM_API_KEY != null && BuildVars.LASTFM_API_KEY.length() > 2 &&
                           BuildVars.LASTFM_API_SECRET != null && BuildVars.LASTFM_API_SECRET.length() > 2) ? rowCount++ : -1;
+
+        emptyRows.add(rowCount++);
+        exportSettingsRow = rowCount++;
+        importSettingsRow = rowCount++;
     }
 
     public boolean toggleGlobalMainSetting(String option, View view, boolean byDefault) {
@@ -731,6 +747,10 @@ public class ForkSettingsActivity extends BaseFragment {
                 showUpdateIntervalDialog();
             } else if (position == lastFmLoginRow) {
                 presentFragment(new LastFmLoginActivity());
+            } else if (position == exportSettingsRow) {
+                exportSettings();
+            } else if (position == importSettingsRow) {
+                importSettings();
             }
         });
 
@@ -743,6 +763,78 @@ public class ForkSettingsActivity extends BaseFragment {
         if (listAdapter != null) {
             rebuildRows();
             listAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private static final int REQUEST_EXPORT_SETTINGS = 7311;
+    private static final int REQUEST_IMPORT_SETTINGS = 7312;
+
+    private void exportSettings() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("application/json");
+            intent.putExtra(Intent.EXTRA_TITLE, "forkgram_settings.json");
+            startActivityForResult(intent, REQUEST_EXPORT_SETTINGS);
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+    }
+
+    private void importSettings() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            startActivityForResult(intent, REQUEST_IMPORT_SETTINGS);
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+    }
+
+    private void showSettingsBackupInfo(String message) {
+        if (getParentActivity() == null) {
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+        builder.setTitle(LocaleController.getString(R.string.ForkSettingsTitle));
+        builder.setMessage(message);
+        builder.setPositiveButton(LocaleController.getString(R.string.OK), null);
+        showDialog(builder.create());
+    }
+
+    @Override
+    public void onActivityResultFragment(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null || data.getData() == null) {
+            return;
+        }
+        Uri uri = data.getData();
+        Context context = ApplicationLoader.applicationContext;
+        if (requestCode == REQUEST_EXPORT_SETTINGS) {
+            try (OutputStream out = context.getContentResolver().openOutputStream(uri)) {
+                if (out != null) {
+                    out.write(SettingsBackup.export(context).getBytes(StandardCharsets.UTF_8));
+                    out.flush();
+                }
+                showSettingsBackupInfo(LocaleController.getString(R.string.ExportSettingsDone));
+            } catch (Exception e) {
+                FileLog.e(e);
+                showSettingsBackupInfo(LocaleController.getString(R.string.ImportSettingsError));
+            }
+        } else if (requestCode == REQUEST_IMPORT_SETTINGS) {
+            try (InputStream in = context.getContentResolver().openInputStream(uri)) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int read;
+                while (in != null && (read = in.read(buffer)) != -1) {
+                    baos.write(buffer, 0, read);
+                }
+                boolean ok = SettingsBackup.restore(context, new String(baos.toByteArray(), StandardCharsets.UTF_8));
+                showSettingsBackupInfo(LocaleController.getString(ok ? R.string.ImportSettingsRestart : R.string.ImportSettingsError));
+            } catch (Exception e) {
+                FileLog.e(e);
+                showSettingsBackupInfo(LocaleController.getString(R.string.ImportSettingsError));
+            }
         }
     }
 
@@ -780,6 +872,10 @@ public class ForkSettingsActivity extends BaseFragment {
                         textCell.setTextAndValue(t, v, false);
                     } else if (position == lastFmLoginRow) {
                         textCell.setTextAndIcon("Last.fm Login", R.drawable.ic_lastfm, false);
+                    } else if (position == exportSettingsRow) {
+                        textCell.setText(LocaleController.getString(R.string.ExportSettings), true);
+                    } else if (position == importSettingsRow) {
+                        textCell.setText(LocaleController.getString(R.string.ImportSettings), false);
                     }
                     break;
                 }
@@ -967,6 +1063,8 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == cloudflareSTTRow
                         || position == cloudflareEnableSTTRow
                         || position == lastFmLoginRow
+                        || position == exportSettingsRow
+                        || position == importSettingsRow
                         || position == disableUnifiedPushRow;
             return fork;
         }
@@ -1005,7 +1103,7 @@ public class ForkSettingsActivity extends BaseFragment {
         public int getItemViewType(int position) {
             if (emptyRows.contains(position)) {
                 return 1;
-            } else if (position == customTitleRow || position == hiddenAccountsRow || position == cloudflareSTTRow || position == voiceQualityRow || position == updateCheckIntervalRow || position == lastFmLoginRow) {
+            } else if (position == customTitleRow || position == hiddenAccountsRow || position == cloudflareSTTRow || position == voiceQualityRow || position == updateCheckIntervalRow || position == lastFmLoginRow || position == exportSettingsRow || position == importSettingsRow) {
                 return 2;
             } else if (position == squareAvatarsRow
                 || position == hideSensitiveDataRow
