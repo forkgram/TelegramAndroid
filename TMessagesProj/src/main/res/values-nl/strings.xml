@@ -6,6 +6,7 @@
     <string name="ForkSectionVoice">Spraak en vertaling</string>
     <string name="ForkSectionBots">Bots en browser</string>
     <string name="ForkSectionSystem">Systeem en updates</string>
+    <string name="ForkSectionBackup">Back-up</string>
     <string name="VoiceQualityLow">Laag (16 kbps)</string>
     <string name="VoiceQualityMedium">Gemiddeld (32 kbps)</string>
     <string name="VoiceQualityHigh">Hoog (64 kbps)</string>
