@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ExportSettings">Експортувати налаштування</string>
+    <string name="ExportSettingsDone">Налаштування експортовано.</string>
+    <string name="ImportSettings">Імпортувати налаштування</string>
+    <string name="ImportSettingsError">Не вдалося імпортувати налаштування з цього файлу.</string>
+    <string name="ImportSettingsRestart">Налаштування імпортовано. Перезапустіть застосунок, щоб застосувати їх.</string>
     <string name="CloudflareAPIToken">Токен API</string>
     <string name="CloudflareAccountID">ID акаунта</string>
     <string name="CloudflareCredentials">Облікові дані Cloudflare</string>
@@ -60,6 +65,7 @@
     <string name="UnifiedPushGatewayNone">Не використовується (пряма доставка)</string>
     <string name="DisableUnifiedPush">Вимкнути UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">Сповіщення надходитимуть через власне фонове з’єднання застосунку</string>
+    <string name="ForkSectionBackup">Резервна копія</string>
     <string name="VoiceQualityLow">Низька (16 кбіт/с)</string>
     <string name="VoiceQualityMedium">Середня (32 кбіт/с)</string>
     <string name="VoiceQualityHigh">Висока (64 кбіт/с)</string>

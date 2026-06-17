@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ExportSettings">تصدير الإعدادات</string>
+    <string name="ExportSettingsDone">تم تصدير الإعدادات.</string>
+    <string name="ImportSettings">استيراد الإعدادات</string>
+    <string name="ImportSettingsError">تعذّر استيراد الإعدادات من هذا الملف.</string>
+    <string name="ImportSettingsRestart">تم استيراد الإعدادات. أعد تشغيل التطبيق لتطبيقها.</string>
     <string name="CloudflareAPIToken">رمز API</string>
     <string name="CloudflareAccountID">معرف الحساب</string>
     <string name="CloudflareCredentials">بيانات اعتماد Cloudflare</string>
@@ -60,6 +65,7 @@
     <string name="UnifiedPushGatewayNone">غير مستخدمة (تسليم مباشر)</string>
     <string name="DisableUnifiedPush">تعطيل UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">ستصل الإشعارات عبر اتصال التطبيق الخلفي الخاص به</string>
+    <string name="ForkSectionBackup">نسخة احتياطية</string>
     <string name="VoiceQualityLow">منخفضة (16 كيلوبت/ث)</string>
     <string name="VoiceQualityMedium">متوسطة (32 كيلوبت/ث)</string>
     <string name="VoiceQualityHigh">عالية (64 كيلوبت/ث)</string>

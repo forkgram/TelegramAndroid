@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ExportSettings">Einstellungen exportieren</string>
+    <string name="ExportSettingsDone">Einstellungen exportiert.</string>
+    <string name="ImportSettings">Einstellungen importieren</string>
+    <string name="ImportSettingsError">Die Einstellungen konnten aus dieser Datei nicht importiert werden.</string>
+    <string name="ImportSettingsRestart">Einstellungen importiert. Starte die App neu, um sie zu übernehmen.</string>
     <string name="CloudflareAPIToken">API-Token</string>
     <string name="CloudflareAccountID">Konto-ID</string>
     <string name="CloudflareCredentials">Cloudflare-Zugangsdaten</string>
@@ -60,6 +65,7 @@
     <string name="UnifiedPushGatewayNone">Nicht verwendet (direkte Zustellung)</string>
     <string name="DisableUnifiedPush">UnifiedPush deaktivieren</string>
     <string name="DisableUnifiedPushInfo">Benachrichtigungen kommen dann über die eigene Hintergrundverbindung der App</string>
+    <string name="ForkSectionBackup">Sicherung</string>
     <string name="VoiceQualityLow">Niedrig (16 kbit/s)</string>
     <string name="VoiceQualityMedium">Mittel (32 kbit/s)</string>
     <string name="VoiceQualityHigh">Hoch (64 kbit/s)</string>

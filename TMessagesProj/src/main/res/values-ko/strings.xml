@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ExportSettings">설정 내보내기</string>
+    <string name="ExportSettingsDone">설정을 내보냈습니다.</string>
+    <string name="ImportSettings">설정 가져오기</string>
+    <string name="ImportSettingsError">이 파일에서 설정을 가져올 수 없습니다.</string>
+    <string name="ImportSettingsRestart">설정을 가져왔습니다. 적용하려면 앱을 다시 시작하세요.</string>
     <string name="CloudflareAPIToken">API 토큰</string>
     <string name="CloudflareAccountID">계정 ID</string>
     <string name="CloudflareCredentials">Cloudflare 인증 정보</string>
@@ -60,6 +65,7 @@
     <string name="UnifiedPushGatewayNone">사용 안 함 (직접 전달)</string>
     <string name="DisableUnifiedPush">UnifiedPush 끄기</string>
     <string name="DisableUnifiedPushInfo">알림은 앱 자체의 백그라운드 연결로 전달됩니다</string>
+    <string name="ForkSectionBackup">백업</string>
     <string name="VoiceQualityLow">낮음 (16 kbps)</string>
     <string name="VoiceQualityMedium">보통 (32 kbps)</string>
     <string name="VoiceQualityHigh">높음 (64 kbps)</string>
