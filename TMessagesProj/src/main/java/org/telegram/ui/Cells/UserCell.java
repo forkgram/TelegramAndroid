@@ -72,6 +72,8 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
     private TextView adminTextView;
     private TextView addButton;
     private Drawable premiumDrawable;
+    private Drawable nameRightDrawable;
+    private int nameRightDrawableResId;
     private final AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable botVerification;
     private final AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable emojiStatus;
     private ImageView closeView;
@@ -719,9 +721,15 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
             }
         }
 
-        if (imageView.getVisibility() == VISIBLE && currentDrawable == 0 || imageView.getVisibility() == GONE && currentDrawable != 0) {
-            imageView.setVisibility(currentDrawable == 0 ? GONE : VISIBLE);
-            imageView.setImageResource(currentDrawable);
+        if (currentDrawable != 0) {
+            if (nameRightDrawable == null || nameRightDrawableResId != currentDrawable) {
+                nameRightDrawableResId = currentDrawable;
+                nameRightDrawable = getContext().getResources().getDrawable(currentDrawable).mutate();
+            }
+            nameRightDrawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_windowBackgroundWhiteGrayIcon, resourcesProvider), PorterDuff.Mode.SRC_IN));
+            nameTextView.setRightDrawable2(nameRightDrawable);
+        } else {
+            nameTextView.setRightDrawable2(null);
         }
 
         lastAvatar = photo;
