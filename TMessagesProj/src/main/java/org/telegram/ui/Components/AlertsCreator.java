@@ -6106,71 +6106,25 @@ public class AlertsCreator {
         BottomSheet.Builder builder = new BottomSheet.Builder(context, false, resourcesProvider);
         builder.setApplyBottomPadding(false);
 
-        int[] values = new int[]{
-                30,
-                60,
-                60 * 2,
-                60 * 3,
-                60 * 8,
-                60 * 24,
-                2 * 60 * 24,
-                3 * 60 * 24,
-                4 * 60 * 24,
-                5 * 60 * 24,
-                6 * 60 * 24,
-                7 * 60 * 24,
-                2 * 7 * 60 * 24,
-                3 * 7 * 60 * 24,
-                31 * 60 * 24,
-                2 * 31 * 60 * 24,
-                3 * 31 * 60 * 24,
-                4 * 31 * 60 * 24,
-                5 * 31 * 60 * 24,
-                6 * 31 * 60 * 24,
-                365 * 60 * 24
-        };
+        final NumberPicker dayPicker = new NumberPicker(context, resourcesProvider);
+        dayPicker.setMinValue(0);
+        dayPicker.setMaxValue(365);
+        dayPicker.setTextColor(datePickerColors.textColor);
+        dayPicker.setFormatter(value -> LocaleController.formatPluralString("Days", value));
 
-        final NumberPicker numberPicker = new NumberPicker(context, resourcesProvider) {
-            @Override
-            protected CharSequence getContentDescription(int index) {
-                if (values[index] == 0) {
-                    return LocaleController.getString(R.string.MuteNever);
-                } else if (values[index] < 60) {
-                    return LocaleController.formatPluralString("Minutes", values[index]);
-                } else if (values[index] < 60 * 24) {
-                    return LocaleController.formatPluralString("Hours", values[index] / 60);
-                } else if (values[index] < 7 * 60 * 24) {
-                    return LocaleController.formatPluralString("Days", values[index] / (60 * 24));
-                } else if (values[index] < 31 * 60 * 24) {
-                    return LocaleController.formatPluralString("Weeks", values[index] / (7 * 60 * 24));
-                } else if (values[index] < 365 * 60 * 24) {
-                    return LocaleController.formatPluralString("Months", values[index] / (31 * 60 * 24));
-                } else {
-                    return LocaleController.formatPluralString("Years", values[index] / (365 * 60 * 24));
-                }
-            }
-        };
-        numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(values.length - 1);
-        numberPicker.setTextColor(datePickerColors.textColor);
-        numberPicker.setValue(0);
-        numberPicker.setFormatter(index -> {
-            if (values[index] == 0) {
-                return LocaleController.getString(R.string.MuteNever);
-            } else if (values[index] < 60) {
-                return LocaleController.formatPluralString("Minutes", values[index]);
-            } else if (values[index] < 60 * 24) {
-                return LocaleController.formatPluralString("Hours", values[index] / 60);
-            } else if (values[index] < 7 * 60 * 24) {
-                return LocaleController.formatPluralString("Days", values[index] / (60 * 24));
-            } else if (values[index] < 31 * 60 * 24) {
-                return LocaleController.formatPluralString("Weeks", values[index] / (7 * 60 * 24));
-            } else if (values[index] < 365 * 60 * 24) {
-                return LocaleController.formatPluralString("Months", values[index] / (31 * 60 * 24));
-            } else {
-                return LocaleController.formatPluralString("Years", values[index] / (365 * 60 * 24));
-            }
-        });
+        final NumberPicker hourPicker = new NumberPicker(context, resourcesProvider);
+        hourPicker.setMinValue(0);
+        hourPicker.setMaxValue(23);
+        hourPicker.setTextColor(datePickerColors.textColor);
+        hourPicker.setFormatter(value -> LocaleController.formatPluralString("Hours", value));
+
+        final NumberPicker minutePicker = new NumberPicker(context, resourcesProvider);
+        minutePicker.setMinValue(0);
+        minutePicker.setMaxValue(59);
+        minutePicker.setTextColor(datePickerColors.textColor);
+        minutePicker.setFormatter(value -> LocaleController.formatPluralString("Minutes", value));
+
+        hourPicker.setValue(1);
 
         LinearLayout container = new LinearLayout(context) {
 
@@ -6185,8 +6139,12 @@ public class AlertsCreator {
                 } else {
                     count = 5;
                 }
-                numberPicker.setItemCount(count);
-                numberPicker.getLayoutParams().height = dp(NumberPicker.DEFAULT_SIZE_PER_COUNT) * count;
+                dayPicker.setItemCount(count);
+                dayPicker.getLayoutParams().height = dp(NumberPicker.DEFAULT_SIZE_PER_COUNT) * count;
+                hourPicker.setItemCount(count);
+                hourPicker.getLayoutParams().height = dp(NumberPicker.DEFAULT_SIZE_PER_COUNT) * count;
+                minutePicker.setItemCount(count);
+                minutePicker.getLayoutParams().height = dp(NumberPicker.DEFAULT_SIZE_PER_COUNT) * count;
                 ignoreLayout = false;
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             }
@@ -6214,7 +6172,7 @@ public class AlertsCreator {
 
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setWeightSum(1.0f);
+        linearLayout.setWeightSum(3.0f);
         container.addView(linearLayout, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 1f, 0, 0, 12, 0, 12));
 
         TextView buttonTextView = new TextView(context) {
@@ -6224,11 +6182,9 @@ public class AlertsCreator {
             }
         };
 
-        linearLayout.addView(numberPicker, LayoutHelper.createLinear(0, 54 * 5, 1f));
-        final NumberPicker.OnValueChangeListener onValueChangeListener = (picker, oldVal, newVal) -> {
-
-        };
-        numberPicker.setOnValueChangedListener(onValueChangeListener);
+        linearLayout.addView(dayPicker, LayoutHelper.createLinear(0, 54 * 5, 1f));
+        linearLayout.addView(hourPicker, LayoutHelper.createLinear(0, 54 * 5, 1f));
+        linearLayout.addView(minutePicker, LayoutHelper.createLinear(0, 54 * 5, 1f));
 
         buttonTextView.setPadding(dp(34), 0, dp(34), 0);
         buttonTextView.setGravity(Gravity.CENTER);
@@ -6236,11 +6192,34 @@ public class AlertsCreator {
         buttonTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
         buttonTextView.setTypeface(AndroidUtilities.bold());
         buttonTextView.setBackgroundDrawable(Theme.createSimpleSelectorRoundRectDrawable(dp(8), datePickerColors.buttonBackgroundColor, datePickerColors.buttonBackgroundPressedColor));
-        buttonTextView.setText(LocaleController.getString(R.string.AutoDeleteConfirm));
         container.addView(buttonTextView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48, Gravity.LEFT | Gravity.BOTTOM, 16, 15, 16, 16));
+        final Runnable updateButton = () -> {
+            ArrayList<String> parts = new ArrayList<>();
+            if (dayPicker.getValue() > 0) {
+                parts.add(LocaleController.formatPluralString("Days", dayPicker.getValue()));
+            }
+            if (hourPicker.getValue() > 0) {
+                parts.add(LocaleController.formatPluralString("Hours", hourPicker.getValue()));
+            }
+            if (minutePicker.getValue() > 0) {
+                parts.add(LocaleController.formatPluralString("Minutes", minutePicker.getValue()));
+            }
+            if (parts.isEmpty()) {
+                buttonTextView.setText(LocaleController.getString(R.string.MuteForPopup));
+            } else {
+                buttonTextView.setText(LocaleController.formatString("MuteForButton", R.string.MuteForButton, TextUtils.join(" ", parts)));
+            }
+        };
+        updateButton.run();
+        final NumberPicker.OnValueChangeListener onValueChangeListener = (picker, oldVal, newVal) -> updateButton.run();
+        dayPicker.setOnValueChangedListener(onValueChangeListener);
+        hourPicker.setOnValueChangedListener(onValueChangeListener);
+        minutePicker.setOnValueChangedListener(onValueChangeListener);
         buttonTextView.setOnClickListener(v -> {
-            int time = values[numberPicker.getValue()] * 60;
-            datePickerDelegate.didSelectDate(true, time, 0);
+            int time = (dayPicker.getValue() * 24 * 60 + hourPicker.getValue() * 60 + minutePicker.getValue()) * 60;
+            if (time > 0) {
+                datePickerDelegate.didSelectDate(true, time, 0);
+            }
             builder.getDismissRunnable().run();
         });
 
