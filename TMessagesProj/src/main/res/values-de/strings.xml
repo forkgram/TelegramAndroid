@@ -6,6 +6,7 @@
     <string name="ForkSectionVoice">Sprache und Übersetzung</string>
     <string name="ForkSectionBots">Bots und Browser</string>
     <string name="ForkSectionSystem">System und Updates</string>
+    <string name="ForkSectionBackup">Sicherung</string>
     <string name="VoiceQualityLow">Niedrig (16 kbit/s)</string>
     <string name="VoiceQualityMedium">Mittel (32 kbit/s)</string>
     <string name="VoiceQualityHigh">Hoch (64 kbit/s)</string>
