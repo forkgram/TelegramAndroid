@@ -6,6 +6,7 @@
     <string name="ForkSectionVoice">Голос і переклад</string>
     <string name="ForkSectionBots">Боти та браузер</string>
     <string name="ForkSectionSystem">Система та оновлення</string>
+    <string name="ForkSectionBackup">Резервна копія</string>
     <string name="VoiceQualityLow">Низька (16 кбіт/с)</string>
     <string name="VoiceQualityMedium">Середня (32 кбіт/с)</string>
     <string name="VoiceQualityHigh">Висока (64 кбіт/с)</string>

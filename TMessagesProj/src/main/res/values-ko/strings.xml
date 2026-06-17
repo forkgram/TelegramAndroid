@@ -6,6 +6,7 @@
     <string name="ForkSectionVoice">음성 및 번역</string>
     <string name="ForkSectionBots">봇 및 브라우저</string>
     <string name="ForkSectionSystem">시스템 및 업데이트</string>
+    <string name="ForkSectionBackup">백업</string>
     <string name="VoiceQualityLow">낮음 (16 kbps)</string>
     <string name="VoiceQualityMedium">보통 (32 kbps)</string>
     <string name="VoiceQualityHigh">높음 (64 kbps)</string>

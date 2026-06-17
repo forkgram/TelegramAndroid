@@ -6,6 +6,7 @@
     <string name="ForkSectionVoice">الصوت والترجمة</string>
     <string name="ForkSectionBots">البوتات والمتصفح</string>
     <string name="ForkSectionSystem">النظام والتحديثات</string>
+    <string name="ForkSectionBackup">نسخة احتياطية</string>
     <string name="VoiceQualityLow">منخفضة (16 كيلوبت/ث)</string>
     <string name="VoiceQualityMedium">متوسطة (32 كيلوبت/ث)</string>
     <string name="VoiceQualityHigh">عالية (64 كيلوبت/ث)</string>
