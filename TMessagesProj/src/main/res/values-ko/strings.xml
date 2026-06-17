@@ -12,6 +12,7 @@
     <string name="UnifiedPushGatewayNone">사용 안 함 (직접 전달)</string>
     <string name="DisableUnifiedPush">UnifiedPush 끄기</string>
     <string name="DisableUnifiedPushInfo">알림은 앱 자체의 백그라운드 연결로 전달됩니다</string>
+    <string name="ForkSectionBackup">백업</string>
     <string name="VoiceQualityLow">낮음 (16 kbps)</string>
     <string name="VoiceQualityMedium">보통 (32 kbps)</string>
     <string name="VoiceQualityHigh">높음 (64 kbps)</string>
