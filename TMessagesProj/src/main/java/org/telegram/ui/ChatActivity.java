@@ -9179,7 +9179,7 @@ public class ChatActivity extends BaseFragment implements
 			savedMessagesSearchHint.setText(LocaleController.getString(R.string.SavedTagSearchTooltipHint));
 			contentView.addView(savedMessagesSearchHint, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 120, Gravity.TOP | Gravity.FILL_HORIZONTAL, 16, -8, 16, 0));
 
-            if (getUserConfig().isPremium()) {
+            if (getUserConfig().isPremium() && !MessagesController.getGlobalMainSettings().getBoolean("hideSavedMessagesTags", false)) {
                 savedMessagesTagHint = new HintView2(context, HintView2.DIRECTION_BOTTOM)
                         .setMultilineText(true)
                         .setTextAlign(Layout.Alignment.ALIGN_CENTER)
@@ -9193,7 +9193,7 @@ public class ChatActivity extends BaseFragment implements
             }
         }
 
-        if (getDialogId() == getUserConfig().getClientUserId()) {
+        if (getDialogId() == getUserConfig().getClientUserId() && !MessagesController.getGlobalMainSettings().getBoolean("hideSavedMessagesTags", false)) {
             actionBarSearchTags = new SearchTagsList(context, ChatActivity.this, currentAccount, getSavedDialogId(), themeDelegate) {
                 @Override
                 protected boolean setFilter(ReactionsLayoutInBubble.VisibleReaction reaction) {

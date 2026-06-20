@@ -33,6 +33,7 @@
     <string name="HideAiEditorInfo">Скрывать кнопку ИИ-редактора в полях сообщения и подписи.</string>
     <string name="DisableQuickReactionInfo">Не отправлять реакцию при двойном нажатии на сообщение.</string>
     <string name="HideMessageReactionsInfo">Не отображать реакции под сообщениями.</string>
+    <string name="HideSavedMessagesTagsInfo">Скрывать панель фильтра по тегам в «Избранном».</string>
     <string name="DisableLockedAnimatedEmojiInfo">Скрывать заблокированные премиум-наборы эмодзи. Только для аккаунтов без Premium.</string>
     <string name="FullRecentStickersInfo">Показывать все недавние стикеры вместо последних 20.</string>
     <string name="DisableFlipPhotosInfo">Не переключать фото при нажатии на края экрана.</string>
@@ -102,6 +103,7 @@
     <string name="DisableTabletMode">Отключить планшетный режим</string>
     <string name="DisableQuickReaction">Отключить быструю реакцию</string>
     <string name="HideMessageReactions">Скрыть реакции на сообщениях</string>
+    <string name="HideSavedMessagesTags">Скрыть теги в Избранном</string>
     <string name="HideAiEditor">Скрыть кнопку ИИ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Скрыть заблокированные анимированные эмодзи в панели</string>
     <string name="DisableParametersFromBotLinks">Отключить параметры из ссылок бота</string>
