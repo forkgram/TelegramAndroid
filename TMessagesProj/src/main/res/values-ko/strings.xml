@@ -43,6 +43,7 @@
     <string name="DisableParametersFromBotLinksInfo">봇 링크를 열기 전에 시작 매개변수를 제거합니다.</string>
     <string name="DisableDefaultInAppBrowserInfo">링크를 앱 내 브라우저 대신 시스템 브라우저에서 엽니다.</string>
     <string name="LockPremiumInfo">Telegram Premium 광고와 구독 버튼을 숨깁니다. 재시작 필요.</string>
+    <string name="DisableTabletModeInfo">태블릿에서 휴대폰 레이아웃을 사용합니다. 앱이 즉시 재시작됩니다.</string>
     <string name="VoiceMessageQuality">음성 메시지 품질</string>
     <string name="UpdateCheckInterval">업데이트 확인 간격</string>
     <string name="DropScreenshotCaption">스크린샷 캡션 제거</string>
@@ -97,6 +98,7 @@
     <string name="DisableGlobalSearch">전역 검색 비활성화</string>
     <string name="HideContactsInDialogs">채팅 목록에서 연락처 숨기기</string>
     <string name="MainTabsHiddenHint">탭이 숨겨졌습니다. 제목을 길게 눌러 다시 표시하세요.</string>
+    <string name="DisableTabletMode">태블릿 모드 비활성화</string>
     <string name="DisableQuickReaction">빠른 반응 비활성화</string>
     <string name="HideAiEditor">AI 편집기 버튼 숨기기</string>
     <string name="DisableLockedAnimatedEmoji">패널에서 잠긴 애니메이션 이모지 숨기기</string>
