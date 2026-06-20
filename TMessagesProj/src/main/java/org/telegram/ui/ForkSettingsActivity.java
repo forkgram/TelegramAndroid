@@ -89,6 +89,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_DISABLE_QUICK_REACTION = 40;
     public static final int ID_HIDE_MESSAGE_REACTIONS = 41;
+    public static final int ID_HIDE_SAVED_MESSAGES_TAGS = 42;
     public static final int ID_DISABLE_LOCKED_ANIMATED_EMOJI = 43;
     public static final int ID_FULL_RECENT_STICKERS = 44;
     public static final int ID_STICKER_SIZE = 46;
@@ -468,6 +469,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("disableQuickReaction", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_HIDE_MESSAGE_REACTIONS, LocaleController.getString(R.string.HideMessageReactions), LocaleController.getString(R.string.HideMessageReactionsInfo))
             .setChecked(pref("hideMessageReactions", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_HIDE_SAVED_MESSAGES_TAGS, LocaleController.getString(R.string.HideSavedMessagesTags), LocaleController.getString(R.string.HideSavedMessagesTagsInfo))
+            .setChecked(pref("hideSavedMessagesTags", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_LOCKED_ANIMATED_EMOJI, LocaleController.getString(R.string.DisableLockedAnimatedEmoji), LocaleController.getString(R.string.DisableLockedAnimatedEmojiInfo))
             .setChecked(pref("disableLockedAnimatedEmoji", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -621,6 +624,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("disableQuickReaction", item, view);
         } else if (id == ID_HIDE_MESSAGE_REACTIONS) {
             toggle("hideMessageReactions", item, view);
+        } else if (id == ID_HIDE_SAVED_MESSAGES_TAGS) {
+            toggle("hideSavedMessagesTags", item, view);
         } else if (id == ID_DISABLE_LOCKED_ANIMATED_EMOJI) {
             toggle("disableLockedAnimatedEmoji", item, view);
         } else if (id == ID_FULL_RECENT_STICKERS) {
