@@ -106,6 +106,8 @@
     <string name="HideSavedMessagesTags">Сховати теги в Збереженому</string>
     <string name="HideInAppHints">Сховати підказки в додатку</string>
     <string name="DisableLinkPreviewByDefault">Вимкнути попередній перегляд посилань за замовчуванням</string>
+    <string name="ForceBlockScreenshots">Блокувати знімки екрана</string>
+    <string name="ForceBlockScreenshotsInfo">Заборонити знімки екрана та запис екрана в усьому додатку, навіть без код-пароля.</string>
     <string name="HideAiEditor">Сховати кнопку ШІ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Сховати заблоковані анімовані емодзі в панелі</string>
     <string name="DisableParametersFromBotLinks">Вимкнути параметри з посилань ботів</string>
