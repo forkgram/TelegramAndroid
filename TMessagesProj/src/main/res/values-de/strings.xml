@@ -106,6 +106,8 @@
     <string name="HideSavedMessagesTags">Tags in Gespeicherte Nachrichten ausblenden</string>
     <string name="HideInAppHints">In-App-Hinweisbanner ausblenden</string>
     <string name="DisableLinkPreviewByDefault">Linkvorschau standardmäßig deaktivieren</string>
+    <string name="ForceBlockScreenshots">Screenshots blockieren</string>
+    <string name="ForceBlockScreenshotsInfo">Screenshots und Bildschirmaufnahmen in der gesamten App verhindern, auch ohne Code.</string>
     <string name="HideAiEditor">KI-Editor-Button ausblenden</string>
     <string name="DisableLockedAnimatedEmoji">Gesperrte animierte Emojis in der Leiste ausblenden</string>
     <string name="DisableParametersFromBotLinks">Parameter von Bot-Links deaktivieren</string>
