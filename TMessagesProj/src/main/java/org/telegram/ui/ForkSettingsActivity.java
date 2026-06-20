@@ -178,6 +178,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int fullRecentStickersRow;
     private int hideSendAsRow;
     private int disableQuickReactionRow;
+    private int hideMessageReactionsRow;
     private int disableLockedAnimatedEmoji;
     private int hideAiEditorRow;
     private int disableParametersFromBotLinks;
@@ -533,6 +534,7 @@ public class ForkSettingsActivity extends BaseFragment {
         fullRecentStickersRow = rowCount++;
         hideSendAsRow = rowCount++;
         disableQuickReactionRow = rowCount++;
+        hideMessageReactionsRow = rowCount++;
         disableLockedAnimatedEmoji = rowCount++;
         hideAiEditorRow = rowCount++;
         disableParametersFromBotLinks = rowCount++;
@@ -656,6 +658,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("hideSendAs", view, false);
             } else if (position == disableQuickReactionRow) {
                 toggleGlobalMainSetting("disableQuickReaction", view, false);
+            } else if (position == hideMessageReactionsRow) {
+                toggleGlobalMainSetting("hideMessageReactions", view, false);
             } else if (position == disableLockedAnimatedEmoji) {
                 toggleGlobalMainSetting("disableLockedAnimatedEmoji", view, false);
             } else if (position == hideAiEditorRow) {
@@ -938,6 +942,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableQuickReactionRow) {
                         String t = LocaleController.getString("DisableQuickReaction", R.string.DisableQuickReaction);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableQuickReaction", false), false);
+                    } else if (position == hideMessageReactionsRow) {
+                        String t = LocaleController.getString("HideMessageReactions", R.string.HideMessageReactions);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("hideMessageReactions", false), false);
                     } else if (position == disableLockedAnimatedEmoji) {
                         String t = LocaleController.getString("DisableLockedAnimatedEmoji", R.string.DisableLockedAnimatedEmoji);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableLockedAnimatedEmoji", false), false);
@@ -1056,6 +1063,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == fullRecentStickersRow
                         || position == hideSendAsRow
                         || position == disableQuickReactionRow
+                        || position == hideMessageReactionsRow
                         || position == disableLockedAnimatedEmoji
                         || position == hideAiEditorRow
                         || position == disableParametersFromBotLinks
@@ -1142,6 +1150,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == fullRecentStickersRow
                 || position == hideSendAsRow
                 || position == disableQuickReactionRow
+                || position == hideMessageReactionsRow
                 || position == disableLockedAnimatedEmoji
                 || position == hideAiEditorRow
                 || position == disableParametersFromBotLinks
