@@ -32,6 +32,7 @@
     <string name="FormatWithSecondsInfo">Mostrar os segundos nos horários das mensagens e em outros horários.</string>
     <string name="HideAiEditorInfo">Ocultar o botão de reescrita com IA nos campos de mensagem e legenda.</string>
     <string name="DisableQuickReactionInfo">Não enviar uma reação ao tocar duas vezes em uma mensagem.</string>
+    <string name="HideMessageReactionsInfo">Não exibir as reações abaixo das mensagens.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Ocultar os pacotes de emoji premium bloqueados. Afeta apenas contas sem Premium.</string>
     <string name="FullRecentStickersInfo">Mostrar todas as figurinhas recentes em vez das últimas 20.</string>
     <string name="DisableFlipPhotosInfo">Não passar para a próxima foto ao tocar nas bordas da tela.</string>
@@ -100,6 +101,7 @@
     <string name="MainTabsHiddenHint">Abas ocultas. Mantenha o título pressionado para mostrá-las novamente.</string>
     <string name="DisableTabletMode">Desativar modo tablet</string>
     <string name="DisableQuickReaction">Desativar reação rápida</string>
+    <string name="HideMessageReactions">Ocultar reações nas mensagens</string>
     <string name="HideAiEditor">Ocultar botão do editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emojis animados bloqueados no painel</string>
     <string name="DisableParametersFromBotLinks">Desativar parâmetros de links de bots</string>

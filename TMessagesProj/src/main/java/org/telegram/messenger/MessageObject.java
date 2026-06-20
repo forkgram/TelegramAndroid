@@ -706,6 +706,9 @@ public class MessageObject {
         if (isRepostPreview) {
             return false;
         }
+        if (MessagesController.getGlobalMainSettings().getBoolean("hideMessageReactions", false)) {
+            return false;
+        }
         return true;
     }
 
