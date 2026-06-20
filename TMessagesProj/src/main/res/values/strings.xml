@@ -57,6 +57,7 @@
     <string name="HideMessageReactions">Hide reactions on messages</string>
     <string name="HideSavedMessagesTags">Hide tags in Saved Messages</string>
     <string name="HideInAppHints">Hide in-app hint banners</string>
+    <string name="DisableLinkPreviewByDefault">Disable link previews by default</string>
     <string name="HideAiEditor">Hide AI Editor button</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
     <string name="DisableParametersFromBotLinks">Disable parameters from bot links</string>

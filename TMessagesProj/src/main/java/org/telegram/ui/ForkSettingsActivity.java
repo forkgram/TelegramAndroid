@@ -184,6 +184,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int disableLockedAnimatedEmoji;
     private int hideAiEditorRow;
     private int disableParametersFromBotLinks;
+    private int disableLinkPreviewByDefault;
     private int lockPremium;
     private int disableUnifiedPushRow;
     private int cloudflareSTTRow;
@@ -542,6 +543,7 @@ public class ForkSettingsActivity extends BaseFragment {
         disableLockedAnimatedEmoji = rowCount++;
         hideAiEditorRow = rowCount++;
         disableParametersFromBotLinks = rowCount++;
+        disableLinkPreviewByDefault = rowCount++;
         addItemToDeleteAllUnpinnedMessages = rowCount++;
         disableSlideToNextChannel = rowCount++;
         disableRecentFilesAttachment = rowCount++;
@@ -674,6 +676,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("hideAiEditor", view, false);
             } else if (position == disableParametersFromBotLinks) {
                 toggleGlobalMainSetting("disableParametersFromBotLinks", view, false);
+            } else if (position == disableLinkPreviewByDefault) {
+                toggleGlobalMainSetting("disableLinkPreviewByDefault", view, false);
             } else if (position == addItemToDeleteAllUnpinnedMessages) {
                 toggleGlobalMainSetting("addItemToDeleteAllUnpinnedMessages", view, false);
             } else if (position == disableSlideToNextChannel) {
@@ -968,6 +972,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableParametersFromBotLinks) {
                         String t = LocaleController.getString("DisableParametersFromBotLinks", R.string.DisableParametersFromBotLinks);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableParametersFromBotLinks", false), false);
+                    } else if (position == disableLinkPreviewByDefault) {
+                        String t = LocaleController.getString("DisableLinkPreviewByDefault", R.string.DisableLinkPreviewByDefault);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("disableLinkPreviewByDefault", false), false);
                     } else if (position == addItemToDeleteAllUnpinnedMessages) {
                         String t = LocaleController.getString("AddDeleteAllUnpinnedMessages", R.string.AddDeleteAllUnpinnedMessages);
                         String info = LocaleController.getString("AddDeleteAllUnpinnedMessagesInfo", R.string.AddDeleteAllUnpinnedMessagesInfo);
@@ -1083,6 +1090,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == disableLockedAnimatedEmoji
                         || position == hideAiEditorRow
                         || position == disableParametersFromBotLinks
+                        || position == disableLinkPreviewByDefault
                         || position == addItemToDeleteAllUnpinnedMessages
                         || position == disableSlideToNextChannel
                         || position == disableRecentFilesAttachment
@@ -1172,6 +1180,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == disableLockedAnimatedEmoji
                 || position == hideAiEditorRow
                 || position == disableParametersFromBotLinks
+                || position == disableLinkPreviewByDefault
                 || position == addItemToDeleteAllUnpinnedMessages
                 || position == disableSlideToNextChannel
                 || position == disableRecentFilesAttachment
