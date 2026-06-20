@@ -10665,13 +10665,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     }
                 }
                 infoStartRow = rowCount;
-                if (!isBot && (hasPhone || !hasInfo)) {
+                if (!isBot && (hasPhone || !hasInfo) && !(myProfile && SharedConfig.hideSensitiveData())) {
                     phoneRow = rowCount++;
                 }
-                if (userInfo != null && !TextUtils.isEmpty(userInfo.about)) {
+                if (userInfo != null && !TextUtils.isEmpty(userInfo.about) && !(myProfile && SharedConfig.hideSensitiveData())) {
                     userInfoRow = rowCount++;
                 }
-                if (user != null && username != null) {
+                if (user != null && username != null && !(myProfile && SharedConfig.hideSensitiveData())) {
                     usernameRow = rowCount++;
                 }
                 if (userInfo != null) {
@@ -10688,7 +10688,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         noteRow = rowCount++;
                     }
                 }
-                idRow = rowCount++;
+                if (!(myProfile && SharedConfig.hideSensitiveData())) {
+                    idRow = rowCount++;
+                }
                 if (actionsView == null && userId != getUserConfig().getClientUserId()) {
                     notificationsRow = rowCount++;
                 }
