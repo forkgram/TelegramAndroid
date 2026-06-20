@@ -54,6 +54,7 @@
     <string name="MainTabsHiddenHint">Tabs hidden. Long-press the title to show them again.</string>
     <string name="DisableTabletMode">Disable tablet mode</string>
     <string name="DisableQuickReaction">Disable quick reaction</string>
+    <string name="HideMessageReactions">Hide reactions on messages</string>
     <string name="HideAiEditor">Hide AI Editor button</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
     <string name="DisableParametersFromBotLinks">Disable parameters from bot links</string>
