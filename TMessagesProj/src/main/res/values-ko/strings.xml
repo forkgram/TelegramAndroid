@@ -33,6 +33,7 @@
     <string name="HideAiEditorInfo">메시지 및 캡션 입력란의 AI 다시쓰기 버튼을 숨깁니다.</string>
     <string name="DisableQuickReactionInfo">메시지를 두 번 탭해도 리액션을 보내지 않습니다.</string>
     <string name="HideMessageReactionsInfo">메시지 아래에 리액션을 표시하지 않습니다.</string>
+    <string name="HideSavedMessagesTagsInfo">저장된 메시지의 태그 필터 막대를 숨깁니다.</string>
     <string name="DisableLockedAnimatedEmojiInfo">잠긴 프리미엄 이모지 팩을 숨깁니다. Premium이 아닌 계정에만 적용됩니다.</string>
     <string name="FullRecentStickersInfo">최근 스티커를 20개가 아니라 전부 표시합니다.</string>
     <string name="DisableFlipPhotosInfo">화면 가장자리를 탭해도 다음 사진으로 넘어가지 않습니다.</string>
@@ -102,6 +103,7 @@
     <string name="DisableTabletMode">태블릿 모드 비활성화</string>
     <string name="DisableQuickReaction">빠른 반응 비활성화</string>
     <string name="HideMessageReactions">메시지의 반응 숨기기</string>
+    <string name="HideSavedMessagesTags">저장된 메시지에서 태그 숨기기</string>
     <string name="HideAiEditor">AI 편집기 버튼 숨기기</string>
     <string name="DisableLockedAnimatedEmoji">패널에서 잠긴 애니메이션 이모지 숨기기</string>
     <string name="DisableParametersFromBotLinks">봇 링크의 매개변수 비활성화</string>
