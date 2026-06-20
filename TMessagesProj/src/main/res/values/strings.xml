@@ -38,6 +38,7 @@
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
     <string name="DisableDefaultInAppBrowserInfo">Open links in your system browser instead of the in-app one.</string>
     <string name="LockPremiumInfo">Hide Telegram Premium ads and the subscribe button. Restart required.</string>
+    <string name="DisableTabletModeInfo">Use the phone layout on tablets. The app restarts immediately.</string>
     <string name="VoiceMessageQuality">Voice Message Quality</string>
     <string name="UpdateCheckInterval">Update Check Interval</string>
     <string name="DropScreenshotCaption">Drop screenshot caption</string>
@@ -92,6 +93,7 @@
     <string name="DisableGlobalSearch">Disable Global Search</string>
     <string name="HideContactsInDialogs">Hide contacts in chats list</string>
     <string name="MainTabsHiddenHint">Tabs hidden. Long-press the title to show them again.</string>
+    <string name="DisableTabletMode">Disable tablet mode</string>
     <string name="DisableQuickReaction">Disable quick reaction</string>
     <string name="HideAiEditor">Hide AI Editor button</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
