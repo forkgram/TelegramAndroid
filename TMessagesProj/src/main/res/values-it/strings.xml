@@ -23,6 +23,7 @@
     <string name="HideStoriesInArchiveInfo">Nascondere la riga delle storie nelle chat archiviate.</string>
     <string name="DisableThumbsInDialogListInfo">Nascondere le miniature dei media dell\'ultimo messaggio nella lista chat.</string>
     <string name="DisableGlobalSearchInfo">Mostrare nella ricerca solo le tue chat e i tuoi contatti, senza risultati globali.</string>
+    <string name="HideContactsInDialogsInfo">Nascondere i contatti mostrati sotto la lista chat quando ci sono poche chat.</string>
     <string name="EnableLastSeenDotsInfo">Colorare il punto sull\'avatar di chi è stato visto nell\'ultima ora.</string>
     <string name="ReplaceForwardInfo">Inoltra apre il pannello di condivisione invece del selettore di chat.</string>
     <string name="MentionByNameInfo">Il completamento automatico inserisce il nome della persona invece del nome utente.</string>
@@ -94,6 +95,7 @@
     <string name="DeleteAllYourMessagesInAllTopics">Elimina tutti i tuoi messaggi in tutti gli argomenti</string>
     <string name="ReallySure">Sei **davvero sicuro**?</string>
     <string name="DisableGlobalSearch">Disabilita la ricerca globale</string>
+    <string name="HideContactsInDialogs">Nascondi i contatti nella lista delle chat</string>
     <string name="DisableQuickReaction">Disabilita la reazione rapida</string>
     <string name="HideAiEditor">Nascondi il pulsante dell\'editor IA</string>
     <string name="DisableLockedAnimatedEmoji">Nascondi emoji animate bloccate nel pannello</string>

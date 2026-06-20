@@ -23,6 +23,7 @@
     <string name="HideStoriesInArchiveInfo">Ocultar la fila de historias dentro de los chats archivados.</string>
     <string name="DisableThumbsInDialogListInfo">Ocultar las miniaturas del último mensaje en la lista de chats.</string>
     <string name="DisableGlobalSearchInfo">Mostrar en la búsqueda solo tus chats y contactos, sin resultados globales.</string>
+    <string name="HideContactsInDialogsInfo">Ocultar los contactos que aparecen bajo la lista de chats cuando hay pocos chats.</string>
     <string name="EnableLastSeenDotsInfo">Colorear el punto del avatar de quienes se conectaron en la última hora.</string>
     <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="MentionByNameInfo">El autocompletado inserta el nombre de la persona en lugar del nombre de usuario.</string>
@@ -94,6 +95,7 @@
     <string name="DeleteAllYourMessagesInAllTopics">Eliminar todos tus mensajes en todos los temas</string>
     <string name="ReallySure">¿Estás **realmente seguro**?</string>
     <string name="DisableGlobalSearch">Desactivar búsqueda global</string>
+    <string name="HideContactsInDialogs">Ocultar contactos en la lista de chats</string>
     <string name="DisableQuickReaction">Desactivar reacción rápida</string>
     <string name="HideAiEditor">Ocultar botón del editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emoji animados bloqueados en el panel</string>
