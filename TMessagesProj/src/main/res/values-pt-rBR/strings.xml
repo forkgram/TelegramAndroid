@@ -18,6 +18,7 @@
     <string name="VoiceQualityHigh">Alta (64 kbps)</string>
     <string name="VoiceQualityMax">Máxima (padrão)</string>
     <string name="DropScreenshotCaptionInfo">Remover a legenda quando uma captura de tela é compartilhada de outro aplicativo.</string>
+    <string name="HideInAppHintsInfo">Ocultar banners promocionais na lista de conversas e a dica de aniversário nas conversas.</string>
     <string name="HideBottomButtonInfo">Esvaziar o botão da barra inferior (Silenciar, Entrar) e ignorar toques nele.</string>
     <string name="OpenArchiveOnPullInfo">Abrir a pasta Arquivadas ao puxar a lista de conversas para baixo.</string>
     <string name="HideStoriesInArchiveInfo">Ocultar a linha de stories dentro das conversas arquivadas.</string>
@@ -104,6 +105,7 @@
     <string name="DisableQuickReaction">Desativar reação rápida</string>
     <string name="HideMessageReactions">Ocultar reações nas mensagens</string>
     <string name="HideSavedMessagesTags">Ocultar tags nas Mensagens salvas</string>
+    <string name="HideInAppHints">Ocultar banners de dicas no aplicativo</string>
     <string name="HideAiEditor">Ocultar botão do editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emojis animados bloqueados no painel</string>
     <string name="DisableParametersFromBotLinks">Desativar parâmetros de links de bots</string>
