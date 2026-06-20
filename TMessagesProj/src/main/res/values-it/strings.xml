@@ -96,6 +96,7 @@
     <string name="ReallySure">Sei **davvero sicuro**?</string>
     <string name="DisableGlobalSearch">Disabilita la ricerca globale</string>
     <string name="HideContactsInDialogs">Nascondi i contatti nella lista delle chat</string>
+    <string name="MainTabsHiddenHint">Schede nascoste. Tieni premuto il titolo per mostrarle di nuovo.</string>
     <string name="DisableQuickReaction">Disabilita la reazione rapida</string>
     <string name="HideAiEditor">Nascondi il pulsante dell\'editor IA</string>
     <string name="DisableLockedAnimatedEmoji">Nascondi emoji animate bloccate nel pannello</string>
