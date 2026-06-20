@@ -20075,7 +20075,7 @@ public class ChatActivity extends BaseFragment implements
                 Collections.sort(sortIds);
                 // If there's a new extreme value,
                 // we should mark as 'withTouch' all selected messages.
-                if (sortIds.get(0) <= msgId || sortIds.get(sortIds.size() - 1) >= msgId) {
+                if (sortIds.isEmpty() || sortIds.get(0) <= msgId || sortIds.get(sortIds.size() - 1) >= msgId) {
                     selectedMessagesIds[0].withTouch.clear();
                     for (Integer id : ids) {
                         selectedMessagesIds[0].withTouch.add(id);
