@@ -33,6 +33,7 @@
     <string name="HideAiEditorInfo">Ocultar el botón de reescritura con IA en los campos de mensaje y descripción.</string>
     <string name="DisableQuickReactionInfo">No enviar una reacción al tocar dos veces un mensaje.</string>
     <string name="HideMessageReactionsInfo">No mostrar las reacciones bajo los mensajes.</string>
+    <string name="HideSavedMessagesTagsInfo">Ocultar la barra de filtros por etiquetas en Mensajes guardados.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Ocultar los paquetes de emojis premium bloqueados. Solo afecta a cuentas sin Premium.</string>
     <string name="FullRecentStickersInfo">Mostrar todos los stickers recientes en lugar de los últimos 20.</string>
     <string name="DisableFlipPhotosInfo">No pasar a la siguiente foto al tocar los bordes de la pantalla.</string>
@@ -102,6 +103,7 @@
     <string name="DisableTabletMode">Desactivar modo tableta</string>
     <string name="DisableQuickReaction">Desactivar reacción rápida</string>
     <string name="HideMessageReactions">Ocultar reacciones en los mensajes</string>
+    <string name="HideSavedMessagesTags">Ocultar etiquetas en Mensajes guardados</string>
     <string name="HideAiEditor">Ocultar botón del editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emoji animados bloqueados en el panel</string>
     <string name="DisableParametersFromBotLinks">Desactivar parámetros de enlaces de bots</string>
