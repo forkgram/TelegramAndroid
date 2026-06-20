@@ -96,6 +96,7 @@
     <string name="ReallySure">Вы **действительно уверены**?</string>
     <string name="DisableGlobalSearch">Отключить глобальный поиск</string>
     <string name="HideContactsInDialogs">Скрыть контакты в списке чатов</string>
+    <string name="MainTabsHiddenHint">Табы скрыты. Нажмите и удерживайте заголовок, чтобы показать их снова.</string>
     <string name="DisableQuickReaction">Отключить быструю реакцию</string>
     <string name="HideAiEditor">Скрыть кнопку ИИ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Скрыть заблокированные анимированные эмодзи в панели</string>
