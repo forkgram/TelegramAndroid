@@ -17,6 +17,7 @@
     <string name="HideStoriesInArchiveInfo">보관된 채팅 안의 스토리 줄을 숨깁니다.</string>
     <string name="DisableThumbsInDialogListInfo">채팅 목록에서 마지막 메시지의 미디어 미리보기를 숨깁니다.</string>
     <string name="DisableGlobalSearchInfo">검색에서 내 채팅과 연락처만 표시하고 전체 결과는 표시하지 않습니다.</string>
+    <string name="HideContactsInDialogsInfo">채팅이 적을 때 채팅 목록 아래에 표시되는 연락처를 숨깁니다.</string>
     <string name="EnableLastSeenDotsInfo">최근 한 시간 이내에 접속한 사람의 아바타 점에 색을 입힙니다.</string>
     <string name="ReplaceForwardInfo">전달하면 채팅 선택 대신 공유 시트가 열립니다.</string>
     <string name="MentionByNameInfo">자동 완성이 사용자 이름 대신 사람 이름을 삽입합니다.</string>
@@ -88,6 +89,7 @@
     <string name="DeleteAllYourMessagesInAllTopics">모든 주제에서 내 메시지 모두 삭제</string>
     <string name="ReallySure">정말 **확실합니까**?</string>
     <string name="DisableGlobalSearch">전역 검색 비활성화</string>
+    <string name="HideContactsInDialogs">채팅 목록에서 연락처 숨기기</string>
     <string name="DisableQuickReaction">빠른 반응 비활성화</string>
     <string name="HideAiEditor">AI 편집기 버튼 숨기기</string>
     <string name="DisableLockedAnimatedEmoji">패널에서 잠긴 애니메이션 이모지 숨기기</string>
