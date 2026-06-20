@@ -6371,6 +6371,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             dialogsHintCellVisible = false;
         }
 
+        if (MessagesController.getGlobalMainSettings().getBoolean("hideInAppHints", false)) {
+            dialogsHintCellVisible = false;
+        }
+
         topPanelLayout.setViewVisible(dialogsHintCell, dialogsHintCellVisible);
 
         checkCommunityPendingRequestsVisible(true);
