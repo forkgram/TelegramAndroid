@@ -172,6 +172,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int formatWithSeconds;
     private int disableThumbsInDialogList;
     private int disableGlobalSearch;
+    private int hideContactsInDialogsRow;
     private int enableLastSeenDots;
     private int customTitleRow;
     private int fullRecentStickersRow;
@@ -515,6 +516,7 @@ public class ForkSettingsActivity extends BaseFragment {
         hideStoriesInArchiveRow = rowCount++;
         disableThumbsInDialogList = rowCount++;
         disableGlobalSearch = rowCount++;
+        hideContactsInDialogsRow = rowCount++;
         enableLastSeenDots = rowCount++;
         customTitleRow = rowCount++;
         updateCheckIntervalRow = rowCount++;
@@ -692,6 +694,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("disableThumbsInDialogList", view, false);
             } else if (position == disableGlobalSearch) {
                 toggleGlobalMainSetting("disableGlobalSearch", view, false);
+            } else if (position == hideContactsInDialogsRow) {
+                toggleGlobalMainSetting("hideContactsInDialogs", view, false);
             } else if (position == enableLastSeenDots) {
                 toggleGlobalMainSetting("enableLastSeenDots", view, true);
             } else if (position == hideBottomButton) {
@@ -981,6 +985,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == disableGlobalSearch) {
                         String t = LocaleController.getString("DisableGlobalSearch", R.string.DisableGlobalSearch);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableGlobalSearch", false), false);
+                    } else if (position == hideContactsInDialogsRow) {
+                        String t = LocaleController.getString("HideContactsInDialogs", R.string.HideContactsInDialogs);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("hideContactsInDialogs", false), false);
                     } else if (position == enableLastSeenDots) {
                         String t = LocaleController.getString("EnableLastSeenDots", R.string.EnableLastSeenDots);
                         textCell.setTextAndCheck(t, preferences.getBoolean("enableLastSeenDots", true), false);
@@ -1051,6 +1058,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == formatWithSeconds
                         || position == disableThumbsInDialogList
                         || position == disableGlobalSearch
+                        || position == hideContactsInDialogsRow
                         || position == enableLastSeenDots
                         || position == customTitleRow
                         || position == hideBottomButton
@@ -1135,6 +1143,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == formatWithSeconds
                 || position == disableThumbsInDialogList
                 || position == disableGlobalSearch
+                || position == hideContactsInDialogsRow
                 || position == enableLastSeenDots
                 || position == hideBottomButton
                 || position == showNotificationContent
