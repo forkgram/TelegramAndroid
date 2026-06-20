@@ -111,6 +111,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_DISABLE_UNIFIED_PUSH = 80;
     public static final int ID_UPDATE_CHECK_INTERVAL = 81;
+    public static final int ID_DISABLE_TABLET_MODE = 82;
     public static final int ID_LOCK_PREMIUM = 83;
 
     public static final int ID_LASTFM_LOGIN = 90;
@@ -521,6 +522,11 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asButtonCheck(ID_DISABLE_UNIFIED_PUSH, LocaleController.getString(R.string.DisableUnifiedPush), LocaleController.getString(R.string.DisableUnifiedPushInfo))
             .setChecked(pref("disableUnifiedPush", false)).setMultiline(true));
         items.add(UItem.asSettingsCell(ID_UPDATE_CHECK_INTERVAL, LocaleController.getString(R.string.UpdateCheckInterval), getUpdateIntervalText()));
+        if (AndroidUtilities.isTabletInternal()) {
+            items.add(UItem.asButtonCheck(ID_DISABLE_TABLET_MODE, LocaleController.getString(R.string.DisableTabletMode), LocaleController.getString(R.string.DisableTabletModeInfo))
+                .setChecked(SharedConfig.forceDisableTabletMode)
+                .setMultiline(true));
+        }
         items.add(UItem.asButtonCheck(ID_LOCK_PREMIUM, LocaleController.getString(R.string.LockPremium), LocaleController.getString(R.string.LockPremiumInfo))
             .setChecked(pref("lockPremium", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -658,6 +664,17 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("disableUnifiedPush", item, view);
         } else if (id == ID_UPDATE_CHECK_INTERVAL) {
             showUpdateIntervalDialog();
+        } else if (id == ID_DISABLE_TABLET_MODE) {
+            SharedConfig.toggleForceDisableTabletMode();
+            setCellChecked(view, SharedConfig.forceDisableTabletMode);
+            Activity activity = getParentActivity();
+            if (activity != null) {
+                final android.content.pm.PackageManager pm = activity.getPackageManager();
+                final Intent intent = pm.getLaunchIntentForPackage(activity.getPackageName());
+                activity.finishAffinity();
+                activity.startActivity(intent);
+            }
+            System.exit(0);
         } else if (id == ID_LOCK_PREMIUM) {
             toggle("lockPremium", item, view);
 
