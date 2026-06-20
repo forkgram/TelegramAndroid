@@ -27,6 +27,7 @@
     <string name="HideAiEditorInfo">De AI-herschrijfknop in bericht- en bijschriftvelden verbergen.</string>
     <string name="DisableQuickReactionInfo">Geen reactie versturen bij dubbeltikken op een bericht.</string>
     <string name="HideMessageReactionsInfo">Geen reactiebellen onder berichten tonen.</string>
+    <string name="HideSavedMessagesTagsInfo">De tagfilterbalk in Opgeslagen berichten verbergen.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Vergrendelde premium-emojipakketten verbergen. Alleen voor accounts zonder Premium.</string>
     <string name="FullRecentStickersInfo">Alle recente stickers tonen in plaats van de laatste 20.</string>
     <string name="DisableFlipPhotosInfo">Niet naar de volgende foto gaan bij tikken op de schermranden.</string>
@@ -96,6 +97,7 @@
     <string name="DisableTabletMode">Tabletmodus uitschakelen</string>
     <string name="DisableQuickReaction">Snelle reactie uitschakelen</string>
     <string name="HideMessageReactions">Reacties op berichten verbergen</string>
+    <string name="HideSavedMessagesTags">Labels in Opgeslagen berichten verbergen</string>
     <string name="HideAiEditor">Knop AI-editor verbergen</string>
     <string name="DisableLockedAnimatedEmoji">Vergrendelde geanimeerde emoji in het paneel verbergen</string>
     <string name="DisableParametersFromBotLinks">Parameters van botlinks uitschakelen</string>

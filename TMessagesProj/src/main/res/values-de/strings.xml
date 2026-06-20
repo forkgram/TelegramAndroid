@@ -27,6 +27,7 @@
     <string name="HideAiEditorInfo">Die KI-Umschreiben-Schaltfläche in Nachrichten- und Bildunterschriftfeldern ausblenden.</string>
     <string name="DisableQuickReactionInfo">Beim Doppeltippen auf eine Nachricht keine Reaktion senden.</string>
     <string name="HideMessageReactionsInfo">Keine Reaktionsblasen unter Nachrichten anzeigen.</string>
+    <string name="HideSavedMessagesTagsInfo">Die Tag-Filterleiste in gespeicherten Nachrichten ausblenden.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Gesperrte Premium-Emoji-Pakete ausblenden. Betrifft nur Konten ohne Premium.</string>
     <string name="FullRecentStickersInfo">Alle zuletzt verwendeten Sticker anzeigen statt nur der letzten 20.</string>
     <string name="DisableFlipPhotosInfo">Beim Tippen auf die Bildschirmränder nicht zum nächsten Foto wechseln.</string>
@@ -96,6 +97,7 @@
     <string name="DisableTabletMode">Tablet-Modus deaktivieren</string>
     <string name="DisableQuickReaction">Schnelle Reaktion deaktivieren</string>
     <string name="HideMessageReactions">Reaktionen auf Nachrichten ausblenden</string>
+    <string name="HideSavedMessagesTags">Tags in Gespeicherte Nachrichten ausblenden</string>
     <string name="HideAiEditor">KI-Editor-Button ausblenden</string>
     <string name="DisableLockedAnimatedEmoji">Gesperrte animierte Emojis in der Leiste ausblenden</string>
     <string name="DisableParametersFromBotLinks">Parameter von Bot-Links deaktivieren</string>
