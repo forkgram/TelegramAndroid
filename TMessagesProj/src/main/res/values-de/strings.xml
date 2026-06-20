@@ -12,6 +12,7 @@
     <string name="VoiceQualityHigh">Hoch (64 kbit/s)</string>
     <string name="VoiceQualityMax">Maximal (Standard)</string>
     <string name="DropScreenshotCaptionInfo">Bildunterschrift entfernen, wenn ein Screenshot aus einer anderen App geteilt wird.</string>
+    <string name="HideInAppHintsInfo">Werbebanner in der Chatliste und den Geburtstagshinweis in Chats ausblenden.</string>
     <string name="HideBottomButtonInfo">Die untere Leistenschaltfläche (Stumm, Beitreten) leeren und Tippen darauf ignorieren.</string>
     <string name="OpenArchiveOnPullInfo">Den Archivordner öffnen, wenn die Chatliste nach unten gezogen wird.</string>
     <string name="HideStoriesInArchiveInfo">Die Storys-Zeile in archivierten Chats ausblenden.</string>
@@ -98,6 +99,7 @@
     <string name="DisableQuickReaction">Schnelle Reaktion deaktivieren</string>
     <string name="HideMessageReactions">Reaktionen auf Nachrichten ausblenden</string>
     <string name="HideSavedMessagesTags">Tags in Gespeicherte Nachrichten ausblenden</string>
+    <string name="HideInAppHints">In-App-Hinweisbanner ausblenden</string>
     <string name="HideAiEditor">KI-Editor-Button ausblenden</string>
     <string name="DisableLockedAnimatedEmoji">Gesperrte animierte Emojis in der Leiste ausblenden</string>
     <string name="DisableParametersFromBotLinks">Parameter von Bot-Links deaktivieren</string>

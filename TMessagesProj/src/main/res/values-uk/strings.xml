@@ -12,6 +12,7 @@
     <string name="VoiceQualityHigh">Висока (64 кбіт/с)</string>
     <string name="VoiceQualityMax">Максимальна (за умовчанням)</string>
     <string name="DropScreenshotCaptionInfo">Прибирати підпис, коли знімок екрана надсилається з іншого застосунку.</string>
+    <string name="HideInAppHintsInfo">Приховувати промо-банери у списку чатів і підказку про день народження в чатах.</string>
     <string name="HideBottomButtonInfo">Очищати нижню кнопку (Вимкнути звук, Приєднатися) та ігнорувати натискання на неї.</string>
     <string name="OpenArchiveOnPullInfo">Відкривати теку «Архів» під час потягування списку чатів униз.</string>
     <string name="HideStoriesInArchiveInfo">Приховувати стрічку історій усередині архіву чатів.</string>
@@ -98,6 +99,7 @@
     <string name="DisableQuickReaction">Вимкнути швидку реакцію</string>
     <string name="HideMessageReactions">Сховати реакції на повідомленнях</string>
     <string name="HideSavedMessagesTags">Сховати теги в Збереженому</string>
+    <string name="HideInAppHints">Сховати підказки в додатку</string>
     <string name="HideAiEditor">Сховати кнопку ШІ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Сховати заблоковані анімовані емодзі в панелі</string>
     <string name="DisableParametersFromBotLinks">Вимкнути параметри з посилань ботів</string>

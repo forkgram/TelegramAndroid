@@ -12,6 +12,7 @@
     <string name="VoiceQualityHigh">عالية (64 كيلوبت/ث)</string>
     <string name="VoiceQualityMax">قصوى (افتراضي)</string>
     <string name="DropScreenshotCaptionInfo">إزالة التسمية التوضيحية عند مشاركة لقطة شاشة من تطبيق آخر.</string>
+    <string name="HideInAppHintsInfo">إخفاء لافتات العروض في قائمة الدردشات وتلميح عيد الميلاد داخل الدردشات.</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>
     <string name="OpenArchiveOnPullInfo">فتح مجلد الأرشيف عند سحب قائمة الدردشات للأسفل.</string>
     <string name="HideStoriesInArchiveInfo">إخفاء صف القصص داخل الدردشات المؤرشفة.</string>
@@ -98,6 +99,7 @@
     <string name="DisableQuickReaction">تعطيل رد الفعل السريع</string>
     <string name="HideMessageReactions">إخفاء التفاعلات على الرسائل</string>
     <string name="HideSavedMessagesTags">إخفاء العلامات في الرسائل المحفوظة</string>
+    <string name="HideInAppHints">إخفاء لافتات التلميحات داخل التطبيق</string>
     <string name="HideAiEditor">إخفاء زر محرر الذكاء الاصطناعي</string>
     <string name="DisableLockedAnimatedEmoji">إخفاء الرموز التعبيرية المتحركة المقفلة في اللوحة</string>
     <string name="DisableParametersFromBotLinks">تعطيل المعلمات من روابط الروبوت</string>
