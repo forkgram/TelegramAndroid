@@ -76,6 +76,10 @@
     <string name="RearVideoMessages">Achtercamera in video-berichten</string>
     <string name="ReplaceForward">Originele doorstuur vervangen</string>
     <string name="HideSensitiveData">Gevoelige gegevens verbergen</string>
+    <string name="HideSensitivePhone">Telefoonnummer verbergen</string>
+    <string name="HideSensitiveUsername">Gebruikersnaam verbergen</string>
+    <string name="HideSensitiveBio">Bio verbergen</string>
+    <string name="HideSensitiveId">Account-ID verbergen</string>
     <string name="SystemCamera">Systeemcamera gebruiken voor foto</string>
     <string name="SystemCameraInfo">Alleen in het bijlagen dialoog</string>
     <string name="MentionByName">Gebruiker bij naam noemen</string>

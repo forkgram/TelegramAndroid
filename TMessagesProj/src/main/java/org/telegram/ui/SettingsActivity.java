@@ -554,7 +554,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
     }
 
     public static CharSequence spoilerIfSensitive(CharSequence text) {
-        if (!SharedConfig.hideSensitiveData() || TextUtils.isEmpty(text)) {
+        if (!SharedConfig.hideSensitivePhone() || TextUtils.isEmpty(text)) {
             return text;
         }
         final SpannableStringBuilder spannable = SpannableStringBuilder.valueOf(text);

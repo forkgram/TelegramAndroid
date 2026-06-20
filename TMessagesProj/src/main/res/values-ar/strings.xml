@@ -76,6 +76,10 @@
     <string name="RearVideoMessages">الكاميرا الخلفية في رسائل الفيديو</string>
     <string name="ReplaceForward">استبدال إعادة التوجيه الأصلية</string>
     <string name="HideSensitiveData">إخفاء البيانات الحساسة</string>
+    <string name="HideSensitivePhone">إخفاء رقم الهاتف</string>
+    <string name="HideSensitiveUsername">إخفاء اسم المستخدم</string>
+    <string name="HideSensitiveBio">إخفاء النبذة التعريفية</string>
+    <string name="HideSensitiveId">إخفاء معرف الحساب</string>
     <string name="SystemCamera">استخدام الكاميرا النظامية للصورة</string>
     <string name="SystemCameraInfo">فقط في حوار المرفقات</string>
     <string name="MentionByName">ذكر المستخدم بالاسم</string>
