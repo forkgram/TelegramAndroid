@@ -26,6 +26,7 @@
     <string name="FormatWithSecondsInfo">Показувати секунди в часі повідомлень та інших позначках часу.</string>
     <string name="HideAiEditorInfo">Приховувати кнопку ШІ-редактора в полях повідомлення та підпису.</string>
     <string name="DisableQuickReactionInfo">Не надсилати реакцію під час подвійного натискання на повідомлення.</string>
+    <string name="HideMessageReactionsInfo">Не відображати реакції під повідомленнями.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Приховувати заблоковані преміум-набори емодзі. Лише для акаунтів без Premium.</string>
     <string name="FullRecentStickersInfo">Показувати всі нещодавні стікери замість останніх 20.</string>
     <string name="DisableFlipPhotosInfo">Не перемикати фото під час натискання на краї екрана.</string>
@@ -94,6 +95,7 @@
     <string name="MainTabsHiddenHint">Вкладки сховані. Натисніть і утримуйте заголовок, щоб показати їх знову.</string>
     <string name="DisableTabletMode">Вимкнути планшетний режим</string>
     <string name="DisableQuickReaction">Вимкнути швидку реакцію</string>
+    <string name="HideMessageReactions">Сховати реакції на повідомленнях</string>
     <string name="HideAiEditor">Сховати кнопку ШІ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Сховати заблоковані анімовані емодзі в панелі</string>
     <string name="DisableParametersFromBotLinks">Вимкнути параметри з посилань ботів</string>
