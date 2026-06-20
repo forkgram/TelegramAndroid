@@ -24,6 +24,7 @@
     <string name="ReplaceForwardInfo">Forward opens the share sheet instead of the chat picker.</string>
     <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
     <string name="HideSendAsInfo">Hide the send-as avatar button in the message field.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">Send messages containing links without a preview attached.</string>
     <string name="DisableSlideToNextChannelInfo">Do not slide to the next channel when scrolling past the end.</string>
     <string name="FormatWithSecondsInfo">Show seconds in message timestamps and other times.</string>
     <string name="HideAiEditorInfo">Hide the AI rewrite button in message and caption fields.</string>
@@ -101,6 +102,7 @@
     <string name="HideMessageReactions">Hide reactions on messages</string>
     <string name="HideSavedMessagesTags">Hide tags in Saved Messages</string>
     <string name="HideInAppHints">Hide in-app hint banners</string>
+    <string name="DisableLinkPreviewByDefault">Disable link previews by default</string>
     <string name="HideAiEditor">Hide AI Editor button</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
     <string name="DisableParametersFromBotLinks">Disable parameters from bot links</string>
