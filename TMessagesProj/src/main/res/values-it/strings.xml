@@ -43,6 +43,7 @@
     <string name="DisableParametersFromBotLinksInfo">Rimuovere i parametri di avvio dai link dei bot prima di aprirli.</string>
     <string name="DisableDefaultInAppBrowserInfo">Aprire i link nel browser di sistema invece che in quello integrato.</string>
     <string name="LockPremiumInfo">Nascondere le pubblicità di Telegram Premium e il pulsante di abbonamento. Riavvio richiesto.</string>
+    <string name="DisableTabletModeInfo">Usare il layout telefono sui tablet. L\'app si riavvia immediatamente.</string>
     <string name="VoiceMessageQuality">Qualità dei messaggi vocali</string>
     <string name="UpdateCheckInterval">Intervallo di controllo aggiornamenti</string>
     <string name="DropScreenshotCaption">Rimuovi la didascalia degli screenshot</string>
@@ -97,6 +98,7 @@
     <string name="DisableGlobalSearch">Disabilita la ricerca globale</string>
     <string name="HideContactsInDialogs">Nascondi i contatti nella lista delle chat</string>
     <string name="MainTabsHiddenHint">Schede nascoste. Tieni premuto il titolo per mostrarle di nuovo.</string>
+    <string name="DisableTabletMode">Disabilita la modalità tablet</string>
     <string name="DisableQuickReaction">Disabilita la reazione rapida</string>
     <string name="HideAiEditor">Nascondi il pulsante dell\'editor IA</string>
     <string name="DisableLockedAnimatedEmoji">Nascondi emoji animate bloccate nel pannello</string>

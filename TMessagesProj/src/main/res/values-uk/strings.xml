@@ -43,6 +43,7 @@
     <string name="DisableParametersFromBotLinksInfo">Прибирати start-параметри з посилань на ботів перед відкриттям.</string>
     <string name="DisableDefaultInAppBrowserInfo">Відкривати посилання в системному браузері замість вбудованого.</string>
     <string name="LockPremiumInfo">Приховувати рекламу Telegram Premium і кнопку підписки. Потрібен перезапуск.</string>
+    <string name="DisableTabletModeInfo">Використовувати телефонний режим на планшетах. Застосунок перезапуститься одразу.</string>
     <string name="VoiceMessageQuality">Якість голосових повідомлень</string>
     <string name="UpdateCheckInterval">Інтервал перевірки оновлень</string>
     <string name="DropScreenshotCaption">Прибирати підпис зі скриншотів</string>
@@ -97,6 +98,7 @@
     <string name="DisableGlobalSearch">Вимкнути глобальний пошук</string>
     <string name="HideContactsInDialogs">Сховати контакти у списку чатів</string>
     <string name="MainTabsHiddenHint">Вкладки сховані. Натисніть і утримуйте заголовок, щоб показати їх знову.</string>
+    <string name="DisableTabletMode">Вимкнути планшетний режим</string>
     <string name="DisableQuickReaction">Вимкнути швидку реакцію</string>
     <string name="HideAiEditor">Сховати кнопку ШІ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Сховати заблоковані анімовані емодзі в панелі</string>
