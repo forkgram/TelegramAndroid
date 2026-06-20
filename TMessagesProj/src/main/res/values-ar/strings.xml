@@ -90,6 +90,7 @@
     <string name="ReallySure">هل أنت **متأكد حقًا**؟</string>
     <string name="DisableGlobalSearch">تعطيل البحث العالمي</string>
     <string name="HideContactsInDialogs">إخفاء جهات الاتصال في قائمة المحادثات</string>
+    <string name="MainTabsHiddenHint">تم إخفاء علامات التبويب. اضغط مطولاً على العنوان لإظهارها مرة أخرى.</string>
     <string name="DisableQuickReaction">تعطيل رد الفعل السريع</string>
     <string name="HideAiEditor">إخفاء زر محرر الذكاء الاصطناعي</string>
     <string name="DisableLockedAnimatedEmoji">إخفاء الرموز التعبيرية المتحركة المقفلة في اللوحة</string>
