@@ -112,6 +112,8 @@
     <string name="HideSavedMessagesTags">Ocultar etiquetas en Mensajes guardados</string>
     <string name="HideInAppHints">Ocultar banners de sugerencias en la aplicación</string>
     <string name="DisableLinkPreviewByDefault">Desactivar vista previa de enlaces por defecto</string>
+    <string name="ForceBlockScreenshots">Bloquear capturas de pantalla</string>
+    <string name="ForceBlockScreenshotsInfo">Impedir capturas de pantalla y grabación de pantalla en toda la aplicación, incluso sin código de acceso.</string>
     <string name="HideAiEditor">Ocultar botón del editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emoji animados bloqueados en el panel</string>
     <string name="DisableParametersFromBotLinks">Desactivar parámetros de enlaces de bots</string>
