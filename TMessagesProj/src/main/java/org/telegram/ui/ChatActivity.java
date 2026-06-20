@@ -2377,7 +2377,7 @@ public class ChatActivity extends BaseFragment implements
                 AndroidUtilities.cancelRunOnUIThread(waitingForCharaterEnterRunnable);
                 waitingForCharaterEnterRunnable = null;
             }
-            if ((currentChat == null || ChatObject.canSendEmbed(currentChat)) && chatActivityEnterView.isMessageWebPageSearchEnabled() && (!chatActivityEnterView.isEditingMessage() || !chatActivityEnterView.isEditingCaption())) {
+            if ((currentChat == null || ChatObject.canSendEmbed(currentChat)) && !MessagesController.getGlobalMainSettings().getBoolean("disableLinkPreviewByDefault", false) && chatActivityEnterView.isMessageWebPageSearchEnabled() && (!chatActivityEnterView.isEditingMessage() || !chatActivityEnterView.isEditingCaption())) {
                 if (bigChange) {
                     searchLinks(text, true);
                 } else {
