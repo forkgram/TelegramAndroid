@@ -23,6 +23,7 @@
     <string name="ReplaceForwardInfo">전달하면 채팅 선택 대신 공유 시트가 열립니다.</string>
     <string name="MentionByNameInfo">자동 완성이 사용자 이름 대신 사람 이름을 삽입합니다.</string>
     <string name="HideSendAsInfo">메시지 입력란의 보낸 사람 선택 버튼을 숨깁니다.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">링크가 포함된 메시지를 미리보기 없이 보냅니다.</string>
     <string name="DisableSlideToNextChannelInfo">끝을 넘겨 스크롤해도 다음 채널로 넘어가지 않습니다.</string>
     <string name="FormatWithSecondsInfo">메시지 시간과 기타 시간에 초를 표시합니다.</string>
     <string name="HideAiEditorInfo">메시지 및 캡션 입력란의 AI 다시쓰기 버튼을 숨깁니다.</string>
@@ -100,6 +101,7 @@
     <string name="HideMessageReactions">메시지의 반응 숨기기</string>
     <string name="HideSavedMessagesTags">저장된 메시지에서 태그 숨기기</string>
     <string name="HideInAppHints">앱 내 힌트 배너 숨기기</string>
+    <string name="DisableLinkPreviewByDefault">기본적으로 링크 미리보기 비활성화</string>
     <string name="HideAiEditor">AI 편집기 버튼 숨기기</string>
     <string name="DisableLockedAnimatedEmoji">패널에서 잠긴 애니메이션 이모지 숨기기</string>
     <string name="DisableParametersFromBotLinks">봇 링크의 매개변수 비활성화</string>
