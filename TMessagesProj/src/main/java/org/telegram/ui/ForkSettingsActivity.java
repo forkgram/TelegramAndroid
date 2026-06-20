@@ -65,6 +65,10 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_SHOW_NOTIFICATION_CONTENT = 3;
     public static final int ID_DROP_SCREENSHOT_CAPTION = 4;
     public static final int ID_HIDDEN_ACCOUNTS = 5;
+    public static final int ID_HIDE_SENSITIVE_PHONE = 6;
+    public static final int ID_HIDE_SENSITIVE_USERNAME = 7;
+    public static final int ID_HIDE_SENSITIVE_BIO = 8;
+    public static final int ID_HIDE_SENSITIVE_ID = 9;
 
     public static final int ID_HIDE_IN_APP_HINTS = 10;
     public static final int ID_HIDE_BOTTOM_BUTTON = 11;
@@ -411,6 +415,16 @@ public class ForkSettingsActivity extends BaseFragment {
             items.add(UItem.asButtonCheck(ID_HIDE_SENSITIVE_DATA, LocaleController.getString(R.string.HideSensitiveData), LocaleController.getString(R.string.ForkRestartRequired))
                 .setChecked(pref("hideSensitiveData", false)).setMultiline(true));
         }
+        if (SharedConfig.hideSensitiveData()) {
+            items.add(UItem.asButtonCheck(ID_HIDE_SENSITIVE_PHONE, LocaleController.getString(R.string.HideSensitivePhone), null)
+                .setChecked(pref("hideSensitivePhone", true)));
+            items.add(UItem.asButtonCheck(ID_HIDE_SENSITIVE_USERNAME, LocaleController.getString(R.string.HideSensitiveUsername), null)
+                .setChecked(pref("hideSensitiveUsername", true)));
+            items.add(UItem.asButtonCheck(ID_HIDE_SENSITIVE_BIO, LocaleController.getString(R.string.HideSensitiveBio), null)
+                .setChecked(pref("hideSensitiveBio", true)));
+            items.add(UItem.asButtonCheck(ID_HIDE_SENSITIVE_ID, LocaleController.getString(R.string.HideSensitiveId), null)
+                .setChecked(pref("hideSensitiveId", true)));
+        }
         items.add(UItem.asButtonCheck(ID_SHOW_NOTIFICATION_CONTENT, LocaleController.getString(R.string.ShowNotificationContent), LocaleController.getString(R.string.ShowNotificationContentInfo))
             .setChecked(pref("showNotificationContent", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DROP_SCREENSHOT_CAPTION, LocaleController.getString(R.string.DropScreenshotCaption), LocaleController.getString(R.string.DropScreenshotCaptionInfo))
@@ -578,6 +592,15 @@ public class ForkSettingsActivity extends BaseFragment {
 
         if (id == ID_HIDE_SENSITIVE_DATA) {
             toggle("hideSensitiveData", item, view);
+            listView.adapter.update(true);
+        } else if (id == ID_HIDE_SENSITIVE_PHONE) {
+            toggle("hideSensitivePhone", item, view);
+        } else if (id == ID_HIDE_SENSITIVE_USERNAME) {
+            toggle("hideSensitiveUsername", item, view);
+        } else if (id == ID_HIDE_SENSITIVE_BIO) {
+            toggle("hideSensitiveBio", item, view);
+        } else if (id == ID_HIDE_SENSITIVE_ID) {
+            toggle("hideSensitiveId", item, view);
         } else if (id == ID_SHOW_NOTIFICATION_CONTENT) {
             toggle("showNotificationContent", item, view);
         } else if (id == ID_DROP_SCREENSHOT_CAPTION) {

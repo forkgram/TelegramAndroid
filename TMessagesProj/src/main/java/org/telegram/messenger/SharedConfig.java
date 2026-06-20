@@ -1839,6 +1839,26 @@ public class SharedConfig {
         return MessagesController.getGlobalMainSettings().getBoolean("hideSensitiveData", false);
     }
 
+    public static boolean hideSensitivePhone() {
+        return hideSensitiveData() && hideSensitivePart("hideSensitivePhone");
+    }
+
+    public static boolean hideSensitiveUsername() {
+        return hideSensitiveData() && hideSensitivePart("hideSensitiveUsername");
+    }
+
+    public static boolean hideSensitiveBio() {
+        return hideSensitiveData() && hideSensitivePart("hideSensitiveBio");
+    }
+
+    public static boolean hideSensitiveId() {
+        return hideSensitiveData() && hideSensitivePart("hideSensitiveId");
+    }
+
+    private static boolean hideSensitivePart(String key) {
+        return MessagesController.getGlobalMainSettings().getBoolean(key, true);
+    }
+
     public static boolean isUserOwner() {
         return org.telegram.messenger.UserConfig.getInstance(
                 org.telegram.messenger.UserConfig.selectedAccount).clientUserId ==
