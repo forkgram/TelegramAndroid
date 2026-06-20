@@ -18,6 +18,7 @@
     <string name="VoiceQualityHigh">Alta (64 kbps)</string>
     <string name="VoiceQualityMax">Massima (predefinita)</string>
     <string name="DropScreenshotCaptionInfo">Rimuovere la didascalia quando uno screenshot viene condiviso da un\'altra app.</string>
+    <string name="HideInAppHintsInfo">Nascondere i banner promozionali nella lista chat e il suggerimento di compleanno nelle chat.</string>
     <string name="HideBottomButtonInfo">Svuotare il pulsante della barra inferiore (Silenzia, Unisciti) e ignorare i tocchi.</string>
     <string name="OpenArchiveOnPullInfo">Aprire la cartella Archiviate quando la lista chat viene trascinata verso il basso.</string>
     <string name="HideStoriesInArchiveInfo">Nascondere la riga delle storie nelle chat archiviate.</string>
@@ -104,6 +105,7 @@
     <string name="DisableQuickReaction">Disabilita la reazione rapida</string>
     <string name="HideMessageReactions">Nascondi le reazioni sui messaggi</string>
     <string name="HideSavedMessagesTags">Nascondi le etichette nei Messaggi salvati</string>
+    <string name="HideInAppHints">Nascondi i banner dei suggerimenti nell\'app</string>
     <string name="HideAiEditor">Nascondi il pulsante dell\'editor IA</string>
     <string name="DisableLockedAnimatedEmoji">Nascondi emoji animate bloccate nel pannello</string>
     <string name="DisableParametersFromBotLinks">Disabilita i parametri dai link dei bot</string>

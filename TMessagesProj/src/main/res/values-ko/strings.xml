@@ -18,6 +18,7 @@
     <string name="VoiceQualityHigh">높음 (64 kbps)</string>
     <string name="VoiceQualityMax">최대 (기본값)</string>
     <string name="DropScreenshotCaptionInfo">다른 앱에서 스크린샷을 공유할 때 캡션을 제거합니다.</string>
+    <string name="HideInAppHintsInfo">채팅 목록의 프로모션 배너와 채팅의 생일 알림을 숨깁니다.</string>
     <string name="HideBottomButtonInfo">하단 막대 버튼(음소거, 참여)을 비우고 탭을 무시합니다.</string>
     <string name="OpenArchiveOnPullInfo">채팅 목록을 아래로 당기면 보관함 폴더를 엽니다.</string>
     <string name="HideStoriesInArchiveInfo">보관된 채팅 안의 스토리 줄을 숨깁니다.</string>
@@ -104,6 +105,7 @@
     <string name="DisableQuickReaction">빠른 반응 비활성화</string>
     <string name="HideMessageReactions">메시지의 반응 숨기기</string>
     <string name="HideSavedMessagesTags">저장된 메시지에서 태그 숨기기</string>
+    <string name="HideInAppHints">앱 내 힌트 배너 숨기기</string>
     <string name="HideAiEditor">AI 편집기 버튼 숨기기</string>
     <string name="DisableLockedAnimatedEmoji">패널에서 잠긴 애니메이션 이모지 숨기기</string>
     <string name="DisableParametersFromBotLinks">봇 링크의 매개변수 비활성화</string>
