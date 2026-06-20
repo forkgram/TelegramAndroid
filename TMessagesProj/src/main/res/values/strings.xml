@@ -77,6 +77,10 @@
     <string name="RearVideoMessages">Rear camera in Video Messages</string>
     <string name="ReplaceForward">Replace original Forward</string>
     <string name="HideSensitiveData">Hide Sensitive Data</string>
+    <string name="HideSensitivePhone">Hide Phone Number</string>
+    <string name="HideSensitiveUsername">Hide Username</string>
+    <string name="HideSensitiveBio">Hide Bio</string>
+    <string name="HideSensitiveId">Hide Account ID</string>
     <string name="SystemCamera">Use System Camera for Photo</string>
     <string name="SystemCameraInfo">Only in Attachment Dialog</string>
     <string name="MentionByName">Mention User by Name</string>
