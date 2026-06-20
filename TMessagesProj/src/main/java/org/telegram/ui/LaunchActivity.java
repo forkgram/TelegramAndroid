@@ -434,7 +434,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
         }
         getWindow().setBackgroundDrawableResource(R.drawable.transparent);
-        flagSecureReason = new FlagSecureReason(getWindow(), () -> SharedConfig.passcodeHash.length() > 0 && !SharedConfig.allowScreenCapture);
+        flagSecureReason = new FlagSecureReason(getWindow(), () -> MessagesController.getGlobalMainSettings().getBoolean("forceBlockScreenshots", false) || (SharedConfig.passcodeHash.length() > 0 && !SharedConfig.allowScreenCapture));
         flagSecureReason.attach();
 
         super.onCreate(savedInstanceState);

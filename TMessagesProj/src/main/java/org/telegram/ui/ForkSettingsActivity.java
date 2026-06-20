@@ -62,6 +62,7 @@ import java.util.ArrayList;
 public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_HIDE_SENSITIVE_DATA = 1;
+    public static final int ID_FORCE_BLOCK_SCREENSHOTS = 2;
     public static final int ID_SHOW_NOTIFICATION_CONTENT = 3;
     public static final int ID_DROP_SCREENSHOT_CAPTION = 4;
     public static final int ID_HIDDEN_ACCOUNTS = 5;
@@ -411,6 +412,8 @@ public class ForkSettingsActivity extends BaseFragment {
             items.add(UItem.asButtonCheck(ID_HIDE_SENSITIVE_DATA, LocaleController.getString(R.string.HideSensitiveData), LocaleController.getString(R.string.ForkRestartRequired))
                 .setChecked(pref("hideSensitiveData", false)).setMultiline(true));
         }
+        items.add(UItem.asButtonCheck(ID_FORCE_BLOCK_SCREENSHOTS, LocaleController.getString(R.string.ForceBlockScreenshots), LocaleController.getString(R.string.ForceBlockScreenshotsInfo))
+            .setChecked(pref("forceBlockScreenshots", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_SHOW_NOTIFICATION_CONTENT, LocaleController.getString(R.string.ShowNotificationContent), LocaleController.getString(R.string.ShowNotificationContentInfo))
             .setChecked(pref("showNotificationContent", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DROP_SCREENSHOT_CAPTION, LocaleController.getString(R.string.DropScreenshotCaption), LocaleController.getString(R.string.DropScreenshotCaptionInfo))
@@ -579,6 +582,9 @@ public class ForkSettingsActivity extends BaseFragment {
 
         if (id == ID_HIDE_SENSITIVE_DATA) {
             toggle("hideSensitiveData", item, view);
+        } else if (id == ID_FORCE_BLOCK_SCREENSHOTS) {
+            toggle("forceBlockScreenshots", item, view);
+            NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.didSetPasscode, false);
         } else if (id == ID_SHOW_NOTIFICATION_CONTENT) {
             toggle("showNotificationContent", item, view);
         } else if (id == ID_DROP_SCREENSHOT_CAPTION) {
