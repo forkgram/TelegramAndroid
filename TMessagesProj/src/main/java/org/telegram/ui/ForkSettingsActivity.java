@@ -157,6 +157,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int rowCount;
 
     private int hideSensitiveDataRow;
+    private int forceBlockScreenshotsRow;
     private int squareAvatarsRow;
     private int inappCameraRow;
     private int systemCameraRow;
@@ -505,6 +506,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
         sectionRows.add(rowCount++);
         hideSensitiveDataRow = SharedConfig.isUserOwner() ? -1 : rowCount++;
+        forceBlockScreenshotsRow = rowCount++;
         squareAvatarsRow = rowCount++;
         photoHasStickerRow = rowCount++;
         showNotificationContent = rowCount++;
@@ -735,6 +737,9 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("syncPins", view, true);
             } else if (position == hideSensitiveDataRow) {
                 toggleGlobalMainSetting("hideSensitiveData", view, false);
+            } else if (position == forceBlockScreenshotsRow) {
+                toggleGlobalMainSetting("forceBlockScreenshots", view, false);
+                org.telegram.messenger.NotificationCenter.getGlobalInstance().postNotificationName(org.telegram.messenger.NotificationCenter.didSetPasscode, false);
             } else if (position == disableUnifiedPushRow) {
                 toggleGlobalMainSetting("disableUnifiedPush", view, false);
             } else if (position == cloudflareEnableSTTRow) {
@@ -1048,6 +1053,10 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("HideSensitiveData", R.string.HideSensitiveData);
                         String info = LocaleController.getString("SquareAvatarsInfo", R.string.SquareAvatarsInfo);
                         textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("hideSensitiveData", false), true, false);
+                    } else if (position == forceBlockScreenshotsRow) {
+                        String t = LocaleController.getString("ForceBlockScreenshots", R.string.ForceBlockScreenshots);
+                        String info = LocaleController.getString("ForceBlockScreenshotsInfo", R.string.ForceBlockScreenshotsInfo);
+                        textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("forceBlockScreenshots", false), true, false);
                     } else if (position == disableUnifiedPushRow) {
                         String t = LocaleController.getString("DisableUnifiedPush", R.string.DisableUnifiedPush);
                         String info = LocaleController.getString("DisableUnifiedPushInfo", R.string.DisableUnifiedPushInfo);
@@ -1074,6 +1083,7 @@ public class ForkSettingsActivity extends BaseFragment {
             int position = holder.getAdapterPosition();
             boolean fork = position == squareAvatarsRow
                         || position == hideSensitiveDataRow
+                        || position == forceBlockScreenshotsRow
                         || position == disableUnifiedPushRow
                         || position == cloudflareSTTRow
                         || position == cloudflareEnableSTTRow
@@ -1166,6 +1176,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 return 2;
             } else if (position == squareAvatarsRow
                 || position == hideSensitiveDataRow
+                || position == forceBlockScreenshotsRow
                 || position == inappCameraRow
                 || position == systemCameraRow
                 || position == unmutedOnTopRow
