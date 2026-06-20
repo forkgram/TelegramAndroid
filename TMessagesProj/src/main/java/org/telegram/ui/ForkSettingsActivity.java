@@ -76,6 +76,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_HIDE_STORIES_IN_ARCHIVE = 23;
     public static final int ID_DISABLE_THUMBS_IN_DIALOG_LIST = 24;
     public static final int ID_DISABLE_GLOBAL_SEARCH = 25;
+    public static final int ID_HIDE_CONTACTS_IN_DIALOGS = 26;
     public static final int ID_ENABLE_LAST_SEEN_DOTS = 27;
 
     public static final int ID_REPLACE_FORWARD = 30;
@@ -437,6 +438,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("disableThumbsInDialogList", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_GLOBAL_SEARCH, LocaleController.getString(R.string.DisableGlobalSearch), LocaleController.getString(R.string.DisableGlobalSearchInfo))
             .setChecked(pref("disableGlobalSearch", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_HIDE_CONTACTS_IN_DIALOGS, LocaleController.getString(R.string.HideContactsInDialogs), LocaleController.getString(R.string.HideContactsInDialogsInfo))
+            .setChecked(pref("hideContactsInDialogs", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_ENABLE_LAST_SEEN_DOTS, LocaleController.getString(R.string.EnableLastSeenDots), LocaleController.getString(R.string.EnableLastSeenDotsInfo))
             .setChecked(pref("enableLastSeenDots", true)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -584,6 +587,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("disableThumbsInDialogList", item, view);
         } else if (id == ID_DISABLE_GLOBAL_SEARCH) {
             toggle("disableGlobalSearch", item, view);
+        } else if (id == ID_HIDE_CONTACTS_IN_DIALOGS) {
+            toggle("hideContactsInDialogs", item, view);
         } else if (id == ID_ENABLE_LAST_SEEN_DOTS) {
             toggle("enableLastSeenDots", item, view);
 
