@@ -37,6 +37,7 @@
     <string name="DisableParametersFromBotLinksInfo">Startparameters uit botlinks verwijderen voordat ze worden geopend.</string>
     <string name="DisableDefaultInAppBrowserInfo">Links openen in je systeembrowser in plaats van de ingebouwde browser.</string>
     <string name="LockPremiumInfo">Telegram Premium-advertenties en de abonneerknop verbergen. Herstart vereist.</string>
+    <string name="DisableTabletModeInfo">De telefoonindeling gebruiken op tablets. De app start direct opnieuw op.</string>
     <string name="VoiceMessageQuality">Kwaliteit van spraakberichten</string>
     <string name="UpdateCheckInterval">Interval voor controle op updates</string>
     <string name="DropScreenshotCaption">Bijschrift van schermafbeelding verwijderen</string>
@@ -91,6 +92,7 @@
     <string name="DisableGlobalSearch">Globale zoekfunctie uitschakelen</string>
     <string name="HideContactsInDialogs">Contacten in de chatlijst verbergen</string>
     <string name="MainTabsHiddenHint">Tabbladen verborgen. Houd de titel ingedrukt om ze weer te tonen.</string>
+    <string name="DisableTabletMode">Tabletmodus uitschakelen</string>
     <string name="DisableQuickReaction">Snelle reactie uitschakelen</string>
     <string name="HideAiEditor">Knop AI-editor verbergen</string>
     <string name="DisableLockedAnimatedEmoji">Vergrendelde geanimeerde emoji in het paneel verbergen</string>

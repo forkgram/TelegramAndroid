@@ -37,6 +37,7 @@
     <string name="DisableParametersFromBotLinksInfo">Start-Parameter aus Bot-Links vor dem Öffnen entfernen.</string>
     <string name="DisableDefaultInAppBrowserInfo">Links im Systembrowser statt im integrierten Browser öffnen.</string>
     <string name="LockPremiumInfo">Telegram-Premium-Werbung und die Abo-Schaltfläche ausblenden. Neustart erforderlich.</string>
+    <string name="DisableTabletModeInfo">Auf Tablets das Telefon-Layout verwenden. Die App startet sofort neu.</string>
     <string name="VoiceMessageQuality">Qualität der Sprachnachrichten</string>
     <string name="UpdateCheckInterval">Intervall der Update-Prüfung</string>
     <string name="DropScreenshotCaption">Screenshot-Beschriftung entfernen</string>
@@ -91,6 +92,7 @@
     <string name="DisableGlobalSearch">Globale Suche deaktivieren</string>
     <string name="HideContactsInDialogs">Kontakte in der Chatliste ausblenden</string>
     <string name="MainTabsHiddenHint">Tabs ausgeblendet. Halten Sie den Titel gedrückt, um sie wieder anzuzeigen.</string>
+    <string name="DisableTabletMode">Tablet-Modus deaktivieren</string>
     <string name="DisableQuickReaction">Schnelle Reaktion deaktivieren</string>
     <string name="HideAiEditor">KI-Editor-Button ausblenden</string>
     <string name="DisableLockedAnimatedEmoji">Gesperrte animierte Emojis in der Leiste ausblenden</string>
