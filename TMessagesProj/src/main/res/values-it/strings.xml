@@ -29,6 +29,7 @@
     <string name="ReplaceForwardInfo">Inoltra apre il pannello di condivisione invece del selettore di chat.</string>
     <string name="MentionByNameInfo">Il completamento automatico inserisce il nome della persona invece del nome utente.</string>
     <string name="HideSendAsInfo">Nascondere il pulsante invia come nel campo del messaggio.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">Inviare messaggi con link senza anteprima.</string>
     <string name="DisableSlideToNextChannelInfo">Non passare al canale successivo scorrendo oltre la fine.</string>
     <string name="FormatWithSecondsInfo">Mostrare i secondi negli orari dei messaggi e in altri orari.</string>
     <string name="HideAiEditorInfo">Nascondere il pulsante di riscrittura IA nei campi messaggio e didascalia.</string>
@@ -106,6 +107,7 @@
     <string name="HideMessageReactions">Nascondi le reazioni sui messaggi</string>
     <string name="HideSavedMessagesTags">Nascondi le etichette nei Messaggi salvati</string>
     <string name="HideInAppHints">Nascondi i banner dei suggerimenti nell\'app</string>
+    <string name="DisableLinkPreviewByDefault">Disabilita l\'anteprima dei link per impostazione predefinita</string>
     <string name="HideAiEditor">Nascondi il pulsante dell\'editor IA</string>
     <string name="DisableLockedAnimatedEmoji">Nascondi emoji animate bloccate nel pannello</string>
     <string name="DisableParametersFromBotLinks">Disabilita i parametri dai link dei bot</string>

@@ -29,6 +29,7 @@
     <string name="ReplaceForwardInfo">Encaminhar abre o painel de compartilhamento em vez do seletor de conversas.</string>
     <string name="MentionByNameInfo">O preenchimento automático insere o nome da pessoa em vez do nome de usuário.</string>
     <string name="HideSendAsInfo">Ocultar o botão de enviar como no campo de mensagem.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">Enviar mensagens com links sem pré-visualização.</string>
     <string name="DisableSlideToNextChannelInfo">Não passar para o próximo canal ao rolar além do fim.</string>
     <string name="FormatWithSecondsInfo">Mostrar os segundos nos horários das mensagens e em outros horários.</string>
     <string name="HideAiEditorInfo">Ocultar o botão de reescrita com IA nos campos de mensagem e legenda.</string>
@@ -106,6 +107,7 @@
     <string name="HideMessageReactions">Ocultar reações nas mensagens</string>
     <string name="HideSavedMessagesTags">Ocultar tags nas Mensagens salvas</string>
     <string name="HideInAppHints">Ocultar banners de dicas no aplicativo</string>
+    <string name="DisableLinkPreviewByDefault">Desativar visualização de links por padrão</string>
     <string name="HideAiEditor">Ocultar botão do editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emojis animados bloqueados no painel</string>
     <string name="DisableParametersFromBotLinks">Desativar parâmetros de links de bots</string>
