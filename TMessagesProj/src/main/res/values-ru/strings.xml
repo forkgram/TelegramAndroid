@@ -112,6 +112,8 @@
     <string name="HideSavedMessagesTags">Скрыть теги в Избранном</string>
     <string name="HideInAppHints">Скрыть подсказки в приложении</string>
     <string name="DisableLinkPreviewByDefault">Отключить предпросмотр ссылок по умолчанию</string>
+    <string name="ForceBlockScreenshots">Блокировать скриншоты</string>
+    <string name="ForceBlockScreenshotsInfo">Запретить создание скриншотов и запись экрана во всём приложении, даже без код-пароля.</string>
     <string name="HideAiEditor">Скрыть кнопку ИИ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Скрыть заблокированные анимированные эмодзи в панели</string>
     <string name="DisableParametersFromBotLinks">Отключить параметры из ссылок бота</string>
