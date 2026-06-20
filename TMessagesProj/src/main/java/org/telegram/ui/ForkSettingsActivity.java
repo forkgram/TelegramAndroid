@@ -180,6 +180,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int disableQuickReactionRow;
     private int hideMessageReactionsRow;
     private int hideSavedMessagesTagsRow;
+    private int hideInAppHintsRow;
     private int disableLockedAnimatedEmoji;
     private int hideAiEditorRow;
     private int disableParametersFromBotLinks;
@@ -537,6 +538,7 @@ public class ForkSettingsActivity extends BaseFragment {
         disableQuickReactionRow = rowCount++;
         hideMessageReactionsRow = rowCount++;
         hideSavedMessagesTagsRow = rowCount++;
+        hideInAppHintsRow = rowCount++;
         disableLockedAnimatedEmoji = rowCount++;
         hideAiEditorRow = rowCount++;
         disableParametersFromBotLinks = rowCount++;
@@ -664,6 +666,8 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("hideMessageReactions", view, false);
             } else if (position == hideSavedMessagesTagsRow) {
                 toggleGlobalMainSetting("hideSavedMessagesTags", view, false);
+            } else if (position == hideInAppHintsRow) {
+                toggleGlobalMainSetting("hideInAppHints", view, false);
             } else if (position == disableLockedAnimatedEmoji) {
                 toggleGlobalMainSetting("disableLockedAnimatedEmoji", view, false);
             } else if (position == hideAiEditorRow) {
@@ -952,6 +956,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == hideSavedMessagesTagsRow) {
                         String t = LocaleController.getString("HideSavedMessagesTags", R.string.HideSavedMessagesTags);
                         textCell.setTextAndCheck(t, preferences.getBoolean("hideSavedMessagesTags", false), false);
+                    } else if (position == hideInAppHintsRow) {
+                        String t = LocaleController.getString("HideInAppHints", R.string.HideInAppHints);
+                        textCell.setTextAndCheck(t, preferences.getBoolean("hideInAppHints", false), false);
                     } else if (position == disableLockedAnimatedEmoji) {
                         String t = LocaleController.getString("DisableLockedAnimatedEmoji", R.string.DisableLockedAnimatedEmoji);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableLockedAnimatedEmoji", false), false);
@@ -1072,6 +1079,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == disableQuickReactionRow
                         || position == hideMessageReactionsRow
                         || position == hideSavedMessagesTagsRow
+                        || position == hideInAppHintsRow
                         || position == disableLockedAnimatedEmoji
                         || position == hideAiEditorRow
                         || position == disableParametersFromBotLinks
@@ -1160,6 +1168,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == disableQuickReactionRow
                 || position == hideMessageReactionsRow
                 || position == hideSavedMessagesTagsRow
+                || position == hideInAppHintsRow
                 || position == disableLockedAnimatedEmoji
                 || position == hideAiEditorRow
                 || position == disableParametersFromBotLinks

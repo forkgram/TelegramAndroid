@@ -10469,6 +10469,7 @@ public class ChatActivityEnterView extends FrameLayout implements
 
     private void checkBirthdayHint() {
         if (
+            !MessagesController.getGlobalMainSettings().getBoolean("hideInAppHints", false) &&
             birthdayHint == null && giftButton != null && giftButton.getRight() != 0 &&
             parentFragment != null && BirthdayController.isToday(parentFragment.getCurrentUserInfo()) &&
             MessagesController.getInstance(currentAccount).getMainSettings().getBoolean(Calendar.getInstance().get(Calendar.YEAR) + "bdayhint_" + parentFragment.getDialogId(), true)
