@@ -17,6 +17,7 @@
     <string name="HideStoriesInArchiveInfo">Приховувати стрічку історій усередині архіву чатів.</string>
     <string name="DisableThumbsInDialogListInfo">Приховувати мініатюри медіа останнього повідомлення у списку чатів.</string>
     <string name="DisableGlobalSearchInfo">Показувати в пошуку лише ваші чати та контакти, без глобальних результатів.</string>
+    <string name="HideContactsInDialogsInfo">Приховувати список контактів під списком чатів, коли чатів мало.</string>
     <string name="EnableLastSeenDotsInfo">Підсвічувати крапку на аватарі для тих, хто був у мережі протягом останньої години.</string>
     <string name="ReplaceForwardInfo">Пересилання відкриває панель «Поділитися» замість вибору чату.</string>
     <string name="MentionByNameInfo">Автодоповнення вставляє ім\'я людини замість імені користувача.</string>
@@ -88,6 +89,7 @@
     <string name="DeleteAllYourMessagesInAllTopics">Видалити всі ваші повідомлення в усіх темах</string>
     <string name="ReallySure">Ви **справді впевнені**?</string>
     <string name="DisableGlobalSearch">Вимкнути глобальний пошук</string>
+    <string name="HideContactsInDialogs">Сховати контакти у списку чатів</string>
     <string name="DisableQuickReaction">Вимкнути швидку реакцію</string>
     <string name="HideAiEditor">Сховати кнопку ШІ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Сховати заблоковані анімовані емодзі в панелі</string>
