@@ -10656,16 +10656,23 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     setAvatarRow = rowCount++;
                     setAvatarSectionRow = rowCount++;
                 }
-                if (SharedConfig.hideSensitiveData()) {
-                    numberSectionRow = -1;
-                    numberRow = -1;
-                    setUsernameRow = -1;
-                    bioRow = -1;
-                } else {
+                final boolean hidePhone = SharedConfig.hideSensitivePhone();
+                final boolean hideUsername = SharedConfig.hideSensitiveUsername();
+                final boolean hideId = SharedConfig.hideSensitiveId();
+                final boolean hideBio = SharedConfig.hideSensitiveBio();
+                if (!hidePhone || !hideUsername || !hideId || !hideBio) {
                     numberSectionRow = rowCount++;
+                }
+                if (!hidePhone) {
                     numberRow = rowCount++;
+                }
+                if (!hideUsername) {
                     setUsernameRow = rowCount++;
+                }
+                if (!hideId) {
                     idRow = rowCount++;
+                }
+                if (!hideBio) {
                     bioRow = rowCount++;
                 }
 
@@ -10756,13 +10763,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     }
                 }
                 infoStartRow = rowCount;
-                if (!isBot && (hasPhone || !hasInfo)) {
+                if (!isBot && (hasPhone || !hasInfo) && !(myProfile && SharedConfig.hideSensitivePhone())) {
                     phoneRow = rowCount++;
                 }
-                if (userInfo != null && !TextUtils.isEmpty(userInfo.about)) {
+                if (userInfo != null && !TextUtils.isEmpty(userInfo.about) && !(myProfile && SharedConfig.hideSensitiveBio())) {
                     userInfoRow = rowCount++;
                 }
-                if (user != null && username != null) {
+                if (user != null && username != null && !(myProfile && SharedConfig.hideSensitiveUsername())) {
                     usernameRow = rowCount++;
                 }
                 if (userInfo != null) {
@@ -10779,7 +10786,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         noteRow = rowCount++;
                     }
                 }
-                idRow = rowCount++;
+                if (!(myProfile && SharedConfig.hideSensitiveId())) {
+                    idRow = rowCount++;
+                }
                 if (actionsView == null && userId != getUserConfig().getClientUserId()) {
                     notificationsRow = rowCount++;
                 }
