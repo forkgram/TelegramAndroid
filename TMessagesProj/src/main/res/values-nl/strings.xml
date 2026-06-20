@@ -23,6 +23,7 @@
     <string name="ReplaceForwardInfo">Doorsturen opent het deelvenster in plaats van de chatkiezer.</string>
     <string name="MentionByNameInfo">Automatisch aanvullen voegt de naam van de persoon in in plaats van de gebruikersnaam.</string>
     <string name="HideSendAsInfo">De knop Verzenden als in het berichtveld verbergen.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">Berichten met links versturen zonder voorbeeldweergave.</string>
     <string name="DisableSlideToNextChannelInfo">Niet naar het volgende kanaal gaan bij doorscrollen voorbij het einde.</string>
     <string name="FormatWithSecondsInfo">Seconden tonen in berichttijden en andere tijden.</string>
     <string name="HideAiEditorInfo">De AI-herschrijfknop in bericht- en bijschriftvelden verbergen.</string>
@@ -100,6 +101,7 @@
     <string name="HideMessageReactions">Reacties op berichten verbergen</string>
     <string name="HideSavedMessagesTags">Labels in Opgeslagen berichten verbergen</string>
     <string name="HideInAppHints">Hintbanners in de app verbergen</string>
+    <string name="DisableLinkPreviewByDefault">Linkvoorbeelden standaard uitschakelen</string>
     <string name="HideAiEditor">Knop AI-editor verbergen</string>
     <string name="DisableLockedAnimatedEmoji">Vergrendelde geanimeerde emoji in het paneel verbergen</string>
     <string name="DisableParametersFromBotLinks">Parameters van botlinks uitschakelen</string>
