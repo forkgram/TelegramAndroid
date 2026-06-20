@@ -18,6 +18,7 @@
     <string name="HideStoriesInArchiveInfo">Hide the stories row inside Archived Chats.</string>
     <string name="DisableThumbsInDialogListInfo">Hide media thumbnails of the last message in the chat list.</string>
     <string name="DisableGlobalSearchInfo">Show only your chats and contacts in search, no global results.</string>
+    <string name="HideContactsInDialogsInfo">Hide the contacts shown below the chat list when you have few chats.</string>
     <string name="EnableLastSeenDotsInfo">Color the avatar dot for people last seen within the past hour.</string>
     <string name="ReplaceForwardInfo">Forward opens the share sheet instead of the chat picker.</string>
     <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
@@ -89,6 +90,7 @@
     <string name="DeleteAllYourMessagesInAllTopics">Delete all your messages in all topics</string>
     <string name="ReallySure">Are you **really sure**?</string>
     <string name="DisableGlobalSearch">Disable Global Search</string>
+    <string name="HideContactsInDialogs">Hide contacts in chats list</string>
     <string name="DisableQuickReaction">Disable quick reaction</string>
     <string name="HideAiEditor">Hide AI Editor button</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
