@@ -82,6 +82,10 @@
     <string name="RearVideoMessages">Rückkamera in Video-Nachrichten</string>
     <string name="ReplaceForward">Ursprüngliche Weiterleitung ersetzen</string>
     <string name="HideSensitiveData">Empfindliche Daten ausblenden</string>
+    <string name="HideSensitivePhone">Telefonnummer ausblenden</string>
+    <string name="HideSensitiveUsername">Benutzernamen ausblenden</string>
+    <string name="HideSensitiveBio">Bio ausblenden</string>
+    <string name="HideSensitiveId">Konto-ID ausblenden</string>
     <string name="SystemCamera">Systemkamera für Fotos verwenden</string>
     <string name="SystemCameraInfo">Nur im Anhangs-Dialog</string>
     <string name="MentionByName">Benutzer beim Namen erwähnen</string>

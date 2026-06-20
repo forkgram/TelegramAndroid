@@ -82,6 +82,10 @@
     <string name="RearVideoMessages">Задня камера у відеоповідомленнях</string>
     <string name="ReplaceForward">Замінити оригінальне пересилання</string>
     <string name="HideSensitiveData">Сховати чутливі дані</string>
+    <string name="HideSensitivePhone">Сховати номер телефону</string>
+    <string name="HideSensitiveUsername">Сховати ім\'я користувача</string>
+    <string name="HideSensitiveBio">Сховати «Про себе»</string>
+    <string name="HideSensitiveId">Сховати ID акаунта</string>
     <string name="SystemCamera">Використовувати системну камеру для фото</string>
     <string name="SystemCameraInfo">Тільки в діалозі прикріплень</string>
     <string name="MentionByName">Згадати користувача за іменем</string>

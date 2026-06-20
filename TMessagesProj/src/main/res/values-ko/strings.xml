@@ -82,6 +82,10 @@
     <string name="RearVideoMessages">비디오 메시지의 후면 카메라</string>
     <string name="ReplaceForward">원본 전달 대체</string>
     <string name="HideSensitiveData">민감한 데이터 숨기기</string>
+    <string name="HideSensitivePhone">전화번호 숨기기</string>
+    <string name="HideSensitiveUsername">사용자 이름 숨기기</string>
+    <string name="HideSensitiveBio">소개 숨기기</string>
+    <string name="HideSensitiveId">계정 ID 숨기기</string>
     <string name="SystemCamera">사진을 위한 시스템 카메라 사용</string>
     <string name="SystemCameraInfo">첨부 파일 대화에서만</string>
     <string name="MentionByName">이름으로 사용자 언급</string>
