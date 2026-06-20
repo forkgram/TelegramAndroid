@@ -178,7 +178,7 @@ public fun CreateDeleteAllUnpinnedMessagesAlert(
     val meId = UserConfig.getInstance(UserConfig.selectedAccount).clientUserId;
 
     val deleteFor = { to: Long, found: ArrayList<TLRPC.Message> ->
-        val messages: java.util.ArrayList<Int> = ArrayList(found.filter { !it.pinned }.map { it.id });
+        val messages: java.util.ArrayList<Int> = ArrayList(found.filter { !it.pinned && it !is TLRPC.TL_messageService }.map { it.id });
         AndroidUtilities.runOnUIThread {
             messagesController.deleteMessages(
                 messages,
