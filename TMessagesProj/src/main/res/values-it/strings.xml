@@ -112,6 +112,8 @@
     <string name="HideSavedMessagesTags">Nascondi le etichette nei Messaggi salvati</string>
     <string name="HideInAppHints">Nascondi i banner dei suggerimenti nell\'app</string>
     <string name="DisableLinkPreviewByDefault">Disabilita l\'anteprima dei link per impostazione predefinita</string>
+    <string name="ForceBlockScreenshots">Blocca gli screenshot</string>
+    <string name="ForceBlockScreenshotsInfo">Impedisci gli screenshot e la registrazione dello schermo in tutta l\'app, anche senza codice di accesso.</string>
     <string name="HideAiEditor">Nascondi il pulsante dell\'editor IA</string>
     <string name="DisableLockedAnimatedEmoji">Nascondi emoji animate bloccate nel pannello</string>
     <string name="DisableParametersFromBotLinks">Disabilita i parametri dai link dei bot</string>
