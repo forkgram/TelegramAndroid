@@ -531,7 +531,7 @@ public class CaptionPhotoViewer extends CaptionContainerView {
 
     private boolean shownAiButton;
     private void showAiButton(boolean show_) {
-        final boolean show = show_;
+        final boolean show = show_ && !MessagesController.getGlobalMainSettings().getBoolean("hideAiEditor", false);
 
         if (shownAiButton == show) return;
         if (show) {
