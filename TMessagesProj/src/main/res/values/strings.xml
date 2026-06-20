@@ -103,6 +103,8 @@
     <string name="HideSavedMessagesTags">Hide tags in Saved Messages</string>
     <string name="HideInAppHints">Hide in-app hint banners</string>
     <string name="DisableLinkPreviewByDefault">Disable link previews by default</string>
+    <string name="ForceBlockScreenshots">Block screenshots</string>
+    <string name="ForceBlockScreenshotsInfo">Prevent screenshots and screen recording across the app, even without a passcode.</string>
     <string name="HideAiEditor">Hide AI Editor button</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
     <string name="DisableParametersFromBotLinks">Disable parameters from bot links</string>

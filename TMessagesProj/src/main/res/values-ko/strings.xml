@@ -102,6 +102,8 @@
     <string name="HideSavedMessagesTags">저장된 메시지에서 태그 숨기기</string>
     <string name="HideInAppHints">앱 내 힌트 배너 숨기기</string>
     <string name="DisableLinkPreviewByDefault">기본적으로 링크 미리보기 비활성화</string>
+    <string name="ForceBlockScreenshots">스크린샷 차단</string>
+    <string name="ForceBlockScreenshotsInfo">암호가 없어도 앱 전체에서 스크린샷과 화면 녹화를 방지합니다.</string>
     <string name="HideAiEditor">AI 편집기 버튼 숨기기</string>
     <string name="DisableLockedAnimatedEmoji">패널에서 잠긴 애니메이션 이모지 숨기기</string>
     <string name="DisableParametersFromBotLinks">봇 링크의 매개변수 비활성화</string>

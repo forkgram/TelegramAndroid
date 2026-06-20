@@ -102,6 +102,8 @@
     <string name="HideSavedMessagesTags">إخفاء العلامات في الرسائل المحفوظة</string>
     <string name="HideInAppHints">إخفاء لافتات التلميحات داخل التطبيق</string>
     <string name="DisableLinkPreviewByDefault">تعطيل معاينة الروابط افتراضيًا</string>
+    <string name="ForceBlockScreenshots">حظر لقطات الشاشة</string>
+    <string name="ForceBlockScreenshotsInfo">منع لقطات الشاشة وتسجيل الشاشة في التطبيق بالكامل، حتى بدون رمز مرور.</string>
     <string name="HideAiEditor">إخفاء زر محرر الذكاء الاصطناعي</string>
     <string name="DisableLockedAnimatedEmoji">إخفاء الرموز التعبيرية المتحركة المقفلة في اللوحة</string>
     <string name="DisableParametersFromBotLinks">تعطيل المعلمات من روابط الروبوت</string>
