@@ -96,6 +96,7 @@
     <string name="ReallySure">**Tem certeza**?</string>
     <string name="DisableGlobalSearch">Desativar pesquisa global</string>
     <string name="HideContactsInDialogs">Ocultar contatos na lista de conversas</string>
+    <string name="MainTabsHiddenHint">Abas ocultas. Mantenha o título pressionado para mostrá-las novamente.</string>
     <string name="DisableQuickReaction">Desativar reação rápida</string>
     <string name="HideAiEditor">Ocultar botão do editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emojis animados bloqueados no painel</string>

@@ -96,6 +96,7 @@
     <string name="ReallySure">¿Estás **realmente seguro**?</string>
     <string name="DisableGlobalSearch">Desactivar búsqueda global</string>
     <string name="HideContactsInDialogs">Ocultar contactos en la lista de chats</string>
+    <string name="MainTabsHiddenHint">Pestañas ocultas. Mantén pulsado el título para volver a mostrarlas.</string>
     <string name="DisableQuickReaction">Desactivar reacción rápida</string>
     <string name="HideAiEditor">Ocultar botón del editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emoji animados bloqueados en el panel</string>
