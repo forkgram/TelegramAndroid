@@ -191,6 +191,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int hiddenAccountsRow;
     private int hideStoriesInArchiveRow;
     private int updateCheckIntervalRow;
+    private int disableTabletModeRow;
     private int addItemToDeleteAllUnpinnedMessages;
     private int disableSlideToNextChannel;
     private int disableRecentFilesAttachment;
@@ -520,6 +521,7 @@ public class ForkSettingsActivity extends BaseFragment {
         enableLastSeenDots = rowCount++;
         customTitleRow = rowCount++;
         updateCheckIntervalRow = rowCount++;
+        disableTabletModeRow = AndroidUtilities.isTabletInternal() ? rowCount++ : -1;
 
         emptyRows.add(rowCount++);
         sectionRows.add(rowCount++);
@@ -698,6 +700,19 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("hideContactsInDialogs", view, false);
             } else if (position == enableLastSeenDots) {
                 toggleGlobalMainSetting("enableLastSeenDots", view, true);
+            } else if (position == disableTabletModeRow) {
+                SharedConfig.toggleForceDisableTabletMode();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(SharedConfig.forceDisableTabletMode);
+                }
+                Activity activity = getParentActivity();
+                if (activity != null) {
+                    final android.content.pm.PackageManager pm = activity.getPackageManager();
+                    final Intent intent = pm.getLaunchIntentForPackage(activity.getPackageName());
+                    activity.finishAffinity();
+                    activity.startActivity(intent);
+                }
+                System.exit(0);
             } else if (position == hideBottomButton) {
                 toggleGlobalMainSetting("hideBottomButton", view, false);
             } else if (position == syncPinsRow) {
@@ -991,6 +1006,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == enableLastSeenDots) {
                         String t = LocaleController.getString("EnableLastSeenDots", R.string.EnableLastSeenDots);
                         textCell.setTextAndCheck(t, preferences.getBoolean("enableLastSeenDots", true), false);
+                    } else if (position == disableTabletModeRow) {
+                        String t = LocaleController.getString("DisableTabletMode", R.string.DisableTabletMode);
+                        textCell.setTextAndCheck(t, SharedConfig.forceDisableTabletMode, false);
                     } else if (position == hideBottomButton) {
                         String t = LocaleController.getString("HideBottomButton", R.string.HideBottomButton);
                         textCell.setTextAndCheck(t, preferences.getBoolean("hideBottomButton", false), false);
@@ -1060,6 +1078,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == disableGlobalSearch
                         || position == hideContactsInDialogsRow
                         || position == enableLastSeenDots
+                        || position == disableTabletModeRow
                         || position == customTitleRow
                         || position == hideBottomButton
                         || position == syncPinsRow
@@ -1145,6 +1164,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == disableGlobalSearch
                 || position == hideContactsInDialogsRow
                 || position == enableLastSeenDots
+                || position == disableTabletModeRow
                 || position == hideBottomButton
                 || position == showNotificationContent
                 || position == photoHasStickerRow
