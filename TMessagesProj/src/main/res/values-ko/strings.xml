@@ -96,6 +96,7 @@
     <string name="ReallySure">정말 **확실합니까**?</string>
     <string name="DisableGlobalSearch">전역 검색 비활성화</string>
     <string name="HideContactsInDialogs">채팅 목록에서 연락처 숨기기</string>
+    <string name="MainTabsHiddenHint">탭이 숨겨졌습니다. 제목을 길게 눌러 다시 표시하세요.</string>
     <string name="DisableQuickReaction">빠른 반응 비활성화</string>
     <string name="HideAiEditor">AI 편집기 버튼 숨기기</string>
     <string name="DisableLockedAnimatedEmoji">패널에서 잠긴 애니메이션 이모지 숨기기</string>
