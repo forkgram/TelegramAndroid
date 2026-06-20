@@ -90,6 +90,7 @@
     <string name="ReallySure">Ben je **echt zeker**?</string>
     <string name="DisableGlobalSearch">Globale zoekfunctie uitschakelen</string>
     <string name="HideContactsInDialogs">Contacten in de chatlijst verbergen</string>
+    <string name="MainTabsHiddenHint">Tabbladen verborgen. Houd de titel ingedrukt om ze weer te tonen.</string>
     <string name="DisableQuickReaction">Snelle reactie uitschakelen</string>
     <string name="HideAiEditor">Knop AI-editor verbergen</string>
     <string name="DisableLockedAnimatedEmoji">Vergrendelde geanimeerde emoji in het paneel verbergen</string>
