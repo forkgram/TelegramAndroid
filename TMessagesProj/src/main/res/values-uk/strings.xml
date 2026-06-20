@@ -29,6 +29,7 @@
     <string name="ReplaceForwardInfo">Пересилання відкриває панель «Поділитися» замість вибору чату.</string>
     <string name="MentionByNameInfo">Автодоповнення вставляє ім\'я людини замість імені користувача.</string>
     <string name="HideSendAsInfo">Приховувати кнопку вибору відправника в полі повідомлення.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">Надсилати повідомлення з посиланнями без прев\'ю.</string>
     <string name="DisableSlideToNextChannelInfo">Не переходити до наступного каналу під час прокручування за кінець чату.</string>
     <string name="FormatWithSecondsInfo">Показувати секунди в часі повідомлень та інших позначках часу.</string>
     <string name="HideAiEditorInfo">Приховувати кнопку ШІ-редактора в полях повідомлення та підпису.</string>
@@ -106,6 +107,7 @@
     <string name="HideMessageReactions">Сховати реакції на повідомленнях</string>
     <string name="HideSavedMessagesTags">Сховати теги в Збереженому</string>
     <string name="HideInAppHints">Сховати підказки в додатку</string>
+    <string name="DisableLinkPreviewByDefault">Вимкнути попередній перегляд посилань за замовчуванням</string>
     <string name="HideAiEditor">Сховати кнопку ШІ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Сховати заблоковані анімовані емодзі в панелі</string>
     <string name="DisableParametersFromBotLinks">Вимкнути параметри з посилань ботів</string>

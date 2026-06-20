@@ -29,6 +29,7 @@
     <string name="ReplaceForwardInfo">Пересылка открывает панель «Поделиться» вместо выбора чата.</string>
     <string name="MentionByNameInfo">Автодополнение вставляет имя человека вместо имени пользователя.</string>
     <string name="HideSendAsInfo">Скрывать кнопку выбора отправителя в поле сообщения.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">Отправлять сообщения со ссылками без превью.</string>
     <string name="DisableSlideToNextChannelInfo">Не переходить к следующему каналу при прокрутке за конец чата.</string>
     <string name="FormatWithSecondsInfo">Показывать секунды во времени сообщений и других отметках времени.</string>
     <string name="HideAiEditorInfo">Скрывать кнопку ИИ-редактора в полях сообщения и подписи.</string>
@@ -106,6 +107,7 @@
     <string name="HideMessageReactions">Скрыть реакции на сообщениях</string>
     <string name="HideSavedMessagesTags">Скрыть теги в Избранном</string>
     <string name="HideInAppHints">Скрыть подсказки в приложении</string>
+    <string name="DisableLinkPreviewByDefault">Отключить предпросмотр ссылок по умолчанию</string>
     <string name="HideAiEditor">Скрыть кнопку ИИ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Скрыть заблокированные анимированные эмодзи в панели</string>
     <string name="DisableParametersFromBotLinks">Отключить параметры из ссылок бота</string>
