@@ -17,6 +17,7 @@
     <string name="HideStoriesInArchiveInfo">De storyrij in gearchiveerde chats verbergen.</string>
     <string name="DisableThumbsInDialogListInfo">Mediaminiaturen van het laatste bericht in de chatlijst verbergen.</string>
     <string name="DisableGlobalSearchInfo">In de zoekresultaten alleen je eigen chats en contacten tonen, geen globale resultaten.</string>
+    <string name="HideContactsInDialogsInfo">De contacten onder de chatlijst verbergen wanneer je weinig chats hebt.</string>
     <string name="EnableLastSeenDotsInfo">De avatarstip kleuren voor mensen die het afgelopen uur online waren.</string>
     <string name="ReplaceForwardInfo">Doorsturen opent het deelvenster in plaats van de chatkiezer.</string>
     <string name="MentionByNameInfo">Automatisch aanvullen voegt de naam van de persoon in in plaats van de gebruikersnaam.</string>
@@ -88,6 +89,7 @@
     <string name="DeleteAllYourMessagesInAllTopics">Al je berichten in alle onderwerpen verwijderen</string>
     <string name="ReallySure">Ben je **echt zeker**?</string>
     <string name="DisableGlobalSearch">Globale zoekfunctie uitschakelen</string>
+    <string name="HideContactsInDialogs">Contacten in de chatlijst verbergen</string>
     <string name="DisableQuickReaction">Snelle reactie uitschakelen</string>
     <string name="HideAiEditor">Knop AI-editor verbergen</string>
     <string name="DisableLockedAnimatedEmoji">Vergrendelde geanimeerde emoji in het paneel verbergen</string>
