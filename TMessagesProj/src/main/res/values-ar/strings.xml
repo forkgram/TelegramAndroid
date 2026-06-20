@@ -17,6 +17,7 @@
     <string name="HideStoriesInArchiveInfo">إخفاء صف القصص داخل الدردشات المؤرشفة.</string>
     <string name="DisableThumbsInDialogListInfo">إخفاء الصور المصغرة لآخر رسالة في قائمة الدردشات.</string>
     <string name="DisableGlobalSearchInfo">إظهار محادثاتك وجهات اتصالك فقط في البحث، دون نتائج عامة.</string>
+    <string name="HideContactsInDialogsInfo">إخفاء جهات الاتصال الظاهرة أسفل قائمة الدردشات عند وجود دردشات قليلة.</string>
     <string name="EnableLastSeenDotsInfo">تلوين نقطة الصورة الرمزية لمن ظهروا خلال الساعة الماضية.</string>
     <string name="ReplaceForwardInfo">إعادة التوجيه تفتح لوحة المشاركة بدلاً من محدد الدردشة.</string>
     <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
@@ -88,6 +89,7 @@
     <string name="DeleteAllYourMessagesInAllTopics">حذف جميع رسائلك في كل المواضيع</string>
     <string name="ReallySure">هل أنت **متأكد حقًا**؟</string>
     <string name="DisableGlobalSearch">تعطيل البحث العالمي</string>
+    <string name="HideContactsInDialogs">إخفاء جهات الاتصال في قائمة المحادثات</string>
     <string name="DisableQuickReaction">تعطيل رد الفعل السريع</string>
     <string name="HideAiEditor">إخفاء زر محرر الذكاء الاصطناعي</string>
     <string name="DisableLockedAnimatedEmoji">إخفاء الرموز التعبيرية المتحركة المقفلة في اللوحة</string>
