@@ -23,6 +23,7 @@
     <string name="ReplaceForwardInfo">إعادة التوجيه تفتح لوحة المشاركة بدلاً من محدد الدردشة.</string>
     <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
     <string name="HideSendAsInfo">إخفاء زر الإرسال باسم في حقل الرسالة.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">إرسال الرسائل التي تحتوي على روابط بدون معاينة.</string>
     <string name="DisableSlideToNextChannelInfo">عدم الانتقال إلى القناة التالية عند التمرير بعد النهاية.</string>
     <string name="FormatWithSecondsInfo">إظهار الثواني في أوقات الرسائل والأوقات الأخرى.</string>
     <string name="HideAiEditorInfo">إخفاء زر إعادة الصياغة بالذكاء الاصطناعي في حقول الرسالة والتسمية.</string>
@@ -100,6 +101,7 @@
     <string name="HideMessageReactions">إخفاء التفاعلات على الرسائل</string>
     <string name="HideSavedMessagesTags">إخفاء العلامات في الرسائل المحفوظة</string>
     <string name="HideInAppHints">إخفاء لافتات التلميحات داخل التطبيق</string>
+    <string name="DisableLinkPreviewByDefault">تعطيل معاينة الروابط افتراضيًا</string>
     <string name="HideAiEditor">إخفاء زر محرر الذكاء الاصطناعي</string>
     <string name="DisableLockedAnimatedEmoji">إخفاء الرموز التعبيرية المتحركة المقفلة في اللوحة</string>
     <string name="DisableParametersFromBotLinks">تعطيل المعلمات من روابط الروبوت</string>
