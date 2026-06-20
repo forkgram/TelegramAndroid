@@ -5588,6 +5588,14 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             if (a == 1) {
                 nameTextView[a].setScrollNonFitText(true);
                 nameTextView[a].setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+                nameTextView[a].setOnLongClickListener(v -> {
+                    CharSequence name = nameTextView[1] != null ? nameTextView[1].getText() : null;
+                    if (name != null && name.length() > 0) {
+                        AndroidUtilities.addToClipboard(name.toString());
+                        BulletinFactory.of(ProfileActivity.this).createCopyBulletin(LocaleController.getString(R.string.TextCopied)).show();
+                    }
+                    return true;
+                });
             }
             nameTextView[a].setFocusable(a == 0);
             nameTextView[a].setEllipsizeByGradient(true);
