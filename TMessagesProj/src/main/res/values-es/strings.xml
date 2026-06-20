@@ -23,6 +23,7 @@
     <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="MentionByNameInfo">El autocompletado inserta el nombre de la persona en lugar del nombre de usuario.</string>
     <string name="HideSendAsInfo">Ocultar el botón de enviar como en el campo de mensaje.</string>
+    <string name="DisableLinkPreviewByDefaultInfo">Enviar mensajes con enlaces sin vista previa.</string>
     <string name="DisableSlideToNextChannelInfo">No pasar al siguiente canal al desplazarse más allá del final.</string>
     <string name="FormatWithSecondsInfo">Mostrar los segundos en la hora de los mensajes y otras horas.</string>
     <string name="HideAiEditorInfo">Ocultar el botón de reescritura con IA en los campos de mensaje y descripción.</string>
@@ -100,6 +101,7 @@
     <string name="HideMessageReactions">Ocultar reacciones en los mensajes</string>
     <string name="HideSavedMessagesTags">Ocultar etiquetas en Mensajes guardados</string>
     <string name="HideInAppHints">Ocultar banners de sugerencias en la aplicación</string>
+    <string name="DisableLinkPreviewByDefault">Desactivar vista previa de enlaces por defecto</string>
     <string name="HideAiEditor">Ocultar botón del editor de IA</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emoji animados bloqueados en el panel</string>
     <string name="DisableParametersFromBotLinks">Desactivar parámetros de enlaces de bots</string>
