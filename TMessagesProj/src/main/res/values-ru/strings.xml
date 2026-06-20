@@ -12,6 +12,7 @@
     <string name="VoiceQualityHigh">Высокое (64 кбит/с)</string>
     <string name="VoiceQualityMax">Максимальное (по умолчанию)</string>
     <string name="DropScreenshotCaptionInfo">Убирать подпись, когда скриншот отправляется из другого приложения.</string>
+    <string name="HideInAppHintsInfo">Скрывать промо-баннеры в списке чатов и подсказку о дне рождения в чатах.</string>
     <string name="HideBottomButtonInfo">Очищать нижнюю кнопку (Выключить звук, Вступить) и игнорировать нажатия по ней.</string>
     <string name="OpenArchiveOnPullInfo">Открывать папку «Архив» при потягивании списка чатов вниз.</string>
     <string name="HideStoriesInArchiveInfo">Скрывать ленту историй внутри архива чатов.</string>
@@ -98,6 +99,7 @@
     <string name="DisableQuickReaction">Отключить быструю реакцию</string>
     <string name="HideMessageReactions">Скрыть реакции на сообщениях</string>
     <string name="HideSavedMessagesTags">Скрыть теги в Избранном</string>
+    <string name="HideInAppHints">Скрыть подсказки в приложении</string>
     <string name="HideAiEditor">Скрыть кнопку ИИ-редактора</string>
     <string name="DisableLockedAnimatedEmoji">Скрыть заблокированные анимированные эмодзи в панели</string>
     <string name="DisableParametersFromBotLinks">Отключить параметры из ссылок бота</string>
