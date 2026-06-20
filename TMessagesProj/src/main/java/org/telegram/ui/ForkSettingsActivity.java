@@ -380,7 +380,7 @@ public class ForkSettingsActivity extends BaseFragment {
         LinearLayout linearLayout = new LinearLayout(getParentActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
-        builder.setTitle("Voice Message Quality");
+        builder.setTitle(LocaleController.getString("VoiceMessageQuality", R.string.VoiceMessageQuality));
 
         for (int i = 0; i < options.length; i++) {
             RadioColorCell cell = new RadioColorCell(getParentActivity());
@@ -454,7 +454,7 @@ public class ForkSettingsActivity extends BaseFragment {
         LinearLayout linearLayout = new LinearLayout(getParentActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
-        builder.setTitle("Update Check Interval");
+        builder.setTitle(LocaleController.getString("UpdateCheckInterval", R.string.UpdateCheckInterval));
 
         for (int i = 0; i < options.length; i++) {
             RadioColorCell cell = new RadioColorCell(getParentActivity());
@@ -865,9 +865,9 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == cloudflareSTTRow) {
                         textCell.setTextAndValue(LocaleController.getString("CloudflareCredentials", R.string.CloudflareCredentials), "", false);
                     } else if (position == voiceQualityRow) {
-                        textCell.setTextAndValue("Voice Message Quality", getVoiceQualityText(), false);
+                        textCell.setTextAndValue(LocaleController.getString("VoiceMessageQuality", R.string.VoiceMessageQuality), getVoiceQualityText(), false);
                     } else if (position == updateCheckIntervalRow) {
-                        String t = "Update Check Interval";
+                        String t = LocaleController.getString("UpdateCheckInterval", R.string.UpdateCheckInterval);
                         String v = getUpdateIntervalText();
                         textCell.setTextAndValue(t, v, false);
                     } else if (position == lastFmLoginRow) {
@@ -939,13 +939,13 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("DisableRecentFilesAttachment", R.string.DisableRecentFilesAttachment);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableRecentFilesAttachment", false), false);
                     } else if (position == dropScreenshotCaptionRow) {
-                        String t = "Drop screenshot caption";
+                        String t = LocaleController.getString("DropScreenshotCaption", R.string.DropScreenshotCaption);
                         textCell.setTextAndCheck(t, preferences.getBoolean("dropScreenshotCaption", true), false);
                     } else if (position == disableDefaultInAppBrowser) {
                         String t = LocaleController.getString("DisableDefaultInAppBrowser", R.string.DisableDefaultInAppBrowser);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableDefaultInAppBrowser", org.telegram.messenger.BuildConfig.SKIP_INTERNAL_BROWSER_BY_DEFAULT), false);
                     } else if (position == disablePlayVisibleVideoOnVolumeRow) {
-                        String t = "Disable play video on volume change";
+                        String t = LocaleController.getString("DisablePlayVisibleVideoOnVolume", R.string.DisablePlayVisibleVideoOnVolume);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disablePlayVisibleVideoOnVolume", false), false);
                     } else if (position == botSkipShare) {
                         String t = LocaleController.getString("BotSkipShare", R.string.BotSkipShare);
@@ -982,7 +982,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         String t = LocaleController.getString("DisableGlobalSearch", R.string.DisableGlobalSearch);
                         textCell.setTextAndCheck(t, preferences.getBoolean("disableGlobalSearch", false), false);
                     } else if (position == enableLastSeenDots) {
-                        String t = "Enable last seen colored dots";
+                        String t = LocaleController.getString("EnableLastSeenDots", R.string.EnableLastSeenDots);
                         textCell.setTextAndCheck(t, preferences.getBoolean("enableLastSeenDots", true), false);
                     } else if (position == hideBottomButton) {
                         String t = LocaleController.getString("HideBottomButton", R.string.HideBottomButton);
