@@ -67,19 +67,19 @@ jobs:
           NATIVE_DEPS_NDK_DIR=${NDK_R21}
           EOF
 
-      - name: Build APK
+      - name: Build APK (arm64-v8a only for speed)
         env:
           ANDROID_SDK: ${{ env.ANDROID_HOME }}
           NDK: ${{ steps.ndk-r21e.outputs.ndk-path }}
           NINJA_PATH: /usr/bin/ninja
-        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon
+        run: ./gradlew :TMessagesProj_App:assembleAfatFd_v8aRelease --no-daemon
 
       - name: Locate and rename APK
         run: |
           APK=$(find TMessagesProj_App/build/outputs/apk -name "*.apk" | head -1)
           echo "Found APK: $APK"
           VERSION=$(grep APP_VERSION_NAME gradle.properties | cut -d= -f2 | tr -d ' ')
-          DEST="forkgram-${VERSION}-patched-save-gallery.apk"
+          DEST="forkgram-${VERSION}-arm64-patched-save-gallery.apk"
           cp "$APK" "$DEST"
           echo "APK_PATH=$DEST" >> $GITHUB_ENV
 
