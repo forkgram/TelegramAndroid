@@ -42,8 +42,11 @@ jobs:
           ndk-version: r23c
           link-to-sdk: true
 
-      - name: Install NDK 27 (externalNativeBuild)
-        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;27.2.12479018"
+      - name: Install NDK 27 and CMake (externalNativeBuild)
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "ndk;27.2.12479018" \
+            "cmake;3.10.2.4988404"
 
       - name: Install native build tools
         run: |
@@ -52,6 +55,8 @@ jobs:
 
       - name: Prepare gradle.properties (F-Droid build)
         run: |
+          NDK_R21="${{ steps.ndk-r21e.outputs.ndk-path }}"
+          CMAKE_PATH="$ANDROID_HOME/cmake/3.10.2.4988404/bin/"
           cat >> gradle.properties << EOF
           DUMMY_CONST=0
           F_DROID=1
@@ -59,7 +64,7 @@ jobs:
           APP_ID=4
           APP_HASH=014b35b6184100b085b0d0572f9b5103
           RELEASE_KEYSTORE_FILE=TMessagesProj/config/release.keystore
-          NATIVE_DEPS_NDK_DIR=${{ steps.ndk-r21e.outputs.ndk-path }}
+          NATIVE_DEPS_NDK_DIR=${NDK_R21}
           EOF
 
       - name: Build APK
