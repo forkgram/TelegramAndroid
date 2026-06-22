@@ -64,13 +64,14 @@ jobs:
 
       - name: Prepare gradle.properties (F-Droid build)
         run: |
-          cat >> gradle.properties << 'EOF'
+          cat >> gradle.properties << EOF
           DUMMY_CONST=0
           F_DROID=1
           ADDITIONAL_BUILD_NUMBER=0
           APP_ID=4
           APP_HASH=014b35b6184100b085b0d0572f9b5103
           RELEASE_KEYSTORE_FILE=TMessagesProj/config/release.keystore
+          NATIVE_DEPS_NDK_DIR=${{ steps.ndk-r21e.outputs.ndk-path }}
           EOF
 
       - name: Build APK
