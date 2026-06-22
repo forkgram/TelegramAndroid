@@ -50,18 +50,6 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y ninja-build meson gperf yasm
 
-      - name: Build native dependencies
-        env:
-          NDK: ${{ steps.ndk-r21e.outputs.ndk-path }}
-          NINJA_PATH: /usr/bin/ninja
-        run: |
-          cd TMessagesProj/jni
-          ./build_libvpx_clang.sh
-          ./build_ffmpeg_clang.sh
-          ./patch_ffmpeg.sh
-          ./patch_boringssl.sh
-          ./build_boringssl.sh
-
       - name: Prepare gradle.properties (F-Droid build)
         run: |
           cat >> gradle.properties << EOF
@@ -75,6 +63,10 @@ jobs:
           EOF
 
       - name: Build APK
+        env:
+          ANDROID_SDK: ${{ env.ANDROID_HOME }}
+          NDK: ${{ steps.ndk-r21e.outputs.ndk-path }}
+          NINJA_PATH: /usr/bin/ninja
         run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon
 
       - name: Locate and rename APK
