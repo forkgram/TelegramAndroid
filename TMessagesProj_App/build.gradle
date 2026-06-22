@@ -76,18 +76,22 @@ android {
 
     signingConfigs {
         if (fdroid) {
+            def fdroidKeystorePath = readBuildProp('RELEASE_KEYSTORE_FILE', "${rootProject.projectDir}/TMessagesProj/config/release.keystore")
+            def fdroidStorePw = readBuildProp('RELEASE_STORE_PASSWORD', 'android')
+            def fdroidKeyPw = readBuildProp('RELEASE_KEY_PASSWORD', 'android')
+            def fdroidKeyAliasName = readBuildProp('RELEASE_KEY_ALIAS', 'androidkey')
             debug {
-                storeFile file("")
-                storePassword ""
-                keyAlias ""
-                keyPassword ""
+                storeFile file(fdroidKeystorePath)
+                storePassword fdroidStorePw
+                keyAlias fdroidKeyAliasName
+                keyPassword fdroidKeyPw
             }
 
             release {
-                storeFile file("")
-                storePassword ""
-                keyAlias ""
-                keyPassword ""
+                storeFile file(fdroidKeystorePath)
+                storePassword fdroidStorePw
+                keyAlias fdroidKeyAliasName
+                keyPassword fdroidKeyPw
             }
         } else {
             def releaseKeystore = readBuildProp('RELEASE_KEYSTORE_FILE', null)

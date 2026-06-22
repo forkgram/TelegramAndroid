@@ -70,10 +70,11 @@ jobs:
           ADDITIONAL_BUILD_NUMBER=0
           APP_ID=4
           APP_HASH=014b35b6184100b085b0d0572f9b5103
+          RELEASE_KEYSTORE_FILE=TMessagesProj/config/release.keystore
           EOF
 
       - name: Build APK
-        run: ./gradlew -PF_DROID=1 :TMessagesProj_App:assembleAfatRelease --no-daemon
+        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon
 
       - name: Locate and rename APK
         run: |
