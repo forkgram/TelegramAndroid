@@ -10264,6 +10264,13 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         if (media.isEmpty()) {
             return;
         }
+        if (media.size() == 1 && editingMessageObject == null) {
+            SendingMediaInfo roundInfo = media.get(0);
+            if (roundInfo.isVideo && roundInfo.path != null && roundInfo.videoEditedInfo != null && roundInfo.videoEditedInfo.roundVideo) {
+                prepareSendingVideo(accountInstance, roundInfo.path, roundInfo.videoEditedInfo, roundInfo.coverPath, roundInfo.coverPhoto, dialogId, replyToMsg, replyToTopMsg, storyItem, quote, roundInfo.entities, roundInfo.ttl, editingMessageObject, notify, scheduleDate, scheduleRepeatPeriod, forceDocument, roundInfo.hasMediaSpoilers, roundInfo.caption, quickReplyShortcut, quickReplyShortcutId, effectId, payStars, monoForumPeerId, suggestionParams, invertMedia);
+                return;
+            }
+        }
         for (int a = 0, N = media.size(); a < N; a++) {
             if (media.get(a).ttl > 0) {
                 groupMedia = false;
