@@ -1721,6 +1721,7 @@
     <string name="SlowModeHint">Slow Mode is enabled. You can send\nyour next message in %1$s</string>
     <string name="TapForVideo">Tap for photo, hold for video</string>
     <string name="SendWithoutSound">Send without sound</string>
+    <string name="SendAsRoundVideo">Send as round video</string>
     <string name="SendAsNewPhoto">Send as a new photo</string>
     <string name="ReplacePhoto">Replace photo</string>
     <string name="MessageScheduleSend">Send Now</string>
