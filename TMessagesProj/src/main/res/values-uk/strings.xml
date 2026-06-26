@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="SendAsRoundVideo">Надіслати як відеоповідомлення</string>
     <string name="ExportSettings">Експортувати налаштування</string>
     <string name="ExportSettingsDone">Налаштування експортовано.</string>
     <string name="ImportSettings">Імпортувати налаштування</string>
