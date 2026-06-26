@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="SendAsRoundVideo">إرسال كفيديو دائري</string>
     <string name="ExportSettings">تصدير الإعدادات</string>
     <string name="ExportSettingsDone">تم تصدير الإعدادات.</string>
     <string name="ImportSettings">استيراد الإعدادات</string>

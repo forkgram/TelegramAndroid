@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="SendAsRoundVideo">Enviar como vídeo redondo</string>
     <string name="ExportSettings">Exportar configurações</string>
     <string name="ExportSettingsDone">Configurações exportadas.</string>
     <string name="ImportSettings">Importar configurações</string>
