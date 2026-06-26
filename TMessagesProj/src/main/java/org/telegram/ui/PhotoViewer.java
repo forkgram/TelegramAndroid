@@ -360,6 +360,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private boolean allowOrder = true;
 
     private boolean muteVideo;
+    private boolean applyRoundVideo;
 
     private boolean isUnalivePhoto() {
         if (sendPhotoType == SELECT_TYPE_STICKER) return true;
@@ -7444,13 +7445,18 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             final boolean showSchedule = !canEdit && canScheduleMessage && !hasTtl;
             final boolean showWithoutSound = !(canEdit && canReplace) && !userIsSelf;
             final boolean multipleSelected = placeProvider != null && placeProvider.getSelectedCount() > 1;
+            final boolean showSendAsRound = isCurrentVideo && !multipleSelected && !canEdit && !canReplace && sendPhotoType == 0 && (parentChatActivity != null || (placeProvider != null && placeProvider.getDialogId() != 0));
 
             final ItemOptions options = ItemOptions.makeOptions(containerView, new DarkThemeResourceProvider(), view)
                 .addIf(showSendAsFile, R.drawable.msg_sendfile, getString(multipleSelected ? R.string.SendAsFiles : R.string.SendAsFile), () -> sendPressed(true, 0, 0, false, true, false))
                 .addIf(canReplace, R.drawable.msg_send, getString(R.string.SendAsNewPhoto), () -> sendPressed(true, 0, 0))
                 .addIf(canReplace, R.drawable.msg_replace, getString(R.string.ReplacePhoto), this::replacePressed)
                 .addIf(showSchedule, R.drawable.msg_calendar2, getString(userIsSelf ? R.string.SetReminder : R.string.ScheduleMessage), this::showScheduleDatePickerDialog)
-                .addIf(showWithoutSound, R.drawable.input_notify_off, getString(R.string.SendWithoutSound), () -> sendPressed(false, 0, 0));
+                .addIf(showWithoutSound, R.drawable.input_notify_off, getString(R.string.SendWithoutSound), () -> sendPressed(false, 0, 0))
+                .addIf(showSendAsRound, R.drawable.msg_video, getString(R.string.SendAsRoundVideo), () -> {
+                    applyRoundVideo = true;
+                    sendPressed(true, 0, 0);
+                });
 
             if (options.getItemsCount() == 0) return false;
 
@@ -9726,6 +9732,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     }
 
     private VideoEditedInfo getCurrentVideoEditedInfo() {
+        final boolean roundVideoRequested = applyRoundVideo;
+        applyRoundVideo = false;
         if (!isCurrentVideo && hasAnimatedMediaEntities() && centerImage.getBitmapWidth() > 0) {
             float maxSize = 854;
             if (sendPhotoType == SELECT_TYPE_AVATAR) {
@@ -9865,6 +9873,36 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         if (sendPhotoType == SELECT_TYPE_AVATAR) {
             videoEditedInfo.avatarStartTime = avatarStartTime;
             videoEditedInfo.originalBitrate = originalBitrate;
+        }
+        if (roundVideoRequested) {
+            videoEditedInfo.roundVideo = true;
+            int rw = videoEditedInfo.resultWidth;
+            int rh = videoEditedInfo.resultHeight;
+            int minDim = Math.min(rw, rh);
+            int roundSide = Math.min(minDim, 640);
+            if (minDim > 0 && minDim != roundSide) {
+                float scale = roundSide / (float) minDim;
+                rw = Math.round(rw * scale);
+                rh = Math.round(rh * scale);
+                videoEditedInfo.resultWidth = rw;
+                videoEditedInfo.resultHeight = rh;
+                minDim = Math.min(rw, rh);
+            }
+            MediaController.CropState roundCrop = new MediaController.CropState();
+            roundCrop.cropPw = minDim / (float) rw;
+            roundCrop.cropPh = minDim / (float) rh;
+            int[] roundSize = fixVideoWidthHeight((int) (rw * roundCrop.cropPw), (int) (rh * roundCrop.cropPh));
+            roundCrop.transformWidth = roundSize[0];
+            roundCrop.transformHeight = roundSize[1];
+            roundCrop.transformRotation = 0;
+            videoEditedInfo.cropState = roundCrop;
+            final long roundTargetBytes = 9L * 1024 * 1024;
+            final int roundAudioBitrate = 128 * 1024;
+            final double roundDurSec = Math.max(1.0, videoEditedInfo.estimatedDuration / 1000.0);
+            int roundBitrate = (int) (roundTargetBytes * 8 / roundDurSec) - roundAudioBitrate;
+            roundBitrate = Math.max(500 * 1024, Math.min(14 * 1024 * 1024, roundBitrate));
+            videoEditedInfo.bitrate = roundBitrate;
+            videoEditedInfo.estimatedSize = Math.max(1, (long) (roundDurSec * (roundBitrate + roundAudioBitrate) / 8.0));
         }
         videoEditedInfo.muted = muteVideo || sendPhotoType == SELECT_TYPE_AVATAR;
         return videoEditedInfo;
