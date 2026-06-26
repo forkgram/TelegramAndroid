@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="SendAsRoundVideo">원형 동영상으로 보내기</string>
     <string name="ExportSettings">설정 내보내기</string>
     <string name="ExportSettingsDone">설정을 내보냈습니다.</string>
     <string name="ImportSettings">설정 가져오기</string>
