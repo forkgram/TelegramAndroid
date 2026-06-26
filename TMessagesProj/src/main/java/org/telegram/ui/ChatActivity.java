@@ -18862,6 +18862,8 @@ public class ChatActivity extends BaseFragment implements
         protected void onMeasure(int origWidthMeasureSpec, int heightMeasureSpec) {
             invalidateBlurredSourcesView.bringToFrontIfNeeded();
 
+            updateChatListViewSuppression(false);
+
             final int allWidth = MeasureSpec.getSize(origWidthMeasureSpec);
             final int allHeight = MeasureSpec.getSize(heightMeasureSpec);
 
@@ -28271,6 +28273,19 @@ public class ChatActivity extends BaseFragment implements
         }
     }
 
+    private void updateChatListViewSuppression(boolean requestLayoutOnResume) {
+        if (chatListView == null || chatListView.isComputingLayout()) {
+            return;
+        }
+        final boolean freezeChatList = visibleDialog != null && visibleDialog.isShowing() || getLastSheet() != null;
+        if (chatListView.isLayoutSuppressed() != freezeChatList) {
+            chatListView.suppressLayout(freezeChatList);
+            if (!freezeChatList && requestLayoutOnResume) {
+                chatListView.requestLayout();
+            }
+        }
+    }
+
     @Override
     protected void onDialogDismiss(Dialog dialog) {
         if (closeChatDialog != null && dialog == closeChatDialog) {
@@ -28283,6 +28298,7 @@ public class ChatActivity extends BaseFragment implements
                 finishFragment();
             }
         }
+        AndroidUtilities.runOnUIThread(() -> updateChatListViewSuppression(true));
     }
 
     @Override
