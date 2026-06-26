@@ -18670,6 +18670,13 @@ public class ChatActivity extends BaseFragment implements
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             invalidateBlurredSourcesView.bringToFrontIfNeeded();
 
+            if (chatListView != null && !chatListView.isComputingLayout()) {
+                final boolean freezeChatList = visibleDialog != null && visibleDialog.isShowing() || getLastSheet() != null;
+                if (chatListView.isLayoutSuppressed() != freezeChatList) {
+                    chatListView.suppressLayout(freezeChatList);
+                }
+            }
+
             final int allHeight;
             int widthSize = View.MeasureSpec.getSize(widthMeasureSpec);
             int heightSize = allHeight = View.MeasureSpec.getSize(heightMeasureSpec);
