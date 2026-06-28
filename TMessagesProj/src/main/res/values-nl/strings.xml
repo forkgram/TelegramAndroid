@@ -90,6 +90,8 @@
     <string name="FormatWithSeconds">Berichttijd met seconden formatteren</string>
     <string name="DisableThumbsInDialogList">Miniaturen in de dialooglijst uitschakelen</string>
     <string name="FullRecentStickers">Volledige lijst van recente stickers weergeven</string>
+    <string name="ShowArchivedStickers">Gearchiveerde stickerpakketten weergeven</string>
+    <string name="ShowArchivedStickersInfo">Toont stickerpakketten die door Telegrams limiet van 200 pakketten zijn gearchiveerd in het stickerpaneel. De pakketten blijven gearchiveerd en worden geladen wanneer nodig.</string>
     <string name="HideSendAs">Knop "Verstuur als" verbergen</string>
     <string name="ShowNotificationContent">Inhoud van meldingen weergeven</string>
     <string name="ShowNotificationContentInfo">Wanneer de app is vergrendeld. Kan oorzaak zijn van privacylekken.</string>
