@@ -86,6 +86,8 @@
     <string name="FormatWithSeconds">Форматувати час повідомлення з секундами</string>
     <string name="DisableThumbsInDialogList">Вимкнути мініатюри в списку діалогів</string>
     <string name="FullRecentStickers">Показати повний список недавніх стікерів</string>
+    <string name="ShowArchivedStickers">Показати архівовані набори стікерів</string>
+    <string name="ShowArchivedStickersInfo">Показувати в панелі стікерів набори, архівовані через ліміт Telegram у 200 наборів. Набори залишаються в архіві та завантажуються за потреби.</string>
     <string name="HideSendAs">Сховати кнопку "Надіслати як"</string>
     <string name="ShowNotificationContent">Показати вміст сповіщень</string>
     <string name="ShowNotificationContentInfo">Коли додаток заблоковано. Може бути причиною витоків конфіденційності.</string>

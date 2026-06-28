@@ -86,6 +86,8 @@
     <string name="FormatWithSeconds">Nachrichtszeit mit Sekunden formatieren</string>
     <string name="DisableThumbsInDialogList">Miniaturansichten in der Dialogliste deaktivieren</string>
     <string name="FullRecentStickers">Vollständige Liste der letzten Sticker anzeigen</string>
+    <string name="ShowArchivedStickers">Archivierte Sticker-Pakete anzeigen</string>
+    <string name="ShowArchivedStickersInfo">Sticker-Pakete, die durch Telegrams Limit von 200 Paketen archiviert wurden, im Sticker-Panel anzeigen. Die Pakete bleiben archiviert und werden bei Bedarf geladen.</string>
     <string name="HideSendAs">„Als senden“ Button ausblenden</string>
     <string name="ShowNotificationContent">Inhalt der Benachrichtigungen anzeigen</string>
     <string name="ShowNotificationContentInfo">Wenn die App gesperrt ist. Kann Ursache für Datenschutzverletzungen sein.</string>
