@@ -123,6 +123,7 @@ public class NotificationCenter {
     public static final int recentDocumentsDidLoad = totalEvents++;
     public static final int needAddArchivedStickers = totalEvents++;
     public static final int archivedStickersCountDidLoad = totalEvents++;
+    public static final int archivedStickersDidLoad = totalEvents++;
     public static final int paymentFinished = totalEvents++;
     public static final int channelRightsUpdated = totalEvents++;
     public static final int openArticle = totalEvents++;
