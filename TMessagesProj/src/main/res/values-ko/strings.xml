@@ -86,6 +86,8 @@
     <string name="FormatWithSeconds">메시지 시간 초 단위로 포맷</string>
     <string name="DisableThumbsInDialogList">대화 목록에서 썸네일 비활성화</string>
     <string name="FullRecentStickers">최근 스티커 전체 목록 표시</string>
+    <string name="ShowArchivedStickers">보관된 스티커 팩 표시</string>
+    <string name="ShowArchivedStickersInfo">Telegram의 200개 팩 제한으로 보관된 스티커 팩을 스티커 패널에 표시합니다. 팩은 보관된 상태로 유지되며 필요할 때 불러옵니다.</string>
     <string name="HideSendAs">"다음으로 보내기" 버튼 숨기기</string>
     <string name="ShowNotificationContent">알림 내용 표시</string>
     <string name="ShowNotificationContentInfo">앱이 잠겨 있을 때. 개인 정보 유출의 원인이 될 수 있습니다.</string>

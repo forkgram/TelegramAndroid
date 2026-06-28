@@ -326,6 +326,11 @@ public class MediaDataController extends BaseController {
     private boolean loadingFeaturedStickers[] = new boolean[2];
     private boolean featuredStickersLoaded[] = new boolean[2];
 
+    private final ArrayList<TLRPC.StickerSetCovered> archivedStickerSets = new ArrayList<>();
+    private final HashSet<Long> archivedStickerSetsIds = new HashSet<>();
+    private boolean loadingArchivedStickerSets;
+    private boolean archivedStickerSetsLoaded;
+
     private TLRPC.Document greetingsSticker;
     public final RingtoneDataStore ringtoneDataStore;
     public final ArrayList<ChatThemeBottomSheet.ChatThemeItem> defaultEmojiThemes = new ArrayList<>();
@@ -366,6 +371,10 @@ public class MediaDataController extends BaseController {
         featuredStickerSets[0].clear();
         featuredStickerSetsById[1].clear();
         featuredStickerSets[1].clear();
+        archivedStickerSets.clear();
+        archivedStickerSetsIds.clear();
+        loadingArchivedStickerSets = false;
+        archivedStickerSetsLoaded = false;
         unreadStickerSets[0].clear();
         unreadStickerSets[1].clear();
         recentGifs.clear();
@@ -2610,6 +2619,61 @@ public class MediaDataController extends BaseController {
                 }
             }));
         }
+    }
+
+    public ArrayList<TLRPC.StickerSetCovered> getArchivedStickerSets() {
+        return archivedStickerSets;
+    }
+
+    public void loadArchivedStickerSets() {
+        if (loadingArchivedStickerSets || archivedStickerSetsLoaded) {
+            return;
+        }
+        loadingArchivedStickerSets = true;
+        loadArchivedStickerSetsPage(0);
+    }
+
+    public void reloadArchivedStickerSets() {
+        loadingArchivedStickerSets = false;
+        archivedStickerSetsLoaded = false;
+        archivedStickerSets.clear();
+        archivedStickerSetsIds.clear();
+        loadArchivedStickerSets();
+    }
+
+    private void loadArchivedStickerSetsPage(long offsetId) {
+        TLRPC.TL_messages_getArchivedStickers req = new TLRPC.TL_messages_getArchivedStickers();
+        req.offset_id = offsetId;
+        req.limit = 100;
+        req.masks = false;
+        req.emojis = false;
+        getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
+            boolean finished = true;
+            long lastId = offsetId;
+            if (error == null && response instanceof TLRPC.TL_messages_archivedStickers) {
+                TLRPC.TL_messages_archivedStickers res = (TLRPC.TL_messages_archivedStickers) response;
+                int added = 0;
+                for (int a = 0, N = res.sets.size(); a < N; a++) {
+                    TLRPC.StickerSetCovered covered = res.sets.get(a);
+                    if (covered == null || covered.set == null) {
+                        continue;
+                    }
+                    lastId = covered.set.id;
+                    if (archivedStickerSetsIds.add(covered.set.id)) {
+                        archivedStickerSets.add(covered);
+                        added++;
+                    }
+                }
+                finished = res.sets.isEmpty() || added == 0 || archivedStickerSets.size() >= 2000;
+            }
+            if (finished) {
+                loadingArchivedStickerSets = false;
+                archivedStickerSetsLoaded = true;
+                getNotificationCenter().postNotificationName(NotificationCenter.archivedStickersDidLoad);
+            } else {
+                loadArchivedStickerSetsPage(lastId);
+            }
+        }));
     }
 
     private void processLoadStickersResponse(int type, TLRPC.TL_messages_allStickers res) {
