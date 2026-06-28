@@ -90,6 +90,8 @@
     <string name="FormatWithSeconds">تنسيق وقت الرسالة بالثواني</string>
     <string name="DisableThumbsInDialogList">تعطيل الصور المصغرة في قائمة المحادثات</string>
     <string name="FullRecentStickers">عرض القائمة الكاملة للملصقات الحديثة</string>
+    <string name="ShowArchivedStickers">عرض حزم الملصقات المؤرشفة</string>
+    <string name="ShowArchivedStickersInfo">عرض حزم الملصقات المؤرشفة بسبب حد الـ 200 حزمة في Telegram ضمن لوحة الملصقات. تبقى الحزم مؤرشفة ويتم تحميلها عند الحاجة.</string>
     <string name="HideSendAs">إخفاء زر "إرسال كـ"</string>
     <string name="ShowNotificationContent">عرض محتوى الإشعارات</string>
     <string name="ShowNotificationContentInfo">عند قفل التطبيق. قد يكون سببًا لتسرب الخصوصية.</string>

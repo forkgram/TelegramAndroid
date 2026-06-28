@@ -90,6 +90,8 @@
     <string name="FormatWithSeconds">Formatta l\'orario del messaggio con i secondi</string>
     <string name="DisableThumbsInDialogList">Disabilita le miniature nella lista dei dialoghi</string>
     <string name="FullRecentStickers">Mostra l\'elenco completo degli sticker recenti</string>
+    <string name="ShowArchivedStickers">Mostra i pacchetti di sticker archiviati</string>
+    <string name="ShowArchivedStickersInfo">Mostra nel pannello degli sticker i pacchetti archiviati a causa del limite di 200 pacchetti di Telegram. I pacchetti restano archiviati e vengono caricati all\'occorrenza.</string>
     <string name="HideSendAs">Nascondi il pulsante "Invia come"</string>
     <string name="ShowNotificationContent">Mostra il contenuto delle notifiche</string>
     <string name="ShowNotificationContentInfo">Quando l\'app è bloccata. Può essere causa di perdite di privacy.</string>
