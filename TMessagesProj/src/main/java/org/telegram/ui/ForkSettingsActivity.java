@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.LocaleController;
+import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
@@ -177,6 +178,7 @@ public class ForkSettingsActivity extends BaseFragment {
     private int enableLastSeenDots;
     private int customTitleRow;
     private int fullRecentStickersRow;
+    private int showArchivedStickersRow;
     private int hideSendAsRow;
     private int disableQuickReactionRow;
     private int hideMessageReactionsRow;
@@ -537,6 +539,7 @@ public class ForkSettingsActivity extends BaseFragment {
         replaceForward = rowCount++;
         rearVideoMessages = rowCount++;
         fullRecentStickersRow = rowCount++;
+        showArchivedStickersRow = rowCount++;
         hideSendAsRow = rowCount++;
         disableQuickReactionRow = rowCount++;
         hideMessageReactionsRow = rowCount++;
@@ -662,6 +665,11 @@ public class ForkSettingsActivity extends BaseFragment {
                 toggleGlobalMainSetting("rearVideoMessages", view, false);
             } else if (position == fullRecentStickersRow) {
                 toggleGlobalMainSetting("fullRecentStickers", view, false);
+            } else if (position == showArchivedStickersRow) {
+                boolean enabled = toggleGlobalMainSetting("showArchivedStickers", view, false);
+                if (enabled) {
+                    MediaDataController.getInstance(currentAccount).loadArchivedStickerSets();
+                }
             } else if (position == hideSendAsRow) {
                 toggleGlobalMainSetting("hideSendAs", view, false);
             } else if (position == disableQuickReactionRow) {
@@ -953,6 +961,10 @@ public class ForkSettingsActivity extends BaseFragment {
                     } else if (position == fullRecentStickersRow) {
                         String t = LocaleController.getString("FullRecentStickers", R.string.FullRecentStickers);
                         textCell.setTextAndCheck(t, preferences.getBoolean("fullRecentStickers", false), false);
+                    } else if (position == showArchivedStickersRow) {
+                        String t = LocaleController.getString("ShowArchivedStickers", R.string.ShowArchivedStickers);
+                        String info = LocaleController.getString("ShowArchivedStickersInfo", R.string.ShowArchivedStickersInfo);
+                        textCell.setTextAndValueAndCheck(t, info, preferences.getBoolean("showArchivedStickers", false), true, false);
                     } else if (position == hideSendAsRow) {
                         String t = LocaleController.getString("HideSendAs", R.string.HideSendAs);
                         textCell.setTextAndCheck(t, preferences.getBoolean("hideSendAs", false), false);
@@ -1092,6 +1104,7 @@ public class ForkSettingsActivity extends BaseFragment {
                         || position == unmutedOnTopRow
                         || position == rearVideoMessages
                         || position == fullRecentStickersRow
+                        || position == showArchivedStickersRow
                         || position == hideSendAsRow
                         || position == disableQuickReactionRow
                         || position == hideMessageReactionsRow
@@ -1183,6 +1196,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 || position == syncPinsRow
                 || position == rearVideoMessages
                 || position == fullRecentStickersRow
+                || position == showArchivedStickersRow
                 || position == hideSendAsRow
                 || position == disableQuickReactionRow
                 || position == hideMessageReactionsRow
