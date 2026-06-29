@@ -60,6 +60,7 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
+import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.AdjustPanLayoutHelper;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AnimatedEmojiDrawable;
@@ -432,6 +433,12 @@ public class CaptionContainerView extends FrameLayout {
         this.dialogId = dialogId;
         if (mentionContainer != null) {
             mentionContainer.setDialogId(dialogId);
+        }
+    }
+
+    public void setChatInfo(TLRPC.ChatFull chatInfo) {
+        if (editText != null) {
+            editText.setChatInfo(chatInfo);
         }
     }
 

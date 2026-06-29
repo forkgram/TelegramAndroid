@@ -457,6 +457,14 @@ public class EditTextEmoji extends FrameLayout implements NotificationCenter.Not
         allowEmojisForNonPremium = allow;
     }
 
+    private TLRPC.ChatFull emojiViewChatInfo;
+    public void setChatInfo(TLRPC.ChatFull chatInfo) {
+        emojiViewChatInfo = chatInfo;
+        if (emojiView != null) {
+            emojiView.setChatInfo(chatInfo);
+        }
+    }
+
     public EmojiView getEmojiView() {
         return emojiView;
     }
@@ -786,7 +794,7 @@ public class EditTextEmoji extends FrameLayout implements NotificationCenter.Not
         if (emojiView != null) {
             return;
         }
-        emojiView = new EmojiView(parentFragment, allowAnimatedEmoji, false, false, getContext(), allowSearch(), null, null, currentStyle != STYLE_STORY && currentStyle != STYLE_PHOTOVIEWER && currentStyle != STYLE_CALL, resourcesProvider, false, glassDesignForEmojiView) {
+        emojiView = new EmojiView(parentFragment, allowAnimatedEmoji, false, false, getContext(), allowSearch(), emojiViewChatInfo, null, currentStyle != STYLE_STORY && currentStyle != STYLE_PHOTOVIEWER && currentStyle != STYLE_CALL, resourcesProvider, false, glassDesignForEmojiView) {
             @Override
             protected void dispatchDraw(@NonNull Canvas canvas) {
                 if (currentStyle == STYLE_STORY || currentStyle == STYLE_PHOTOVIEWER) {
