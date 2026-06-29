@@ -4315,6 +4315,12 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
         if (baseFragment instanceof ChatActivity) {
             ChatActivity chatActivity = (ChatActivity) baseFragment;
             calcMandatoryInsets = chatActivity.isKeyboardVisible();
+            if (commentTextView != null) {
+                commentTextView.setChatInfo(chatActivity.getCurrentChatInfo());
+            }
+            if (topCommentTextView != null) {
+                topCommentTextView.setChatInfo(chatActivity.getCurrentChatInfo());
+            }
         }
         updateDoneItemEnabled();
         openTransitionFinished = false;
