@@ -98,6 +98,8 @@
     <string name="DisableGlobalSearch">Desactivar búsqueda global</string>
     <string name="HideContactsInDialogs">Ocultar contactos en la lista de chats</string>
     <string name="MainTabsHiddenHint">Pestañas ocultas. Mantén pulsado el título para volver a mostrarlas.</string>
+    <string name="ShowBottomTabs">Mostrar pestañas inferiores</string>
+    <string name="HideBottomTabs">Ocultar pestañas inferiores</string>
     <string name="DisableTabletMode">Desactivar modo tableta</string>
     <string name="DisableQuickReaction">Desactivar reacción rápida</string>
     <string name="HideMessageReactions">Ocultar reacciones en los mensajes</string>

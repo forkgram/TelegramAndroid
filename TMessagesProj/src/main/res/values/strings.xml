@@ -99,6 +99,8 @@
     <string name="DisableGlobalSearch">Disable Global Search</string>
     <string name="HideContactsInDialogs">Hide contacts in chats list</string>
     <string name="MainTabsHiddenHint">Tabs hidden. Long-press the title to show them again.</string>
+    <string name="ShowBottomTabs">Show bottom tabs</string>
+    <string name="HideBottomTabs">Hide bottom tabs</string>
     <string name="DisableTabletMode">Disable tablet mode</string>
     <string name="DisableQuickReaction">Disable quick reaction</string>
     <string name="HideMessageReactions">Hide reactions on messages</string>

@@ -98,6 +98,8 @@
     <string name="DisableGlobalSearch">전역 검색 비활성화</string>
     <string name="HideContactsInDialogs">채팅 목록에서 연락처 숨기기</string>
     <string name="MainTabsHiddenHint">탭이 숨겨졌습니다. 제목을 길게 눌러 다시 표시하세요.</string>
+    <string name="ShowBottomTabs">하단 탭 표시</string>
+    <string name="HideBottomTabs">하단 탭 숨기기</string>
     <string name="DisableTabletMode">태블릿 모드 비활성화</string>
     <string name="DisableQuickReaction">빠른 반응 비활성화</string>
     <string name="HideMessageReactions">메시지의 반응 숨기기</string>
