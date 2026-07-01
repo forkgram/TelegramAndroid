@@ -11,6 +11,9 @@
     <string name="AddToHideMode">Добавить в режим скрытия</string>
     <string name="PinOrderInfo">Вы можете управлять локальным порядком закреплённых диалогов прямо здесь.</string>
     <string name="GoToFirstMessage">Перейти к началу</string>
+    <string name="DeleteFromDevice">Удалить с устройства</string>
+    <string name="DeleteFromDeviceMessage">Этот файл будет безвозвратно удалён с вашего устройства.</string>
+    <string name="DeleteFromDeviceDone">Файл удалён с устройства</string>
     <string name="formatterDay24HSec">HH:mm:ss</string>
     <string name="formatterDay12HSec">h:mm:ss a</string>
     <string name="CopyWithoutProtocol">Копировать без протокола</string>
