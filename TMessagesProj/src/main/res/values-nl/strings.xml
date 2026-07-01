@@ -102,6 +102,8 @@
     <string name="DisableGlobalSearch">Globale zoekfunctie uitschakelen</string>
     <string name="HideContactsInDialogs">Contacten in de chatlijst verbergen</string>
     <string name="MainTabsHiddenHint">Tabbladen verborgen. Houd de titel ingedrukt om ze weer te tonen.</string>
+    <string name="ShowBottomTabs">Onderste tabbladen weergeven</string>
+    <string name="HideBottomTabs">Onderste tabbladen verbergen</string>
     <string name="DisableTabletMode">Tabletmodus uitschakelen</string>
     <string name="DisableQuickReaction">Snelle reactie uitschakelen</string>
     <string name="HideMessageReactions">Reacties op berichten verbergen</string>

@@ -102,6 +102,8 @@
     <string name="DisableGlobalSearch">Disabilita la ricerca globale</string>
     <string name="HideContactsInDialogs">Nascondi i contatti nella lista delle chat</string>
     <string name="MainTabsHiddenHint">Schede nascoste. Tieni premuto il titolo per mostrarle di nuovo.</string>
+    <string name="ShowBottomTabs">Mostra le schede in basso</string>
+    <string name="HideBottomTabs">Nascondi le schede in basso</string>
     <string name="DisableTabletMode">Disabilita la modalità tablet</string>
     <string name="DisableQuickReaction">Disabilita la reazione rapida</string>
     <string name="HideMessageReactions">Nascondi le reazioni sui messaggi</string>
