@@ -108,6 +108,8 @@
     <string name="DisableGlobalSearch">Desativar pesquisa global</string>
     <string name="HideContactsInDialogs">Ocultar contatos na lista de conversas</string>
     <string name="MainTabsHiddenHint">Abas ocultas. Mantenha o título pressionado para mostrá-las novamente.</string>
+    <string name="ShowBottomTabs">Mostrar abas inferiores</string>
+    <string name="HideBottomTabs">Ocultar abas inferiores</string>
     <string name="DisableTabletMode">Desativar modo tablet</string>
     <string name="DisableQuickReaction">Desativar reação rápida</string>
     <string name="HideMessageReactions">Ocultar reações nas mensagens</string>
