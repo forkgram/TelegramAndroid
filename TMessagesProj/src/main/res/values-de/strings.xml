@@ -98,6 +98,8 @@
     <string name="DisableGlobalSearch">Globale Suche deaktivieren</string>
     <string name="HideContactsInDialogs">Kontakte in der Chatliste ausblenden</string>
     <string name="MainTabsHiddenHint">Tabs ausgeblendet. Halten Sie den Titel gedrückt, um sie wieder anzuzeigen.</string>
+    <string name="ShowBottomTabs">Untere Tabs anzeigen</string>
+    <string name="HideBottomTabs">Untere Tabs ausblenden</string>
     <string name="DisableTabletMode">Tablet-Modus deaktivieren</string>
     <string name="DisableQuickReaction">Schnelle Reaktion deaktivieren</string>
     <string name="HideMessageReactions">Reaktionen auf Nachrichten ausblenden</string>

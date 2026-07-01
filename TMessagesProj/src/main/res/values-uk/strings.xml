@@ -98,6 +98,8 @@
     <string name="DisableGlobalSearch">Вимкнути глобальний пошук</string>
     <string name="HideContactsInDialogs">Сховати контакти у списку чатів</string>
     <string name="MainTabsHiddenHint">Вкладки сховані. Натисніть і утримуйте заголовок, щоб показати їх знову.</string>
+    <string name="ShowBottomTabs">Показати нижні вкладки</string>
+    <string name="HideBottomTabs">Сховати нижні вкладки</string>
     <string name="DisableTabletMode">Вимкнути планшетний режим</string>
     <string name="DisableQuickReaction">Вимкнути швидку реакцію</string>
     <string name="HideMessageReactions">Сховати реакції на повідомленнях</string>
