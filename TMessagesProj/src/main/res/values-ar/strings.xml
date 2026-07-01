@@ -108,6 +108,8 @@
     <string name="DisableGlobalSearch">تعطيل البحث العالمي</string>
     <string name="HideContactsInDialogs">إخفاء جهات الاتصال في قائمة المحادثات</string>
     <string name="MainTabsHiddenHint">تم إخفاء علامات التبويب. اضغط مطولاً على العنوان لإظهارها مرة أخرى.</string>
+    <string name="ShowBottomTabs">عرض علامات التبويب السفلية</string>
+    <string name="HideBottomTabs">إخفاء علامات التبويب السفلية</string>
     <string name="DisableTabletMode">تعطيل وضع الجهاز اللوحي</string>
     <string name="DisableQuickReaction">تعطيل رد الفعل السريع</string>
     <string name="HideMessageReactions">إخفاء التفاعلات على الرسائل</string>
