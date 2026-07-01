@@ -13813,6 +13813,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         io.add(R.drawable.outline_groups_24, getString(R.string.NewMessageTitle), () -> {
             openWriteContacts();
         });
+        final boolean mainTabsHiddenFork = UserConfig.getInstance(currentAccount).getMainTabsHiddenFork();
+        io.add(R.drawable.menu_add_tab_24, getString(mainTabsHiddenFork ? R.string.ShowBottomTabs : R.string.HideBottomTabs), () -> {
+            UserConfig.getInstance(currentAccount).setMainTabsHiddenFork(!mainTabsHiddenFork);
+            checkUi_mainTabsVisible();
+        });
         if (MessagesController.getInstance(currentAccount).storiesEnabled()) {
             io.add(R.drawable.outline_fab_story_24, getString(R.string.RecorderNewStory), () -> {
                 if (!MessagesController.getInstance(currentAccount).storiesEnabled()) {
