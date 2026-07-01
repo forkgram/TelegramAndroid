@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="DeleteFromDevice">حذف من الجهاز</string>
+    <string name="DeleteFromDeviceDone">تم حذف الملف من الجهاز</string>
+    <string name="DeleteFromDeviceMessage">سيُحذف هذا الملف نهائيًا من جهازك.</string>
     <string name="SendAsRoundVideo">إرسال كفيديو دائري</string>
     <string name="ExportSettings">تصدير الإعدادات</string>
     <string name="ExportSettingsDone">تم تصدير الإعدادات.</string>
