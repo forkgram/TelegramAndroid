@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="DeleteFromDevice">Van apparaat verwijderen</string>
+    <string name="DeleteFromDeviceDone">Bestand van apparaat verwijderd</string>
+    <string name="DeleteFromDeviceMessage">Dit bestand wordt definitief van je apparaat verwijderd.</string>
     <string name="SendAsRoundVideo">Als rond videobericht versturen</string>
     <string name="ExportSettings">Instellingen exporteren</string>
     <string name="ExportSettingsDone">Instellingen geëxporteerd.</string>
