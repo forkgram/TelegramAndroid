@@ -14,6 +14,8 @@
     <string name="DeleteFromDevice">Удалить с устройства</string>
     <string name="DeleteFromDeviceMessage">Этот файл будет безвозвратно удалён с вашего устройства.</string>
     <string name="DeleteFromDeviceDone">Файл удалён с устройства</string>
+    <string name="ShowBottomTabs">Показать нижние табы</string>
+    <string name="HideBottomTabs">Спрятать нижние табы</string>
     <string name="formatterDay24HSec">HH:mm:ss</string>
     <string name="formatterDay12HSec">h:mm:ss a</string>
     <string name="CopyWithoutProtocol">Копировать без протокола</string>
