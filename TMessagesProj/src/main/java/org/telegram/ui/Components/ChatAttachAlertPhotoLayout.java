@@ -22,6 +22,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.app.RecoverableSecurityException;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -100,6 +103,7 @@ import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
 import org.telegram.ui.ActionBar.ActionBarMenuSubItem;
+import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.BasePermissionsActivity;
@@ -119,6 +123,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -189,6 +194,10 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
     public static HashMap<Object, Object> selectedPhotos = new HashMap<>();
     public static ArrayList<Object> selectedPhotosOrder = new ArrayList<>();
     public static int lastImageId = -1;
+
+    public static final int REQUEST_CODE_DELETE_FROM_DEVICE = 9200;
+    private static WeakReference<ChatAttachAlertPhotoLayout> deleteFromDevicePendingLayout;
+    private MediaController.PhotoEntry deleteFromDevicePendingEntry;
     private boolean cancelTakingPhotos;
     private boolean checkCameraWhenShown;
 
@@ -729,6 +738,139 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
         return arrayList;
     }
 
+    private void showDeleteFromDeviceMenu(PhotoAttachPhotoCell cell, MediaController.PhotoEntry entry) {
+        if (parentAlert == null || cell == null || entry == null) {
+            return;
+        }
+        ItemOptions.makeOptions(parentAlert.sizeNotifierFrameLayout, resourcesProvider, cell)
+                .add(R.drawable.msg_delete, LocaleController.getString(R.string.DeleteFromDevice), true, () -> deletePhotoEntryFromDevice(entry))
+                .show();
+    }
+
+    private Uri getContentUriForEntry(MediaController.PhotoEntry entry) {
+        if (entry == null || entry.imageId <= 0) {
+            return null;
+        }
+        Uri collection = entry.isVideo ? MediaStore.Video.Media.EXTERNAL_CONTENT_URI : MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        return ContentUris.withAppendedId(collection, entry.imageId);
+    }
+
+    private void deletePhotoEntryFromDevice(MediaController.PhotoEntry entry) {
+        if (entry == null || parentAlert == null) {
+            return;
+        }
+        BaseFragment fragment = parentAlert.baseFragment;
+        Activity activity = fragment != null ? fragment.getParentActivity() : null;
+        if (activity == null) {
+            return;
+        }
+        final Uri contentUri = getContentUriForEntry(entry);
+        if (Build.VERSION.SDK_INT >= 23 && (Build.VERSION.SDK_INT <= 28 || BuildVars.NO_SCOPED_STORAGE) && activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, BasePermissionsActivity.REQUEST_CODE_EXTERNAL_STORAGE);
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= 30 && contentUri != null) {
+            try {
+                deleteFromDevicePendingLayout = new WeakReference<>(this);
+                deleteFromDevicePendingEntry = entry;
+                ArrayList<Uri> uris = new ArrayList<>(1);
+                uris.add(contentUri);
+                PendingIntent pendingIntent = MediaStore.createDeleteRequest(activity.getContentResolver(), uris);
+                activity.startIntentSenderForResult(pendingIntent.getIntentSender(), REQUEST_CODE_DELETE_FROM_DEVICE, null, 0, 0, 0);
+            } catch (Exception e) {
+                FileLog.e(e);
+                deleteFromDevicePendingLayout = null;
+                deleteFromDevicePendingEntry = null;
+                BulletinFactory.of(parentAlert.sizeNotifierFrameLayout, resourcesProvider).createErrorBulletin(LocaleController.getString(R.string.ErrorOccurred)).show();
+            }
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), resourcesProvider);
+        builder.setTitle(LocaleController.getString(R.string.DeleteFromDevice));
+        builder.setMessage(LocaleController.getString(R.string.DeleteFromDeviceMessage));
+        builder.setPositiveButton(LocaleController.getString(R.string.Delete), (dialog, which) -> {
+            boolean deleted = false;
+            if (contentUri != null) {
+                try {
+                    deleted = activity.getContentResolver().delete(contentUri, null, null) > 0;
+                } catch (SecurityException e) {
+                    if (Build.VERSION.SDK_INT >= 29 && e instanceof RecoverableSecurityException) {
+                        try {
+                            deleteFromDevicePendingLayout = new WeakReference<>(this);
+                            deleteFromDevicePendingEntry = entry;
+                            activity.startIntentSenderForResult(((RecoverableSecurityException) e).getUserAction().getActionIntent().getIntentSender(), REQUEST_CODE_DELETE_FROM_DEVICE, null, 0, 0, 0);
+                            return;
+                        } catch (Exception e2) {
+                            FileLog.e(e2);
+                        }
+                    } else {
+                        FileLog.e(e);
+                    }
+                } catch (Exception e) {
+                    FileLog.e(e);
+                }
+            }
+            if (!deleted && entry.path != null) {
+                try {
+                    File file = new File(entry.path);
+                    if (file.exists() && file.delete()) {
+                        deleted = true;
+                    }
+                } catch (Exception e) {
+                    FileLog.e(e);
+                }
+            }
+            if (deleted) {
+                onPhotoDeletedFromDevice(entry);
+            } else {
+                BulletinFactory.of(parentAlert.sizeNotifierFrameLayout, resourcesProvider).createErrorBulletin(LocaleController.getString(R.string.ErrorOccurred)).show();
+            }
+        });
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        builder.show();
+    }
+
+    private void onPhotoDeletedFromDevice(MediaController.PhotoEntry entry) {
+        if (entry != null) {
+            if (selectedAlbumEntry != null) {
+                selectedAlbumEntry.photos.remove(entry);
+                selectedAlbumEntry.photosByIds.remove(entry.imageId);
+            }
+            cameraPhotos.remove(entry);
+            if (selectedPhotos.containsKey(entry.imageId)) {
+                selectedPhotos.remove(entry.imageId);
+                selectedPhotosOrder.remove((Integer) entry.imageId);
+                updateCheckedPhotoIndices();
+                updatePhotosCounter(false);
+                if (parentAlert != null) {
+                    parentAlert.updateCountButton(0);
+                }
+            }
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+            if (cameraAttachAdapter != null) {
+                cameraAttachAdapter.notifyDataSetChanged();
+            }
+        }
+        if (parentAlert != null) {
+            BulletinFactory.of(parentAlert.sizeNotifierFrameLayout, resourcesProvider).createSimpleBulletin(R.raw.ic_delete, LocaleController.getString(R.string.DeleteFromDeviceDone)).show();
+        }
+    }
+
+    public static void onDeleteFromDeviceActivityResult(int resultCode) {
+        ChatAttachAlertPhotoLayout layout = deleteFromDevicePendingLayout != null ? deleteFromDevicePendingLayout.get() : null;
+        deleteFromDevicePendingLayout = null;
+        if (layout == null) {
+            return;
+        }
+        MediaController.PhotoEntry entry = layout.deleteFromDevicePendingEntry;
+        layout.deleteFromDevicePendingEntry = null;
+        if (resultCode == Activity.RESULT_OK) {
+            layout.onPhotoDeletedFromDevice(entry);
+        }
+    }
+
     public ChatAttachAlertPhotoLayout(ChatAttachAlert alert, Context context, boolean forceDarkTheme, boolean needCamera, Theme.ResourcesProvider resourcesProvider) {
         super(alert, context, resourcesProvider);
         this.forceDarkTheme = forceDarkTheme;
@@ -1078,8 +1220,11 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
                 }
                 return true;
             } else if (view instanceof PhotoAttachPhotoCell) {
-                PhotoAttachPhotoCell cell = (PhotoAttachPhotoCell) view;
-                itemRangeSelector.setIsActive(view, true, position, shouldSelect = !cell.isChecked());
+                MediaController.PhotoEntry photoEntry = adapter.getPhoto(position);
+                if (photoEntry != null) {
+                    showDeleteFromDeviceMenu((PhotoAttachPhotoCell) view, photoEntry);
+                    return true;
+                }
             }
             return false;
         });
