@@ -3961,6 +3961,9 @@
     <string name="Ban">Ban</string>
     <string name="Rename">Rename</string>
     <string name="Delete">Delete</string>
+    <string name="DeleteFromDevice">Delete from device</string>
+    <string name="DeleteFromDeviceMessage">This file will be permanently deleted from your device.</string>
+    <string name="DeleteFromDeviceDone">File deleted from device</string>
     <string name="AddACaption">Add Caption</string>
     <string name="Start">Start</string>
     <string name="Forward">Forward</string>
