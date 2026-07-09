@@ -17,6 +17,9 @@
     <string name="VoiceQualityMedium">보통 (32 kbps)</string>
     <string name="VoiceQualityHigh">높음 (64 kbps)</string>
     <string name="VoiceQualityMax">최대 (기본값)</string>
+    <string name="TranslationEngineDefault">기본값</string>
+    <string name="TranslationEngineOffline">오프라인 번역기</string>
+    <string name="TranslationEngineOfflineInfo">오프라인 번역은 기기에서 실행되며 F-Droid의 **Offline Translator** 앱이 필요합니다.</string>
     <string name="DropScreenshotCaptionInfo">다른 앱에서 스크린샷을 공유할 때 캡션을 제거합니다.</string>
     <string name="HideInAppHintsInfo">채팅 목록의 프로모션 배너와 채팅의 생일 알림을 숨깁니다.</string>
     <string name="HideBottomButtonInfo">하단 막대 버튼(음소거, 참여)을 비우고 탭을 무시합니다.</string>
@@ -143,6 +146,7 @@
     <string name="BotSetPlatformAbout">변경 후 현재 봇에 새 플랫폼을 적용하려면 다시 시작하세요.</string>
     <string name="BotCopyUrl">클릭한 모든 링크 복사</string>
     <string name="DisableDefaultInAppBrowser">시스템 브라우저에서 링크 열기</string>
+    <string name="TranslationEngine">번역 엔진</string>
     <string name="DisableAutoplayNextVoice">다음 음성/영상 메시지 자동 재생 비활성화</string>
     <string name="AudioPlayerAutoplayNext">다음 자동 재생</string>
     <string name="SmsOnlyOfficialWarning">참고: SMS 인증은 공식 모바일 앱에서만 가능합니다</string>

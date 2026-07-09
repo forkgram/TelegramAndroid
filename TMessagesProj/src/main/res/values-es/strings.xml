@@ -17,6 +17,9 @@
     <string name="VoiceQualityMedium">Media (32 kbps)</string>
     <string name="VoiceQualityHigh">Alta (64 kbps)</string>
     <string name="VoiceQualityMax">Máxima (predeterminada)</string>
+    <string name="TranslationEngineDefault">Predeterminado</string>
+    <string name="TranslationEngineOffline">Traductor sin conexión</string>
+    <string name="TranslationEngineOfflineInfo">La traducción sin conexión funciona en tu dispositivo y necesita la app **Offline Translator** de F-Droid.</string>
     <string name="DropScreenshotCaptionInfo">Quitar el texto cuando se comparte una captura de pantalla desde otra aplicación.</string>
     <string name="HideInAppHintsInfo">Ocultar los banners promocionales en la lista de chats y el aviso de cumpleaños en los chats.</string>
     <string name="HideBottomButtonInfo">Vaciar el botón de la barra inferior (Silenciar, Unirse) e ignorar los toques en él.</string>
@@ -143,6 +146,7 @@
     <string name="BotSetPlatformAbout">Reinicia después del cambio para aplicar la nueva plataforma al bot actual.</string>
     <string name="BotCopyUrl">Copiar cada enlace pulsado</string>
     <string name="DisableDefaultInAppBrowser">Abrir enlaces en el navegador del sistema</string>
+    <string name="TranslationEngine">Motor de traducción</string>
     <string name="DisableAutoplayNextVoice">Desactivar reproducción automática del siguiente mensaje de voz/video</string>
     <string name="AudioPlayerAutoplayNext">Reproducir siguiente automáticamente</string>
     <string name="SmsOnlyOfficialWarning">Nota: La verificación por SMS está limitada SOLO a aplicaciones móviles oficiales</string>
