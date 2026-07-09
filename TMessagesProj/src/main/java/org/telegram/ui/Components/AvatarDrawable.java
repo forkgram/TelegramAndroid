@@ -587,8 +587,6 @@ public class AvatarDrawable extends Drawable {
         canvas.translate(bounds.left, bounds.top);
 
         if (drawAvatarBackground) {
-            SharedPreferences preferences = MessagesController.getGlobalMainSettings();
-            final boolean squareAvatars = preferences.getBoolean("squareAvatars", false);
             if (rotate45Background) {
                 canvas.save();
                 canvas.rotate(-45, size / 2.0f, size / 2.0f);
@@ -596,10 +594,10 @@ public class AvatarDrawable extends Drawable {
             if (roundRadius > 0) {
                 AndroidUtilities.rectTmp.set(0, 0, size, size);
                 canvas.drawRoundRect(AndroidUtilities.rectTmp, roundRadius, roundRadius, backgroundPaint);
-            } else if (squareAvatars) {
-                canvas.drawRect(0f, 0f, size, size, backgroundPaint);
             } else {
-                canvas.drawCircle(size / 2.0f, size / 2.0f, size / 2.0f, backgroundPaint);
+                final float r = AndroidUtilities.avatarCornerRadius(size);
+                AndroidUtilities.rectTmp.set(0, 0, size, size);
+                canvas.drawRoundRect(AndroidUtilities.rectTmp, r, r, backgroundPaint);
             }
             if (rotate45Background) {
                 canvas.restore();
@@ -609,7 +607,7 @@ public class AvatarDrawable extends Drawable {
         if (avatarType == AVATAR_TYPE_ARCHIVED) {
             if (archivedAvatarProgress != 0) {
                 backgroundPaint.setColor(ColorUtils.setAlphaComponent(getThemedColor(Theme.key_avatar_backgroundArchived), alpha));
-                canvas.drawCircle(size / 2.0f, size / 2.0f, size / 2.0f * archivedAvatarProgress, backgroundPaint);
+                AndroidUtilities.drawAvatarRoundRect(canvas, size / 2.0f, size / 2.0f, size / 2.0f * archivedAvatarProgress, backgroundPaint);
                 if (Theme.dialogs_archiveAvatarDrawableRecolored) {
                     Theme.dialogs_archiveAvatarDrawable.beginApplyLayerColors();
                     Theme.dialogs_archiveAvatarDrawable.setLayerColor("Arrow1.**", Theme.getNonAnimatedColor(Theme.key_avatar_backgroundArchived));
