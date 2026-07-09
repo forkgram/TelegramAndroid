@@ -36,6 +36,7 @@
     <string name="RearVideoMessagesInfo">تسجيل رسائل الفيديو بالكاميرا الخلفية.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">عدم إلغاء كتم الفيديو الظاهر عند الضغط على مفاتيح الصوت.</string>
     <string name="DisableRecentFilesAttachmentInfo">إخفاء قائمة الملفات الأخيرة في قائمة المرفقات.</string>
+    <string name="DisableAutoplayNextVoiceInfo">عدم الانتقال إلى الرسالة الصوتية التالية بعد انتهاء الحالية.</string>
     <string name="BotSkipShareInfo">تجاهل طلبات مشاركة الرسائل من التطبيقات المصغرة بصمت.</string>
     <string name="BotSkipFullscreenInfo">عدم السماح للتطبيقات المصغرة بالتبديل إلى وضع ملء الشاشة.</string>
     <string name="DisableParametersFromBotLinksInfo">إزالة معاملات البدء من روابط البوتات قبل فتحها.</string>
@@ -128,6 +129,8 @@
     <string name="BotSetPlatformAbout">يُرجى إعادة التشغيل بعد التغيير لتطبيق المنصة الجديدة على الروبوت الحالي.</string>
     <string name="BotCopyUrl">نسخ كل رابط يتم النقر عليه</string>
     <string name="DisableDefaultInAppBrowser">فتح الروابط في متصفح النظام</string>
+    <string name="DisableAutoplayNextVoice">تعطيل التشغيل التلقائي لرسالة الصوت/الفيديو التالية</string>
+    <string name="AudioPlayerAutoplayNext">التشغيل التلقائي للتالي</string>
     <string name="SmsOnlyOfficialWarning">ملاحظة: التحقق عبر الرسائل النصية مقتصر فقط على التطبيقات الرسمية</string>
     <string name="ThirdParty">طرف ثالث</string>
     <string name="EnableLastSeenDots">تفعيل نقاط ملونة لآخر ظهور</string>

@@ -36,6 +36,7 @@
     <string name="RearVideoMessagesInfo">동영상 메시지를 후면 카메라로 녹화합니다.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">볼륨 키를 눌러도 보이는 동영상의 음소거를 해제하지 않습니다.</string>
     <string name="DisableRecentFilesAttachmentInfo">첨부 메뉴에서 최근 파일 목록을 숨깁니다.</string>
+    <string name="DisableAutoplayNextVoiceInfo">음성 메시지가 끝나도 다음 메시지로 넘어가지 않습니다.</string>
     <string name="BotSkipShareInfo">미니 앱의 메시지 공유 요청을 조용히 무시합니다.</string>
     <string name="BotSkipFullscreenInfo">미니 앱이 전체 화면 모드로 전환하지 못하게 합니다.</string>
     <string name="DisableParametersFromBotLinksInfo">봇 링크를 열기 전에 시작 매개변수를 제거합니다.</string>
@@ -128,6 +129,8 @@
     <string name="BotSetPlatformAbout">변경 후 현재 봇에 새 플랫폼을 적용하려면 다시 시작하세요.</string>
     <string name="BotCopyUrl">클릭한 모든 링크 복사</string>
     <string name="DisableDefaultInAppBrowser">시스템 브라우저에서 링크 열기</string>
+    <string name="DisableAutoplayNextVoice">다음 음성/영상 메시지 자동 재생 비활성화</string>
+    <string name="AudioPlayerAutoplayNext">다음 자동 재생</string>
     <string name="SmsOnlyOfficialWarning">참고: SMS 인증은 공식 모바일 앱에서만 가능합니다</string>
     <string name="ThirdParty">서드파티</string>
     <string name="EnableLastSeenDots">마지막 접속 색상 점 활성화</string>
