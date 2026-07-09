@@ -108,6 +108,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_RECENT_FILES_ATTACHMENT = 57;
 
     public static final int ID_VOICE_QUALITY = 60;
+    public static final int ID_DISABLE_AUTOPLAY_NEXT_VOICE = 61;
     public static final int ID_CLOUDFLARE_ENABLE_STT = 63;
     public static final int ID_CLOUDFLARE_CREDENTIALS = 64;
 
@@ -523,6 +524,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionVoice)));
         items.add(UItem.asSettingsCell(ID_VOICE_QUALITY, LocaleController.getString(R.string.VoiceMessageQuality), getVoiceQualityText()));
+        items.add(UItem.asButtonCheck(ID_DISABLE_AUTOPLAY_NEXT_VOICE, LocaleController.getString(R.string.DisableAutoplayNextVoice), LocaleController.getString(R.string.DisableAutoplayNextVoiceInfo))
+            .setChecked(pref("disableAutoplayNextVoice", false)).setMultiline(true));
         items.add(UItem.asCheck(ID_CLOUDFLARE_ENABLE_STT, LocaleController.getString(R.string.CloudflareEnableSTT))
             .setChecked(SharedConfig.cfEnableStt));
         items.add(UItem.asSettingsCell(ID_CLOUDFLARE_CREDENTIALS, LocaleController.getString(R.string.CloudflareCredentials), ""));
@@ -680,6 +683,8 @@ public class ForkSettingsActivity extends BaseFragment {
 
         } else if (id == ID_VOICE_QUALITY) {
             showVoiceQualityDialog();
+        } else if (id == ID_DISABLE_AUTOPLAY_NEXT_VOICE) {
+            toggle("disableAutoplayNextVoice", item, view);
         } else if (id == ID_CLOUDFLARE_ENABLE_STT) {
             if (!SharedConfig.cfEnableStt && (android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) || android.text.TextUtils.isEmpty(SharedConfig.cfApiToken))) {
                 showCfCredentialsDialog();
