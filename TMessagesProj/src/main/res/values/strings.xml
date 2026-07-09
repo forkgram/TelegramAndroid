@@ -37,6 +37,7 @@
     <string name="RearVideoMessagesInfo">Start recording video messages with the rear camera.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Do not unmute the visible video when volume keys are pressed.</string>
     <string name="DisableRecentFilesAttachmentInfo">Hide the recent files list in the attachment menu.</string>
+    <string name="DisableAutoplayNextVoiceInfo">Do not continue to the next voice message when one finishes.</string>
     <string name="BotSkipShareInfo">Silently dismiss share-this-message requests from mini apps.</string>
     <string name="BotSkipFullscreenInfo">Do not let mini apps switch to fullscreen mode.</string>
     <string name="DisableParametersFromBotLinksInfo">Strip start payloads from bot links before opening them.</string>
@@ -133,6 +134,8 @@
     <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
     <string name="BotCopyUrl">Copy every clicked link</string>
     <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
+    <string name="DisableAutoplayNextVoice">Disable auto-play of next voice/video message</string>
+    <string name="AudioPlayerAutoplayNext">Auto-play next</string>
     <string name="SmsOnlyOfficialWarning">Note: SMS verification is limited to ONLY official mobile apps</string>
     <string name="ThirdParty">Third-party</string>
     <string name="EnableLastSeenDots">Enable colored last seen dots</string>
