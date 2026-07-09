@@ -42,6 +42,7 @@
     <string name="RearVideoMessagesInfo">Починати запис відеоповідомлень з основної камери.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Не вмикати звук видимого відео під час натискання клавіш гучності.</string>
     <string name="DisableRecentFilesAttachmentInfo">Приховувати список нещодавніх файлів у меню вкладень.</string>
+    <string name="DisableAutoplayNextVoiceInfo">Не переходити до наступного голосового повідомлення після завершення поточного.</string>
     <string name="BotSkipShareInfo">Мовчки відхиляти запити міні-застосунків на надсилання повідомлення.</string>
     <string name="BotSkipFullscreenInfo">Не дозволяти міні-застосункам переходити в повноекранний режим.</string>
     <string name="DisableParametersFromBotLinksInfo">Прибирати start-параметри з посилань на ботів перед відкриттям.</string>
@@ -138,6 +139,8 @@
     <string name="BotSetPlatformAbout">Після зміни перезапустіть додаток, щоб застосувати нову платформу для поточного бота.</string>
     <string name="BotCopyUrl">Копіювати кожне натиснуте посилання</string>
     <string name="DisableDefaultInAppBrowser">Відкривати посилання в системному браузері</string>
+    <string name="DisableAutoplayNextVoice">Вимкнути автовідтворення наступного голосового/відеоповідомлення</string>
+    <string name="AudioPlayerAutoplayNext">Автовідтворення наступного</string>
     <string name="SmsOnlyOfficialWarning">Примітка: SMS-підтвердження доступне ЛИШЕ у офіційних мобільних додатках</string>
     <string name="ThirdParty">Сторонні</string>
     <string name="EnableLastSeenDots">Увімкнути кольорові крапки останнього входу</string>
