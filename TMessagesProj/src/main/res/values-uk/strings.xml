@@ -71,6 +71,10 @@
     <string name="ForkSettingsTitle">Налаштування клієнта Fork</string>
     <string name="ForkCheckUpdate">Перевірити оновлення</string>
     <string name="SquareAvatars">Квадратні аватари</string>
+    <string name="AvatarShape">Форма аватара</string>
+    <string name="AvatarShapeRound">Кругла</string>
+    <string name="AvatarShapeRounded">Заокруглена</string>
+    <string name="AvatarShapeSquare">Квадратна</string>
     <string name="InAppCamera">Увімкнути камеру в додатку</string>
     <string name="InAppCameraInfo">В прикріпленнях</string>
     <string name="SyncPins">Синхронізувати закріплені діалоги</string>

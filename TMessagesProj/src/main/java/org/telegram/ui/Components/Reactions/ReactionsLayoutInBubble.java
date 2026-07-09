@@ -1299,8 +1299,7 @@ public class ReactionsLayoutInBubble {
                     avatarsDrawable = new AvatarsDrawable(parentView, false);
                     avatarsDrawable.transitionDuration = ChatListItemAnimator.DEFAULT_DURATION;
                     avatarsDrawable.transitionInterpolator = ChatListItemAnimator.DEFAULT_INTERPOLATOR;
-                    boolean squareAvatars = MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false);
-                    avatarsDrawable.setSize(dp(squareAvatars ? 18 : 20));
+                    avatarsDrawable.setSize(dp(AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_SQUARE ? 18 : 20));
                     avatarsDrawable.width = dp(100);
                     avatarsDrawable.height = height;
                     avatarsDrawable.setAvatarsTextSize(dp(22));
