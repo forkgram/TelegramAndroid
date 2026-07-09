@@ -72,6 +72,8 @@
     <string name="UnmutedOnTopInfo">I messaggi non silenziati saranno sotto i dialoghi fissati</string>
     <string name="PhotoHasSticker">Invia informazioni sullo sticker nella foto</string>
     <string name="PhotoHasStickerInfo">Quando si utilizzano sticker sulla foto</string>
+    <string name="DisableMotionPhoto">Disabilita le foto in movimento</string>
+    <string name="DisableMotionPhotoInfo">Allega le foto in movimento di Google/Samsung come foto normali, non come video</string>
     <string name="PinDialogsOrder">Ordine dei dialoghi fissati</string>
     <string name="RearVideoMessages">Fotocamera posteriore nei messaggi video</string>
     <string name="ReplaceForward">Sostituisci l\'inoltro originale</string>
