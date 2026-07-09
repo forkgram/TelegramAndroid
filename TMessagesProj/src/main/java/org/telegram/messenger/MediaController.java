@@ -2554,7 +2554,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                 hasAudioFocus = 0;
                 int index = -1;
                 if (voiceMessagesPlaylist != null) {
-                    if (byVoiceEnd && (index = voiceMessagesPlaylist.indexOf(lastFile)) >= 0) {
+                    if (byVoiceEnd && !MessagesController.getGlobalMainSettings().getBoolean("disableAutoplayNextVoice", false) && (index = voiceMessagesPlaylist.indexOf(lastFile)) >= 0) {
                         voiceMessagesPlaylist.remove(index);
                         voiceMessagesPlaylistMap.remove(lastFile.getId());
                         if (voiceMessagesPlaylist.isEmpty()) {
