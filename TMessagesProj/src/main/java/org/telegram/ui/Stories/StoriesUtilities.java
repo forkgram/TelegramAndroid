@@ -10,7 +10,6 @@ import static org.telegram.ui.Stories.StoriesController.STATE_LIVE;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
@@ -129,7 +128,8 @@ public class StoriesUtilities {
         int state;
         int unreadState = 0;
         boolean showProgress = storiesController.isLoading(dialogId);
-        boolean isForum = ChatObject.isForum(UserConfig.selectedAccount, dialogId) && !params.isDialogStoriesCell;
+        boolean isForum = AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_FORUM
+                || (ChatObject.isForum(UserConfig.selectedAccount, dialogId) && !params.isDialogStoriesCell);
         if (params.drawHiddenStoriesAsSegments) {
             hasStories = storiesController.hasHiddenStories();
         }
@@ -664,7 +664,7 @@ public class StoriesUtilities {
     private final static short[][] CornersSign = new short[][]{ {-1, -1}, {-1 ,1}, {1, 1}, {1, -1} };
     private final static short[] Corners = { 225, 315, 405, 495 };
     private static void drawArcFork(Canvas canvas, RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint) {
-        if (!MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
+        if (AndroidUtilities.avatarCornersType() != AndroidUtilities.AVATAR_CORNERS_SQUARE) {
             canvas.drawArc(oval, startAngle, sweepAngle, useCenter, paint);
             return;
         }
@@ -710,11 +710,12 @@ public class StoriesUtilities {
         if (isForum) {
             forumRect.set(rectTmp);
             forumRect.inset(dp(0.5f), dp(0.5f));
-            canvas.drawRoundRect(forumRect, dp(18), dp(18), paint);
+            final float radius = roundRectRingRadius(forumRect);
+            canvas.drawRoundRect(forumRect, radius, radius, paint);
             return;
         }
         if (params.progressToArc == 0) {
-            if (MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
+            if (AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_SQUARE) {
                 canvas.drawRect(rectTmp.left, rectTmp.top, rectTmp.right, rectTmp.bottom, paint);
             } else {
                 canvas.drawCircle(rectTmp.centerX(), rectTmp.centerY(), rectTmp.width() / 2f, paint);
@@ -725,31 +726,114 @@ public class StoriesUtilities {
     }
 
     private static final Path forumRoundRectPath = new Path();
-    private static final Matrix forumRoundRectMatrix = new Matrix();
     private static final PathMeasure forumRoundRectPathMeasure = new PathMeasure();
     private static final Path forumSegmentPath = new Path();
+    private static final RectF roundRectCorner = new RectF();
+
+    private static float roundRectRingRadius(RectF rect) {
+        return Math.min(rect.width(), rect.height()) * 0.32f;
+    }
+
+    private static void drawRoundRectSegment(Canvas canvas, RectF rect, Paint paint, float startAngle, float endAngle, float r) {
+        if (endAngle - startAngle <= 0) {
+            return;
+        }
+        r = Math.min(r, Math.min(rect.width(), rect.height()) / 2f);
+        buildRoundRectOutline(rect, r);
+        forumRoundRectPathMeasure.setPath(forumRoundRectPath, false);
+        final float length = forumRoundRectPathMeasure.getLength();
+        final float from = roundRectFraction(startAngle, rect, r);
+        float to = roundRectFraction(endAngle, rect, r);
+        if (to <= from) {
+            to += 1f;
+        }
+        forumSegmentPath.reset();
+        forumRoundRectPathMeasure.getSegment(from * length, Math.min(to, 1f) * length, forumSegmentPath, true);
+        if (to > 1f) {
+            forumRoundRectPathMeasure.getSegment(0, (to - 1f) * length, forumSegmentPath, true);
+        }
+        forumSegmentPath.rLineTo(0, 0);
+        canvas.drawPath(forumSegmentPath, paint);
+    }
+
+    private static void buildRoundRectOutline(RectF rect, float r) {
+        final float cy = rect.centerY();
+        forumRoundRectPath.rewind();
+        forumRoundRectPath.moveTo(rect.right, cy);
+        forumRoundRectPath.lineTo(rect.right, rect.bottom - r);
+        roundRectCorner.set(rect.right - 2 * r, rect.bottom - 2 * r, rect.right, rect.bottom);
+        forumRoundRectPath.arcTo(roundRectCorner, 0, 90);
+        forumRoundRectPath.lineTo(rect.left + r, rect.bottom);
+        roundRectCorner.set(rect.left, rect.bottom - 2 * r, rect.left + 2 * r, rect.bottom);
+        forumRoundRectPath.arcTo(roundRectCorner, 90, 90);
+        forumRoundRectPath.lineTo(rect.left, rect.top + r);
+        roundRectCorner.set(rect.left, rect.top, rect.left + 2 * r, rect.top + 2 * r);
+        forumRoundRectPath.arcTo(roundRectCorner, 180, 90);
+        forumRoundRectPath.lineTo(rect.right - r, rect.top);
+        roundRectCorner.set(rect.right - 2 * r, rect.top, rect.right, rect.top + 2 * r);
+        forumRoundRectPath.arcTo(roundRectCorner, 270, 90);
+        forumRoundRectPath.lineTo(rect.right, cy);
+    }
+
+    private static float roundRectFraction(float angle, RectF rect, float r) {
+        final float hx = rect.width() / 2f, hy = rect.height() / 2f;
+        final float ax = Math.max(0, hx - r), ay = Math.max(0, hy - r);
+        final float quarterArc = (float) (Math.PI * r / 2f);
+        final float total = 4 * (ax + ay + quarterArc);
+        if (total <= 0) {
+            return 0;
+        }
+        final float b1 = (float) Math.toDegrees(Math.atan2(ay, hx));
+        final float b2 = (float) Math.toDegrees(Math.atan2(hy, ax));
+        final float c1 = ay, c2 = c1 + quarterArc, c3 = c2 + 2 * ax, c4 = c3 + quarterArc;
+        final float c5 = c4 + 2 * ay, c6 = c5 + quarterArc, c7 = c6 + 2 * ax, c8 = c7 + quarterArc;
+
+        float a = angle % 360f;
+        if (a < 0) {
+            a += 360f;
+        }
+        final double rad = Math.toRadians(a);
+        final double cos = Math.cos(rad), sin = Math.sin(rad);
+        final float len;
+        if (a < b1) {
+            len = (float) (hx * Math.tan(rad));
+        } else if (a < b2) {
+            len = c1 + cornerArcLength(cos, sin, ax, ay, r, 0);
+        } else if (a < 180 - b2) {
+            len = c2 + (ax - (float) (hy / Math.tan(rad)));
+        } else if (a < 180 - b1) {
+            len = c3 + cornerArcLength(cos, sin, -ax, ay, r, 90);
+        } else if (a < 180 + b1) {
+            len = c4 + (ay + (float) (hx * Math.tan(rad)));
+        } else if (a < 180 + b2) {
+            len = c5 + cornerArcLength(cos, sin, -ax, -ay, r, 180);
+        } else if (a < 360 - b2) {
+            len = c6 + (ax - (float) (hy / Math.tan(rad)));
+        } else if (a < 360 - b1) {
+            len = c7 + cornerArcLength(cos, sin, ax, -ay, r, 270);
+        } else {
+            len = c8 + (ay + (float) (hx * Math.tan(rad)));
+        }
+        return Math.min(1f, Math.max(0f, len / total));
+    }
+
+    private static float cornerArcLength(double cos, double sin, float cx, float cy, float r, float baseDegrees) {
+        final double dot = cos * cx + sin * cy;
+        final double discriminant = Math.max(0, dot * dot - (cx * cx + cy * cy - r * r));
+        final double t = dot + Math.sqrt(discriminant);
+        double phi = Math.toDegrees(Math.atan2(t * sin - cy, t * cos - cx)) - baseDegrees;
+        while (phi < 0) {
+            phi += 360;
+        }
+        while (phi > 360) {
+            phi -= 360;
+        }
+        return (float) (Math.toRadians(Math.min(90, phi)) * r);
+    }
 
     private static void drawSegment(Canvas canvas, RectF rectTmp, Paint paint, float startAngle, float endAngle, AvatarStoryParams params, boolean isForum) {
         if (isForum) {
-            float r = rectTmp.height() * 0.32f;
-            float rotateAngle = (((int)(startAngle)) / 90) * 90 + 90;
-            float pathAngleStart = -199 + rotateAngle;
-            float percentFrom = (startAngle - pathAngleStart) / 360;
-            float percentTo = (endAngle - pathAngleStart) / 360;
-            forumRoundRectPath.rewind();
-            forumRoundRectPath.addRoundRect(rectTmp, r, r, Path.Direction.CW);
-
-            forumRoundRectMatrix.reset();
-            forumRoundRectMatrix.postRotate(rotateAngle, rectTmp.centerX(), rectTmp.centerY());
-            forumRoundRectPath.transform(forumRoundRectMatrix);
-
-            forumRoundRectPathMeasure.setPath(forumRoundRectPath, false);
-            float length = forumRoundRectPathMeasure.getLength();
-
-            forumSegmentPath.reset();
-            forumRoundRectPathMeasure.getSegment(length * percentFrom, length * percentTo, forumSegmentPath, true);
-            forumSegmentPath.rLineTo(0, 0);
-            canvas.drawPath(forumSegmentPath, paint);
+            drawRoundRectSegment(canvas, rectTmp, paint, startAngle, endAngle, roundRectRingRadius(rectTmp));
             return;
         }
         if (params.useArcProgress) {

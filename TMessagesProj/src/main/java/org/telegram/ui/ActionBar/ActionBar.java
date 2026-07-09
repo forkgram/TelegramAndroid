@@ -94,7 +94,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
     private BlurredBackgroundDrawable glassDrawable;
     private BlurredBackgroundDrawable glassDrawableBack;
     private BlurredBackgroundDrawable glassDrawableMenu;
-    private boolean glassAvatarSquare;
+    private int glassAvatarCorners = AndroidUtilities.AVATAR_CORNERS_ROUND;
     private INavigationLayout.BackButtonState backButtonState = INavigationLayout.BackButtonState.BACK;
     public ImageView backButtonImageView;
     private BackupImageView avatarSearchImageView;
@@ -252,22 +252,33 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         if (backButtonImageView != null) {
             backButtonImageView.setTranslationX(dp(2));
         }
-        applyGlassAvatarSquare();
+        applyGlassAvatarCorners();
     }
 
-    public void setGlassAvatarSquare(boolean square) {
-        if (glassAvatarSquare == square) {
+    public void setGlassAvatarCorners(int corners) {
+        if (glassAvatarCorners == corners) {
             return;
         }
-        glassAvatarSquare = square;
-        applyGlassAvatarSquare();
+        glassAvatarCorners = corners;
+        applyGlassAvatarCorners();
         invalidate();
     }
 
-    private void applyGlassAvatarSquare() {
-        if (glassDrawable instanceof BlurredBackgroundDrawable) {
+    private float glassAvatarRadius() {
+        if (glassAvatarCorners == AndroidUtilities.AVATAR_CORNERS_SQUARE) {
+            return 0;
+        }
+        if (glassAvatarCorners == AndroidUtilities.AVATAR_CORNERS_FORUM || glassModeIsForum) {
+            return dp(18.33f);
+        }
+        return dp(23);
+    }
+
+    private void applyGlassAvatarCorners() {
+        if (glassDrawable != null) {
             final float r = dp(23);
-            ((BlurredBackgroundDrawable) glassDrawable).setRadius(glassAvatarSquare ? 0 : r, r, r, glassAvatarSquare ? 0 : r, false);
+            final float r2 = glassAvatarRadius();
+            glassDrawable.setRadius(r2, r, r, r2, false);
         }
     }
 
@@ -1227,9 +1238,9 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         alphaUpdate.addUpdateListener(anm -> {
             searchFieldVisibleAlpha = (float) anm.getAnimatedValue();
 
-            if (glassDrawable != null && glassModeIsForum) {
+            if (glassDrawable != null) {
                 final float r1 = dp(23);
-                final float r2 = lerp(dp(18.33f), dp(23), searchFieldVisibleAlpha);
+                final float r2 = lerp(glassAvatarRadius(), dp(23), searchFieldVisibleAlpha);
                 glassDrawable.setRadius(r2, r1, r1, r2);
                 invalidate();
             }

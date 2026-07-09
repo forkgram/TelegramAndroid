@@ -74,7 +74,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_HIDE_IN_APP_HINTS = 10;
     public static final int ID_HIDE_BOTTOM_BUTTON = 11;
     public static final int ID_CUSTOM_TITLE = 12;
-    public static final int ID_SQUARE_AVATARS = 14;
+    public static final int ID_AVATAR_CORNERS = 13;
 
     public static final int ID_SYNC_PINS = 20;
     public static final int ID_UNMUTED_ON_TOP = 21;
@@ -441,8 +441,6 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionAppearance)));
-        items.add(UItem.asButtonCheck(ID_SQUARE_AVATARS, LocaleController.getString(R.string.SquareAvatars), LocaleController.getString(R.string.ForkRestartRequired))
-            .setChecked(pref("squareAvatars", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_HIDE_IN_APP_HINTS, LocaleController.getString(R.string.HideInAppHints), LocaleController.getString(R.string.HideInAppHintsInfo))
             .setChecked(pref("hideInAppHints", false)).setMultiline(true));
         if (SharedConfig.isUserOwner()) {
@@ -451,6 +449,21 @@ public class ForkSettingsActivity extends BaseFragment {
         }
         items.add(UItem.asSettingsCell(ID_CUSTOM_TITLE, LocaleController.getString(R.string.EditAdminRank), prefs().getString("forkCustomTitle", "Fork Client")));
         items.add(UItem.asShadow(null));
+
+        items.add(UItem.asHeader(LocaleController.getString(R.string.AvatarShape)));
+        items.add(searchable(UItem.asSlideView(
+            new String[]{
+                LocaleController.getString(R.string.AvatarShapeRound),
+                LocaleController.getString(R.string.AvatarShapeRounded),
+                LocaleController.getString(R.string.AvatarShapeSquare)
+            },
+            AndroidUtilities.avatarCornersType(),
+            index -> {
+                SharedPreferences.Editor editor = prefs().edit();
+                editor.putInt("avatarCorners", index);
+                editor.commit();
+            }).setId(ID_AVATAR_CORNERS), R.string.AvatarShape));
+        items.add(UItem.asShadow(LocaleController.getString(R.string.ForkRestartRequired)));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ChatList)));
         items.add(UItem.asButtonCheck(ID_SYNC_PINS, LocaleController.getString(R.string.SyncPins), LocaleController.getString(R.string.SyncPinsInfo))
@@ -623,8 +636,6 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_HIDDEN_ACCOUNTS) {
             presentFragment(new HiddenAccountsActivity());
 
-        } else if (id == ID_SQUARE_AVATARS) {
-            toggle("squareAvatars", item, view);
         } else if (id == ID_HIDE_IN_APP_HINTS) {
             toggle("hideInAppHints", item, view);
         } else if (id == ID_HIDE_BOTTOM_BUTTON) {
