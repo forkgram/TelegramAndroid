@@ -43,13 +43,8 @@ public class SenderSelectView extends View implements Theme.Colorable {
     private boolean scaleOut;
     private boolean scaleIn;
 
-    private int round = 16;
-
     public SenderSelectView(Context context) {
         super(context);
-        if (org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
-            round = 0;
-        }
         avatarImage.setRoundRadius(AndroidUtilities.dp(28));
         menuPaint.setStrokeWidth(AndroidUtilities.dp(2));
         menuPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -75,7 +70,7 @@ public class SenderSelectView extends View implements Theme.Colorable {
             return;
         }
         lastSelectorColor = Theme.multAlpha(Theme.getColor(Theme.key_windowBackgroundWhite), 0.2f);
-        selectorDrawable = Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(round), Color.TRANSPARENT, lastSelectorColor);
+        selectorDrawable = Theme.createSimpleSelectorRoundRectDrawable((int) AndroidUtilities.avatarCornerRadius(AndroidUtilities.dp(36)), Color.TRANSPARENT, lastSelectorColor);
         selectorDrawable.setCallback(this);
     }
 
@@ -97,6 +92,7 @@ public class SenderSelectView extends View implements Theme.Colorable {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(MeasureSpec.makeMeasureSpec(getLayoutParams().width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(getLayoutParams().height, MeasureSpec.EXACTLY));
         avatarImage.setImageCoords(0, 0, getMeasuredWidth(), getMeasuredHeight());
+        avatarImage.setRoundRadius(Math.min(getMeasuredWidth(), getMeasuredHeight()) / 2);
     }
 
     @Override
@@ -118,12 +114,7 @@ public class SenderSelectView extends View implements Theme.Colorable {
 
         int alpha = (int) (menuProgress * 0xFF);
         backgroundPaint.setAlpha(alpha);
-        if (round != 0) {
-        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, Math.min(getWidth(), getHeight()) / 2f, backgroundPaint);
-        } else {
-        AndroidUtilities.rectTmp.set(0, 0, getWidth(), getHeight());
-        canvas.drawRoundRect(AndroidUtilities.rectTmp, AndroidUtilities.dp(round), AndroidUtilities.dp(round), backgroundPaint);
-        }
+        AndroidUtilities.drawAvatarRoundRect(canvas, getWidth() / 2f, getHeight() / 2f, Math.min(getWidth(), getHeight()) / 2f, backgroundPaint);
 
         canvas.save();
         menuPaint.setAlpha(alpha);
