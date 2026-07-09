@@ -11,6 +11,9 @@
     <string name="VoiceQualityMedium">Média (32 kbps)</string>
     <string name="VoiceQualityHigh">Alta (64 kbps)</string>
     <string name="VoiceQualityMax">Máxima (padrão)</string>
+    <string name="TranslationEngineDefault">Padrão</string>
+    <string name="TranslationEngineOffline">Tradutor offline</string>
+    <string name="TranslationEngineOfflineInfo">A tradução offline funciona no seu dispositivo e precisa do app **Offline Translator** do F-Droid.</string>
     <string name="DropScreenshotCaptionInfo">Remover a legenda quando uma captura de tela é compartilhada de outro aplicativo.</string>
     <string name="HideInAppHintsInfo">Ocultar banners promocionais na lista de conversas e a dica de aniversário nas conversas.</string>
     <string name="HideBottomButtonInfo">Esvaziar o botão da barra inferior (Silenciar, Entrar) e ignorar toques nele.</string>
@@ -133,6 +136,7 @@
     <string name="BotSkipShare">Ignorar caixas de compartilhamento de bots</string>
     <string name="BotSkipFullscreen">Desativar tela cheia para bots</string>
     <string name="DisableDefaultInAppBrowser">Abrir links no browser padrão do sistema</string>
+    <string name="TranslationEngine">Mecanismo de tradução</string>
     <string name="DisableAutoplayNextVoice">Desativar reprodução automática da próxima mensagem de voz/vídeo</string>
     <string name="AudioPlayerAutoplayNext">Reproduzir próximo automaticamente</string>
     <string name="SmsOnlyOfficialWarning">Observação: A verificação por SMS está disponível APENAS para aplicativos oficiais</string>
