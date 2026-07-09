@@ -72,6 +72,8 @@
     <string name="UnmutedOnTopInfo">ستكون الرسائل غير الصامتة تحت المحادثات المثبتة</string>
     <string name="PhotoHasSticker">إرسال معلومات الملصق في الصورة</string>
     <string name="PhotoHasStickerInfo">عند استخدام الملصقات على الصورة</string>
+    <string name="DisableMotionPhoto">تعطيل الصور المتحركة</string>
+    <string name="DisableMotionPhotoInfo">إرفاق الصور المتحركة من Google/Samsung كصور عادية، وليس كمقاطع فيديو</string>
     <string name="PinDialogsOrder">ترتيب المحادثات المثبتة</string>
     <string name="RearVideoMessages">الكاميرا الخلفية في رسائل الفيديو</string>
     <string name="ReplaceForward">استبدال إعادة التوجيه الأصلية</string>

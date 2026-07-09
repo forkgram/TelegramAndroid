@@ -105,6 +105,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_INAPP_CAMERA = 50;
     public static final int ID_SYSTEM_CAMERA = 51;
     public static final int ID_PHOTO_HAS_STICKER = 52;
+    public static final int ID_DISABLE_MOTION_PHOTO = 53;
     public static final int ID_DISABLE_FLIP_PHOTOS = 54;
     public static final int ID_REAR_VIDEO_MESSAGES = 55;
     public static final int ID_DISABLE_PLAY_VISIBLE_VIDEO_ON_VOLUME = 56;
@@ -522,6 +523,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setMultiline(true));
         items.add(UItem.asButtonCheck(ID_PHOTO_HAS_STICKER, LocaleController.getString(R.string.PhotoHasSticker), LocaleController.getString(R.string.PhotoHasStickerInfo))
             .setChecked(pref("photoHasSticker", true)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_DISABLE_MOTION_PHOTO, LocaleController.getString(R.string.DisableMotionPhoto), LocaleController.getString(R.string.DisableMotionPhotoInfo))
+            .setChecked(pref("disableMotionPhoto", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_FLIP_PHOTOS, LocaleController.getString(R.string.DisableFlipPhotos), LocaleController.getString(R.string.DisableFlipPhotosInfo))
             .setChecked(pref("disableFlipPhotos", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_REAR_VIDEO_MESSAGES, LocaleController.getString(R.string.RearVideoMessages), LocaleController.getString(R.string.RearVideoMessagesInfo))
@@ -687,6 +690,8 @@ public class ForkSettingsActivity extends BaseFragment {
             }
         } else if (id == ID_PHOTO_HAS_STICKER) {
             toggle("photoHasSticker", item, view);
+        } else if (id == ID_DISABLE_MOTION_PHOTO) {
+            toggle("disableMotionPhoto", item, view);
         } else if (id == ID_DISABLE_FLIP_PHOTOS) {
             toggle("disableFlipPhotos", item, view);
         } else if (id == ID_REAR_VIDEO_MESSAGES) {
