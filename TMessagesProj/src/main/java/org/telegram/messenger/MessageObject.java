@@ -1060,7 +1060,7 @@ public class MessageObject {
         }
 
         public void layoutCode(String lng, int codeLength, boolean noforwards) {
-            hasCodeCopyButton = codeLength >= 75 && !noforwards;
+            hasCodeCopyButton = codeLength >= 1 && !noforwards;
             if (hasCodeCopyButton) {
                 copyText = new Text(getString(R.string.CopyCode).toUpperCase(), SharedConfig.fontSize - 3, AndroidUtilities.bold());
                 copyIcon = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.msg_copy).mutate();
@@ -1101,9 +1101,12 @@ public class MessageObject {
             canvas.drawRect(bounds.left + dp(10), bounds.bottom - dp(38) - AndroidUtilities.getShadowHeight(), bounds.right - dp(6.66f), bounds.bottom - dp(38), copySeparator);
 
             final float iconScale = .8f;
-            final float contentWidth = Math.min(bounds.width() - dp(12), copyIcon.getIntrinsicWidth() * iconScale + dp(5) + copyText.getCurrentWidth());
-            float x = bounds.centerX() - contentWidth / 2f;
+            final float iconWidth = copyIcon.getIntrinsicWidth() * iconScale;
             final float cy = bounds.bottom - dp(38) / 2f;
+            final float fullWidth = iconWidth + dp(5) + copyText.getCurrentWidth();
+            final boolean iconOnly = fullWidth > bounds.width();
+            final float contentWidth = iconOnly ? iconWidth : fullWidth;
+            float x = bounds.centerX() - contentWidth / 2f;
 
             if (copyIconColor != textColor) {
                 copyIcon.setColorFilter(new PorterDuffColorFilter(copyIconColor = textColor, PorterDuff.Mode.SRC_IN));
@@ -1112,15 +1115,17 @@ public class MessageObject {
             copyIcon.setBounds(
                 (int) x,
                 (int) (cy - copyIcon.getIntrinsicHeight() * iconScale / 2f),
-                (int) (x + copyIcon.getIntrinsicWidth() * iconScale),
+                (int) (x + iconWidth),
                 (int) (cy + copyIcon.getIntrinsicHeight() * iconScale / 2f)
             );
             copyIcon.draw(canvas);
 
-            x += copyIcon.getIntrinsicWidth() * iconScale + dp(5);
-            copyText
-                .ellipsize((int) (contentWidth - (copyIcon.getIntrinsicWidth() * iconScale + dp(5))) + dp(12))
-                .draw(canvas, x, cy, textColor, alpha);
+            if (iconOnly) {
+                return;
+            }
+
+            x += iconWidth + dp(5);
+            copyText.draw(canvas, x, cy, textColor, alpha);
         }
 
         public static String capitalizeLanguage(String lng) {
