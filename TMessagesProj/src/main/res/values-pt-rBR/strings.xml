@@ -72,6 +72,8 @@
     <string name="UnmutedOnTopInfo">Mensagens não silenciadas estarão abaixo dos diálogos fixados</string>
     <string name="PhotoHasSticker">Enviar informações de Sticker em fotos</string>
     <string name="PhotoHasStickerInfo">Ao usar Sticker em fotos</string>
+    <string name="DisableMotionPhoto">Desativar fotos em movimento</string>
+    <string name="DisableMotionPhotoInfo">Anexar fotos em movimento do Google/Samsung como fotos normais, não como vídeos</string>
     <string name="PinDialogsOrder">Ordem das conversas fixados</string>
     <string name="RearVideoMessages">Câmera traseira em mensagens de vídeo</string>
     <string name="ReplaceForward">Substituir encaminhamento original</string>

@@ -77,6 +77,8 @@
     <string name="UnmutedOnTopInfo">Незаглушённые сообщения будут под закреплёнными диалогами</string>
     <string name="PhotoHasSticker">Отправить информацию о стикере в фото</string>
     <string name="PhotoHasStickerInfo">При использовании стикеров на фото</string>
+    <string name="DisableMotionPhoto">Отключить движущиеся фото</string>
+    <string name="DisableMotionPhotoInfo">Прикреплять движущиеся фото Google/Samsung как обычные фото, а не видео</string>
     <string name="PinDialogsOrder">Порядок закреплённых диалогов</string>
     <string name="RearVideoMessages">Задняя камера в видеосообщениях</string>
     <string name="ReplaceForward">Заменить оригинальное пересылание</string>
