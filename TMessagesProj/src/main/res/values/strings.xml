@@ -2214,6 +2214,11 @@
     <string name="ErrorOccurred">An error occurred.</string>
     <string name="CloudflareCredentials">Cloudflare credentials</string>
     <string name="CloudflareEnableSTT">Use Cloudflare for Voice-to-Text</string>
+    <string name="OfflineTranscription">Offline Voice-to-Text</string>
+    <string name="OfflineTranscriptionUnavailable">No on-device transcription app is installed. Install one, such as **Scrib** from F-Droid, to transcribe voice messages without sending them anywhere.</string>
+    <string name="OfflineTranscriptionInfo">Transcription runs on your device through a separate engine app, such as **Scrib** on F-Droid.</string>
+    <string name="OfflineTranscriptionMissing">App not installed</string>
+    <string name="OfflineTranscriptionNoModel">No model downloaded yet. Open %1$s to download a language model.</string>
     <string name="CloudflareCredentialsNotSet">Cloudflare credentials are not configured.</string>
     <string name="CloudflareAccountID">Account ID</string>
     <string name="CloudflareAPIToken">API Token</string>

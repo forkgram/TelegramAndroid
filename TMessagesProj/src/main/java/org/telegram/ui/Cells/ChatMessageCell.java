@@ -12605,6 +12605,8 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 ||
                 org.telegram.messenger.CloudflareSTT.isConfigured()
                 ||
+                org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive()
+                ||
                 TranscribeButton.isFreeTranscribeInChat(currentMessageObject)
                 ||
                 MessagesController.getInstance(currentAccount).transcribeAudioTrialWeeklyNumber > 0 &&
