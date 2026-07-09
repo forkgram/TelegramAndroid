@@ -78,6 +78,8 @@
     <string name="UnmutedOnTopInfo">음소거 해제된 메시지는 고정된 대화 아래에 표시됩니다</string>
     <string name="PhotoHasSticker">사진에 스티커 정보 전송</string>
     <string name="PhotoHasStickerInfo">사진에 스티커를 사용할 때</string>
+    <string name="DisableMotionPhoto">모션 사진 비활성화</string>
+    <string name="DisableMotionPhotoInfo">Google/Samsung 모션 사진을 동영상이 아닌 일반 사진으로 첨부</string>
     <string name="PinDialogsOrder">고정된 대화 순서</string>
     <string name="RearVideoMessages">비디오 메시지의 후면 카메라</string>
     <string name="ReplaceForward">원본 전달 대체</string>
