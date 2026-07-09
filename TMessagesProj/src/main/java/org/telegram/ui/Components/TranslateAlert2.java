@@ -63,6 +63,7 @@ import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.TranslateController;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.XiaomiUtilities;
+import org.telegram.messenger.forkgram.ForkOfflineTranslate;
 import org.telegram.messenger.forkgram.ForkTranslate;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
@@ -283,10 +284,16 @@ public class TranslateAlert2 extends BottomSheet implements NotificationCenter.N
             reqId = null;
         }
 
-        final String method = MessagesController.getInstance(currentAccount).translationsManualEnabled;
-        if ("alternative".equalsIgnoreCase(method)) {
-            translateAlt();
-            return;
+        final String method = ForkOfflineTranslate.method(MessagesController.getInstance(currentAccount).translationsManualEnabled);
+        if (!reqSum) {
+            if ("offline".equalsIgnoreCase(method)) {
+                translateOffline();
+                return;
+            }
+            if ("alternative".equalsIgnoreCase(method)) {
+                translateAlt();
+                return;
+            }
         }/* else if ("system".equalsIgnoreCase(method)) {
             translateSystem();
             return;
@@ -429,6 +436,44 @@ public class TranslateAlert2 extends BottomSheet implements NotificationCenter.N
         });
     }
 
+    private void translateOffline() {
+        final String text = reqText == null ? "" : reqText.toString();
+        String _fromLng = fromLanguage;
+        if (_fromLng != null) {
+            _fromLng = _fromLng.split("_")[0];
+        }
+        if ("nb".equals(_fromLng)) {
+            _fromLng = "no";
+        }
+        final String fromLng = _fromLng;
+        String _toLng = toLanguage;
+        if (_toLng != null) {
+            _toLng = _toLng.split("_")[0];
+        }
+        if ("nb".equals(_toLng)) {
+            _toLng = "no";
+        }
+        final String toLng = _toLng;
+
+        offlineTranslate(text, fromLng, toLng, (res, rateLimit) -> {
+            if (res != null) {
+                firstTranslation = false;
+                textView.setText(preprocessText(res));
+                adapter.updateMainView(textViewContainer);
+            } else {
+                if (isDismissed()) return;
+                if (firstTranslation) {
+                    dismiss();
+                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_ERROR, LocaleController.getString(rateLimit ? R.string.TranslationFailedAlert1 : R.string.TranslationFailedAlert2));
+                } else {
+                    BulletinFactory.of((FrameLayout) containerView, resourcesProvider).createErrorBulletin(LocaleController.getString(rateLimit ? R.string.TranslationFailedAlert1 : R.string.TranslationFailedAlert2)).show();
+                    headerView.toLanguageTextView.setText(languageName(toLanguage = prevToLanguage));
+                    adapter.updateMainView(textViewContainer);
+                }
+            }
+        });
+    }
+
     private static int lastIndexOfSafe(String text, String target, int start, int end) {
         int idx = text.lastIndexOf(target, end - 1);
         return (idx >= start) ? idx : -1;
@@ -455,6 +500,31 @@ public class TranslateAlert2 extends BottomSheet implements NotificationCenter.N
             start = splitPos;
         }
         return result;
+    }
+
+    public static void offlineTranslate(String text, String fromLng, String toLng, Utilities.Callback2<String, Boolean> done) {
+        if (done == null) return;
+        new Thread() {
+            @Override
+            public void run() {
+                String result = null;
+                try {
+                    result = ForkOfflineTranslate.translate(text, fromLng, toLng);
+                } catch (Throwable t) {
+                    result = null;
+                }
+                if (result != null) {
+                    String out = result;
+                    if (text.length() > 0 && text.charAt(0) == '\n') {
+                        out = "\n" + out;
+                    }
+                    final String finalResult = out;
+                    AndroidUtilities.runOnUIThread(() -> done.run(finalResult, false));
+                } else {
+                    alternativeTranslate(text, fromLng, toLng, done);
+                }
+            }
+        }.start();
     }
 
     public static void alternativeTranslate(String text, String fromLng, String toLng, Utilities.Callback2<String, Boolean> done) {

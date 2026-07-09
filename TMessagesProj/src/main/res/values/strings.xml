@@ -12,6 +12,9 @@
     <string name="VoiceQualityMedium">Medium (32 kbps)</string>
     <string name="VoiceQualityHigh">High (64 kbps)</string>
     <string name="VoiceQualityMax">Max (default)</string>
+    <string name="TranslationEngineDefault">Default</string>
+    <string name="TranslationEngineOffline">Offline Translator</string>
+    <string name="TranslationEngineOfflineInfo">Offline translation runs on your device and needs the **Offline Translator** app from F-Droid.</string>
     <string name="DropScreenshotCaptionInfo">Drop the caption when a screenshot is shared from another app.</string>
     <string name="HideInAppHintsInfo">Hide promo banners in the chat list and the birthday hint in chats.</string>
     <string name="HideBottomButtonInfo">Blank the bottom bar button (Mute, Join) and ignore taps on it.</string>
@@ -134,6 +137,7 @@
     <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
     <string name="BotCopyUrl">Copy every clicked link</string>
     <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
+    <string name="TranslationEngine">Translation Engine</string>
     <string name="DisableAutoplayNextVoice">Disable auto-play of next voice/video message</string>
     <string name="AudioPlayerAutoplayNext">Auto-play next</string>
     <string name="SmsOnlyOfficialWarning">Note: SMS verification is limited to ONLY official mobile apps</string>
