@@ -34,6 +34,7 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.browser.Browser;
+import org.telegram.messenger.forkgram.ForkOfflineTranscribe;
 import org.telegram.messenger.forkgram.ForkOfflineTranslate;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.forkgram.SettingsBackup;
@@ -117,6 +118,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_VOICE_QUALITY = 60;
     public static final int ID_DISABLE_AUTOPLAY_NEXT_VOICE = 61;
+    public static final int ID_OFFLINE_STT = 62;
     public static final int ID_CLOUDFLARE_ENABLE_STT = 63;
     public static final int ID_CLOUDFLARE_CREDENTIALS = 64;
     public static final int ID_TRANSLATION_PROVIDER = 65;
@@ -264,6 +266,17 @@ public class ForkSettingsActivity extends BaseFragment {
         if (bitrate <= 32000) return LocaleController.getString(R.string.VoiceQualityMedium);
         if (bitrate <= 64000) return LocaleController.getString(R.string.VoiceQualityHigh);
         return LocaleController.getString(R.string.VoiceQualityMax);
+    }
+
+    public static String getOfflineTranscriberText() {
+        String label = org.telegram.messenger.forkgram.ForkOfflineTranscribe.selectedProviderLabel();
+        if (label != null) {
+            return label;
+        }
+        if (org.telegram.messenger.forkgram.ForkOfflineTranscribe.isEnabled()) {
+            return LocaleController.getString(R.string.OfflineTranscriptionMissing);
+        }
+        return LocaleController.getString(R.string.Disable);
     }
 
     public static String getTranslationProviderText() {
@@ -569,6 +582,7 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asSettingsCell(ID_VOICE_QUALITY, LocaleController.getString(R.string.VoiceMessageQuality), getVoiceQualityText()));
         items.add(UItem.asButtonCheck(ID_DISABLE_AUTOPLAY_NEXT_VOICE, LocaleController.getString(R.string.DisableAutoplayNextVoice), LocaleController.getString(R.string.DisableAutoplayNextVoiceInfo))
             .setChecked(pref("disableAutoplayNextVoice", false)).setMultiline(true));
+        items.add(UItem.asSettingsCell(ID_OFFLINE_STT, LocaleController.getString(R.string.OfflineTranscription), getOfflineTranscriberText()));
         items.add(UItem.asCheck(ID_CLOUDFLARE_ENABLE_STT, LocaleController.getString(R.string.CloudflareEnableSTT))
             .setChecked(SharedConfig.cfEnableStt));
         items.add(UItem.asSettingsCell(ID_CLOUDFLARE_CREDENTIALS, LocaleController.getString(R.string.CloudflareCredentials), ""));
@@ -736,6 +750,8 @@ public class ForkSettingsActivity extends BaseFragment {
             showVoiceQualityDialog();
         } else if (id == ID_DISABLE_AUTOPLAY_NEXT_VOICE) {
             toggle("disableAutoplayNextVoice", item, view);
+        } else if (id == ID_OFFLINE_STT) {
+            showOfflineTranscriberDialog();
         } else if (id == ID_CLOUDFLARE_ENABLE_STT) {
             if (!SharedConfig.cfEnableStt && (android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) || android.text.TextUtils.isEmpty(SharedConfig.cfApiToken))) {
                 showCfCredentialsDialog();
@@ -901,6 +917,10 @@ public class ForkSettingsActivity extends BaseFragment {
     }
 
     private void showRadioDialog(CharSequence title, String[] options, int selectedIndex, Utilities.Callback<Integer> onSelected) {
+        showRadioDialog(title, options, selectedIndex, null, onSelected);
+    }
+
+    private void showRadioDialog(CharSequence title, String[] options, int selectedIndex, View footer, Utilities.Callback<Integer> onSelected) {
         Activity activity = getParentActivity();
         if (activity == null) {
             return;
@@ -923,6 +943,10 @@ public class ForkSettingsActivity extends BaseFragment {
                 onSelected.run((Integer) v.getTag());
                 builder.getDismissRunnable().run();
             });
+        }
+
+        if (footer != null) {
+            linearLayout.addView(footer);
         }
 
         builder.setView(linearLayout);
@@ -1074,6 +1098,66 @@ public class ForkSettingsActivity extends BaseFragment {
         ));
         infoView.setPadding(AndroidUtilities.dp(22), AndroidUtilities.dp(10), AndroidUtilities.dp(22), AndroidUtilities.dp(6));
         return infoView;
+    }
+
+    private void showOfflineTranscriberDialog() {
+        Activity activity = getParentActivity();
+        if (activity == null) {
+            return;
+        }
+        java.util.List<org.telegram.messenger.forkgram.TranscriberProvider> providers =
+            org.telegram.messenger.forkgram.ForkOfflineTranscribe.availableProviders();
+        if (providers.isEmpty()) {
+            new AlertDialog.Builder(activity)
+                .setTitle(LocaleController.getString(R.string.OfflineTranscription))
+                .setMessage(AndroidUtilities.replaceSingleTag(
+                    LocaleController.getString(R.string.OfflineTranscriptionUnavailable),
+                    () -> Browser.openUrl(activity, ForkOfflineTranscribe.SUGGESTED_FDROID_URL)
+                ))
+                .setPositiveButton(LocaleController.getString(R.string.OK), null)
+                .show();
+            return;
+        }
+
+        String selectedId = org.telegram.messenger.forkgram.ForkOfflineTranscribe.selectedProviderId();
+        String[] options = new String[providers.size() + 1];
+        options[0] = LocaleController.getString(R.string.Disable);
+        int selectedIndex = 0;
+        for (int i = 0; i < providers.size(); i++) {
+            options[i + 1] = providers.get(i).label;
+            if (providers.get(i).id().equals(selectedId)) {
+                selectedIndex = i + 1;
+            }
+        }
+
+        View footer = createEngineInfoView(activity, R.string.OfflineTranscriptionInfo, ForkOfflineTranscribe.SUGGESTED_FDROID_URL);
+        showRadioDialog(LocaleController.getString(R.string.OfflineTranscription), options, selectedIndex, footer, index -> {
+            org.telegram.messenger.forkgram.TranscriberProvider selected = index == 0 ? null : providers.get(index - 1);
+            org.telegram.messenger.forkgram.ForkOfflineTranscribe.setProvider(selected);
+            listView.adapter.update(false);
+            if (selected != null) {
+                warnIfModelMissing(selected);
+            }
+        });
+    }
+
+    private void warnIfModelMissing(org.telegram.messenger.forkgram.TranscriberProvider provider) {
+        new Thread(() -> {
+            org.opentranscribe.api.TranscriberCapabilities caps =
+                org.telegram.messenger.forkgram.ForkOfflineTranscribe.capabilitiesOf(provider);
+            if (caps != null && !caps.modelReady) {
+                AndroidUtilities.runOnUIThread(() -> {
+                    if (getParentActivity() == null) {
+                        return;
+                    }
+                    org.telegram.ui.Components.AlertsCreator.showSimpleAlert(
+                        ForkSettingsActivity.this,
+                        LocaleController.getString(R.string.OfflineTranscription),
+                        LocaleController.formatString(R.string.OfflineTranscriptionNoModel, provider.label)
+                    );
+                });
+            }
+        }).start();
     }
 
     @Override

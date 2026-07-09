@@ -14,6 +14,11 @@
     <string name="TranslationEngineDefault">За умовчанням</string>
     <string name="TranslationEngineOffline">Офлайн-перекладач</string>
     <string name="TranslationEngineOfflineInfo">Офлайн-переклад працює на пристрої та потребує застосунок **Offline Translator** із F-Droid.</string>
+    <string name="OfflineTranscription">Офлайн-розшифрування голосових</string>
+    <string name="OfflineTranscriptionUnavailable">Застосунок для розшифрування на пристрої не встановлено. Установіть його, наприклад **Scrib** із F-Droid, щоб розшифровувати голосові повідомлення, нікуди їх не надсилаючи.</string>
+    <string name="OfflineTranscriptionInfo">Розшифрування виконується на пристрої через окремий застосунок-рушій, наприклад **Scrib** із F-Droid.</string>
+    <string name="OfflineTranscriptionMissing">Застосунок не встановлено</string>
+    <string name="OfflineTranscriptionNoModel">Модель ще не завантажено. Відкрийте %1$s, щоб завантажити мовну модель.</string>
     <string name="DropScreenshotCaptionInfo">Прибирати підпис, коли знімок екрана надсилається з іншого застосунку.</string>
     <string name="HideInAppHintsInfo">Приховувати промо-банери у списку чатів і підказку про день народження в чатах.</string>
     <string name="HideBottomButtonInfo">Очищати нижню кнопку (Вимкнути звук, Приєднатися) та ігнорувати натискання на неї.</string>
