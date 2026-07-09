@@ -559,7 +559,6 @@ public class GroupCreateUserCell extends FrameLayout implements Theme.Colorable 
 
     @Override
     protected void onDraw(Canvas canvas) {
-        final boolean squareAvatars = MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false);
         super.onDraw(canvas);
         float lockT = premiumBlockedT.set(premiumBlocked);
         if (lockT > 0) {
@@ -570,11 +569,7 @@ public class GroupCreateUserCell extends FrameLayout implements Theme.Colorable 
             float cy = avatarImageView.getTop() + avatarImageView.getMeasuredHeight() / 2;
 
             final float dp = AndroidUtilities.dp(18) + AndroidUtilities.dp(4) * checkProgress;
-            if (squareAvatars) {
-                canvas.drawRect(cx - dp, cy - dp, cx + dp, cy + dp, paint);
-            } else {
-                canvas.drawCircle(cx, cy, dp, paint);
-            }
+            AndroidUtilities.drawAvatarRoundRect(canvas, cx, cy, dp, paint);
         }
         if (drawDivider) {
             int start = AndroidUtilities.dp(LocaleController.isRTL ? 0 : 72 + padding);
