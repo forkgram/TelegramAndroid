@@ -90,6 +90,9 @@
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="ton"/>
         </intent>
+        <intent>
+            <action android:name="dev.davidv.translator.ITranslationService"/>
+        </intent>
     </queries>
 
     <application

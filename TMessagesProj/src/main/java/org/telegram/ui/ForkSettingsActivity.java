@@ -33,6 +33,8 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
+import org.telegram.messenger.browser.Browser;
+import org.telegram.messenger.forkgram.ForkOfflineTranslate;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.forkgram.SettingsBackup;
 import org.telegram.ui.ActionBar.ActionBar;
@@ -47,8 +49,10 @@ import org.telegram.ui.Cells.RadioColorCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Components.EditTextBoldCursor;
 import org.telegram.ui.Components.LayoutHelper;
+import org.telegram.ui.Components.LinkSpanDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.SeekBarView;
+import org.telegram.ui.Components.TextHelper;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
 import org.telegram.ui.Components.UniversalRecyclerView;
@@ -115,6 +119,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_AUTOPLAY_NEXT_VOICE = 61;
     public static final int ID_CLOUDFLARE_ENABLE_STT = 63;
     public static final int ID_CLOUDFLARE_CREDENTIALS = 64;
+    public static final int ID_TRANSLATION_PROVIDER = 65;
 
     public static final int ID_BOT_SKIP_SHARE = 70;
     public static final int ID_BOT_SKIP_FULLSCREEN = 71;
@@ -259,6 +264,17 @@ public class ForkSettingsActivity extends BaseFragment {
         if (bitrate <= 32000) return LocaleController.getString(R.string.VoiceQualityMedium);
         if (bitrate <= 64000) return LocaleController.getString(R.string.VoiceQualityHigh);
         return LocaleController.getString(R.string.VoiceQualityMax);
+    }
+
+    public static String getTranslationProviderText() {
+        switch (ForkOfflineTranslate.provider()) {
+            case ForkOfflineTranslate.PROVIDER_ALTERNATIVE:
+                return "DuckDuckGo";
+            case ForkOfflineTranslate.PROVIDER_OFFLINE:
+                return LocaleController.getString(R.string.TranslationEngineOffline);
+            default:
+                return LocaleController.getString(R.string.TranslationEngineDefault);
+        }
     }
 
     private String getHiddenAccountsText() {
@@ -556,6 +572,7 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asCheck(ID_CLOUDFLARE_ENABLE_STT, LocaleController.getString(R.string.CloudflareEnableSTT))
             .setChecked(SharedConfig.cfEnableStt));
         items.add(UItem.asSettingsCell(ID_CLOUDFLARE_CREDENTIALS, LocaleController.getString(R.string.CloudflareCredentials), ""));
+        items.add(UItem.asSettingsCell(ID_TRANSLATION_PROVIDER, LocaleController.getString(R.string.TranslationEngine), getTranslationProviderText()));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionBots)));
@@ -728,6 +745,9 @@ public class ForkSettingsActivity extends BaseFragment {
             setCellChecked(view, SharedConfig.cfEnableStt);
         } else if (id == ID_CLOUDFLARE_CREDENTIALS) {
             showCfCredentialsDialog();
+        } else if (id == ID_TRANSLATION_PROVIDER) {
+            showTranslationProviderDialog();
+
         } else if (id == ID_BOT_SKIP_SHARE) {
             toggle("botSkipShare", item, view);
         } else if (id == ID_BOT_SKIP_FULLSCREEN) {
@@ -977,6 +997,82 @@ public class ForkSettingsActivity extends BaseFragment {
             editor.commit();
             listView.adapter.update(false);
         });
+    }
+
+    private void showTranslationProviderDialog() {
+        showTranslationProviderDialog(this, true, () -> listView.adapter.update(false));
+    }
+
+    public static void showTranslationProviderDialog(BaseFragment fragment, boolean showLanguageLink, Runnable onChanged) {
+        Activity activity = fragment.getParentActivity();
+        if (activity == null) {
+            return;
+        }
+        final String[] options = new String[]{
+            LocaleController.getString(R.string.TranslationEngineDefault),
+            "DuckDuckGo",
+            LocaleController.getString(R.string.TranslationEngineOffline)
+        };
+        final int[] providers = new int[]{
+            ForkOfflineTranslate.PROVIDER_DEFAULT,
+            ForkOfflineTranslate.PROVIDER_ALTERNATIVE,
+            ForkOfflineTranslate.PROVIDER_OFFLINE
+        };
+
+        int current = ForkOfflineTranslate.provider();
+        int selectedIndex = 0;
+        for (int i = 0; i < providers.length; i++) {
+            if (providers[i] == current) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        LinearLayout linearLayout = new LinearLayout(activity);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(LocaleController.getString(R.string.TranslationEngine));
+
+        for (int i = 0; i < options.length; i++) {
+            RadioColorCell cell = new RadioColorCell(activity);
+            cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
+            cell.setTag(i);
+            cell.setCheckColor(Theme.getColor(Theme.key_radioBackground), Theme.getColor(Theme.key_dialogRadioBackgroundChecked));
+            cell.setTextAndValue(options[i], selectedIndex == i);
+            cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
+            linearLayout.addView(cell);
+
+            cell.setOnClickListener(v -> {
+                int index = (Integer) v.getTag();
+                SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
+                editor.putInt("translationProvider", providers[index]);
+                editor.commit();
+
+                if (onChanged != null) {
+                    onChanged.run();
+                }
+                builder.getDismissRunnable().run();
+            });
+        }
+
+        linearLayout.addView(createEngineInfoView(activity, R.string.TranslationEngineOfflineInfo, ForkOfflineTranslate.FDROID_URL));
+
+        builder.setView(linearLayout);
+        if (showLanguageLink) {
+            builder.setNeutralButton(LocaleController.getString(R.string.Language), (dialog, which) -> fragment.presentFragment(new LanguageSelectActivity()));
+        }
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        builder.show();
+    }
+
+    private static View createEngineInfoView(Activity activity, int textResId, String url) {
+        LinkSpanDrawable.LinksTextView infoView = TextHelper.makeLinkTextView(activity, 13, Theme.key_dialogTextGray2, false);
+        infoView.setText(AndroidUtilities.replaceSingleTag(
+            LocaleController.getString(textResId),
+            () -> Browser.openUrl(activity, url)
+        ));
+        infoView.setPadding(AndroidUtilities.dp(22), AndroidUtilities.dp(10), AndroidUtilities.dp(22), AndroidUtilities.dp(6));
+        return infoView;
     }
 
     @Override
