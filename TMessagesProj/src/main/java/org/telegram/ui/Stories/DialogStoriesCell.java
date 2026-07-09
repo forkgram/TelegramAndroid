@@ -1728,6 +1728,7 @@ public class DialogStoriesCell extends FrameLayout implements NotificationCenter
                     canvas.restore();
                 }
                 radialProgress.setDiff(0);
+                radialProgress.setRoundRectProgress(AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_FORUM);
                 Paint paint = closeFriends ?
                         StoriesUtilities.getCloseFriendsPaint(avatarImage) :
                         StoriesUtilities.getUnreadCirclePaint(avatarImage, true);
