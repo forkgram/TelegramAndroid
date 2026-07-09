@@ -42,6 +42,7 @@
     <string name="RearVideoMessagesInfo">Registrare i messaggi video con la fotocamera posteriore.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Non attivare l\'audio del video visibile premendo i tasti del volume.</string>
     <string name="DisableRecentFilesAttachmentInfo">Nascondere l\'elenco dei file recenti nel menu degli allegati.</string>
+    <string name="DisableAutoplayNextVoiceInfo">Non passare al messaggio vocale successivo al termine di uno.</string>
     <string name="BotSkipShareInfo">Ignorare silenziosamente le richieste di condivisione messaggi dalle mini app.</string>
     <string name="BotSkipFullscreenInfo">Non permettere alle mini app di passare a schermo intero.</string>
     <string name="DisableParametersFromBotLinksInfo">Rimuovere i parametri di avvio dai link dei bot prima di aprirli.</string>
@@ -138,6 +139,8 @@
     <string name="BotSetPlatformAbout">Riavvia dopo la modifica per applicare la nuova piattaforma al bot corrente.</string>
     <string name="BotCopyUrl">Copia ogni link cliccato</string>
     <string name="DisableDefaultInAppBrowser">Apri i link nel browser di sistema</string>
+    <string name="DisableAutoplayNextVoice">Disabilita la riproduzione automatica del successivo messaggio vocale/video</string>
+    <string name="AudioPlayerAutoplayNext">Riproduci automaticamente il successivo</string>
     <string name="SmsOnlyOfficialWarning">Nota: la verifica SMS è limitata SOLO alle app mobili ufficiali</string>
     <string name="ThirdParty">Di terze parti</string>
     <string name="EnableLastSeenDots">Abilita i puntini colorati dell\'ultimo accesso</string>

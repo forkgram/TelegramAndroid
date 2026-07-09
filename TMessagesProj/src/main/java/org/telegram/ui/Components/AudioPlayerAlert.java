@@ -174,6 +174,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
     private ActionBarMenuSubItem repeatListItem;
     private ActionBarMenuSubItem shuffleListItem;
     private ActionBarMenuSubItem reverseOrderItem;
+    private ActionBarMenuSubItem autoplayNextItem;
     private ImageView playButton;
     private PlayPauseDrawable playPauseDrawable;
     private FrameLayout blurredView;
@@ -1166,9 +1167,14 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
 
         optionsButton.addSubItem(7, R.drawable.msg_delete, getString(R.string.ProfilePlaylistRemoveFromProfile));
         optionsButton.setSubItemShown(7, false);
+        autoplayNextItem = optionsButton.addSubItem(9, R.drawable.ic_action_next, LocaleController.getString(R.string.AudioPlayerAutoplayNext));
+        optionsButton.setSubItemShown(9, false);
 
         optionsButton.setShowedFromBottom(true);
-        optionsButton.setOnClickListener(v -> optionsButton.toggleSubMenu());
+        optionsButton.setOnClickListener(v -> {
+            setMenuItemChecked(autoplayNextItem, !MessagesController.getGlobalMainSettings().getBoolean("disableAutoplayNextVoice", false));
+            optionsButton.toggleSubMenu();
+        });
         optionsButton.setDelegate(this::onSubItemClick);
         optionsButton.setContentDescription(LocaleController.getString(R.string.AccDescrMoreOptions));
 
@@ -1783,6 +1789,10 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
                     }
                 }
             }, false);
+        } else if (id == 9) {
+            boolean nowDisabled = !MessagesController.getGlobalMainSettings().getBoolean("disableAutoplayNextVoice", false);
+            MessagesController.getGlobalMainSettings().edit().putBoolean("disableAutoplayNextVoice", nowDisabled).apply();
+            setMenuItemChecked(autoplayNextItem, !nowDisabled);
         } else if (id == 8) {
             new SelectAudioAlert(getContext(), true, null, audio -> {
                 if (audio == null || savedMusicList == null) return;
@@ -2337,6 +2347,8 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
             }
             optionsButton.setSubItemShown(4, messageObject.getId() > 0);
             optionsButton.setSubItemShown(7, isMyList());
+            optionsButton.setSubItemShown(9, messageObject.isVoice());
+            setMenuItemChecked(autoplayNextItem, !MessagesController.getGlobalMainSettings().getBoolean("disableAutoplayNextVoice", false));
 
             checkIfMusicDownloaded(messageObject);
             updateProgress(messageObject, !sameMessageObject);
