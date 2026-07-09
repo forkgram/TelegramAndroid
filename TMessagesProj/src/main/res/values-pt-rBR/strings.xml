@@ -20,6 +20,11 @@
     <string name="TranslationEngineDefault">Padrão</string>
     <string name="TranslationEngineOffline">Tradutor offline</string>
     <string name="TranslationEngineOfflineInfo">A tradução offline funciona no seu dispositivo e precisa do app **Offline Translator** do F-Droid.</string>
+    <string name="OfflineTranscription">Voz para texto offline</string>
+    <string name="OfflineTranscriptionUnavailable">Nenhum app de transcrição está instalado no dispositivo. Instale um, como o **Scrib** do F-Droid, para transcrever mensagens de voz sem enviá-las a lugar nenhum.</string>
+    <string name="OfflineTranscriptionInfo">A transcrição é feita no seu dispositivo por um app de motor separado, como o **Scrib** no F-Droid.</string>
+    <string name="OfflineTranscriptionMissing">App não instalado</string>
+    <string name="OfflineTranscriptionNoModel">Nenhum modelo baixado ainda. Abra %1$s para baixar um modelo de idioma.</string>
     <string name="DropScreenshotCaptionInfo">Remover a legenda quando uma captura de tela é compartilhada de outro aplicativo.</string>
     <string name="HideInAppHintsInfo">Ocultar banners promocionais na lista de conversas e a dica de aniversário nas conversas.</string>
     <string name="HideBottomButtonInfo">Esvaziar o botão da barra inferior (Silenciar, Entrar) e ignorar toques nele.</string>
