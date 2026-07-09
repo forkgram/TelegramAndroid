@@ -1777,6 +1777,9 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
                     }
                 }
             }, false);
+        } else if (id == 9) {
+            boolean nowDisabled = !MessagesController.getGlobalMainSettings().getBoolean("disableAutoplayNextVoice", false);
+            MessagesController.getGlobalMainSettings().edit().putBoolean("disableAutoplayNextVoice", nowDisabled).apply();
         } else if (id == 8) {
             new SelectAudioAlert(getContext(), true, null, audio -> {
                 if (audio == null || savedMusicList == null) return;
@@ -2957,6 +2960,12 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
             o.dismiss();
             onSubItemClick(7);
         });
+        if (messageObject.isVoice()) {
+            o.addChecked(!MessagesController.getGlobalMainSettings().getBoolean("disableAutoplayNextVoice", false), R.drawable.ic_action_next, getString(R.string.AudioPlayerAutoplayNext), () -> {
+                o.dismiss();
+                onSubItemClick(9);
+            });
+        }
         o.setTranslationY(dp(64));
         o.show();
     }
