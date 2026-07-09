@@ -11,6 +11,9 @@
     <string name="VoiceQualityMedium">Среднее (32 кбит/с)</string>
     <string name="VoiceQualityHigh">Высокое (64 кбит/с)</string>
     <string name="VoiceQualityMax">Максимальное (по умолчанию)</string>
+    <string name="TranslationEngineDefault">По умолчанию</string>
+    <string name="TranslationEngineOffline">Офлайн-переводчик</string>
+    <string name="TranslationEngineOfflineInfo">Офлайн-перевод работает на устройстве и требует приложение **Offline Translator** из F-Droid.</string>
     <string name="DropScreenshotCaptionInfo">Убирать подпись, когда скриншот отправляется из другого приложения.</string>
     <string name="HideInAppHintsInfo">Скрывать промо-баннеры в списке чатов и подсказку о дне рождения в чатах.</string>
     <string name="HideBottomButtonInfo">Очищать нижнюю кнопку (Выключить звук, Вступить) и игнорировать нажатия по ней.</string>
@@ -140,6 +143,7 @@
     <string name="BotSetPlatformAbout">После изменения перезапустите приложение, чтобы применить новую платформу для текущего бота.</string>
     <string name="BotCopyUrl">Копировать каждую нажатую ссылку</string>
     <string name="DisableDefaultInAppBrowser">Открывать ссылки в системном браузере</string>
+    <string name="TranslationEngine">Движок перевода</string>
     <string name="DisableAutoplayNextVoice">Отключить автовоспроизведение следующего голосового/видеосообщения</string>
     <string name="AudioPlayerAutoplayNext">Автовоспроизведение следующего</string>
     <string name="SmsOnlyOfficialWarning">Примечание: SMS-подтверждение доступно ТОЛЬКО в официальных мобильных приложениях</string>

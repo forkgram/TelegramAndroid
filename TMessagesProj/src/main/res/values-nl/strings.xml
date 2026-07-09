@@ -11,6 +11,9 @@
     <string name="VoiceQualityMedium">Gemiddeld (32 kbps)</string>
     <string name="VoiceQualityHigh">Hoog (64 kbps)</string>
     <string name="VoiceQualityMax">Maximaal (standaard)</string>
+    <string name="TranslationEngineDefault">Standaard</string>
+    <string name="TranslationEngineOffline">Offline-vertaler</string>
+    <string name="TranslationEngineOfflineInfo">Offline vertalen werkt op je apparaat en vereist de app **Offline Translator** uit F-Droid.</string>
     <string name="DropScreenshotCaptionInfo">Bijschrift verwijderen wanneer een schermafbeelding vanuit een andere app wordt gedeeld.</string>
     <string name="HideInAppHintsInfo">Promobanners in de chatlijst en de verjaardagshint in chats verbergen.</string>
     <string name="HideBottomButtonInfo">De knop in de onderste balk (Dempen, Deelnemen) leegmaken en tikken negeren.</string>
@@ -137,6 +140,7 @@
     <string name="BotSetPlatformAbout">Start opnieuw op na de wijziging om het nieuwe platform voor de huidige bot toe te passen.</string>
     <string name="BotCopyUrl">Elke aangeklikte link kopiëren</string>
     <string name="DisableDefaultInAppBrowser">Links openen in de systeembrowser</string>
+    <string name="TranslationEngine">Vertaalengine</string>
     <string name="DisableAutoplayNextVoice">Automatisch afspelen van volgend spraak-/videobericht uitschakelen</string>
     <string name="AudioPlayerAutoplayNext">Volgende automatisch afspelen</string>
     <string name="SmsOnlyOfficialWarning">Let op: SMS-verificatie is ALLEEN beschikbaar voor officiële mobiele apps</string>
