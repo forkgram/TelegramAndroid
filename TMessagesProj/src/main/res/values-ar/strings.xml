@@ -11,6 +11,9 @@
     <string name="VoiceQualityMedium">متوسطة (32 كيلوبت/ث)</string>
     <string name="VoiceQualityHigh">عالية (64 كيلوبت/ث)</string>
     <string name="VoiceQualityMax">قصوى (افتراضي)</string>
+    <string name="TranslationEngineDefault">افتراضي</string>
+    <string name="TranslationEngineOffline">مترجم دون اتصال</string>
+    <string name="TranslationEngineOfflineInfo">تعمل الترجمة دون اتصال على جهازك وتحتاج إلى تطبيق **Offline Translator** من F-Droid.</string>
     <string name="DropScreenshotCaptionInfo">إزالة التسمية التوضيحية عند مشاركة لقطة شاشة من تطبيق آخر.</string>
     <string name="HideInAppHintsInfo">إخفاء لافتات العروض في قائمة الدردشات وتلميح عيد الميلاد داخل الدردشات.</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>
@@ -137,6 +140,7 @@
     <string name="BotSetPlatformAbout">يُرجى إعادة التشغيل بعد التغيير لتطبيق المنصة الجديدة على الروبوت الحالي.</string>
     <string name="BotCopyUrl">نسخ كل رابط يتم النقر عليه</string>
     <string name="DisableDefaultInAppBrowser">فتح الروابط في متصفح النظام</string>
+    <string name="TranslationEngine">محرك الترجمة</string>
     <string name="DisableAutoplayNextVoice">تعطيل التشغيل التلقائي لرسالة الصوت/الفيديو التالية</string>
     <string name="AudioPlayerAutoplayNext">التشغيل التلقائي للتالي</string>
     <string name="SmsOnlyOfficialWarning">ملاحظة: التحقق عبر الرسائل النصية مقتصر فقط على التطبيقات الرسمية</string>
