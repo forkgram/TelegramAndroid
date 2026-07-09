@@ -42,6 +42,7 @@
     <string name="RearVideoMessagesInfo">Videonachrichten mit der Rückkamera aufnehmen.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Das sichtbare Video beim Drücken der Lautstärketasten nicht lauter schalten.</string>
     <string name="DisableRecentFilesAttachmentInfo">Die Liste der zuletzt verwendeten Dateien im Anhangsmenü ausblenden.</string>
+    <string name="DisableAutoplayNextVoiceInfo">Nach dem Ende einer Sprachnachricht nicht zur nächsten wechseln.</string>
     <string name="BotSkipShareInfo">Anfragen von Mini-Apps zum Teilen einer Nachricht stillschweigend ablehnen.</string>
     <string name="BotSkipFullscreenInfo">Mini-Apps nicht in den Vollbildmodus wechseln lassen.</string>
     <string name="DisableParametersFromBotLinksInfo">Start-Parameter aus Bot-Links vor dem Öffnen entfernen.</string>
@@ -138,6 +139,8 @@
     <string name="BotSetPlatformAbout">Bitte starten Sie die App nach der Änderung neu, um die neue Plattform für den aktuellen Bot anzuwenden.</string>
     <string name="BotCopyUrl">Jeden angeklickten Link kopieren</string>
     <string name="DisableDefaultInAppBrowser">Links im System-Browser öffnen</string>
+    <string name="DisableAutoplayNextVoice">Automatische Wiedergabe der nächsten Sprach-/Videonachricht deaktivieren</string>
+    <string name="AudioPlayerAutoplayNext">Nächstes automatisch abspielen</string>
     <string name="SmsOnlyOfficialWarning">Hinweis: Die SMS-Verifizierung ist NUR für offizielle mobile Apps verfügbar</string>
     <string name="ThirdParty">Drittanbieter</string>
     <string name="EnableLastSeenDots">Farbige Punkte für „Zuletzt gesehen“ aktivieren</string>

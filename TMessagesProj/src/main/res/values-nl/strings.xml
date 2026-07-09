@@ -42,6 +42,7 @@
     <string name="RearVideoMessagesInfo">Videoberichten opnemen met de camera aan de achterkant.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">De demping van de zichtbare video niet opheffen met de volumetoetsen.</string>
     <string name="DisableRecentFilesAttachmentInfo">De lijst met recente bestanden in het bijlagemenu verbergen.</string>
+    <string name="DisableAutoplayNextVoiceInfo">Niet doorgaan naar het volgende spraakbericht wanneer er een eindigt.</string>
     <string name="BotSkipShareInfo">Verzoeken van mini-apps om een bericht te delen stilzwijgend negeren.</string>
     <string name="BotSkipFullscreenInfo">Mini-apps niet laten overschakelen naar volledig scherm.</string>
     <string name="DisableParametersFromBotLinksInfo">Startparameters uit botlinks verwijderen voordat ze worden geopend.</string>
@@ -138,6 +139,8 @@
     <string name="BotSetPlatformAbout">Start opnieuw op na de wijziging om het nieuwe platform voor de huidige bot toe te passen.</string>
     <string name="BotCopyUrl">Elke aangeklikte link kopiëren</string>
     <string name="DisableDefaultInAppBrowser">Links openen in de systeembrowser</string>
+    <string name="DisableAutoplayNextVoice">Automatisch afspelen van volgend spraak-/videobericht uitschakelen</string>
+    <string name="AudioPlayerAutoplayNext">Volgende automatisch afspelen</string>
     <string name="SmsOnlyOfficialWarning">Let op: SMS-verificatie is ALLEEN beschikbaar voor officiële mobiele apps</string>
     <string name="ThirdParty">Van derden</string>
     <string name="EnableLastSeenDots">Gekleurde stippen voor laatst gezien inschakelen</string>
