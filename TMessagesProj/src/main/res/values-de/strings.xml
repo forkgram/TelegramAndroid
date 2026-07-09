@@ -78,6 +78,8 @@
     <string name="UnmutedOnTopInfo">Stummgeschaltete Nachrichten werden unter den angehefteten Dialogen angezeigt</string>
     <string name="PhotoHasSticker">Sticker-Info im Foto senden</string>
     <string name="PhotoHasStickerInfo">Beim Verwenden von Stickern auf Fotos</string>
+    <string name="DisableMotionPhoto">Bewegungsfotos deaktivieren</string>
+    <string name="DisableMotionPhotoInfo">Bewegungsfotos von Google/Samsung als normale Fotos statt als Videos anhängen</string>
     <string name="PinDialogsOrder">Reihenfolge der angehefteten Dialoge</string>
     <string name="RearVideoMessages">Rückkamera in Video-Nachrichten</string>
     <string name="ReplaceForward">Ursprüngliche Weiterleitung ersetzen</string>
