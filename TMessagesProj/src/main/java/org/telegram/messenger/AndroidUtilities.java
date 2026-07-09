@@ -315,6 +315,33 @@ public class AndroidUtilities {
     public static final Rect rectTmp2 = new Rect();
     public static final int[] pointTmp2 = new int[2];
 
+    public static final int AVATAR_CORNERS_ROUND = 0;
+    public static final int AVATAR_CORNERS_FORUM = 1;
+    public static final int AVATAR_CORNERS_SQUARE = 2;
+    private static final RectF avatarCornersRect = new RectF();
+
+    public static int avatarCornersType() {
+        SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        return preferences.getInt("avatarCorners", preferences.getBoolean("squareAvatars", false) ? AVATAR_CORNERS_SQUARE : AVATAR_CORNERS_ROUND);
+    }
+
+    public static float avatarCornerRadius(float size) {
+        switch (avatarCornersType()) {
+            case AVATAR_CORNERS_FORUM:
+                return size * 0.32f;
+            case AVATAR_CORNERS_SQUARE:
+                return 0f;
+            default:
+                return size / 2f;
+        }
+    }
+
+    public static void drawAvatarRoundRect(Canvas canvas, float cx, float cy, float radius, Paint paint) {
+        final float r = avatarCornerRadius(radius * 2f);
+        avatarCornersRect.set(cx - radius, cy - radius, cx + radius, cy + radius);
+        canvas.drawRoundRect(avatarCornersRect, r, r, paint);
+    }
+
     public static Pattern WEB_URL = null;
     public static Pattern BAD_CHARS_PATTERN = null;
     public static Pattern LONG_BAD_CHARS_PATTERN = null;
