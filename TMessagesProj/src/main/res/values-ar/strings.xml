@@ -20,6 +20,11 @@
     <string name="TranslationEngineDefault">افتراضي</string>
     <string name="TranslationEngineOffline">مترجم دون اتصال</string>
     <string name="TranslationEngineOfflineInfo">تعمل الترجمة دون اتصال على جهازك وتحتاج إلى تطبيق **Offline Translator** من F-Droid.</string>
+    <string name="OfflineTranscription">تحويل الصوت إلى نص دون اتصال</string>
+    <string name="OfflineTranscriptionUnavailable">لا يوجد تطبيق تفريغ صوتي مثبت على الجهاز. ثبّت واحدًا، مثل **Scrib** من F-Droid، لتفريغ الرسائل الصوتية دون إرسالها إلى أي مكان.</string>
+    <string name="OfflineTranscriptionInfo">يتم التفريغ على جهازك عبر تطبيق محرّك منفصل، مثل **Scrib** على F-Droid.</string>
+    <string name="OfflineTranscriptionMissing">التطبيق غير مثبت</string>
+    <string name="OfflineTranscriptionNoModel">لم يتم تنزيل أي نموذج بعد. افتح %1$s لتنزيل نموذج لغوي.</string>
     <string name="DropScreenshotCaptionInfo">إزالة التسمية التوضيحية عند مشاركة لقطة شاشة من تطبيق آخر.</string>
     <string name="HideInAppHintsInfo">إخفاء لافتات العروض في قائمة الدردشات وتلميح عيد الميلاد داخل الدردشات.</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>

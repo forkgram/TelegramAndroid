@@ -93,6 +93,9 @@
         <intent>
             <action android:name="dev.davidv.translator.ITranslationService"/>
         </intent>
+        <intent>
+            <action android:name="org.opentranscribe.api.ITranscriptionService"/>
+        </intent>
     </queries>
 
     <application

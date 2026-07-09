@@ -20,6 +20,11 @@
     <string name="TranslationEngineDefault">Standaard</string>
     <string name="TranslationEngineOffline">Offline-vertaler</string>
     <string name="TranslationEngineOfflineInfo">Offline vertalen werkt op je apparaat en vereist de app **Offline Translator** uit F-Droid.</string>
+    <string name="OfflineTranscription">Offline spraak-naar-tekst</string>
+    <string name="OfflineTranscriptionUnavailable">Er is geen transcriptie-app op dit apparaat geïnstalleerd. Installeer er een, zoals **Scrib** uit F-Droid, om spraakberichten om te zetten zonder ze ergens naartoe te sturen.</string>
+    <string name="OfflineTranscriptionInfo">Transcriptie draait op je apparaat via een aparte engine-app, zoals **Scrib** in F-Droid.</string>
+    <string name="OfflineTranscriptionMissing">App niet geïnstalleerd</string>
+    <string name="OfflineTranscriptionNoModel">Nog geen model gedownload. Open %1$s om een taalmodel te downloaden.</string>
     <string name="DropScreenshotCaptionInfo">Bijschrift verwijderen wanneer een schermafbeelding vanuit een andere app wordt gedeeld.</string>
     <string name="HideInAppHintsInfo">Promobanners in de chatlijst en de verjaardagshint in chats verbergen.</string>
     <string name="HideBottomButtonInfo">De knop in de onderste balk (Dempen, Deelnemen) leegmaken en tikken negeren.</string>
