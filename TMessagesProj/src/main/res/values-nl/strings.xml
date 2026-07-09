@@ -72,6 +72,8 @@
     <string name="UnmutedOnTopInfo">Niet-stilte berichten staan onder de vastgezette dialogen</string>
     <string name="PhotoHasSticker">Sticker-informatie in foto verzenden</string>
     <string name="PhotoHasStickerInfo">Bij het gebruik van stickers op foto</string>
+    <string name="DisableMotionPhoto">Bewegende foto\'s uitschakelen</string>
+    <string name="DisableMotionPhotoInfo">Bewegende foto\'s van Google/Samsung als gewone foto\'s toevoegen, niet als video\'s</string>
     <string name="PinDialogsOrder">Volgorde van vastgezette dialogen</string>
     <string name="RearVideoMessages">Achtercamera in video-berichten</string>
     <string name="ReplaceForward">Originele doorstuur vervangen</string>
