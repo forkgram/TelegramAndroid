@@ -71,6 +71,10 @@
     <string name="ForkSettingsTitle">Configurações do cliente Fork</string>
     <string name="ForkCheckUpdate">Verificar atualizações</string>
     <string name="SquareAvatars">Avatares quadrados</string>
+    <string name="AvatarShape">Forma do avatar</string>
+    <string name="AvatarShapeRound">Redonda</string>
+    <string name="AvatarShapeRounded">Arredondada</string>
+    <string name="AvatarShapeSquare">Quadrada</string>
     <string name="InAppCamera">Ativar câmera no aplicativo</string>
     <string name="InAppCameraInfo">Nos anexos</string>
     <string name="SyncPins">Sincronizar conversas fixadas</string>

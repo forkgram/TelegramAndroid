@@ -46,6 +46,12 @@ public class SimpleAvatarView extends View {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        avatarImage.setRoundRadius(Math.min(w, h) / 2);
+    }
+
+    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
@@ -70,11 +76,11 @@ public class SimpleAvatarView extends View {
         selectPaint.setAlpha((int) (Color.alpha(selectPaint.getColor()) * selectProgress));
         float stroke = selectPaint.getStrokeWidth();
         AndroidUtilities.rectTmp.set(stroke, stroke, getWidth() - stroke, getHeight() - stroke);
-        if (org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
-        final float w = selectPaint.getStrokeWidth();
-        canvas.drawRect(w, w, getWidth() - w, getHeight() - w, selectPaint);
+        if (AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_ROUND) {
+            canvas.drawArc(AndroidUtilities.rectTmp, -90, selectProgress * 360, false, selectPaint);
         } else {
-        canvas.drawArc(AndroidUtilities.rectTmp, -90, selectProgress * 360, false, selectPaint);
+            final float rad = AndroidUtilities.avatarCornerRadius(AndroidUtilities.rectTmp.width());
+            canvas.drawRoundRect(AndroidUtilities.rectTmp, rad, rad, selectPaint);
         }
         canvas.restore();
 
