@@ -616,6 +616,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         @Override
         public boolean isLivePhoto() {
             if (isVideo || parsedXmp) return isLivePhoto;
+            if (MessagesController.getGlobalMainSettings().getBoolean("disableMotionPhoto", false)) return false;
             parsedXmp = true;
             final long start = System.currentTimeMillis();
             try {
