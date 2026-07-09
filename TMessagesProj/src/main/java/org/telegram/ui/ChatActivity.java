@@ -4780,7 +4780,7 @@ public class ChatActivity extends BaseFragment implements
         contentView.setOccupyStatusBar(!inBubbleMode && !isInsideContainer && !inPreviewMode);
 
         actionBar.setupGlass(glassBackgroundDrawableFactory, blurredBackgroundColorProvider);
-        actionBar.setGlassAvatarSquare(MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false));
+        actionBar.setGlassAvatarSquare(AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_SQUARE);
         //actionBar.setChatAvatarContainer(avatarContainer);
         //avatarContainer.setActionBar(actionBar);
 

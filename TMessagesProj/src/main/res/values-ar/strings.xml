@@ -65,6 +65,10 @@
     <string name="ForkSettingsTitle">إعدادات عميل Fork</string>
     <string name="ForkCheckUpdate">تحقق من التحديثات</string>
     <string name="SquareAvatars">أفاتارات مربعة</string>
+    <string name="AvatarShape">شكل الصورة الرمزية</string>
+    <string name="AvatarShapeRound">دائري</string>
+    <string name="AvatarShapeRounded">مستدير الحواف</string>
+    <string name="AvatarShapeSquare">مربع</string>
     <string name="InAppCamera">تفعيل الكاميرا داخل التطبيق</string>
     <string name="InAppCameraInfo">في المرفقات</string>
     <string name="SyncPins">مزامنة المحادثات المثبتة</string>

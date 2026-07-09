@@ -129,7 +129,7 @@ public class StoriesUtilities {
         int state;
         int unreadState = 0;
         boolean showProgress = storiesController.isLoading(dialogId);
-        boolean isForum = ChatObject.isForum(UserConfig.selectedAccount, dialogId) && !params.isDialogStoriesCell;
+        boolean isForum = (ChatObject.isForum(UserConfig.selectedAccount, dialogId) || AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_FORUM) && !params.isDialogStoriesCell;
         if (params.drawHiddenStoriesAsSegments) {
             hasStories = storiesController.hasHiddenStories();
         }
@@ -661,7 +661,7 @@ public class StoriesUtilities {
     private final static short[][] CornersSign = new short[][]{ {-1, -1}, {-1 ,1}, {1, 1}, {1, -1} };
     private final static short[] Corners = { 225, 315, 405, 495 };
     private static void drawArcFork(Canvas canvas, RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint) {
-        if (!MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
+        if (AndroidUtilities.avatarCornersType() != AndroidUtilities.AVATAR_CORNERS_SQUARE) {
             canvas.drawArc(oval, startAngle, sweepAngle, useCenter, paint);
             return;
         }
@@ -711,7 +711,7 @@ public class StoriesUtilities {
             return;
         }
         if (params.progressToArc == 0) {
-            if (MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
+            if (AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_SQUARE) {
                 canvas.drawRect(rectTmp.left, rectTmp.top, rectTmp.right, rectTmp.bottom, paint);
             } else {
                 canvas.drawCircle(rectTmp.centerX(), rectTmp.centerY(), rectTmp.width() / 2f, paint);
