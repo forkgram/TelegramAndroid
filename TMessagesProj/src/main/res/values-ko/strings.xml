@@ -65,6 +65,10 @@
     <string name="ForkSettingsTitle">포크 클라이언트 설정</string>
     <string name="ForkCheckUpdate">업데이트 확인</string>
     <string name="SquareAvatars">정사각형 아바타</string>
+    <string name="AvatarShape">아바타 모양</string>
+    <string name="AvatarShapeRound">원형</string>
+    <string name="AvatarShapeRounded">둥근 모서리</string>
+    <string name="AvatarShapeSquare">사각형</string>
     <string name="InAppCamera">앱 내 카메라 활성화</string>
     <string name="InAppCameraInfo">첨부 파일에서</string>
     <string name="SyncPins">고정된 대화 동기화</string>

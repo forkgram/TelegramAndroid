@@ -70,6 +70,10 @@
     <string name="ForkSettingsTitle">Настройки Fork Client</string>
     <string name="ForkCheckUpdate">Проверить обновления</string>
     <string name="SquareAvatars">Квадратные аватары</string>
+    <string name="AvatarShape">Форма аватара</string>
+    <string name="AvatarShapeRound">Круглая</string>
+    <string name="AvatarShapeRounded">Скруглённая</string>
+    <string name="AvatarShapeSquare">Квадратная</string>
     <string name="InAppCamera">Включить камеру в приложении</string>
     <string name="InAppCameraInfo">Во вложениях</string>
     <string name="SyncPins">Синхронизировать закреплённые диалоги</string>
