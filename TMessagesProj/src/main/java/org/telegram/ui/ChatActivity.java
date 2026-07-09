@@ -4837,7 +4837,7 @@ public class ChatActivity extends BaseFragment implements
             glassBackgroundDrawableFactory,
             BlurredBackgroundProviderImpl.topPanelChatActivity(themeDelegate),
             ChatObject.isForum(currentChat));
-        actionBar.setGlassAvatarSquare(MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false));
+        actionBar.setGlassAvatarSquare(AndroidUtilities.avatarCornersType() == AndroidUtilities.AVATAR_CORNERS_SQUARE);
 
         if (chatMode == MODE_PINNED) {
             actionBar.setChatAvatarContainer(avatarContainer);
