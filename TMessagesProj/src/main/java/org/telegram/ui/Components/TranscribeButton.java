@@ -118,7 +118,7 @@ public class TranscribeButton {
 
         this.isOpen = false;
         this.shouldBeOpen = false;
-        premium = parent.getMessageObject() != null && (UserConfig.getInstance(parent.getMessageObject().currentAccount).isPremium() || org.telegram.messenger.CloudflareSTT.isConfigured());
+        premium = parent.getMessageObject() != null && (UserConfig.getInstance(parent.getMessageObject().currentAccount).isPremium() || org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive());
 
         loadingFloat = new AnimatedFloat(parent, 250, CubicBezierInterpolator.EASE_OUT_QUINT);
         animatedDrawLock = new AnimatedFloat(parent, 250, CubicBezierInterpolator.EASE_OUT_QUINT);
@@ -212,6 +212,12 @@ public class TranscribeButton {
             return;
         }
         clickedToOpen = false;
+        if (!shouldBeOpen && loading && isOfflineTranscribing(parent.getMessageObject())) {
+            setLoading(false, true);
+            pressed = false;
+            transcribePressed(parent.getMessageObject(), false, parent.getDelegate());
+            return;
+        }
         boolean processClick, toOpen = !shouldBeOpen;
         if (!shouldBeOpen) {
             processClick = !loading;
@@ -630,6 +636,7 @@ public class TranscribeButton {
 
     private static HashMap<Long, MessageObject> transcribeOperationsById;
     private static HashMap<Integer, MessageObject> transcribeOperationsByDialogPosition;
+    private static HashMap<Integer, org.telegram.messenger.forkgram.TranscriptionCancellable> offlineTranscribeOperations;
     private static ArrayList<Integer> videoTranscriptionsOpen;
 
     public static void openVideoTranscription(MessageObject messageObject) {
@@ -659,6 +666,10 @@ public class TranscribeButton {
         );
     }
 
+    public static boolean isOfflineTranscribing(MessageObject messageObject) {
+        return offlineTranscribeOperations != null && messageObject != null && offlineTranscribeOperations.containsKey((Integer) reqInfoHash(messageObject));
+    }
+
     private static void transcribePressed(MessageObject messageObject, boolean open, ChatMessageCell.ChatMessageCellDelegate delegate) {
         if (messageObject == null || messageObject.messageOwner == null || !messageObject.isSent()) {
             return;
@@ -669,7 +680,8 @@ public class TranscribeButton {
         long dialogId = DialogObject.getPeerDialogId(peer);
         int messageId = messageObject.messageOwner.id;
         if (open) {
-            if (messageObject.messageOwner.voiceTranscription != null && messageObject.messageOwner.voiceTranscriptionFinal) {
+            boolean offlineRetry = TextUtils.isEmpty(messageObject.messageOwner.voiceTranscription) && org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive();
+            if (messageObject.messageOwner.voiceTranscription != null && messageObject.messageOwner.voiceTranscriptionFinal && !offlineRetry) {
                 TranscribeButton.openVideoTranscription(messageObject);
                 messageObject.messageOwner.voiceTranscriptionOpen = true;
                 MessagesStorage.getInstance(account).updateMessageVoiceTranscriptionOpen(dialogId, messageId, messageObject.messageOwner);
@@ -679,6 +691,77 @@ public class TranscribeButton {
             } else {
                 if (BuildVars.LOGS_ENABLED) {
                     FileLog.d("sending Transcription request, msg_id=" + messageId + " dialog_id=" + dialogId);
+                }
+                if (org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive()) {
+                    File path = null;
+                    String attachPath = messageObject.messageOwner.attachPath;
+                    if (!TextUtils.isEmpty(attachPath)) {
+                        File temp = new File(attachPath);
+                        if (temp.exists()) {
+                            path = temp;
+                        }
+                    }
+                    if (path == null) {
+                        path = org.telegram.messenger.FileLoader.getInstance(account).getPathToMessage(messageObject.messageOwner);
+                        if (path != null && !path.exists()) {
+                            path = null;
+                        }
+                    }
+                    if (path == null) {
+                        path = org.telegram.messenger.FileLoader.getInstance(account).getPathToAttach(messageObject.getDocument(), true);
+                    }
+                    if (path == null || !path.exists()) {
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject);
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.updateTranscriptionLock);
+                        NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_ERROR, LocaleController.getString(R.string.PleaseDownload));
+                        return;
+                    }
+                    long id = org.telegram.messenger.Utilities.random.nextLong();
+                    if (transcribeOperationsByDialogPosition == null) {
+                        transcribeOperationsByDialogPosition = new HashMap<>();
+                    }
+                    transcribeOperationsByDialogPosition.put(reqInfoHash(messageObject), messageObject);
+                    org.telegram.messenger.forkgram.TranscriptionCancellable cancellable = org.telegram.messenger.forkgram.ForkOfflineTranscribe.requestTranscription(path.getAbsolutePath(), "", (partial) -> AndroidUtilities.runOnUIThread(() -> {
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject, (Long) id, (String) partial, (Boolean) true, (Boolean) false);
+                    }), (text, exception) -> {
+                        if (offlineTranscribeOperations != null) {
+                            offlineTranscribeOperations.remove(reqInfoHash(messageObject));
+                        }
+                        if (text != null) {
+                            if (transcribeOperationsById == null) {
+                                transcribeOperationsById = new HashMap<>();
+                            }
+                            transcribeOperationsById.put(id, messageObject);
+                            messageObject.messageOwner.voiceTranscriptionId = id;
+
+                            final long duration = SystemClock.elapsedRealtime() - start;
+                            TranscribeButton.openVideoTranscription(messageObject);
+                            messageObject.messageOwner.voiceTranscriptionOpen = true;
+                            messageObject.messageOwner.voiceTranscriptionFinal = true;
+
+                            MessagesStorage.getInstance(account).updateMessageVoiceTranscription(dialogId, messageId, text, messageObject.messageOwner);
+                            AndroidUtilities.runOnUIThread(() -> finishTranscription(messageObject, id, text), Math.max(0, minDuration - duration));
+                        } else {
+                            final boolean cancelled = exception instanceof org.telegram.messenger.forkgram.TranscriptionCancelledException;
+                            AndroidUtilities.runOnUIThread(() -> {
+                                if (transcribeOperationsByDialogPosition != null) {
+                                    transcribeOperationsByDialogPosition.remove(reqInfoHash(messageObject));
+                                }
+                                NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject);
+                                NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.updateTranscriptionLock);
+                                if (!cancelled) {
+                                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_ERROR, LocaleController.getString(R.string.ErrorOccurred));
+                                }
+                            });
+                        }
+                    });
+                    if (cancellable != null) {
+                        if (offlineTranscribeOperations == null) {
+                            offlineTranscribeOperations = new HashMap<>();
+                        }
+                        offlineTranscribeOperations.put(reqInfoHash(messageObject), cancellable);
+                    }
+                    return;
                 }
                 if (org.telegram.messenger.CloudflareSTT.isConfigured()) {
                     File path = null;
@@ -816,6 +899,12 @@ public class TranscribeButton {
             if (transcribeOperationsByDialogPosition != null) {
                 transcribeOperationsByDialogPosition.remove((Integer) reqInfoHash(messageObject));
             }
+            if (offlineTranscribeOperations != null) {
+                org.telegram.messenger.forkgram.TranscriptionCancellable pending = offlineTranscribeOperations.remove((Integer) reqInfoHash(messageObject));
+                if (pending != null) {
+                    pending.cancel();
+                }
+            }
             messageObject.messageOwner.voiceTranscriptionOpen = false;
             MessagesStorage.getInstance(account).updateMessageVoiceTranscriptionOpen(dialogId, messageId, messageObject.messageOwner);
             AndroidUtilities.runOnUIThread(() -> {
@@ -907,7 +996,7 @@ public class TranscribeButton {
         if (messageObject == null || messageObject.messageOwner == null) {
             return false;
         }
-        if (org.telegram.messenger.CloudflareSTT.isConfigured()) {
+        if (org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive()) {
             return false;
         }
         if (isFreeTranscribeInChat(messageObject)) {
