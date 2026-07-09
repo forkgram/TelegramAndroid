@@ -1068,7 +1068,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
             ImageReceiver imageReceiver = animatedEmojiDrawable != null ? animatedEmojiDrawable.getImageReceiver() : this.imageReceiver;
 
-            int r = /*isMetaballWorking && !hasStories ? roundRadiusCollapse : */roundRadiusExpand;
+            int r = AndroidUtilities.avatarShapedRadius(/*isMetaballWorking && !hasStories ? roundRadiusCollapse : */roundRadiusExpand);
             if (r > 0) {
                 clipPath.rewind();
                 AndroidUtilities.rectTmp.set(inset, inset, thisWidth - inset, thisHeight - inset);
@@ -14897,6 +14897,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     new SearchResult(1006, getString(R.string.HideInAppHints), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_HIDE_IN_APP_HINTS))),
                     new SearchResult(1007, getString(R.string.HideBottomButton), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_HIDE_BOTTOM_BUTTON))),
                     new SearchResult(1008, getString(R.string.EditAdminRank), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_CUSTOM_TITLE))),
+                    new SearchResult(1009, getString(R.string.AvatarShape), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_AVATAR_CORNERS))),
                     new SearchResult(1010, getString(R.string.SyncPins), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_SYNC_PINS))),
                     new SearchResult(1011, getString(R.string.UnmutedOnTop), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_UNMUTED_ON_TOP))),
                     new SearchResult(1012, getString(R.string.OpenArchiveOnPull), getString(R.string.ForkSettingsTitle), R.drawable.menu_fork, () -> f.presentFragment(new ForkSettingsActivity().highlight(ForkSettingsActivity.ID_OPEN_ARCHIVE_ON_PULL))),

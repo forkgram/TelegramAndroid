@@ -65,6 +65,10 @@
     <string name="ForkSettingsTitle">Instellingen van de Fork-client</string>
     <string name="ForkCheckUpdate">Controleer op updates</string>
     <string name="SquareAvatars">Vierkante avatars</string>
+    <string name="AvatarShape">Avatarvorm</string>
+    <string name="AvatarShapeRound">Rond</string>
+    <string name="AvatarShapeRounded">Afgerond</string>
+    <string name="AvatarShapeSquare">Vierkant</string>
     <string name="InAppCamera">In-app camera inschakelen</string>
     <string name="InAppCameraInfo">In bijlagen</string>
     <string name="SyncPins">Gesynchroniseerde dialogen</string>
