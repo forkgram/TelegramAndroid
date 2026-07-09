@@ -68,6 +68,10 @@
     <string name="InAppCamera">Enable In-App Camera</string>
     <string name="InAppCameraInfo">In Attachments</string>
     <string name="SquareAvatars">Square Avatars</string>
+    <string name="AvatarShape">Avatar Shape</string>
+    <string name="AvatarShapeRound">Round</string>
+    <string name="AvatarShapeRounded">Rounded</string>
+    <string name="AvatarShapeSquare">Square</string>
     <string name="PhotoHasSticker">Send Sticker Info in Photo</string>
     <string name="PhotoHasStickerInfo">When using Stickers on Photo</string>
     <string name="DisableMotionPhoto">Disable Motion Photos</string>
