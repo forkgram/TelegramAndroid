@@ -121,6 +121,10 @@ android {
         }
     }
 
+    buildFeatures {
+        aidl true
+    }
+
     lintOptions {
         disable 'MissingTranslation'
         disable 'ExtraTranslation'
