@@ -17,6 +17,16 @@ object ExtractMediaFromPreview {
     }
 
     @JvmStatic
+    fun isPhotoOnly(webPage: TLRPC.WebPage?): Boolean {
+        if (webPage == null || webPage.photo !is TLRPC.TL_photo || webPage.document is TLRPC.TL_document) {
+            return false
+        }
+        return webPage.site_name.isNullOrEmpty() &&
+            webPage.title.isNullOrEmpty() &&
+            webPage.description.isNullOrEmpty()
+    }
+
+    @JvmStatic
     fun send(
         currentAccount: Int,
         peer: Long,

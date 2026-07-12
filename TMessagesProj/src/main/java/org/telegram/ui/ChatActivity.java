@@ -41587,7 +41587,7 @@ public class ChatActivity extends BaseFragment implements
             } else if (message.isSending()) {
                 return;
             }
-            if (fullPreview && message != null && message.messageOwner != null && message.messageOwner.media != null && message.messageOwner.media.webpage != null && !TextUtils.isEmpty(message.messageOwner.media.webpage.url)) {
+            if (fullPreview && message != null && message.messageOwner != null && message.messageOwner.media != null && message.messageOwner.media.webpage != null && !ExtractMediaFromPreview.isPhotoOnly(message.messageOwner.media.webpage) && !TextUtils.isEmpty(message.messageOwner.media.webpage.url)) {
                 final String url = message.messageOwner.media.webpage.url;
                 final String host = AndroidUtilities.getHostAuthority(url);
                 if (!openLinkInternally(url, cell, null, message.getId(), PROGRESS_INSTANT)) {
