@@ -98,6 +98,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_SLIDE_TO_NEXT_CHANNEL = 35;
     public static final int ID_FORMAT_WITH_SECONDS = 36;
     public static final int ID_HIDE_AI_EDITOR = 37;
+    public static final int ID_FORMATTING_MENU = 38;
 
     public static final int ID_DISABLE_QUICK_REACTION = 40;
     public static final int ID_HIDE_MESSAGE_REACTIONS = 41;
@@ -530,6 +531,7 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("formatWithSeconds", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_HIDE_AI_EDITOR, LocaleController.getString(R.string.HideAiEditor), LocaleController.getString(R.string.HideAiEditorInfo))
             .setChecked(pref("hideAiEditor", false)).setMultiline(true));
+        items.add(UItem.asSettingsCell(ID_FORMATTING_MENU, LocaleController.getString(R.string.FormattingMenu), null));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.Reactions)));
@@ -708,6 +710,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("formatWithSeconds", item, view);
         } else if (id == ID_HIDE_AI_EDITOR) {
             toggle("hideAiEditor", item, view);
+        } else if (id == ID_FORMATTING_MENU) {
+            presentFragment(new FormattingMenuActivity());
 
         } else if (id == ID_DISABLE_QUICK_REACTION) {
             toggle("disableQuickReaction", item, view);
