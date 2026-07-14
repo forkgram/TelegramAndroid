@@ -35,6 +35,7 @@
     <string name="DisableSlideToNextChannelInfo">Niet naar het volgende kanaal gaan bij doorscrollen voorbij het einde.</string>
     <string name="FormatWithSecondsInfo">Seconden tonen in berichttijden en andere tijden.</string>
     <string name="HideAiEditorInfo">De AI-herschrijfknop in bericht- en bijschriftvelden verbergen.</string>
+    <string name="FormattingMenuInfo">Houd een optie ingedrukt en sleep deze om de volgorde te wijzigen. Niet-aangevinkte opties worden verborgen in het tekstselectiemenu.</string>
     <string name="DisableQuickReactionInfo">Geen reactie versturen bij dubbeltikken op een bericht.</string>
     <string name="HideMessageReactionsInfo">Geen reactiebellen onder berichten tonen.</string>
     <string name="HideSavedMessagesTagsInfo">De tagfilterbalk in Opgeslagen berichten verbergen.</string>
@@ -124,6 +125,7 @@
     <string name="ForceBlockScreenshots">Schermafbeeldingen blokkeren</string>
     <string name="ForceBlockScreenshotsInfo">Voorkom schermafbeeldingen en schermopname in de hele app, zelfs zonder toegangscode.</string>
     <string name="HideAiEditor">Knop AI-editor verbergen</string>
+    <string name="FormattingMenu">Opmaakmenu</string>
     <string name="DisableLockedAnimatedEmoji">Vergrendelde geanimeerde emoji in het paneel verbergen</string>
     <string name="DisableParametersFromBotLinks">Parameters van botlinks uitschakelen</string>
     <string name="LockPremium">Premium functies vergrendelen</string>

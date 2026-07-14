@@ -35,6 +35,7 @@
     <string name="DisableSlideToNextChannelInfo">No pasar al siguiente canal al desplazarse más allá del final.</string>
     <string name="FormatWithSecondsInfo">Mostrar los segundos en la hora de los mensajes y otras horas.</string>
     <string name="HideAiEditorInfo">Ocultar el botón de reescritura con IA en los campos de mensaje y descripción.</string>
+    <string name="FormattingMenuInfo">Mantén pulsada una opción y arrástrala para reordenarla. Las opciones sin marcar se ocultan del menú de selección de texto.</string>
     <string name="DisableQuickReactionInfo">No enviar una reacción al tocar dos veces un mensaje.</string>
     <string name="HideMessageReactionsInfo">No mostrar las reacciones bajo los mensajes.</string>
     <string name="HideSavedMessagesTagsInfo">Ocultar la barra de filtros por etiquetas en Mensajes guardados.</string>
@@ -124,6 +125,7 @@
     <string name="ForceBlockScreenshots">Bloquear capturas de pantalla</string>
     <string name="ForceBlockScreenshotsInfo">Impedir capturas de pantalla y grabación de pantalla en toda la aplicación, incluso sin código de acceso.</string>
     <string name="HideAiEditor">Ocultar botón del editor de IA</string>
+    <string name="FormattingMenu">Menú de formato</string>
     <string name="DisableLockedAnimatedEmoji">Ocultar emoji animados bloqueados en el panel</string>
     <string name="DisableParametersFromBotLinks">Desactivar parámetros de enlaces de bots</string>
     <string name="LockPremium">Bloquear funciones premium</string>

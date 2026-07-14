@@ -35,6 +35,7 @@
     <string name="DisableSlideToNextChannelInfo">Не переходити до наступного каналу під час прокручування за кінець чату.</string>
     <string name="FormatWithSecondsInfo">Показувати секунди в часі повідомлень та інших позначках часу.</string>
     <string name="HideAiEditorInfo">Приховувати кнопку ШІ-редактора в полях повідомлення та підпису.</string>
+    <string name="FormattingMenuInfo">Утримуйте й перетягніть пункт, щоб змінити порядок. Пункти без позначки приховані з меню виділення тексту.</string>
     <string name="DisableQuickReactionInfo">Не надсилати реакцію під час подвійного натискання на повідомлення.</string>
     <string name="HideMessageReactionsInfo">Не відображати реакції під повідомленнями.</string>
     <string name="HideSavedMessagesTagsInfo">Приховувати панель фільтра за тегами в «Збереженому».</string>
@@ -124,6 +125,7 @@
     <string name="ForceBlockScreenshots">Блокувати знімки екрана</string>
     <string name="ForceBlockScreenshotsInfo">Заборонити знімки екрана та запис екрана в усьому додатку, навіть без код-пароля.</string>
     <string name="HideAiEditor">Сховати кнопку ШІ-редактора</string>
+    <string name="FormattingMenu">Меню форматування</string>
     <string name="DisableLockedAnimatedEmoji">Сховати заблоковані анімовані емодзі в панелі</string>
     <string name="DisableParametersFromBotLinks">Вимкнути параметри з посилань ботів</string>
     <string name="LockPremium">Заблокувати преміум-функції</string>
