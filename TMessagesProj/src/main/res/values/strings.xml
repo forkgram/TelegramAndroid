@@ -31,6 +31,7 @@
     <string name="DisableSlideToNextChannelInfo">Do not slide to the next channel when scrolling past the end.</string>
     <string name="FormatWithSecondsInfo">Show seconds in message timestamps and other times.</string>
     <string name="HideAiEditorInfo">Hide the AI rewrite button in message and caption fields.</string>
+    <string name="FormattingMenuInfo">Hold and drag an option to reorder it. Unchecked options are hidden from the text selection menu.</string>
     <string name="DisableQuickReactionInfo">Do not send a reaction when a message is double-tapped.</string>
     <string name="HideMessageReactionsInfo">Do not draw reaction bubbles under messages.</string>
     <string name="HideSavedMessagesTagsInfo">Hide the tag filter bar in Saved Messages.</string>
@@ -120,6 +121,7 @@
     <string name="ForceBlockScreenshots">Block screenshots</string>
     <string name="ForceBlockScreenshotsInfo">Prevent screenshots and screen recording across the app, even without a passcode.</string>
     <string name="HideAiEditor">Hide AI Editor button</string>
+    <string name="FormattingMenu">Formatting menu</string>
     <string name="DisableLockedAnimatedEmoji">Hide locked animated emoji in panel</string>
     <string name="DisableParametersFromBotLinks">Disable parameters from bot links</string>
     <string name="LockPremium">Lock premium features</string>

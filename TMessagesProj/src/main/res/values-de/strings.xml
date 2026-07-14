@@ -35,6 +35,7 @@
     <string name="DisableSlideToNextChannelInfo">Beim Scrollen über das Ende hinaus nicht zum nächsten Kanal wechseln.</string>
     <string name="FormatWithSecondsInfo">Sekunden in Nachrichtenzeiten und anderen Zeitangaben anzeigen.</string>
     <string name="HideAiEditorInfo">Die KI-Umschreiben-Schaltfläche in Nachrichten- und Bildunterschriftfeldern ausblenden.</string>
+    <string name="FormattingMenuInfo">Zum Neuanordnen eine Option gedrückt halten und ziehen. Optionen ohne Häkchen werden im Textauswahlmenü ausgeblendet.</string>
     <string name="DisableQuickReactionInfo">Beim Doppeltippen auf eine Nachricht keine Reaktion senden.</string>
     <string name="HideMessageReactionsInfo">Keine Reaktionsblasen unter Nachrichten anzeigen.</string>
     <string name="HideSavedMessagesTagsInfo">Die Tag-Filterleiste in gespeicherten Nachrichten ausblenden.</string>
@@ -124,6 +125,7 @@
     <string name="ForceBlockScreenshots">Screenshots blockieren</string>
     <string name="ForceBlockScreenshotsInfo">Screenshots und Bildschirmaufnahmen in der gesamten App verhindern, auch ohne Code.</string>
     <string name="HideAiEditor">KI-Editor-Button ausblenden</string>
+    <string name="FormattingMenu">Formatierungsmenü</string>
     <string name="DisableLockedAnimatedEmoji">Gesperrte animierte Emojis in der Leiste ausblenden</string>
     <string name="DisableParametersFromBotLinks">Parameter von Bot-Links deaktivieren</string>
     <string name="LockPremium">Premium-Funktionen sperren</string>
