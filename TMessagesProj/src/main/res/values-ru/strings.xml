@@ -41,6 +41,7 @@
     <string name="DisableSlideToNextChannelInfo">Не переходить к следующему каналу при прокрутке за конец чата.</string>
     <string name="FormatWithSecondsInfo">Показывать секунды во времени сообщений и других отметках времени.</string>
     <string name="HideAiEditorInfo">Скрывать кнопку ИИ-редактора в полях сообщения и подписи.</string>
+    <string name="FormattingMenuInfo">Удерживайте и перетащите пункт, чтобы изменить порядок. Пункты без галочки скрыты из меню выделения текста.</string>
     <string name="DisableQuickReactionInfo">Не отправлять реакцию при двойном нажатии на сообщение.</string>
     <string name="HideMessageReactionsInfo">Не отображать реакции под сообщениями.</string>
     <string name="HideSavedMessagesTagsInfo">Скрывать панель фильтра по тегам в «Избранном».</string>
@@ -137,6 +138,7 @@
     <string name="ForceBlockScreenshots">Блокировать скриншоты</string>
     <string name="ForceBlockScreenshotsInfo">Запретить создание скриншотов и запись экрана во всём приложении, даже без код-пароля.</string>
     <string name="HideAiEditor">Скрыть кнопку ИИ-редактора</string>
+    <string name="FormattingMenu">Меню форматирования</string>
     <string name="DisableLockedAnimatedEmoji">Скрыть заблокированные анимированные эмодзи в панели</string>
     <string name="DisableParametersFromBotLinks">Отключить параметры из ссылок бота</string>
     <string name="LockPremium">Заблокировать премиум функции</string>
