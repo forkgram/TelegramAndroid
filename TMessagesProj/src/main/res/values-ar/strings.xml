@@ -41,6 +41,7 @@
     <string name="DisableSlideToNextChannelInfo">عدم الانتقال إلى القناة التالية عند التمرير بعد النهاية.</string>
     <string name="FormatWithSecondsInfo">إظهار الثواني في أوقات الرسائل والأوقات الأخرى.</string>
     <string name="HideAiEditorInfo">إخفاء زر إعادة الصياغة بالذكاء الاصطناعي في حقول الرسالة والتسمية.</string>
+    <string name="FormattingMenuInfo">اضغط مطولاً على خيار واسحبه لإعادة ترتيبه. الخيارات غير المحددة مخفية من قائمة تحديد النص.</string>
     <string name="DisableQuickReactionInfo">عدم إرسال تفاعل عند النقر المزدوج على رسالة.</string>
     <string name="HideMessageReactionsInfo">عدم عرض التفاعلات أسفل الرسائل.</string>
     <string name="HideSavedMessagesTagsInfo">إخفاء شريط تصفية الوسوم في الرسائل المحفوظة.</string>
@@ -134,6 +135,7 @@
     <string name="ForceBlockScreenshots">حظر لقطات الشاشة</string>
     <string name="ForceBlockScreenshotsInfo">منع لقطات الشاشة وتسجيل الشاشة في التطبيق بالكامل، حتى بدون رمز مرور.</string>
     <string name="HideAiEditor">إخفاء زر محرر الذكاء الاصطناعي</string>
+    <string name="FormattingMenu">قائمة التنسيق</string>
     <string name="DisableLockedAnimatedEmoji">إخفاء الرموز التعبيرية المتحركة المقفلة في اللوحة</string>
     <string name="DisableParametersFromBotLinks">تعطيل المعلمات من روابط الروبوت</string>
     <string name="LockPremium">قفل الميزات المميزة</string>
