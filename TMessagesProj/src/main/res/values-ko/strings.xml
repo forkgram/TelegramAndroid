@@ -41,6 +41,7 @@
     <string name="DisableSlideToNextChannelInfo">끝을 넘겨 스크롤해도 다음 채널로 넘어가지 않습니다.</string>
     <string name="FormatWithSecondsInfo">메시지 시간과 기타 시간에 초를 표시합니다.</string>
     <string name="HideAiEditorInfo">메시지 및 캡션 입력란의 AI 다시쓰기 버튼을 숨깁니다.</string>
+    <string name="FormattingMenuInfo">옵션을 길게 눌러 끌어서 순서를 변경합니다. 선택 해제된 옵션은 텍스트 선택 메뉴에서 숨겨집니다.</string>
     <string name="DisableQuickReactionInfo">메시지를 두 번 탭해도 리액션을 보내지 않습니다.</string>
     <string name="HideMessageReactionsInfo">메시지 아래에 리액션을 표시하지 않습니다.</string>
     <string name="HideSavedMessagesTagsInfo">저장된 메시지의 태그 필터 막대를 숨깁니다.</string>
@@ -134,6 +135,7 @@
     <string name="ForceBlockScreenshots">스크린샷 차단</string>
     <string name="ForceBlockScreenshotsInfo">암호가 없어도 앱 전체에서 스크린샷과 화면 녹화를 방지합니다.</string>
     <string name="HideAiEditor">AI 편집기 버튼 숨기기</string>
+    <string name="FormattingMenu">서식 메뉴</string>
     <string name="DisableLockedAnimatedEmoji">패널에서 잠긴 애니메이션 이모지 숨기기</string>
     <string name="DisableParametersFromBotLinks">봇 링크의 매개변수 비활성화</string>
     <string name="LockPremium">프리미엄 기능 잠금</string>
