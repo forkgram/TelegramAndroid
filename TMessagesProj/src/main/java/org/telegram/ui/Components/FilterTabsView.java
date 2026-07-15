@@ -1309,6 +1309,10 @@ public class FilterTabsView extends FrameLayout {
         return tabs.get(i);
     }
 
+    public int getTabPositionById(int id) {
+        return idToPosition.get(id, -1);
+    }
+
     public void finishAddingTabs(boolean animated) {
         listView.setItemAnimator(animated ? itemAnimator : null);
         adapter.notifyDataSetChanged();
@@ -1553,6 +1557,19 @@ public class FilterTabsView extends FrameLayout {
                 trueTabsWidth += firstTab.getWidth(false);
                 int prevWidth = additionalTabWidth;
                 additionalTabWidth = trueTabsWidth < width ? (width - trueTabsWidth) / tabs.size() : 0;
+                if (prevWidth != additionalTabWidth) {
+                    ignoreLayout = true;
+                    RecyclerView.ItemAnimator animator = listView.getItemAnimator();
+                    listView.setItemAnimator(null);
+                    adapter.notifyDataSetChanged();
+                    listView.setItemAnimator(animator);
+                    ignoreLayout = false;
+                }
+                updateTabsWidths();
+                invalidated = false;
+            } else {
+                int prevWidth = additionalTabWidth;
+                additionalTabWidth = allTabsWidth < width ? (width - allTabsWidth) / tabs.size() : 0;
                 if (prevWidth != additionalTabWidth) {
                     ignoreLayout = true;
                     RecyclerView.ItemAnimator animator = listView.getItemAnimator();
