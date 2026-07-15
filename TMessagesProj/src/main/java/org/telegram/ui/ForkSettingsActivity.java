@@ -85,6 +85,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_GLOBAL_SEARCH = 25;
     public static final int ID_HIDE_CONTACTS_IN_DIALOGS = 26;
     public static final int ID_ENABLE_LAST_SEEN_DOTS = 27;
+    public static final int ID_HIDE_ALL_CHATS_TAB = 28;
+    public static final int ID_DEFAULT_FOLDER = 29;
 
     public static final int ID_REPLACE_FORWARD = 30;
     public static final int ID_MENTION_BY_NAME = 31;
@@ -498,6 +500,9 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("hideContactsInDialogs", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_ENABLE_LAST_SEEN_DOTS, LocaleController.getString(R.string.EnableLastSeenDots), LocaleController.getString(R.string.EnableLastSeenDotsInfo))
             .setChecked(pref("enableLastSeenDots", true)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_HIDE_ALL_CHATS_TAB, LocaleController.getString(R.string.HideAllChatsTab), LocaleController.getString(R.string.HideAllChatsTabInfo))
+            .setChecked(pref("hideAllChatsTab", false)).setMultiline(true));
+        items.add(UItem.asSettingsCell(ID_DEFAULT_FOLDER, LocaleController.getString(R.string.DefaultFolder), getDefaultFolderText()));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.FilterChats)));
@@ -671,6 +676,11 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideContactsInDialogs", item, view);
         } else if (id == ID_ENABLE_LAST_SEEN_DOTS) {
             toggle("enableLastSeenDots", item, view);
+        } else if (id == ID_HIDE_ALL_CHATS_TAB) {
+            toggle("hideAllChatsTab", item, view);
+            getNotificationCenter().postNotificationName(NotificationCenter.dialogFiltersUpdated);
+        } else if (id == ID_DEFAULT_FOLDER) {
+            showDefaultFolderDialog();
 
         } else if (id == ID_REPLACE_FORWARD) {
             toggle("replaceForward", item, view);
@@ -933,6 +943,58 @@ public class ForkSettingsActivity extends BaseFragment {
         builder.setView(linearLayout);
         builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
         builder.show();
+    }
+
+    private String getDefaultFolderText() {
+        final int id = prefs().getInt("defaultFolderId", -1);
+        if (id != -1) {
+            ArrayList<MessagesController.DialogFilter> filters = getMessagesController().getDialogFilters();
+            for (int a = 0; a < filters.size(); a++) {
+                MessagesController.DialogFilter filter = filters.get(a);
+                if (!filter.isDefault() && filter.localId == id) {
+                    return filter.name;
+                }
+            }
+        }
+        return LocaleController.getString(R.string.FilterAllChats);
+    }
+
+    private void showDefaultFolderDialog() {
+        ArrayList<MessagesController.DialogFilter> filters = getMessagesController().getDialogFilters();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (int a = 0; a < filters.size(); a++) {
+            MessagesController.DialogFilter filter = filters.get(a);
+            if (filter.isDefault()) {
+                names.add(LocaleController.getString(R.string.FilterAllChats));
+                ids.add(-1);
+            } else {
+                names.add(filter.name);
+                ids.add(filter.localId);
+            }
+        }
+        if (names.isEmpty()) {
+            names.add(LocaleController.getString(R.string.FilterAllChats));
+            ids.add(-1);
+        }
+        final int currentId = prefs().getInt("defaultFolderId", -1);
+        int selectedIndex = 0;
+        for (int a = 0; a < ids.size(); a++) {
+            if (ids.get(a) == currentId) {
+                selectedIndex = a;
+                break;
+            }
+        }
+        final int[] idsArr = new int[ids.size()];
+        for (int a = 0; a < ids.size(); a++) {
+            idsArr[a] = ids.get(a);
+        }
+        showRadioDialog(LocaleController.getString(R.string.DefaultFolder), names.toArray(new String[0]), selectedIndex, index -> {
+            SharedPreferences.Editor editor = prefs().edit();
+            editor.putInt("defaultFolderId", idsArr[index]);
+            editor.commit();
+            listView.adapter.update(false);
+        });
     }
 
     private void showVoiceQualityDialog() {

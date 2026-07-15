@@ -28,6 +28,9 @@
     <string name="DisableGlobalSearchInfo">إظهار محادثاتك وجهات اتصالك فقط في البحث، دون نتائج عامة.</string>
     <string name="HideContactsInDialogsInfo">إخفاء جهات الاتصال الظاهرة أسفل قائمة الدردشات عند وجود دردشات قليلة.</string>
     <string name="EnableLastSeenDotsInfo">تلوين نقطة الصورة الرمزية لمن ظهروا خلال الساعة الماضية.</string>
+    <string name="HideAllChatsTab">إخفاء تبويب \"كل الدردشات\"</string>
+    <string name="HideAllChatsTabInfo">يزيل تبويب \"كل الدردشات\" من شريط المجلدات. تبقى الدردشات خارج المجلدات متاحة عبر البحث والأرشيف.</string>
+    <string name="DefaultFolder">المجلد الافتراضي</string>
     <string name="ReplaceForwardInfo">إعادة التوجيه تفتح لوحة المشاركة بدلاً من محدد الدردشة.</string>
     <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
     <string name="HideSendAsInfo">إخفاء زر الإرسال باسم في حقل الرسالة.</string>

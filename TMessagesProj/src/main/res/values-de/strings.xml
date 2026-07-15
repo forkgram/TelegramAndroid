@@ -28,6 +28,9 @@
     <string name="DisableGlobalSearchInfo">In der Suche nur eigene Chats und Kontakte anzeigen, keine globalen Ergebnisse.</string>
     <string name="HideContactsInDialogsInfo">Die Kontaktliste unter der Chatliste ausblenden, wenn es wenige Chats gibt.</string>
     <string name="EnableLastSeenDotsInfo">Den Avatar-Punkt für zuletzt innerhalb der letzten Stunde gesehene Personen einfärben.</string>
+    <string name="HideAllChatsTab">Tab \"Alle Chats\" ausblenden</string>
+    <string name="HideAllChatsTabInfo">Entfernt den Tab \"Alle Chats\" aus der Ordnerleiste. Chats außerhalb von Ordnern bleiben über Suche und Archiv erreichbar.</string>
+    <string name="DefaultFolder">Standardordner</string>
     <string name="ReplaceForwardInfo">Weiterleiten öffnet das Teilen-Fenster statt der Chat-Auswahl.</string>
     <string name="MentionByNameInfo">Autovervollständigung fügt den Namen der Person statt des Benutzernamens ein.</string>
     <string name="HideSendAsInfo">Die Senden-als-Schaltfläche im Nachrichtenfeld ausblenden.</string>

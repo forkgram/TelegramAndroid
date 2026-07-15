@@ -6830,21 +6830,22 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 return;
             }
         }
-        int index = filterTabsView.getTabsCount() - 1;
+        int tabId = -1;
         ArrayList<MessagesController.DialogFilter> filters = getMessagesController().getDialogFilters();
         for (int i = 0; i < filters.size(); ++i) {
             if (filters.get(i).id == fid) {
-                index = i;
+                tabId = i;
                 break;
             }
         }
 
-        FilterTabsView.Tab tab = filterTabsView.getTab(index);
+        int position = tabId >= 0 ? filterTabsView.getTabPositionById(tabId) : -1;
+        FilterTabsView.Tab tab = position >= 0 ? filterTabsView.getTab(position) : null;
         if (tab != null) {
             if (viewPages != null && viewPages.length > 0 && viewPages[0].selectedType == tab.id) {
                 return;
             }
-            filterTabsView.scrollToTab(tab, index);
+            filterTabsView.scrollToTab(tab, position);
         } else {
             filterTabsView.selectLastTab();
         }
@@ -6925,8 +6926,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     selectWithStableId = true;
                 }
                 filterTabsView.removeTabs();
+                final boolean hideAllChatsTab = MessagesController.getGlobalMainSettings().getBoolean("hideAllChatsTab", false);
                 for (int a = 0, N = filters.size(); a < N; a++) {
                     if (filters.get(a).isDefault()) {
+                        if (hideAllChatsTab) {
+                            continue;
+                        }
                         filterTabsView.addTab(a, 0, LocaleController.getString(R.string.FilterAllChats), null, false, true, filters.get(a).locked);
                     } else {
                         final MessagesController.DialogFilter filter = filters.get(a);
@@ -6944,7 +6949,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                             }
                         }
                     }
-                    if (filterTabsView.getStableId(viewPages[0].selectedType) != stableId) {
+                    final int selType = viewPages[0].selectedType;
+                    final int selectedStableId = (selType >= 0 && selType < filters.size())
+                        ? (filters.get(selType).isDefault() ? 0 : filters.get(selType).localId)
+                        : -1;
+                    if (selectedStableId != stableId) {
                         updateCurrentTab = true;
                         viewPages[0].selectedType = id;
                     }
@@ -6956,6 +6965,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     viewPages[a].listView.setScrollingTouchSlop(RecyclerView.TOUCH_SLOP_PAGING);
                 }
                 filterTabsView.finishAddingTabs(animatedUpdateItems);
+                if (applyDefaultFolderLanding(filters, stableId < 0)) {
+                    updateCurrentTab = true;
+                }
                 if (updateCurrentTab) {
                     switchToCurrentSelectedMode(false);
                 }
@@ -6974,8 +6986,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     viewPages[0].setTranslationX(0);
                     viewPages[1].setTranslationX(viewPages[0].getMeasuredWidth());
                 }
-                if (viewPages[0].selectedType != filterTabsView.getDefaultTabId()) {
-                    viewPages[0].selectedType = filterTabsView.getDefaultTabId();
+                int defaultTabId = filterTabsView.getDefaultTabId();
+                if (defaultTabId < 0) {
+                    defaultTabId = 0;
+                }
+                if (viewPages[0].selectedType != defaultTabId) {
+                    viewPages[0].selectedType = defaultTabId;
                     viewPages[0].dialogsAdapter.setDialogsType(0);
                     viewPages[0].dialogsType = initialDialogsType;
                     viewPages[0].dialogsAdapter.notifyDataSetChanged();
@@ -7021,6 +7037,47 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 }
             }
         }
+    }
+
+    private boolean applyDefaultFolderLanding(ArrayList<MessagesController.DialogFilter> filters, boolean freshBuild) {
+        if (filterTabsView == null || viewPages == null || viewPages.length == 0 || filters == null || filters.size() <= 1) {
+            return false;
+        }
+        final SharedPreferences prefs = MessagesController.getGlobalMainSettings();
+        final boolean hideAllChatsTab = prefs.getBoolean("hideAllChatsTab", false);
+        final int defaultFolderId = prefs.getInt("defaultFolderId", -1);
+
+        int landingIndex = -1;
+        if (defaultFolderId != -1) {
+            for (int a = 0; a < filters.size(); a++) {
+                if (!filters.get(a).isDefault() && filters.get(a).localId == defaultFolderId) {
+                    landingIndex = a;
+                    break;
+                }
+            }
+        }
+        if (landingIndex < 0 && hideAllChatsTab) {
+            for (int a = 0; a < filters.size(); a++) {
+                if (!filters.get(a).isDefault()) {
+                    landingIndex = a;
+                    break;
+                }
+            }
+        }
+        if (landingIndex < 0) {
+            return false;
+        }
+        if (!freshBuild) {
+            final int current = viewPages[0].selectedType;
+            final boolean currentHidden = current >= 0 && current < filters.size() && hideAllChatsTab && filters.get(current).isDefault();
+            if (!currentHidden) {
+                return false;
+            }
+        }
+        final MessagesController.DialogFilter target = filters.get(landingIndex);
+        filterTabsView.selectTabWithStableId(target.isDefault() ? 0 : target.localId);
+        viewPages[0].selectedType = landingIndex;
+        return true;
     }
 
     @Override

@@ -28,6 +28,9 @@
     <string name="DisableGlobalSearchInfo">Показывать в поиске только ваши чаты и контакты, без глобальных результатов.</string>
     <string name="HideContactsInDialogsInfo">Скрывать список контактов под списком чатов, когда чатов мало.</string>
     <string name="EnableLastSeenDotsInfo">Подсвечивать точку на аватаре для тех, кто был в сети в течение последнего часа.</string>
+    <string name="HideAllChatsTab">Скрыть вкладку «Все чаты»</string>
+    <string name="HideAllChatsTabInfo">Убрать вкладку «Все чаты» из панели папок. Чаты вне папок останутся доступны через поиск и архив.</string>
+    <string name="DefaultFolder">Папка по умолчанию</string>
     <string name="ReplaceForwardInfo">Пересылка открывает панель «Поделиться» вместо выбора чата.</string>
     <string name="MentionByNameInfo">Автодополнение вставляет имя человека вместо имени пользователя.</string>
     <string name="HideSendAsInfo">Скрывать кнопку выбора отправителя в поле сообщения.</string>
