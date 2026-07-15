@@ -24,6 +24,9 @@
     <string name="DisableGlobalSearchInfo">Show only your chats and contacts in search, no global results.</string>
     <string name="HideContactsInDialogsInfo">Hide the contacts shown below the chat list when you have few chats.</string>
     <string name="EnableLastSeenDotsInfo">Color the avatar dot for people last seen within the past hour.</string>
+    <string name="HideAllChatsTab">Hide the \"All Chats\" tab</string>
+    <string name="HideAllChatsTabInfo">Remove the \"All Chats\" tab from the folder bar. Chats that aren\'t inside a folder stay reachable through search and the archive.</string>
+    <string name="DefaultFolder">Default folder</string>
     <string name="ReplaceForwardInfo">Forward opens the share sheet instead of the chat picker.</string>
     <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
     <string name="HideSendAsInfo">Hide the send-as avatar button in the message field.</string>

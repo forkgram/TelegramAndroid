@@ -34,6 +34,9 @@
     <string name="DisableGlobalSearchInfo">Mostrare nella ricerca solo le tue chat e i tuoi contatti, senza risultati globali.</string>
     <string name="HideContactsInDialogsInfo">Nascondere i contatti mostrati sotto la lista chat quando ci sono poche chat.</string>
     <string name="EnableLastSeenDotsInfo">Colorare il punto sull\'avatar di chi è stato visto nell\'ultima ora.</string>
+    <string name="HideAllChatsTab">Nascondi la scheda \"Tutte le chat\"</string>
+    <string name="HideAllChatsTabInfo">Rimuove la scheda \"Tutte le chat\" dalla barra delle cartelle. Le chat fuori dalle cartelle restano raggiungibili tramite ricerca e archivio.</string>
+    <string name="DefaultFolder">Cartella predefinita</string>
     <string name="ReplaceForwardInfo">Inoltra apre il pannello di condivisione invece del selettore di chat.</string>
     <string name="MentionByNameInfo">Il completamento automatico inserisce il nome della persona invece del nome utente.</string>
     <string name="HideSendAsInfo">Nascondere il pulsante invia come nel campo del messaggio.</string>
