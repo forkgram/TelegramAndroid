@@ -28,6 +28,9 @@
     <string name="DisableGlobalSearchInfo">In de zoekresultaten alleen je eigen chats en contacten tonen, geen globale resultaten.</string>
     <string name="HideContactsInDialogsInfo">De contacten onder de chatlijst verbergen wanneer je weinig chats hebt.</string>
     <string name="EnableLastSeenDotsInfo">De avatarstip kleuren voor mensen die het afgelopen uur online waren.</string>
+    <string name="HideAllChatsTab">Tabblad \"Alle chats\" verbergen</string>
+    <string name="HideAllChatsTabInfo">Verwijdert het tabblad \"Alle chats\" uit de mappenbalk. Chats buiten mappen blijven bereikbaar via zoeken en het archief.</string>
+    <string name="DefaultFolder">Standaardmap</string>
     <string name="ReplaceForwardInfo">Doorsturen opent het deelvenster in plaats van de chatkiezer.</string>
     <string name="MentionByNameInfo">Automatisch aanvullen voegt de naam van de persoon in in plaats van de gebruikersnaam.</string>
     <string name="HideSendAsInfo">De knop Verzenden als in het berichtveld verbergen.</string>

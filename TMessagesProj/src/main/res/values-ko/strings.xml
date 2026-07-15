@@ -28,6 +28,9 @@
     <string name="DisableGlobalSearchInfo">검색에서 내 채팅과 연락처만 표시하고 전체 결과는 표시하지 않습니다.</string>
     <string name="HideContactsInDialogsInfo">채팅이 적을 때 채팅 목록 아래에 표시되는 연락처를 숨깁니다.</string>
     <string name="EnableLastSeenDotsInfo">최근 한 시간 이내에 접속한 사람의 아바타 점에 색을 입힙니다.</string>
+    <string name="HideAllChatsTab">\"모든 채팅\" 탭 숨기기</string>
+    <string name="HideAllChatsTabInfo">폴더 바에서 \"모든 채팅\" 탭을 제거합니다. 폴더에 없는 채팅은 검색과 보관함에서 계속 찾을 수 있습니다.</string>
+    <string name="DefaultFolder">기본 폴더</string>
     <string name="ReplaceForwardInfo">전달하면 채팅 선택 대신 공유 시트가 열립니다.</string>
     <string name="MentionByNameInfo">자동 완성이 사용자 이름 대신 사람 이름을 삽입합니다.</string>
     <string name="HideSendAsInfo">메시지 입력란의 보낸 사람 선택 버튼을 숨깁니다.</string>

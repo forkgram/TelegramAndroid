@@ -28,6 +28,9 @@
     <string name="DisableGlobalSearchInfo">Mostrar en la búsqueda solo tus chats y contactos, sin resultados globales.</string>
     <string name="HideContactsInDialogsInfo">Ocultar los contactos que aparecen bajo la lista de chats cuando hay pocos chats.</string>
     <string name="EnableLastSeenDotsInfo">Colorear el punto del avatar de quienes se conectaron en la última hora.</string>
+    <string name="HideAllChatsTab">Ocultar la pestaña \"Todos los chats\"</string>
+    <string name="HideAllChatsTabInfo">Quita la pestaña \"Todos los chats\" de la barra de carpetas. Los chats que no están en ninguna carpeta siguen accesibles desde la búsqueda y el archivo.</string>
+    <string name="DefaultFolder">Carpeta predeterminada</string>
     <string name="ReplaceForwardInfo">Reenviar abre el panel de compartir en lugar del selector de chats.</string>
     <string name="MentionByNameInfo">El autocompletado inserta el nombre de la persona en lugar del nombre de usuario.</string>
     <string name="HideSendAsInfo">Ocultar el botón de enviar como en el campo de mensaje.</string>
