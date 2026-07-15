@@ -28,6 +28,9 @@
     <string name="DisableGlobalSearchInfo">Mostrar na busca apenas suas conversas e contatos, sem resultados globais.</string>
     <string name="HideContactsInDialogsInfo">Ocultar os contatos exibidos abaixo da lista de conversas quando há poucas conversas.</string>
     <string name="EnableLastSeenDotsInfo">Colorir o ponto do avatar de quem esteve online na última hora.</string>
+    <string name="HideAllChatsTab">Ocultar a aba \"Todas as conversas\"</string>
+    <string name="HideAllChatsTabInfo">Remove a aba \"Todas as conversas\" da barra de pastas. Conversas fora de pastas continuam acessíveis pela busca e pelo arquivo.</string>
+    <string name="DefaultFolder">Pasta padrão</string>
     <string name="ReplaceForwardInfo">Encaminhar abre o painel de compartilhamento em vez do seletor de conversas.</string>
     <string name="MentionByNameInfo">O preenchimento automático insere o nome da pessoa em vez do nome de usuário.</string>
     <string name="HideSendAsInfo">Ocultar o botão de enviar como no campo de mensagem.</string>
