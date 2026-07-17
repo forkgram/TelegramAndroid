@@ -1679,6 +1679,11 @@ public class DatabaseMigrationHelper {
             database.executeFast("PRAGMA user_version = 176").stepThis().dispose();
             version = 176;
         }
+        if (version == 176) {
+            executeNoException(database, "ALTER TABLE dialog_filter ADD COLUMN emoticon TEXT");
+            database.executeFast("PRAGMA user_version = 177").stepThis().dispose();
+            version = 177;
+        }
 
         return version;
     }
