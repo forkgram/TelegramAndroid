@@ -434,4 +434,10 @@
     <string name="RemindDayAt">\'Отправить\' d MMM \'в\' HH:mm</string>
     <string name="RemindDayYearAt">\'Напомнить\' d MMM yyyy \'в\' HH:mm</string>
     <string name="PasskeyGoogleManagerInfo">Менеджер паролей Google не принимает passkey из этого приложения. Выберите другой менеджер паролей, например Bitwarden или KeePassDX.</string>
+    <string name="FolderIcon">Значок папки</string>
+    <string name="FolderTabsStyle">Вкладки папок</string>
+    <string name="FolderTabsStyleText">Названия</string>
+    <string name="FolderTabsStyleIconText">Значки и названия</string>
+    <string name="FolderTabsStyleIcon">Значки</string>
+    <string name="FolderTabsStyleInfo">Выберите, как папки отображаются на панели вкладок. Значок можно задать в настройках каждой папки.</string>
 </resources>

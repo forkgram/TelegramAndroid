@@ -1422,4 +1422,10 @@
     <string name="YearsShort_other">%1$da</string>
     <string name="Infinity">∞</string>
     <string name="Lifetime">Vitalício</string>
+    <string name="FolderIcon">Ícone da pasta</string>
+    <string name="FolderTabsStyle">Abas de pastas</string>
+    <string name="FolderTabsStyleText">Rótulos</string>
+    <string name="FolderTabsStyleIconText">Ícones e rótulos</string>
+    <string name="FolderTabsStyleIcon">Ícones</string>
+    <string name="FolderTabsStyleInfo">Escolha como as pastas aparecem na barra de abas. Defina um ícone para cada pasta nas configurações dela.</string>
 </resources>

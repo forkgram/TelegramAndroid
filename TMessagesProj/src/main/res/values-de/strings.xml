@@ -1531,4 +1531,10 @@
     <string name="RemindDayAt">\'Am\' d MMM \'um\' HH:mm \'erinnern\'</string>
     <string name="RemindDayYearAt">\'Am\' d\'.\' MMM yyyy \'um\' HH:mm \'erinnern\'</string>
     <string name="PasskeyGoogleManagerInfo">Der Google Passwortmanager akzeptiert keine Passkeys aus dieser App. Wähle einen anderen Passwortmanager, etwa Bitwarden oder KeePassDX.</string>
+    <string name="FolderIcon">Ordnersymbol</string>
+    <string name="FolderTabsStyle">Ordner-Tabs</string>
+    <string name="FolderTabsStyleText">Beschriftungen</string>
+    <string name="FolderTabsStyleIconText">Symbole und Beschriftungen</string>
+    <string name="FolderTabsStyleIcon">Symbole</string>
+    <string name="FolderTabsStyleInfo">Lege fest, wie Ordner in der Tab-Leiste erscheinen. Ein Symbol kannst du in den Einstellungen jedes Ordners festlegen.</string>
 </resources>

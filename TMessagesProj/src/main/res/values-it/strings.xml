@@ -1693,4 +1693,10 @@
     <string name="RemindDayYearAt">\'Ricorda il\' d MMM yyyy \'alle\' HH:mm</string>
     <string name="PasskeyGoogleManagerInfo">Il Gestore delle password di Google non accetta le passkey di questa app. Scegli un altro gestore di password, ad esempio Bitwarden o KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
+    <string name="FolderIcon">Icona della cartella</string>
+    <string name="FolderTabsStyle">Schede delle cartelle</string>
+    <string name="FolderTabsStyleText">Etichette</string>
+    <string name="FolderTabsStyleIconText">Icone ed etichette</string>
+    <string name="FolderTabsStyleIcon">Icone</string>
+    <string name="FolderTabsStyleInfo">Scegli come appaiono le cartelle nella barra delle schede. Assegna un\'icona a ogni cartella nelle sue impostazioni.</string>
 </resources>

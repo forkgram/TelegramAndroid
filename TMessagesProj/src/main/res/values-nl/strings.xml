@@ -1240,4 +1240,10 @@
     <string name="RemindDayYearAt">\'Herinner op\' d MMM yyyy \'om\' HH:mm</string>
     <string name="PasskeyGoogleManagerInfo">Google Wachtwoordmanager accepteert geen passkeys uit deze app. Kies een andere wachtwoordmanager, zoals Bitwarden of KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
+    <string name="FolderIcon">Mappictogram</string>
+    <string name="FolderTabsStyle">Maptabbladen</string>
+    <string name="FolderTabsStyleText">Labels</string>
+    <string name="FolderTabsStyleIconText">Pictogrammen en labels</string>
+    <string name="FolderTabsStyleIcon">Pictogrammen</string>
+    <string name="FolderTabsStyleInfo">Kies hoe mappen in de tabbalk verschijnen. Wijs in de instellingen van elke map een pictogram toe.</string>
 </resources>

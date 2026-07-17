@@ -1292,4 +1292,10 @@
     <string name="RemindDayYearAt">yyyy\'년\' M\'월\' d\'일\' HH:mm\'에 알림\'</string>
     <string name="PasskeyGoogleManagerInfo">Google 비밀번호 관리자는 이 앱의 패스키를 허용하지 않습니다. Bitwarden이나 KeePassDX 같은 다른 비밀번호 관리자를 사용하세요.</string>
     <string name="BotsMenuTitle">메뉴</string>
+    <string name="FolderIcon">폴더 아이콘</string>
+    <string name="FolderTabsStyle">폴더 탭</string>
+    <string name="FolderTabsStyleText">이름</string>
+    <string name="FolderTabsStyleIconText">아이콘 및 이름</string>
+    <string name="FolderTabsStyleIcon">아이콘</string>
+    <string name="FolderTabsStyleInfo">탭 바에 폴더가 표시되는 방식을 선택하세요. 각 폴더의 설정에서 아이콘을 지정할 수 있습니다.</string>
 </resources>

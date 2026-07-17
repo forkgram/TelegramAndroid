@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.forkgram.FolderIcons;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.BuildVars;
@@ -87,6 +88,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_ENABLE_LAST_SEEN_DOTS = 27;
     public static final int ID_HIDE_ALL_CHATS_TAB = 28;
     public static final int ID_DEFAULT_FOLDER = 29;
+    public static final int ID_FOLDER_TABS_STYLE = 97;
 
     public static final int ID_REPLACE_FORWARD = 30;
     public static final int ID_MENTION_BY_NAME = 31;
@@ -504,6 +506,22 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("hideAllChatsTab", false)).setMultiline(true));
         items.add(UItem.asSettingsCell(ID_DEFAULT_FOLDER, LocaleController.getString(R.string.DefaultFolder), getDefaultFolderText()));
         items.add(UItem.asShadow(null));
+
+        items.add(UItem.asHeader(LocaleController.getString(R.string.FolderTabsStyle)));
+        items.add(searchable(UItem.asSlideView(
+            new String[]{
+                LocaleController.getString(R.string.FolderTabsStyleText),
+                LocaleController.getString(R.string.FolderTabsStyleIconText),
+                LocaleController.getString(R.string.FolderTabsStyleIcon)
+            },
+            FolderIcons.folderTabsStyle(),
+            index -> {
+                SharedPreferences.Editor editor = prefs().edit();
+                editor.putInt("folderTabsStyle", index);
+                editor.commit();
+                getNotificationCenter().postNotificationName(NotificationCenter.dialogFiltersUpdated);
+            }).setId(ID_FOLDER_TABS_STYLE), R.string.FolderTabsStyle));
+        items.add(UItem.asShadow(LocaleController.getString(R.string.FolderTabsStyleInfo)));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.FilterChats)));
         items.add(UItem.asButtonCheck(ID_REPLACE_FORWARD, LocaleController.getString(R.string.ReplaceForward), LocaleController.getString(R.string.ReplaceForwardInfo))
