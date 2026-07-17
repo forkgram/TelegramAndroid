@@ -39,6 +39,7 @@ import org.telegram.messenger.utils.EphemeralMessagesHelper;
 import org.telegram.tgnet.NativeByteBuffer;
 import org.telegram.tgnet.RequestDelegate;
 import org.telegram.tgnet.TLObject;
+import org.telegram.messenger.forkgram.FolderIcons;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.Vector;
 import org.telegram.tgnet.tl.TL_account;
@@ -118,7 +119,7 @@ public class MessagesStorage extends BaseController {
         }
     }
 
-    public final static int LAST_DB_VERSION = 177;
+    public final static int LAST_DB_VERSION = 178;
     private boolean databaseMigrationInProgress;
     public boolean showClearDatabaseAlert;
 
@@ -583,7 +584,7 @@ public class MessagesStorage extends BaseController {
         database.executeFast("CREATE INDEX IF NOT EXISTS folder_id_idx_4_dialogs ON dialogs(folder_id);").stepThis().dispose();
         database.executeFast("CREATE INDEX IF NOT EXISTS flags_idx_4_dialogs ON dialogs(flags);").stepThis().dispose();
 
-        database.executeFast("CREATE TABLE dialog_filter(id INTEGER PRIMARY KEY, ord INTEGER, unread_count INTEGER, flags INTEGER, title TEXT, color INTEGER DEFAULT -1, entities BLOB, noanimate INTEGER)").stepThis().dispose();
+        database.executeFast("CREATE TABLE dialog_filter(id INTEGER PRIMARY KEY, ord INTEGER, unread_count INTEGER, flags INTEGER, title TEXT, color INTEGER DEFAULT -1, entities BLOB, noanimate INTEGER, emoticon TEXT)").stepThis().dispose();
         database.executeFast("CREATE TABLE dialog_filter_ep(id INTEGER, peer INTEGER, PRIMARY KEY (id, peer))").stepThis().dispose();
         database.executeFast("CREATE TABLE dialog_filter_pin_v2(id INTEGER, peer INTEGER, pin INTEGER, PRIMARY KEY (id, peer))").stepThis().dispose();
 
@@ -2571,7 +2572,7 @@ public class MessagesStorage extends BaseController {
 
                 usersToLoad.add(getUserConfig().getClientUserId());
 
-                filtersCursor = database.queryFinalized("SELECT id, ord, unread_count, flags, title, color, entities, noanimate FROM dialog_filter WHERE 1");
+                filtersCursor = database.queryFinalized("SELECT id, ord, unread_count, flags, title, color, entities, noanimate, emoticon FROM dialog_filter WHERE 1");
 
                 boolean updateCounters = false;
                 boolean hasDefaultFilter = false;
@@ -2590,6 +2591,7 @@ public class MessagesStorage extends BaseController {
                         buff.reuse();
                     }
                     filter.title_noanimate = filtersCursor.intValue(7) == 1;
+                    filter.emoticon = filtersCursor.stringValue(8);
                     dialogFilters.add(filter);
                     dialogFiltersMap.put(filter.id, filter);
                     filtersById.put(filter.id, filter);
@@ -2659,7 +2661,7 @@ public class MessagesStorage extends BaseController {
                     dialogFiltersMap.put(filter.id, filter);
                     filtersById.put(filter.id, filter);
 
-                    state = database.executeFast("REPLACE INTO dialog_filter VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+                    state = database.executeFast("REPLACE INTO dialog_filter VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     state.bindInteger(1, filter.id);
                     state.bindInteger(2, filter.order);
                     state.bindInteger(3, filter.unreadCount);
@@ -2671,6 +2673,7 @@ public class MessagesStorage extends BaseController {
                     entitiesVector.serializeToStream(entitiesBuffer);
                     state.bindByteBuffer(7, entitiesBuffer);
                     state.bindInteger(8, filter.title_noanimate ? 1 : 0);
+                    state.bindString(9, filter.emoticon == null ? "" : filter.emoticon);
                     state.stepThis().dispose();
                     state = null;
                     entitiesBuffer.reuse();
@@ -3178,7 +3181,7 @@ public class MessagesStorage extends BaseController {
                 dialogFiltersMap.put(filter.id, filter);
             }
 
-            state = database.executeFast("REPLACE INTO dialog_filter VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            state = database.executeFast("REPLACE INTO dialog_filter VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
             state.bindInteger(1, filter.id);
             state.bindInteger(2, filter.order);
             state.bindInteger(3, filter.unreadCount);
@@ -3191,6 +3194,7 @@ public class MessagesStorage extends BaseController {
             entitiesVector.serializeToStream(entitiesBuffer);
             state.bindByteBuffer(7, entitiesBuffer);
             state.bindInteger(8, filter.title_noanimate ? 1 : 0);
+            state.bindString(9, filter.emoticon == null ? "" : filter.emoticon);
             state.step();
             state.dispose();
             entitiesBuffer.reuse();
@@ -3341,6 +3345,11 @@ public class MessagesStorage extends BaseController {
                             filter.color = color;
                             changed = true;
                         }
+                        final String emoticon = FolderIcons.wireEmoticon(newFilter);
+                        if (!TextUtils.equals(filter.emoticon, emoticon)) {
+                            filter.emoticon = emoticon;
+                            changed = true;
+                        }
                         if (filter.flags != newFlags) {
                             filter.flags = newFlags;
                             changed = true;
@@ -3478,6 +3487,7 @@ public class MessagesStorage extends BaseController {
                         filter.entities = newFilter.title.entities;
                         filter.title_noanimate = newFilter.title_noanimate;
                         filter.color = (newFilter.flags & 134217728) != 0 ? newFilter.color : -1;
+                        filter.emoticon = FolderIcons.wireEmoticon(newFilter);
                         filter.pendingUnreadCount = -1;
                         for (int c = 0; c < 2; c++) {
                             if (c == 0) {
