@@ -11905,4 +11905,12 @@
     <string name="FpnvConsentCountry">Country</string>
     <string name="FpnvConsentMccMnc">MCC / MNC</string>
     <string name="FpnvConsentPhoneNumber">Phone Number</string>
+
+
+    <string name="FolderIcon">Folder icon</string>
+    <string name="FolderTabsStyle">Folder tabs</string>
+    <string name="FolderTabsStyleText">Labels</string>
+    <string name="FolderTabsStyleIconText">Icons and labels</string>
+    <string name="FolderTabsStyleIcon">Icons</string>
+    <string name="FolderTabsStyleInfo">Choose how folders appear in the tab bar. Assign an icon to each folder in its settings.</string>
 </resources>
