@@ -11759,4 +11759,11 @@
     <string name="CreateManagedBotUsernameBotLimit">This bot already has a Premium username. Remove it before adding another.</string>
     <string name="CreateManagedBotUsernameSuffixMissing">The username must end in %1$s.</string>
     <string name="CreateManagedBotUsernameCheckFailed">Couldn\'t check this username. Please try again.</string>
+
+    <string name="FolderIcon">Folder icon</string>
+    <string name="FolderTabsStyle">Folder tabs</string>
+    <string name="FolderTabsStyleText">Labels</string>
+    <string name="FolderTabsStyleIconText">Icons and labels</string>
+    <string name="FolderTabsStyleIcon">Icons</string>
+    <string name="FolderTabsStyleInfo">Choose how folders appear in the tab bar. Assign an icon to each folder in its settings.</string>
 </resources>

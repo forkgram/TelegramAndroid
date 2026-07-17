@@ -55,6 +55,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.forkgram.FolderIcons;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessageObject;
@@ -124,6 +125,7 @@ public class FilterTabsView extends FrameLayout {
         public boolean isDefault;
         public boolean isLocked;
         public boolean noanimate;
+        public int iconRes;
 
         public Tab(int i, CharSequence title, boolean noanimate) {
             this.id = i;
@@ -161,13 +163,11 @@ public class FilterTabsView extends FrameLayout {
         }
 
         public boolean setTitle(String newTitle, ArrayList<TLRPC.MessageEntity> newEntities, boolean noanimate) {
-            if (TextUtils.equals(title, newTitle)) {
+            CharSequence built = FolderIcons.applyIcon(text(newTitle, newEntities), iconRes);
+            if (TextUtils.equals(title, built)) {
                 return false;
             }
-            title = new SpannableStringBuilder(newTitle);
-            title = Emoji.replaceEmoji(title, textPaint.getFontMetricsInt(), false);
-//            MessageObject.addEntitiesToText(title, newEntities, false, false, false, true);
-            title = MessageObject.replaceAnimatedEmoji(title, newEntities, textPaint.getFontMetricsInt());
+            title = built;
             this.noanimate = noanimate;
             return true;
         }
@@ -187,6 +187,7 @@ public class FilterTabsView extends FrameLayout {
         private int currentPosition;
         private final RectF rect = new RectF();
         private CharSequence currentText;
+        private int currentIconRes = -1;
         private boolean currentNoanimate;
         private AnimatedEmojiSpan.EmojiGroupedSpans textLayoutEmojis;
         private StaticLayout textLayout;
@@ -392,8 +393,9 @@ public class FilterTabsView extends FrameLayout {
                 textX = textX * changeProgress + animateFromTextX * (1f - changeProgress);
             }
 
-            if (!TextUtils.equals(currentTab.title, currentText)) {
+            if (!TextUtils.equals(currentTab.title, currentText) || currentIconRes != currentTab.iconRes) {
                 currentText = currentTab.title;
+                currentIconRes = currentTab.iconRes;
                 textLayout = new StaticLayout(currentText, textPaint, dp(400), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0, false);
                 textLayoutEmojis = AnimatedEmojiSpan.update(currentTab.noanimate ? AnimatedEmojiDrawable.CACHE_TYPE_NOANIMATE_FOLDER : AnimatedEmojiDrawable.CACHE_TYPE_MESSAGES, this, textLayoutEmojis, textLayout);
                 textHeight = textLayout.getHeight();
@@ -1259,7 +1261,7 @@ public class FilterTabsView extends FrameLayout {
         return title;
     }
 
-    public void addTab(int id, int stableId, String text, ArrayList<TLRPC.MessageEntity> entities, boolean noanimate, boolean isDefault, boolean isLocked) {
+    public void addTab(int id, int stableId, String text, ArrayList<TLRPC.MessageEntity> entities, int iconRes, boolean noanimate, boolean isDefault, boolean isLocked) {
         int position = tabs.size();
         if (position == 0 && selectedTabId == -1) {
             selectedTabId = id;
@@ -1271,7 +1273,8 @@ public class FilterTabsView extends FrameLayout {
             currentPosition = position;
         }
 
-        Tab tab = new Tab(id, text(text, entities), noanimate);
+        Tab tab = new Tab(id, FolderIcons.applyIcon(text(text, entities), iconRes), noanimate);
+        tab.iconRes = iconRes;
         tab.isDefault = isDefault;
         tab.isLocked = isLocked;
         allTabsWidth += tab.getWidth(true) + dp(TAB_PADDING_WIDTH);

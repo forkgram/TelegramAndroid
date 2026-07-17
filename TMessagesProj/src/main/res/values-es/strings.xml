@@ -1539,4 +1539,10 @@
     <string name="BotsMenuTitle">Menu</string>
     <string name="Understood">👍 Entendido</string>
     <string name="AppIconAdaptive">Adaptativo</string>
+    <string name="FolderIcon">Icono de la carpeta</string>
+    <string name="FolderTabsStyle">Pestañas de carpetas</string>
+    <string name="FolderTabsStyleText">Etiquetas</string>
+    <string name="FolderTabsStyleIconText">Iconos y etiquetas</string>
+    <string name="FolderTabsStyleIcon">Iconos</string>
+    <string name="FolderTabsStyleInfo">Elige cómo aparecen las carpetas en la barra de pestañas. Asigna un icono a cada carpeta en sus ajustes.</string>
 </resources>
