@@ -11857,4 +11857,11 @@
     <string name="NoPaidMessagesTokenUsed">un1 used your QR code and can message you for free</string>
     <string name="NoPaidMessagesTokenUsedOut">You used the QR code of un1 and can message them for free</string>
     <string name="NoPaidMessagesTokenImported">You can now message **%1$s** for free.</string>
+
+    <string name="FolderIcon">Folder icon</string>
+    <string name="FolderTabsStyle">Folder tabs</string>
+    <string name="FolderTabsStyleText">Labels</string>
+    <string name="FolderTabsStyleIconText">Icons and labels</string>
+    <string name="FolderTabsStyleIcon">Icons</string>
+    <string name="FolderTabsStyleInfo">Choose how folders appear in the tab bar. Assign an icon to each folder in its settings.</string>
 </resources>
