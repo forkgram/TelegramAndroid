@@ -1680,13 +1680,18 @@ public class DatabaseMigrationHelper {
             version = 176;
         }
         if (version == 176) {
+            executeNoException(database, "ALTER TABLE dialog_filter ADD COLUMN emoticon TEXT");
+            database.executeFast("PRAGMA user_version = 177").stepThis().dispose();
+            version = 177;
+        }
+        if (version == 177) {
             database.executeFast("CREATE TABLE welcome_messages(mid INTEGER, dialog_id INTEGER, send_state INTEGER, date INTEGER, data BLOB, ttl INTEGER, replydata BLOB, reply_to_message_id INTEGER, PRIMARY KEY(mid, dialog_id))").stepThis().dispose();
             database.executeFast("CREATE INDEX IF NOT EXISTS send_state_idx_welcome_messages ON welcome_messages(mid, send_state, date);").stepThis().dispose();
             database.executeFast("CREATE INDEX IF NOT EXISTS dialog_date_idx_welcome_messages ON welcome_messages(dialog_id, date);").stepThis().dispose();
             database.executeFast("CREATE INDEX IF NOT EXISTS reply_to_idx_welcome_messages ON welcome_messages(mid, reply_to_message_id);").stepThis().dispose();
             database.executeFast("CREATE INDEX IF NOT EXISTS idx_to_reply_welcome_messages ON welcome_messages(reply_to_message_id, mid);").stepThis().dispose();
-            database.executeFast("PRAGMA user_version = 177").stepThis().dispose();
-            version = 177;
+            database.executeFast("PRAGMA user_version = 178").stepThis().dispose();
+            version = 178;
         }
 
         return version;
