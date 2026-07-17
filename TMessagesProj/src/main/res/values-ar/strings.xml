@@ -1403,4 +1403,10 @@
     <string name="RemindDayAt">\'ذكّرني بتاريخ\' d MMM \'عند\' HH:mm</string>
     <string name="RemindDayYearAt">\'ذكّرني بتاريخ\' d MMM yyyy \'عند\' HH:mm</string>
     <string name="PasskeyGoogleManagerInfo">لا يقبل مدير كلمات مرور Google مفاتيح المرور من هذا التطبيق. اختر مدير كلمات مرور آخر، مثل Bitwarden أو KeePassDX.</string>
+    <string name="FolderIcon">أيقونة المجلد</string>
+    <string name="FolderTabsStyle">علامات تبويب المجلدات</string>
+    <string name="FolderTabsStyleText">التسميات</string>
+    <string name="FolderTabsStyleIconText">الأيقونات والتسميات</string>
+    <string name="FolderTabsStyleIcon">الأيقونات</string>
+    <string name="FolderTabsStyleInfo">اختر كيفية ظهور المجلدات في شريط علامات التبويب. عيّن أيقونة لكل مجلد من إعداداته.</string>
 </resources>
