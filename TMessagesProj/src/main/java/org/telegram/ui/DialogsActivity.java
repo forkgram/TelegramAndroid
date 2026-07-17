@@ -109,6 +109,7 @@ import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.forkgram.FolderIcons;
 import org.telegram.messenger.FilesMigrationService;
 import org.telegram.messenger.ImageLoader;
 import org.telegram.messenger.ImageLocation;
@@ -6935,10 +6936,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         if (hideAllChatsTab) {
                             continue;
                         }
-                        filterTabsView.addTab(a, 0, LocaleController.getString(R.string.FilterAllChats), null, false, true, filters.get(a).locked);
+                        filterTabsView.addTab(a, 0, LocaleController.getString(R.string.FilterAllChats), null, FolderIcons.getIconRes(filters.get(a)), false, true, filters.get(a).locked);
                     } else {
                         final MessagesController.DialogFilter filter = filters.get(a);
-                        filterTabsView.addTab(a, filter.localId, filter.name, filter.entities, filter.title_noanimate, false, filters.get(a).locked);
+                        filterTabsView.addTab(a, filter.localId, filter.name, filter.entities, FolderIcons.getIconRes(filter), filter.title_noanimate, false, filters.get(a).locked);
                     }
                 }
                 if (stableId >= 0) {
