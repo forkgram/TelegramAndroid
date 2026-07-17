@@ -45,6 +45,8 @@ import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLoader;
+import org.telegram.messenger.FileLog;
+import org.telegram.messenger.forkgram.FolderIcons;
 import org.telegram.messenger.LiteMode;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessageObject;
@@ -533,7 +535,8 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             }
             folderItem.setEmojiCacheType(folder.title_noanimate ? AnimatedEmojiDrawable.CACHE_TYPE_NOANIMATE_FOLDER : AnimatedEmojiDrawable.CACHE_TYPE_MESSAGES);
             final int color = getMessagesController().folderTags ? folder.color : -1;
-            folderItem.setTextAndIcon(title, 0, new FolderDrawable(getContext(), R.drawable.msg_folders, color));
+            int folderIconRes = FolderIcons.folderTabsStyle() == FolderIcons.FOLDER_TABS_STYLE_TEXT ? 0 : FolderIcons.getIconRes(folder);
+            folderItem.setTextAndIcon(title, 0, new FolderDrawable(getContext(), folderIconRes != 0 ? folderIconRes : R.drawable.msg_folders, color));
             folderItem.getTextView().setEmojiColor(getThemedColor(Theme.key_featuredStickers_addButton));
             folderItem.setMinimumWidth(160);
             folderItem.setOnClickListener(e -> {
