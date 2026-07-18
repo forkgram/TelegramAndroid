@@ -6,6 +6,10 @@
     <string name="ForkSectionVoice">الصوت والترجمة</string>
     <string name="ForkSectionBots">البوتات والمتصفح</string>
     <string name="ForkSectionSystem">النظام والتحديثات</string>
+    <string name="WebSocketTransport">الاتصال عبر WebSocket</string>
+    <string name="WebSocketTransportInfo">يوجّه حركة بيانات تيليجرام عبر اتصال WebSocket مشفّر (WSS). قد يساعد عندما يكون الاتصال العادي مقيّدًا أو محجوبًا. اترك حقل النطاق فارغًا لاستخدام مرحّلات عامة يتم تحديثها تلقائيًا، أو أدخل نطاقك الخاص للحصول على اتصال أكثر استقرارًا. المرحّلات العامة يديرها أطراف ثالثة ويمكنها رؤية عنوان IP الخاص بك وبيانات الاتصال الوصفية، لكن ليس محتوى رسائلك. أوقفه إذا توقف الاتصال عن العمل.</string>
+    <string name="WebSocketDomain">نطاق WebSocket</string>
+    <string name="WebSocketDomainAuto">تلقائي</string>
     <string name="UnifiedPushDistributor">موزّعو UnifiedPush</string>
     <string name="UnifiedPushGateway">بوابة UnifiedPush من PUT إلى POST</string>
     <string name="UnifiedPushGatewayInfo">يُسجَّل عنوان الإشعارات افتراضيًا لدى تيليجرام مباشرةً دون أي بوابة.\n\nإذا كان إعدادك لا يزال يحتاج إلى بوابة «من PUT إلى POST»، فأدخلها هنا أو اترك الحقل فارغًا للتسليم المباشر:</string>

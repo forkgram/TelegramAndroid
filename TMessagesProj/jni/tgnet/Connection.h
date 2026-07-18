@@ -78,6 +78,8 @@ private:
     uint32_t connectionToken = 0;
     std::string hostAddress;
     std::string secret;
+    std::string currentWebSocketDomain;
+    bool currentWebSocketDash1 = false;
     uint16_t hostPort;
     uint16_t failedConnectionCount;
     Datacenter *currentDatacenter;
@@ -88,6 +90,7 @@ private:
     NativeByteBuffer *restOfTheData = nullptr;
     uint32_t lastPacketLength = 0;
     bool hasSomeDataSinceLastConnect = false;
+    bool wsConnectionActive = false;
     bool isTryingNextPort = false;
     bool wasConnected = false;
     uint32_t willRetryConnectCount = 5;
