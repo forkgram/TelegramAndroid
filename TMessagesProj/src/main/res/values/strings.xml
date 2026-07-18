@@ -2925,6 +2925,10 @@
     <string name="UnifiedPushGatewayNone">Not used (direct delivery)</string>
     <string name="DisableUnifiedPush">Disable UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">Notifications will rely on the app\'s own background connection</string>
+    <string name="WebSocketTransport">Connect over WebSocket</string>
+    <string name="WebSocketTransportInfo">Tunnel Telegram traffic through an encrypted WebSocket (WSS) connection. May help when the regular connection is throttled or blocked. Leave the domain empty to use auto-updated public relays, or enter your own domain for reliability. Public relays are run by third parties and can see your IP address and connection metadata, but not the contents of your messages. Turn off if the connection stops working.</string>
+    <string name="WebSocketDomain">WebSocket domain</string>
+    <string name="WebSocketDomainAuto">Automatic</string>
     <string name="AuthAnotherClient">Scan QR Code</string>
     <string name="AuthAnotherClientScan">Scan QR Code</string>
     <string name="AuthAnotherClientNotFound">No auth token found</string>
