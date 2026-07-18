@@ -45,7 +45,8 @@ public:
 
 protected:
 
-    void onReceivedData(NativeByteBuffer *buffer) override;
+    void onReceivedData(NativeByteBuffer *buffer, bool plain = false) override;
+    void onH2Packet(const uint8_t *data, size_t length) override;
     void onDisconnected(int32_t reason, int32_t error) override;
     void onConnected() override;
     bool hasPendingRequests() override;
@@ -78,6 +79,12 @@ private:
     uint32_t connectionToken = 0;
     std::string hostAddress;
     std::string secret;
+    std::string currentWebSocketDomain;
+    std::string currentWebSocketHost;
+    std::string currentWebSocketPath;
+    bool currentWebSocketDash1 = false;
+    bool currentWebSocketFronted = false;
+    int64_t webSocketConnectStart = 0;
     uint16_t hostPort;
     uint16_t failedConnectionCount;
     Datacenter *currentDatacenter;
@@ -88,6 +95,8 @@ private:
     NativeByteBuffer *restOfTheData = nullptr;
     uint32_t lastPacketLength = 0;
     bool hasSomeDataSinceLastConnect = false;
+    bool wsConnectionActive = false;
+    bool h2Connection = false;
     bool isTryingNextPort = false;
     bool wasConnected = false;
     uint32_t willRetryConnectCount = 5;

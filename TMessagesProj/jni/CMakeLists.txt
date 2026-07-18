@@ -103,6 +103,20 @@ add_subdirectory(
         ${CMAKE_CURRENT_BINARY_DIR}/prisma
         EXCLUDE_FROM_ALL)
 
+#nghttp2 (vendored HTTP/2 framing and HPACK; no TLS dependency)
+file(GLOB NGHTTP2_SOURCES third_party/nghttp2/lib/*.c)
+add_library(nghttp2 STATIC ${NGHTTP2_SOURCES})
+target_include_directories(nghttp2 PUBLIC
+        third_party/nghttp2/lib/includes)
+target_include_directories(nghttp2 PRIVATE
+        third_party/nghttp2
+        third_party/nghttp2/lib)
+target_compile_definitions(nghttp2 PRIVATE
+        HAVE_CONFIG_H
+        _POSIX_C_SOURCE=200809L)
+target_compile_options(nghttp2 PRIVATE
+        -Oz -fno-strict-aliasing)
+
 #tgnet
 add_library(tgnet STATIC
         openssl/aes_ige.c
@@ -115,6 +129,7 @@ add_library(tgnet STATIC
         tgnet/ConnectionsManager.cpp
         tgnet/TLSHello.cpp
         tgnet/ConnectionSocket.cpp
+        tgnet/H2Transport.cpp
         tgnet/Datacenter.cpp
         tgnet/EventObject.cpp
         tgnet/FileLog.cpp
@@ -136,7 +151,9 @@ target_include_directories(tgnet PUBLIC
         third_party/boringssl/include
         openssl/include)
 target_link_libraries(tgnet
-        crypto)
+        ssl
+        crypto
+        nghttp2)
 
 # tlottie (prebuilt Rust static library)
 add_library(tlottie STATIC IMPORTED)

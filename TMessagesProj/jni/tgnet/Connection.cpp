@@ -17,8 +17,13 @@
 #include "FileLog.h"
 #include "Timer.h"
 #include "Datacenter.h"
+#include "H2Transport.h"
 #include "NativeByteBuffer.h"
 #include "ByteArray.h"
+#include <atomic>
+
+static const char *WEB_SOCKET_FRONTING_IPS[] = {"149.154.167.220", "149.154.167.99"};
+static std::atomic<uint32_t> webSocketFrontingRotation{0};
 
 thread_local static uint32_t lastConnectionToken = 1;
 
@@ -68,8 +73,10 @@ void Connection::suspendConnection(bool idle) {
     wasConnected = false;
 }
 
-void Connection::onReceivedData(NativeByteBuffer *buffer) {
-    AES_ctr128_encrypt(buffer->bytes(), buffer->bytes(), buffer->limit(), &decryptKey, decryptIv, decryptCount, &decryptNum);
+void Connection::onReceivedData(NativeByteBuffer *buffer, bool plain) {
+    if (!plain) {
+        AES_ctr128_encrypt(buffer->bytes(), buffer->bytes(), buffer->limit(), &decryptKey, decryptIv, decryptCount, &decryptNum);
+    }
     
     failedConnectionCount = 0;
 
@@ -126,7 +133,11 @@ void Connection::onReceivedData(NativeByteBuffer *buffer) {
     NativeByteBuffer *reuseLater = nullptr;
     while (buffer->hasRemaining()) {
         if (!hasSomeDataSinceLastConnect) {
-            currentDatacenter->storeCurrentAddressAndPortNum();
+            if (wsConnectionActive) {
+                ConnectionsManager::getInstance(currentDatacenter->instanceNum).markWebSocketDomainResult(currentDatacenter->getDatacenterId(), isMediaConnection, currentWebSocketDomain, currentWebSocketDash1, true);
+            } else {
+                currentDatacenter->storeCurrentAddressAndPortNum();
+            }
             isTryingNextPort = false;
             if (connectionType == ConnectionTypeProxy) {
                 setTimeout(5);
@@ -364,7 +375,60 @@ void Connection::connect() {
     lastPacketLength = 0;
     wasConnected = false;
     hasSomeDataSinceLastConnect = false;
-    openConnection(hostAddress, hostPort, secret, ipv6 != 0, ConnectionsManager::getInstance(currentDatacenter->instanceNum).currentNetworkType);
+    uint32_t webDatacenterId = currentDatacenter->getDatacenterId();
+    bool useWebSocket = ConnectionsManager::getInstance(currentDatacenter->instanceNum).useWebSocket && connectionType != ConnectionTypeProxy && webDatacenterId >= 1 && webDatacenterId <= 5 && ConnectionsManager::getInstance(currentDatacenter->instanceNum).proxyAddress.empty() && !ConnectionsManager::getInstance(currentDatacenter->instanceNum).isWebSocketSuppressed();
+    wsConnectionActive = useWebSocket;
+    if (useWebSocket) {
+        secret = "";
+        currentWebSocketDomain = ConnectionsManager::getInstance(currentDatacenter->instanceNum).getWebSocketDomainForDc(webDatacenterId, isMediaConnection);
+        bool fronting = ConnectionsManager::isWebSocketFrontingDomain(currentWebSocketDomain);
+        bool directWebEndpoint = currentWebSocketDomain.empty();
+        currentWebSocketDash1 = isMediaConnection && (directWebEndpoint || fronting) && ConnectionsManager::getInstance(currentDatacenter->instanceNum).webSocketMediaDirectDash1Available(webDatacenterId);
+        std::string webBaseDomain = (directWebEndpoint || fronting) ? "web.telegram.org" : currentWebSocketDomain;
+        std::string webHost = std::string("kws") + to_string_int32((int32_t) webDatacenterId) + (currentWebSocketDash1 ? "-1" : "") + "." + webBaseDomain;
+        std::string webPath = ConnectionsManager::getInstance(currentDatacenter->instanceNum).testBackend ? "/apiws_test" : "/apiws";
+        currentWebSocketHost = webHost;
+        currentWebSocketPath = webPath;
+        currentWebSocketFronted = fronting;
+        std::string apiPath = "/api";
+        h2Connection = isMediaConnection && !directWebEndpoint && !fronting &&
+                !ConnectionsManager::getInstance(currentDatacenter->instanceNum).testBackend &&
+                H2Transport::available(currentDatacenter->instanceNum, webHost, apiPath);
+        if (h2Connection) {
+            currentWebSocketDash1 = false;
+            currentWebSocketPath = apiPath;
+            webSocketConnectStart = ConnectionsManager::getInstance(currentDatacenter->instanceNum).getCurrentTimeMonotonicMillis();
+            setWebSocket(false, "", "");
+            setH2(true, webHost, apiPath);
+            if (LOGS_ENABLED) DEBUG_D("connection(%p, account%u, dc%u, type %d) connecting via h2 %s%s", this, currentDatacenter->instanceNum, currentDatacenter->getDatacenterId(), connectionType, webHost.c_str(), apiPath.c_str());
+            openConnection(webHost, 443, "", false, ConnectionsManager::getInstance(currentDatacenter->instanceNum).currentNetworkType);
+        } else {
+            std::string connectAddress;
+            std::string sni;
+            if (fronting) {
+                uint32_t index = webSocketFrontingRotation.fetch_add(1);
+                connectAddress = WEB_SOCKET_FRONTING_IPS[index % (sizeof(WEB_SOCKET_FRONTING_IPS) / sizeof(WEB_SOCKET_FRONTING_IPS[0]))];
+                sni = "sprinthost.ru";
+            } else {
+                connectAddress = webHost;
+            }
+            webSocketConnectStart = ConnectionsManager::getInstance(currentDatacenter->instanceNum).getCurrentTimeMonotonicMillis();
+            setWebSocket(true, webHost, webPath, sni);
+            setH2(false, "", "");
+            if (LOGS_ENABLED) DEBUG_D("connection(%p, account%u, dc%u, type %d) connecting via websocket %s%s%s%s", this, currentDatacenter->instanceNum, currentDatacenter->getDatacenterId(), connectionType, connectAddress.c_str(), webHost == connectAddress ? "" : " ", webHost == connectAddress ? "" : webHost.c_str(), webPath.c_str());
+            openConnection(connectAddress, 443, "", false, ConnectionsManager::getInstance(currentDatacenter->instanceNum).currentNetworkType);
+        }
+    } else {
+        currentWebSocketDomain = "";
+        currentWebSocketHost = "";
+        currentWebSocketPath = "";
+        currentWebSocketDash1 = false;
+        currentWebSocketFronted = false;
+        h2Connection = false;
+        setWebSocket(false, "", "");
+        setH2(false, "", "");
+        openConnection(hostAddress, hostPort, secret, ipv6 != 0, ConnectionsManager::getInstance(currentDatacenter->instanceNum).currentNetworkType);
+    }
     if (connectionType == ConnectionTypeProxy) {
         setTimeout(5);
     } else if (connectionType == ConnectionTypePush) {
@@ -442,8 +506,16 @@ void Connection::sendData(NativeByteBuffer *buff, bool reportAck, bool encrypted
         return;
     }
 
+    if (h2Connection) {
+        currentProtocolType = ProtocolTypeEF;
+        queueH2Message(buff->bytes(), buff->limit());
+        buff->reuse();
+        return;
+    }
+
     uint32_t bufferLen = 0;
     uint32_t packetLength;
+    bool wasFirstPacket = !firstPacketSent;
 
     uint8_t useSecret = 0;
     if (!firstPacketSent) {
@@ -533,7 +605,7 @@ void Connection::sendData(NativeByteBuffer *buff, bool reportAck, bool encrypted
                     bytes[56] = bytes[57] = bytes[58] = bytes[59] = 0xee;
                 }
 
-                if (useSecret != 0) {
+                if (useSecret != 0 || webSocket) {
                     int16_t datacenterId;
                     if (isMediaConnection) {
                         if (ConnectionsManager::getInstance(currentDatacenter->instanceNum).testBackend) {
@@ -611,13 +683,29 @@ void Connection::sendData(NativeByteBuffer *buff, bool reportAck, bool encrypted
     }
 
     buffer->rewind();
-    writeBuffer(buffer);
     buff->rewind();
     AES_ctr128_encrypt(buff->bytes(), buff->bytes(), buff->limit(), &encryptKey, encryptIv, encryptCount, &encryptNum);
-    writeBuffer(buff);
     if (buffer2 != nullptr) {
         AES_ctr128_encrypt(buffer2->bytes(), buffer2->bytes(), buffer2->limit(), &encryptKey, encryptIv, encryptCount, &encryptNum);
-        writeBuffer(buffer2);
+    }
+    if (webSocket) {
+        uint32_t prefixOffset = 0;
+        if (wasFirstPacket) {
+            queueWebSocketMessage(buffer->bytes(), 64);
+            prefixOffset = 64;
+        }
+        queueWebSocketMessage(buffer->bytes() + prefixOffset, buffer->limit() - prefixOffset, buff->bytes(), buff->limit(), buffer2 != nullptr ? buffer2->bytes() : nullptr, buffer2 != nullptr ? buffer2->limit() : 0);
+        buffer->reuse();
+        buff->reuse();
+        if (buffer2 != nullptr) {
+            buffer2->reuse();
+        }
+    } else {
+        writeBuffer(buffer);
+        writeBuffer(buff);
+        if (buffer2 != nullptr) {
+            writeBuffer(buffer2);
+        }
     }
 }
 
@@ -656,6 +744,11 @@ inline void Connection::encryptKeyWithSecret(uint8_t *bytes, uint8_t secretType)
 
 void Connection::onDisconnectedInternal(int32_t reason, int32_t error) {
     reconnectTimer->stop();
+    bool wasWebSocketAttempt = wsConnectionActive;
+    wsConnectionActive = false;
+    if (wasWebSocketAttempt && reason != 0 && !hasSomeDataSinceLastConnect) {
+        ConnectionsManager::getInstance(currentDatacenter->instanceNum).markWebSocketDomainResult(currentDatacenter->getDatacenterId(), isMediaConnection, currentWebSocketDomain, currentWebSocketDash1, false);
+    }
     if (LOGS_ENABLED) DEBUG_D("connection(%p, account%u, dc%u, type %d) disconnected with reason %d", this, currentDatacenter->instanceNum, currentDatacenter->getDatacenterId(), connectionType, reason);
     bool switchToNextPort = reason == 2 && wasConnected && (!hasSomeDataSinceLastConnect || currentDatacenter->isCustomPort(currentAddressFlags)) || forceNextPort;
     if (connectionType == ConnectionTypeGeneric || connectionType == ConnectionTypeTemp || connectionType == ConnectionTypeGenericMedia) {
@@ -664,6 +757,7 @@ void Connection::onDisconnectedInternal(int32_t reason, int32_t error) {
         }
     }
     generation++;
+    h2Connection = false;
     firstPacketSent = false;
     if (restOfTheData != nullptr) {
         restOfTheData->reuse();
@@ -692,10 +786,12 @@ void Connection::onDisconnectedInternal(int32_t reason, int32_t error) {
         if (ConnectionsManager::getInstance(currentDatacenter->instanceNum).isNetworkAvailable() && connectionType != ConnectionTypeProxy) {
             isTryingNextPort = true;
             if (failedConnectionCount > willRetryConnectCount || switchToNextPort) {
-                currentDatacenter->nextAddressOrPort(currentAddressFlags);
-                if (currentDatacenter->isRepeatCheckingAddresses() && (ConnectionsManager::getInstance(currentDatacenter->instanceNum).getIpStratagy() == USE_IPV4_ONLY || ConnectionsManager::getInstance(currentDatacenter->instanceNum).getIpStratagy() == USE_IPV6_ONLY)) {
-                    if (LOGS_ENABLED) DEBUG_D("started retrying connection, set ipv4 ipv6 random strategy");
-                    ConnectionsManager::getInstance(currentDatacenter->instanceNum).setIpStrategy(USE_IPV4_IPV6_RANDOM);
+                if (!wasWebSocketAttempt) {
+                    currentDatacenter->nextAddressOrPort(currentAddressFlags);
+                    if (currentDatacenter->isRepeatCheckingAddresses() && (ConnectionsManager::getInstance(currentDatacenter->instanceNum).getIpStratagy() == USE_IPV4_ONLY || ConnectionsManager::getInstance(currentDatacenter->instanceNum).getIpStratagy() == USE_IPV6_ONLY)) {
+                        if (LOGS_ENABLED) DEBUG_D("started retrying connection, set ipv4 ipv6 random strategy");
+                        ConnectionsManager::getInstance(currentDatacenter->instanceNum).setIpStrategy(USE_IPV4_IPV6_RANDOM);
+                    }
                 }
                 failedConnectionCount = 0;
             }
@@ -722,6 +818,27 @@ void Connection::onDisconnectedInternal(int32_t reason, int32_t error) {
     usefullData = false;
 }
 
+void Connection::onH2Packet(const uint8_t *data, size_t length) {
+    if (length == 0 || length > 2 * 1024 * 1024 || length % 4 != 0) {
+        if (LOGS_ENABLED) DEBUG_E("connection(%p) h2 invalid packet size %zu", this, length);
+        reconnect();
+        return;
+    }
+    uint32_t words = (uint32_t) (length / 4);
+    uint32_t headerLength = words < 0x7f ? 1 : 4;
+    NativeByteBuffer *buffer = BuffersStorage::getInstance().getFreeBuffer(headerLength + (uint32_t) length);
+    if (words < 0x7f) {
+        buffer->writeByte((uint8_t) words);
+    } else {
+        uint32_t packed = (words << 8) + 0x7f;
+        buffer->writeInt32(packed);
+    }
+    buffer->writeBytes((uint8_t *) data, (uint32_t) length);
+    buffer->rewind();
+    onReceivedData(buffer, true);
+    buffer->reuse();
+}
+
 void Connection::onDisconnected(int32_t reason, int32_t error) {
     if (connectionInProcess) {
         ConnectionsManager::getInstance(currentDatacenter->instanceNum).scheduleTask([&, reason, error] {
@@ -737,6 +854,13 @@ void Connection::onConnected() {
     connectionToken = lastConnectionToken++;
     wasConnected = true;
     if (LOGS_ENABLED) DEBUG_D("connection(%p, account%u, dc%u, type %d) connected to %s:%hu", this, currentDatacenter->instanceNum, currentDatacenter->getDatacenterId(), connectionType, hostAddress.c_str(), hostPort);
+    if (wsConnectionActive) {
+        const char *route = currentWebSocketFronted ? "fronting" : (currentWebSocketDomain.empty() ? "direct" : "domain");
+        if (LOGS_ENABLED) DEBUG_D("connection(%p, account%u, dc%u, type %d) %s ready route=%s host=%s setup=%lldms", this, currentDatacenter->instanceNum, currentDatacenter->getDatacenterId(), connectionType, h2Connection ? "h2" : "websocket", route, currentWebSocketHost.c_str(), (long long) (ConnectionsManager::getInstance(currentDatacenter->instanceNum).getCurrentTimeMonotonicMillis() - webSocketConnectStart));
+        if (!h2Connection) {
+            ConnectionsManager::getInstance(currentDatacenter->instanceNum).scheduleWebSocketPreconnect(currentWebSocketHost, currentWebSocketPath);
+        }
+    }
     ConnectionsManager::getInstance(currentDatacenter->instanceNum).onConnectionConnected(this);
 }
 
