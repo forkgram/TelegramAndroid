@@ -6,6 +6,10 @@
     <string name="ForkSectionVoice">Voz e tradução</string>
     <string name="ForkSectionBots">Bots e navegador</string>
     <string name="ForkSectionSystem">Sistema e atualizações</string>
+    <string name="WebSocketTransport">Conectar via WebSocket</string>
+    <string name="WebSocketTransportInfo">Encaminha o tráfego do Telegram por uma conexão WebSocket criptografada (WSS). Pode ajudar quando a conexão normal está limitada ou bloqueada. Deixe o domínio vazio para usar retransmissores públicos atualizados automaticamente, ou insira seu próprio domínio para mais confiabilidade. Os retransmissores públicos são operados por terceiros e podem ver seu endereço IP e os metadados da conexão, mas não o conteúdo das suas mensagens. Desative se a conexão parar de funcionar.</string>
+    <string name="WebSocketDomain">Domínio WebSocket</string>
+    <string name="WebSocketDomainAuto">Automático</string>
     <string name="UnifiedPushDistributor">Distribuidores do UnifiedPush</string>
     <string name="UnifiedPushGateway">Gateway UnifiedPush de PUT para POST</string>
     <string name="UnifiedPushGatewayInfo">Por padrão, o endereço de notificações é registrado diretamente no Telegram, sem gateway.\n\nSe a sua configuração ainda precisar de um gateway «PUT para POST», informe-o aqui ou deixe o campo vazio para entrega direta:</string>
