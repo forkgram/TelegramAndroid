@@ -69,6 +69,15 @@ public:
     void setIpStrategy(uint8_t value);
     void init(uint32_t version, int32_t layer, int32_t apiId, std::string deviceModel, std::string systemVersion, std::string appVersion, std::string langCode, std::string systemLangCode, std::string configPath, std::string logPath, std::string regId, std::string cFingerprint, std::string installerId, std::string packageId, int32_t timezoneOffset, int64_t userId, bool userPremium, bool isPaused, bool enablePushConnection, bool hasNetwork, int32_t networkType, int32_t performanceClass);
     void setProxySettings(std::string address, uint16_t port, std::string username, std::string password, std::string secret);
+    void setWebSocketConfig(bool value, std::string userDomain, std::vector<std::string> pool);
+    std::string getWebSocketDomainForDc(uint32_t datacenterId, bool isMedia);
+    bool webSocketMediaDirectDash1Available(uint32_t datacenterId);
+    void markWebSocketDomainResult(uint32_t datacenterId, bool isMedia, std::string domain, bool dash1, bool success);
+    static bool isWebSocketFrontingDomain(const std::string &domain);
+    void scheduleWebSocketPreconnect(const std::string &host, const std::string &path);
+    bool isWebSocketSuppressed();
+    void resetWebSocketHealth();
+    void reportNetworkTraffic(int32_t sent, int32_t received);
     void setLangCode(std::string langCode);
     void setRegId(std::string regId);
     void setSystemLangCode(std::string langCode);
@@ -192,6 +201,21 @@ private:
     std::string proxyAddress = "";
     std::string proxySecret = "";
     uint16_t proxyPort = 1080;
+    bool useWebSocket = false;
+    std::string webSocketUserDomain = "";
+    std::vector<std::string> webSocketDomainPool;
+    std::map<std::string, int64_t> webSocketDomainCooldownUntil;
+    std::map<std::string, int32_t> webSocketDomainStrikes;
+    std::map<uint32_t, std::string> webSocketDcDomain;
+    std::map<uint32_t, int64_t> webSocketDirectCooldownUntil;
+    std::map<uint32_t, int32_t> webSocketDirectStrikes;
+    std::map<uint32_t, int64_t> webSocketDirectDash1Cooldown;
+    std::map<uint32_t, int32_t> webSocketDirectDash1Strikes;
+    std::map<uint32_t, int64_t> webSocketFrontingCooldownUntil;
+    std::map<uint32_t, int32_t> webSocketFrontingStrikes;
+    uint32_t webSocketRotation = 0;
+    int32_t webSocketConsecutiveFailures = 0;
+    int64_t webSocketSuppressedUntil = 0;
     int32_t lastPingProxyId = 2000000;
     std::vector<std::unique_ptr<ProxyCheckInfo>> proxyCheckQueue;
     std::vector<std::unique_ptr<ProxyCheckInfo>> proxyActiveChecks;
@@ -259,6 +283,7 @@ private:
     ConnectiosManagerDelegate *delegate;
 
     friend class ConnectionSocket;
+    friend class H2Transport;
     friend class ConnectionSession;
     friend class Connection;
     friend class Timer;
