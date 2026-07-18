@@ -91,6 +91,9 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
     private boolean useProxySettings;
 
     private int rowCount;
+    private int webSocketRow;
+    private int webSocketDomainRow;
+    private int webSocketInfoRow;
     @Keep
     private int useProxyRow;
     private int useProxyShadowRow;
@@ -415,7 +418,18 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT));
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener((view, position) -> {
-            if (position == useProxyRow) {
+            if (position == webSocketRow) {
+                SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+                boolean value = !preferences.getBoolean("webSocketTransport", false);
+                preferences.edit().putBoolean("webSocketTransport", value).commit();
+                ((TextCheckCell) view).setChecked(value);
+                ConnectionsManager.setWebSocketEnabled(value, preferences.getString("webSocketDomain", ""));
+                updateRows(true);
+                return;
+            } else if (position == webSocketDomainRow) {
+                showWebSocketDomainDialog();
+                return;
+            } else if (position == useProxyRow) {
                 if (SharedConfig.currentProxy == null) {
                     if (!proxyList.isEmpty()) {
                         SharedConfig.currentProxy = proxyList.get(0);
@@ -609,8 +623,32 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
         return super.onBackPressed(invoked);
     }
 
+    private void showWebSocketDomainDialog() {
+        SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        org.telegram.messenger.forkgram.ForkDialogs.createFieldAlert(getParentActivity(), getString(R.string.WebSocketDomain), preferences.getString("webSocketDomain", ""), (result) -> {
+            String domain = ConnectionsManager.normalizeWebSocketDomain(result);
+            if (domain.isEmpty() && !result.trim().isEmpty()) {
+                org.telegram.ui.Components.BulletinFactory.of(this).createErrorBulletin(getString(R.string.InvalidFormatError)).show();
+                return null;
+            }
+            preferences.edit().putString("webSocketDomain", domain).commit();
+            updateRows(true);
+            if (preferences.getBoolean("webSocketTransport", false)) {
+                ConnectionsManager.setWebSocketEnabled(true, domain);
+            }
+            return null;
+        });
+    }
+
     private void updateRows(boolean notify) {
         rowCount = 0;
+        webSocketRow = rowCount++;
+        if (MessagesController.getGlobalMainSettings().getBoolean("webSocketTransport", false)) {
+            webSocketDomainRow = rowCount++;
+        } else {
+            webSocketDomainRow = -1;
+        }
+        webSocketInfoRow = rowCount++;
         useProxyRow = rowCount++;
         if (useProxySettings && SharedConfig.currentProxy != null && SharedConfig.proxyList.size() > 1 && IS_PROXY_ROTATION_AVAILABLE) {
             rotationRow = rowCount++;
@@ -856,7 +894,10 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
                 case VIEW_TYPE_TEXT_SETTING: {
                     TextSettingsCell textCell = (TextSettingsCell) holder.itemView;
                     ThemeBind.textColor(textCell.getTextView(), Theme.key_windowBackgroundWhiteBlackText);
-                    if (position == proxyAddRow) {
+                    if (position == webSocketDomainRow) {
+                        String domain = MessagesController.getGlobalMainSettings().getString("webSocketDomain", "");
+                        textCell.setTextAndValue(getString(R.string.WebSocketDomain), domain.isEmpty() ? getString(R.string.WebSocketDomainAuto) : domain, false);
+                    } else if (position == proxyAddRow) {
                         textCell.setText(getString(R.string.AddProxy), deleteAllRow != -1);
                     } else if (position == deleteAllRow) {
                         ThemeBind.textColor(textCell.getTextView(), Theme.key_text_RedRegular);
@@ -873,7 +914,9 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
                 }
                 case VIEW_TYPE_TEXT_CHECK: {
                     TextCheckCell checkCell = (TextCheckCell) holder.itemView;
-                    if (position == useProxyRow) {
+                    if (position == webSocketRow) {
+                        checkCell.setTextAndCheck(getString(R.string.WebSocketTransport), MessagesController.getGlobalMainSettings().getBoolean("webSocketTransport", false), webSocketDomainRow != -1);
+                    } else if (position == useProxyRow) {
                         checkCell.setTextAndCheck(getString(R.string.UseProxySettings), useProxySettings, rotationRow != -1);
                     } else if (position == rotationRow) {
                         checkCell.setTextAndCheck(getString(R.string.UseProxyRotation), SharedConfig.proxyRotationEnabled, true);
@@ -882,7 +925,9 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
                 }
                 case VIEW_TYPE_INFO: {
                     TextInfoPrivacyCell cell = (TextInfoPrivacyCell) holder.itemView;
-                    if (position == rotationTimeoutInfoRow) {
+                    if (position == webSocketInfoRow) {
+                        cell.setText(getString(R.string.WebSocketTransportInfo));
+                    } else if (position == rotationTimeoutInfoRow) {
                         cell.setText(getString(R.string.ProxyRotationTimeoutInfo));
                     }
                     break;
@@ -955,7 +1000,7 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
         @Override
         public boolean isEnabled(RecyclerView.ViewHolder holder) {
             int position = holder.getAdapterPosition();
-            return position == useProxyRow || position == rotationRow || position == proxyAddRow || position == deleteAllRow || position >= proxyStartRow && position < proxyEndRow;
+            return position == webSocketRow || position == webSocketDomainRow || position == useProxyRow || position == rotationRow || position == proxyAddRow || position == deleteAllRow || position >= proxyStartRow && position < proxyEndRow;
         }
 
         @Override
@@ -997,7 +1042,13 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
         @Override
         public long getItemId(int position) {
             // Random stable ids, could be anything non-repeating
-            if (position == useProxyShadowRow) {
+            if (position == webSocketRow) {
+                return -20;
+            } else if (position == webSocketDomainRow) {
+                return -21;
+            } else if (position == webSocketInfoRow) {
+                return -22;
+            } else if (position == useProxyShadowRow) {
                 return -1;
             } else if (position == proxyShadowRow) {
                 return -2;
@@ -1024,7 +1075,13 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
 
         @Override
         public int getItemViewType(int position) {
-            if (position == useProxyShadowRow || position == proxyShadowRow) {
+            if (position == webSocketRow) {
+                return VIEW_TYPE_TEXT_CHECK;
+            } else if (position == webSocketDomainRow) {
+                return VIEW_TYPE_TEXT_SETTING;
+            } else if (position == webSocketInfoRow) {
+                return VIEW_TYPE_INFO;
+            } else if (position == useProxyShadowRow || position == proxyShadowRow) {
                 return VIEW_TYPE_SHADOW;
             } else if (position == proxyAddRow || position == deleteAllRow) {
                 return VIEW_TYPE_TEXT_SETTING;
