@@ -245,6 +245,33 @@ void setProxySettings(JNIEnv *env, jclass c, jint instanceNum, jstring address, 
     }
 }
 
+void setWebSocketConfig(JNIEnv *env, jclass c, jint instanceNum, jboolean enabled, jstring userDomain, jstring pool) {
+    const char *userDomainStr = env->GetStringUTFChars(userDomain, 0);
+    const char *poolStr = env->GetStringUTFChars(pool, 0);
+    std::vector<std::string> domains;
+    if (poolStr != nullptr) {
+        std::string joined = poolStr;
+        size_t start = 0;
+        while (start < joined.size()) {
+            size_t nl = joined.find('\n', start);
+            if (nl == std::string::npos) {
+                nl = joined.size();
+            }
+            if (nl > start) {
+                domains.push_back(joined.substr(start, nl - start));
+            }
+            start = nl + 1;
+        }
+    }
+    ConnectionsManager::getInstance(instanceNum).setWebSocketConfig(enabled, userDomainStr != nullptr ? userDomainStr : "", domains);
+    if (userDomainStr != 0) {
+        env->ReleaseStringUTFChars(userDomain, userDomainStr);
+    }
+    if (poolStr != 0) {
+        env->ReleaseStringUTFChars(pool, poolStr);
+    }
+}
+
 jint getConnectionState(JNIEnv *env, jclass c, jint instanceNum) {
     return ConnectionsManager::getInstance(instanceNum).getConnectionState();
 }
@@ -537,6 +564,7 @@ static JNINativeMethod ConnectionsManagerMethods[] = {
         {"native_bindRequestToGuid", "(III)V", (void *) bindRequestToGuid},
         {"native_applyDatacenterAddress", "(IILjava/lang/String;I)V", (void *) applyDatacenterAddress},
         {"native_setProxySettings", "(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", (void *) setProxySettings},
+        {"native_setWebSocketConfig", "(IZLjava/lang/String;Ljava/lang/String;)V", (void *) setWebSocketConfig},
         {"native_getConnectionState", "(I)I", (void *) getConnectionState},
         {"native_setUserId", "(IJ)V", (void *) setUserId},
         {"native_init", "(IIIILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IJZZZII)V", (void *) init},
