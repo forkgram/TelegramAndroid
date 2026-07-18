@@ -6,6 +6,10 @@
     <string name="ForkSectionVoice">Voce e traduzione</string>
     <string name="ForkSectionBots">Bot e browser</string>
     <string name="ForkSectionSystem">Sistema e aggiornamenti</string>
+    <string name="WebSocketTransport">Connessione tramite WebSocket</string>
+    <string name="WebSocketTransportInfo">Incanala il traffico di Telegram attraverso una connessione WebSocket crittografata (WSS). Può essere utile quando la connessione normale è rallentata o bloccata. Lascia vuoto il dominio per usare relay pubblici aggiornati automaticamente, oppure inserisci il tuo dominio per maggiore affidabilità. I relay pubblici sono gestiti da terze parti e possono vedere il tuo indirizzo IP e i metadati della connessione, ma non il contenuto dei tuoi messaggi. Disattiva se la connessione smette di funzionare.</string>
+    <string name="WebSocketDomain">Dominio WebSocket</string>
+    <string name="WebSocketDomainAuto">Automatico</string>
     <string name="ForkSectionBackup">Backup</string>
     <string name="VoiceQualityLow">Bassa (16 kbps)</string>
     <string name="VoiceQualityMedium">Media (32 kbps)</string>

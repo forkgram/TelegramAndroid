@@ -137,6 +137,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_UPDATE_CHECK_INTERVAL = 81;
     public static final int ID_DISABLE_TABLET_MODE = 82;
     public static final int ID_LOCK_PREMIUM = 83;
+    public static final int ID_WEBSOCKET_TRANSPORT = 84;
+    public static final int ID_WEBSOCKET_DOMAIN = 85;
 
     public static final int ID_LASTFM_LOGIN = 90;
 
@@ -626,6 +628,11 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionSystem)));
+        items.add(UItem.asButtonCheck(ID_WEBSOCKET_TRANSPORT, LocaleController.getString(R.string.WebSocketTransport), LocaleController.getString(R.string.WebSocketTransportInfo))
+            .setChecked(pref("webSocketTransport", false)).setMultiline(true));
+        if (pref("webSocketTransport", false)) {
+            items.add(UItem.asSettingsCell(ID_WEBSOCKET_DOMAIN, LocaleController.getString(R.string.WebSocketDomain), getWebSocketDomainText()));
+        }
         items.add(UItem.asButtonCheck(ID_DISABLE_UNIFIED_PUSH, LocaleController.getString(R.string.DisableUnifiedPush), LocaleController.getString(R.string.DisableUnifiedPushInfo))
             .setChecked(pref("disableUnifiedPush", false)).setMultiline(true));
         items.add(UItem.asSettingsCell(ID_UPDATE_CHECK_INTERVAL, LocaleController.getString(R.string.UpdateCheckInterval), getUpdateIntervalText()));
@@ -806,6 +813,12 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_DISABLE_DEFAULT_IN_APP_BROWSER) {
             toggle("disableDefaultInAppBrowser", item, view);
 
+        } else if (id == ID_WEBSOCKET_TRANSPORT) {
+            boolean value = toggle("webSocketTransport", item, view);
+            org.telegram.tgnet.ConnectionsManager.setWebSocketEnabled(value, prefs().getString("webSocketDomain", ""));
+            listView.adapter.update(true);
+        } else if (id == ID_WEBSOCKET_DOMAIN) {
+            showWebSocketDomainDialog();
         } else if (id == ID_DISABLE_UNIFIED_PUSH) {
             toggle("disableUnifiedPush", item, view);
         } else if (id == ID_UPDATE_CHECK_INTERVAL) {
@@ -854,6 +867,33 @@ public class ForkSettingsActivity extends BaseFragment {
                     : null;
                 if (previousFragment instanceof DialogsActivity) {
                     ((DialogsActivity) previousFragment).getActionBar().setTitle(result);
+                }
+                return null;
+            });
+    }
+
+    private static String getWebSocketDomainText() {
+        String domain = prefs().getString("webSocketDomain", "");
+        return TextUtils.isEmpty(domain) ? LocaleController.getString(R.string.WebSocketDomainAuto) : domain;
+    }
+
+    private void showWebSocketDomainDialog() {
+        org.telegram.messenger.forkgram.ForkDialogs.createFieldAlert(
+            getContext(),
+            LocaleController.getString(R.string.WebSocketDomain),
+            prefs().getString("webSocketDomain", ""),
+            (result) -> {
+                String domain = org.telegram.tgnet.ConnectionsManager.normalizeWebSocketDomain(result);
+                if (domain.isEmpty() && !result.trim().isEmpty()) {
+                    org.telegram.ui.Components.BulletinFactory.of(this).createErrorBulletin(LocaleController.getString(R.string.InvalidFormatError)).show();
+                    return null;
+                }
+                SharedPreferences.Editor editor = prefs().edit();
+                editor.putString("webSocketDomain", domain);
+                editor.commit();
+                listView.adapter.update(false);
+                if (prefs().getBoolean("webSocketTransport", false)) {
+                    org.telegram.tgnet.ConnectionsManager.setWebSocketEnabled(true, domain);
                 }
                 return null;
             });
