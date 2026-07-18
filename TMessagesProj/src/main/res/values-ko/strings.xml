@@ -6,6 +6,10 @@
     <string name="ForkSectionVoice">음성 및 번역</string>
     <string name="ForkSectionBots">봇 및 브라우저</string>
     <string name="ForkSectionSystem">시스템 및 업데이트</string>
+    <string name="WebSocketTransport">WebSocket으로 연결</string>
+    <string name="WebSocketTransportInfo">Telegram 트래픽을 암호화된 WebSocket(WSS) 연결을 통해 전달합니다. 일반 연결이 제한되거나 차단될 때 도움이 될 수 있습니다. 도메인을 비워 두면 자동으로 업데이트되는 공용 릴레이를 사용하고, 안정적인 연결을 위해 직접 도메인을 입력할 수도 있습니다. 공용 릴레이는 제3자가 운영하며 사용자의 IP 주소와 연결 메타데이터를 볼 수 있지만 메시지 내용은 볼 수 없습니다. 연결이 작동하지 않으면 끄세요.</string>
+    <string name="WebSocketDomain">WebSocket 도메인</string>
+    <string name="WebSocketDomainAuto">자동</string>
     <string name="ForkSectionBackup">백업</string>
     <string name="VoiceQualityLow">낮음 (16 kbps)</string>
     <string name="VoiceQualityMedium">보통 (32 kbps)</string>

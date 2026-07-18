@@ -6,6 +6,10 @@
     <string name="ForkSectionVoice">Voz y traducción</string>
     <string name="ForkSectionBots">Bots y navegador</string>
     <string name="ForkSectionSystem">Sistema y actualizaciones</string>
+    <string name="WebSocketTransport">Conectar por WebSocket</string>
+    <string name="WebSocketTransportInfo">Canaliza el tráfico de Telegram a través de una conexión WebSocket cifrada (WSS). Puede ayudar cuando la conexión normal está limitada o bloqueada. Deja el dominio vacío para usar repetidores públicos actualizados automáticamente, o introduce tu propio dominio para mayor fiabilidad. Los repetidores públicos son gestionados por terceros y pueden ver tu dirección IP y los metadatos de conexión, pero no el contenido de tus mensajes. Desactívalo si la conexión deja de funcionar.</string>
+    <string name="WebSocketDomain">Dominio WebSocket</string>
+    <string name="WebSocketDomainAuto">Automático</string>
     <string name="ForkSectionBackup">Copia de seguridad</string>
     <string name="VoiceQualityLow">Baja (16 kbps)</string>
     <string name="VoiceQualityMedium">Media (32 kbps)</string>
