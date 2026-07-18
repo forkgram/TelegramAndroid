@@ -214,6 +214,7 @@ target_compile_definitions(tgnet PUBLIC
 target_include_directories(tgnet PUBLIC
         boringssl/include/)
 target_link_libraries(tgnet
+        ssl
         crypto)
 
 #rlottie

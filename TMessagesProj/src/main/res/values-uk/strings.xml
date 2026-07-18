@@ -6,6 +6,10 @@
     <string name="ForkSectionVoice">Голос і переклад</string>
     <string name="ForkSectionBots">Боти та браузер</string>
     <string name="ForkSectionSystem">Система та оновлення</string>
+    <string name="WebSocketTransport">Підключення через WebSocket</string>
+    <string name="WebSocketTransportInfo">Тунелює трафік Telegram через зашифроване з\'єднання WebSocket (WSS). Може допомогти, коли звичайне з\'єднання сповільнюють або блокують. Залиште поле домену порожнім, щоб використовувати автоматично оновлювані публічні релеї, або вкажіть власний домен для стабільності. Вимкніть, якщо з\'єднання перестало працювати.</string>
+    <string name="WebSocketDomain">Домен WebSocket</string>
+    <string name="WebSocketDomainAuto">Автоматично</string>
     <string name="ForkSectionBackup">Резервна копія</string>
     <string name="VoiceQualityLow">Низька (16 кбіт/с)</string>
     <string name="VoiceQualityMedium">Середня (32 кбіт/с)</string>

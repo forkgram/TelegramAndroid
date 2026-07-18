@@ -126,6 +126,9 @@ void Connection::onReceivedData(NativeByteBuffer *buffer) {
     NativeByteBuffer *reuseLater = nullptr;
     while (buffer->hasRemaining()) {
         if (!hasSomeDataSinceLastConnect) {
+            if (wsConnectionActive) {
+                ConnectionsManager::getInstance(currentDatacenter->instanceNum).markWebSocketDomainResult(currentDatacenter->getDatacenterId(), currentWebSocketDomain, true);
+            }
             currentDatacenter->storeCurrentAddressAndPortNum();
             isTryingNextPort = false;
             if (connectionType == ConnectionTypeProxy) {
@@ -364,7 +367,23 @@ void Connection::connect() {
     lastPacketLength = 0;
     wasConnected = false;
     hasSomeDataSinceLastConnect = false;
-    openConnection(hostAddress, hostPort, secret, ipv6 != 0, ConnectionsManager::getInstance(currentDatacenter->instanceNum).currentNetworkType);
+    uint32_t webDatacenterId = currentDatacenter->getDatacenterId();
+    bool useWebSocket = ConnectionsManager::getInstance(currentDatacenter->instanceNum).useWebSocket && connectionType != ConnectionTypeProxy && webDatacenterId >= 1 && webDatacenterId <= 5 && !ConnectionsManager::getInstance(currentDatacenter->instanceNum).isWebSocketSuppressed();
+    wsConnectionActive = useWebSocket;
+    if (useWebSocket) {
+        currentWebSocketDomain = ConnectionsManager::getInstance(currentDatacenter->instanceNum).getWebSocketDomainForDc(webDatacenterId);
+        bool directWebEndpoint = currentWebSocketDomain.empty();
+        std::string webBaseDomain = directWebEndpoint ? "web.telegram.org" : currentWebSocketDomain;
+        std::string webHost = std::string("kws") + to_string_int32((int32_t) webDatacenterId) + (isMediaConnection && directWebEndpoint ? "-1" : "") + "." + webBaseDomain;
+        std::string webPath = ConnectionsManager::getInstance(currentDatacenter->instanceNum).testBackend ? "/apiws_test" : "/apiws";
+        setWebSocket(true, webHost, webPath);
+        if (LOGS_ENABLED) DEBUG_D("connection(%p, account%u, dc%u, type %d) connecting via websocket %s%s", this, currentDatacenter->instanceNum, currentDatacenter->getDatacenterId(), connectionType, webHost.c_str(), webPath.c_str());
+        openConnection(webHost, 443, "", false, ConnectionsManager::getInstance(currentDatacenter->instanceNum).currentNetworkType);
+    } else {
+        currentWebSocketDomain = "";
+        setWebSocket(false, "", "");
+        openConnection(hostAddress, hostPort, secret, ipv6 != 0, ConnectionsManager::getInstance(currentDatacenter->instanceNum).currentNetworkType);
+    }
     if (connectionType == ConnectionTypeProxy) {
         setTimeout(5);
     } else if (connectionType == ConnectionTypePush) {
@@ -444,6 +463,7 @@ void Connection::sendData(NativeByteBuffer *buff, bool reportAck, bool encrypted
 
     uint32_t bufferLen = 0;
     uint32_t packetLength;
+    bool wasFirstPacket = !firstPacketSent;
 
     uint8_t useSecret = 0;
     if (!firstPacketSent) {
@@ -491,14 +511,7 @@ void Connection::sendData(NativeByteBuffer *buff, bool reportAck, bool encrypted
             }
             packetLength += additinalPacketSize;
         } else {
-            RAND_bytes((uint8_t *) &additinalPacketSize, 4);
-            if (!encrypted) {
-                additinalPacketSize = additinalPacketSize % 257;
-                uint32_t additionalSize = additinalPacketSize % 4;
-                if (additionalSize != 0) {
-                    additinalPacketSize += (4 - additionalSize);
-                }
-            }
+            additinalPacketSize = 0;
             packetLength += additinalPacketSize;
         }
         bufferLen += 4;
@@ -533,7 +546,7 @@ void Connection::sendData(NativeByteBuffer *buff, bool reportAck, bool encrypted
                     bytes[56] = bytes[57] = bytes[58] = bytes[59] = 0xee;
                 }
 
-                if (useSecret != 0) {
+                if (useSecret != 0 || webSocket) {
                     int16_t datacenterId;
                     if (isMediaConnection) {
                         if (ConnectionsManager::getInstance(currentDatacenter->instanceNum).testBackend) {
@@ -611,13 +624,36 @@ void Connection::sendData(NativeByteBuffer *buff, bool reportAck, bool encrypted
     }
 
     buffer->rewind();
-    writeBuffer(buffer);
     buff->rewind();
     AES_ctr128_encrypt(buff->bytes(), buff->bytes(), buff->limit(), &encryptKey, encryptIv, encryptCount, &encryptNum);
-    writeBuffer(buff);
     if (buffer2 != nullptr) {
         AES_ctr128_encrypt(buffer2->bytes(), buffer2->bytes(), buffer2->limit(), &encryptKey, encryptIv, encryptCount, &encryptNum);
-        writeBuffer(buffer2);
+    }
+    if (webSocket) {
+        uint32_t prefixOffset = 0;
+        if (wasFirstPacket) {
+            queueWebSocketMessage(buffer->bytes(), 64);
+            prefixOffset = 64;
+        }
+        std::string frame;
+        frame.reserve((buffer->limit() - prefixOffset) + buff->limit() + (buffer2 != nullptr ? buffer2->limit() : 0));
+        frame.append((const char *) buffer->bytes() + prefixOffset, buffer->limit() - prefixOffset);
+        frame.append((const char *) buff->bytes(), buff->limit());
+        if (buffer2 != nullptr) {
+            frame.append((const char *) buffer2->bytes(), buffer2->limit());
+        }
+        queueWebSocketMessage((const uint8_t *) frame.data(), frame.size());
+        buffer->reuse();
+        buff->reuse();
+        if (buffer2 != nullptr) {
+            buffer2->reuse();
+        }
+    } else {
+        writeBuffer(buffer);
+        writeBuffer(buff);
+        if (buffer2 != nullptr) {
+            writeBuffer(buffer2);
+        }
     }
 }
 
@@ -656,6 +692,9 @@ inline void Connection::encryptKeyWithSecret(uint8_t *bytes, uint8_t secretType)
 
 void Connection::onDisconnectedInternal(int32_t reason, int32_t error) {
     reconnectTimer->stop();
+    if (wsConnectionActive && !hasSomeDataSinceLastConnect) {
+        ConnectionsManager::getInstance(currentDatacenter->instanceNum).markWebSocketDomainResult(currentDatacenter->getDatacenterId(), currentWebSocketDomain, false);
+    }
     if (LOGS_ENABLED) DEBUG_D("connection(%p, account%u, dc%u, type %d) disconnected with reason %d", this, currentDatacenter->instanceNum, currentDatacenter->getDatacenterId(), connectionType, reason);
     bool switchToNextPort = reason == 2 && wasConnected && (!hasSomeDataSinceLastConnect || currentDatacenter->isCustomPort(currentAddressFlags)) || forceNextPort;
     if (connectionType == ConnectionTypeGeneric || connectionType == ConnectionTypeTemp || connectionType == ConnectionTypeGenericMedia) {

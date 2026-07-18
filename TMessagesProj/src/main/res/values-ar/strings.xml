@@ -6,6 +6,10 @@
     <string name="ForkSectionVoice">الصوت والترجمة</string>
     <string name="ForkSectionBots">البوتات والمتصفح</string>
     <string name="ForkSectionSystem">النظام والتحديثات</string>
+    <string name="WebSocketTransport">الاتصال عبر WebSocket</string>
+    <string name="WebSocketTransportInfo">يوجّه حركة بيانات تيليجرام عبر اتصال WebSocket مشفّر (WSS). قد يساعد عندما يكون الاتصال العادي مقيّدًا أو محجوبًا. اترك حقل النطاق فارغًا لاستخدام مرحّلات عامة يتم تحديثها تلقائيًا، أو أدخل نطاقك الخاص للحصول على اتصال أكثر استقرارًا. أوقفه إذا توقف الاتصال عن العمل.</string>
+    <string name="WebSocketDomain">نطاق WebSocket</string>
+    <string name="WebSocketDomainAuto">تلقائي</string>
     <string name="ForkSectionBackup">نسخة احتياطية</string>
     <string name="VoiceQualityLow">منخفضة (16 كيلوبت/ث)</string>
     <string name="VoiceQualityMedium">متوسطة (32 كيلوبت/ث)</string>

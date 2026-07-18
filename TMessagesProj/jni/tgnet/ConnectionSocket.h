@@ -12,12 +12,23 @@
 #include <sys/epoll.h>
 #include <netinet/in.h>
 #include <string>
+#include <vector>
 
 class NativeByteBuffer;
 class ConnectionsManager;
 class ByteStream;
 class EventObject;
 class ByteArray;
+
+struct ssl_st;
+struct bio_st;
+
+enum WebSocketState {
+    WebSocketStateNone = 0,
+    WebSocketStateTls = 1,
+    WebSocketStateHttp = 2,
+    WebSocketStateReady = 3
+};
 
 class ConnectionSocket {
 
@@ -33,6 +44,8 @@ public:
     bool isDisconnected();
     void dropConnection();
     void setOverrideProxy(std::string address, uint16_t port, std::string username, std::string password, std::string secret);
+    void setWebSocket(bool enabled, std::string host, std::string path);
+    void queueWebSocketMessage(const uint8_t *data, size_t length);
     void onHostNameResolved(std::string host, std::string ip, bool ipv6);
 
 protected:
@@ -81,6 +94,30 @@ private:
     int8_t tlsState = 0;
 
     uint8_t proxyAuthState;
+
+    bool webSocket = false;
+    std::string webSocketHost;
+    std::string webSocketPath;
+    int8_t webSocketState = WebSocketStateNone;
+    struct ssl_st *ssl = nullptr;
+    struct bio_st *sslReadBio = nullptr;
+    struct bio_st *sslWriteBio = nullptr;
+    std::string tlsPendingWrite;
+    size_t tlsPendingSent = 0;
+    std::string wsInBuffer;
+    std::vector<std::string> wsOutQueue;
+    int32_t socketGeneration = 0;
+
+    bool webSocketInitSsl();
+    void webSocketFreeSsl();
+    int32_t webSocketDriveHandshake();
+    int32_t webSocketSendHttpUpgrade();
+    int32_t webSocketOnNetworkData(uint8_t *data, size_t length);
+    int32_t webSocketParseFrames();
+    int32_t webSocketWriteFrame(uint8_t opcode, const uint8_t *payload, size_t length);
+    int32_t webSocketSendOutgoing();
+    int32_t webSocketFlushCiphertext();
+    void webSocketBecameReady();
 
     int32_t checkSocketError(int32_t *error);
     void closeSocket(int32_t reason, int32_t error);

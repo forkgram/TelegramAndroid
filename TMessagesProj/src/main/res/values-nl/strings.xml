@@ -6,6 +6,10 @@
     <string name="ForkSectionVoice">Spraak en vertaling</string>
     <string name="ForkSectionBots">Bots en browser</string>
     <string name="ForkSectionSystem">Systeem en updates</string>
+    <string name="WebSocketTransport">Verbinden via WebSocket</string>
+    <string name="WebSocketTransportInfo">Tunnelt Telegram-verkeer via een versleutelde WebSocket-verbinding (WSS). Kan helpen wanneer de normale verbinding wordt vertraagd of geblokkeerd. Laat het domeinveld leeg om automatisch bijgewerkte openbare relays te gebruiken, of voer je eigen domein in voor meer betrouwbaarheid. Schakel uit als de verbinding niet meer werkt.</string>
+    <string name="WebSocketDomain">WebSocket-domein</string>
+    <string name="WebSocketDomainAuto">Automatisch</string>
     <string name="ForkSectionBackup">Back-up</string>
     <string name="VoiceQualityLow">Laag (16 kbps)</string>
     <string name="VoiceQualityMedium">Gemiddeld (32 kbps)</string>

@@ -3744,6 +3744,109 @@ void ConnectionsManager::setProxySettings(std::string address, uint16_t port, st
     });
 }
 
+void ConnectionsManager::setWebSocketConfig(bool value, std::string userDomain, std::vector<std::string> pool) {
+    scheduleTask([&, value, userDomain, pool] {
+        if (useWebSocket == value && webSocketUserDomain == userDomain && webSocketDomainPool == pool) {
+            return;
+        }
+        bool endpointChanged = useWebSocket != value || webSocketUserDomain != userDomain;
+        useWebSocket = value;
+        webSocketUserDomain = userDomain;
+        webSocketDomainPool = pool;
+        webSocketDcDomain.clear();
+        webSocketDomainCooldownUntil.clear();
+        webSocketDomainStrikes.clear();
+        webSocketConsecutiveFailures = 0;
+        webSocketSuppressedUntil = 0;
+        if (LOGS_ENABLED) DEBUG_D("websocket transport %s, %d pool domains, user domain '%s'", value ? "enabled" : "disabled", (int) pool.size(), userDomain.c_str());
+        if (!endpointChanged) {
+            return;
+        }
+        for (auto & datacenter : datacenters) {
+            datacenter.second->suspendConnections(true);
+        }
+        Datacenter *datacenter = getDatacenterWithId(DEFAULT_DATACENTER_ID);
+        if (datacenter != nullptr && datacenter->isHandshakingAny()) {
+            datacenter->beginHandshake(HandshakeTypeCurrent, true);
+        }
+        processRequestQueue(0, 0);
+    });
+}
+
+std::string ConnectionsManager::getWebSocketDomainForDc(uint32_t datacenterId) {
+    if (!webSocketUserDomain.empty()) {
+        return webSocketUserDomain;
+    }
+    if (webSocketDomainPool.empty()) {
+        return "";
+    }
+    int64_t now = getCurrentTimeMonotonicMillis();
+    auto current = webSocketDcDomain.find(datacenterId);
+    if (current != webSocketDcDomain.end()) {
+        auto cooldown = webSocketDomainCooldownUntil.find(current->second);
+        if (cooldown == webSocketDomainCooldownUntil.end() || cooldown->second <= now) {
+            return current->second;
+        }
+    }
+    std::string picked;
+    int64_t soonestCooldown = 0;
+    size_t poolSize = webSocketDomainPool.size();
+    for (size_t i = 0; i < poolSize; i++) {
+        const std::string &domain = webSocketDomainPool[(webSocketRotation + i) % poolSize];
+        auto cooldown = webSocketDomainCooldownUntil.find(domain);
+        if (cooldown == webSocketDomainCooldownUntil.end() || cooldown->second <= now) {
+            picked = domain;
+            break;
+        }
+        if (picked.empty() || cooldown->second < soonestCooldown) {
+            soonestCooldown = cooldown->second;
+            picked = domain;
+        }
+    }
+    webSocketRotation++;
+    webSocketDcDomain[datacenterId] = picked;
+    return picked;
+}
+
+void ConnectionsManager::markWebSocketDomainResult(uint32_t datacenterId, std::string domain, bool success) {
+    if (success) {
+        webSocketConsecutiveFailures = 0;
+        webSocketSuppressedUntil = 0;
+        if (!domain.empty()) {
+            webSocketDomainCooldownUntil.erase(domain);
+            webSocketDomainStrikes.erase(domain);
+        }
+        return;
+    }
+    if (!domain.empty() && webSocketUserDomain.empty()) {
+        int32_t strikes = ++webSocketDomainStrikes[domain];
+        int64_t cooldown = 45000;
+        for (int32_t i = 1; i < strikes && cooldown < 300000; i++) {
+            cooldown *= 2;
+        }
+        if (cooldown > 300000) {
+            cooldown = 300000;
+        }
+        webSocketDomainCooldownUntil[domain] = getCurrentTimeMonotonicMillis() + cooldown;
+        auto current = webSocketDcDomain.find(datacenterId);
+        if (current != webSocketDcDomain.end() && current->second == domain) {
+            webSocketDcDomain.erase(current);
+        }
+        if (LOGS_ENABLED) DEBUG_D("websocket domain %s cooldown %lld ms (strike %d)", domain.c_str(), (long long) cooldown, strikes);
+    }
+    if (++webSocketConsecutiveFailures >= 6) {
+        webSocketSuppressedUntil = getCurrentTimeMonotonicMillis() + 60000;
+        if (LOGS_ENABLED) DEBUG_D("websocket suppressed, falling back to tcp for 60s (%d consecutive failures)", webSocketConsecutiveFailures);
+    }
+}
+
+bool ConnectionsManager::isWebSocketSuppressed() {
+    if (webSocketSuppressedUntil != 0 && getCurrentTimeMonotonicMillis() >= webSocketSuppressedUntil) {
+        webSocketSuppressedUntil = 0;
+    }
+    return webSocketSuppressedUntil != 0;
+}
+
 void ConnectionsManager::setLangCode(std::string langCode) {
     scheduleTask([&, langCode] {
         if (currentLangCode == langCode) {

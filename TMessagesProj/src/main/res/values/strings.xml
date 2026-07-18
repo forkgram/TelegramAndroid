@@ -2913,6 +2913,10 @@
     <string name="UnifiedPushGatewayInfo">Since Telegram Simple push uses PUT, but UnifiedPush only supports POST, a "PUT to POST" gateway is needed.\n\nPlease insert your gateway (or just keep the default value to use my proxy):</string>
     <string name="DisableUnifiedPush">Disable UnifiedPush</string>
     <string name="DisableUnifiedPushInfo">Restart required</string>
+    <string name="WebSocketTransport">Connect over WebSocket</string>
+    <string name="WebSocketTransportInfo">Tunnel Telegram traffic through an encrypted WebSocket (WSS) connection. May help when the regular connection is throttled or blocked. Leave the domain empty to use auto-updated public relays, or enter your own domain for reliability. Turn off if the connection stops working.</string>
+    <string name="WebSocketDomain">WebSocket domain</string>
+    <string name="WebSocketDomainAuto">Automatic</string>
     <string name="AuthAnotherClient">Scan QR Code</string>
     <string name="AuthAnotherClientScan">Scan QR Code</string>
     <string name="AuthAnotherClientNotFound">No auth token found</string>

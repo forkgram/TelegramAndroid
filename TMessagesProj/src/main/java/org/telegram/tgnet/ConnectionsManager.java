@@ -633,6 +633,13 @@ public class ConnectionsManager extends BaseController {
         if (preferences.getBoolean("proxy_enabled", false) && !TextUtils.isEmpty(proxyAddress)) {
             native_setProxySettings(currentAccount, proxyAddress, proxyPort, proxyUsername, proxyPassword, proxySecret);
         }
+        if (preferences.getBoolean("webSocketTransport", false)) {
+            String wsDomain = preferences.getString("webSocketDomain", "").trim();
+            native_setWebSocketConfig(currentAccount, true, wsDomain, TextUtils.isEmpty(wsDomain) ? buildWebSocketPool() : "");
+            if (TextUtils.isEmpty(wsDomain)) {
+                refreshWebSocketDomains(false);
+            }
+        }
         String installer = "";
         try {
             Context context = ApplicationLoader.applicationContext;
@@ -985,6 +992,175 @@ public class ConnectionsManager extends BaseController {
         }
     }
 
+    private static final String[] WEBSOCKET_DOMAINS_URLS = {
+        "https://raw.githubusercontent.com/Flowseal/tg-ws-proxy/main/.github/cfproxy-domains.txt",
+        "https://gcore.jsdelivr.net/gh/Flowseal/tg-ws-proxy@main/.github/cfproxy-domains.txt",
+        "https://fastly.jsdelivr.net/gh/Flowseal/tg-ws-proxy@main/.github/cfproxy-domains.txt",
+        "https://cdn.jsdelivr.net/gh/Flowseal/tg-ws-proxy@main/.github/cfproxy-domains.txt",
+        "https://raw.githack.com/Flowseal/tg-ws-proxy/main/.github/cfproxy-domains.txt"
+    };
+    private static final long WEBSOCKET_DOMAINS_TTL = 12L * 60L * 60L * 1000L;
+    private static final String[] WEBSOCKET_FALLBACK_DOMAINS = {
+        "virkgj.com", "vmmzovy.com", "mkuosckvso.com", "zaewayzmplad.com", "twdmbzcm.com",
+        "awzwsldi.com", "clngqrflngqin.com", "tjacxbqtj.com", "bxaxtxmrw.com", "dmohrsgmohcrwb.com",
+        "vwbmtmoi.com", "khgrre.com", "ulihssf.com", "tmhqsdqmfpmk.com", "xwuwoqbm.com"
+    };
+    private static volatile boolean webSocketDomainsRefreshing = false;
+
+    public static void setWebSocketEnabled(boolean enabled, String domain) {
+        if (domain == null) {
+            domain = "";
+        }
+        domain = domain.trim();
+        String pool = enabled && TextUtils.isEmpty(domain) ? buildWebSocketPool() : "";
+        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                continue;
+            }
+            native_setWebSocketConfig(a, enabled, domain, pool);
+        }
+        if (enabled && TextUtils.isEmpty(domain)) {
+            refreshWebSocketDomains(false);
+        }
+    }
+
+    private static String decodeCfDomain(String s) {
+        if (s == null) {
+            return "";
+        }
+        s = s.trim().toLowerCase();
+        if (s.endsWith(".co.uk")) {
+            return s;
+        }
+        if (!s.endsWith(".com")) {
+            return "";
+        }
+        String p = s.substring(0, s.length() - 4);
+        int letters = 0;
+        for (int i = 0; i < p.length(); i++) {
+            char c = p.charAt(i);
+            if (c >= 'a' && c <= 'z') {
+                letters++;
+            }
+        }
+        int shift = letters % 26;
+        StringBuilder sb = new StringBuilder(p.length());
+        for (int i = 0; i < p.length(); i++) {
+            char c = p.charAt(i);
+            if (c >= 'a' && c <= 'z') {
+                sb.append((char) ((c - 'a' - shift + 26) % 26 + 'a'));
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.append(".co.uk").toString();
+    }
+
+    private static String buildWebSocketPool() {
+        java.util.LinkedHashSet<String> set = new java.util.LinkedHashSet<>();
+        String cached = MessagesController.getGlobalMainSettings().getString("webSocketDomainsCache", "");
+        if (!TextUtils.isEmpty(cached)) {
+            for (String enc : cached.split("\n")) {
+                String d = decodeCfDomain(enc);
+                if (!TextUtils.isEmpty(d)) {
+                    set.add(d);
+                }
+            }
+        }
+        for (String enc : WEBSOCKET_FALLBACK_DOMAINS) {
+            String d = decodeCfDomain(enc);
+            if (!TextUtils.isEmpty(d)) {
+                set.add(d);
+            }
+        }
+        return TextUtils.join("\n", set);
+    }
+
+    private static void pushWebSocketPool() {
+        SharedPreferences prefs = MessagesController.getGlobalMainSettings();
+        if (!prefs.getBoolean("webSocketTransport", false) || !TextUtils.isEmpty(prefs.getString("webSocketDomain", "").trim())) {
+            return;
+        }
+        String pool = buildWebSocketPool();
+        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                continue;
+            }
+            native_setWebSocketConfig(a, true, "", pool);
+        }
+    }
+
+    public static void refreshWebSocketDomains(boolean force) {
+        SharedPreferences prefs = MessagesController.getGlobalMainSettings();
+        boolean haveCache = !TextUtils.isEmpty(prefs.getString("webSocketDomainsCache", ""));
+        if (!force && haveCache && System.currentTimeMillis() - prefs.getLong("webSocketDomainsCacheTime", 0) < WEBSOCKET_DOMAINS_TTL) {
+            return;
+        }
+        if (webSocketDomainsRefreshing) {
+            return;
+        }
+        webSocketDomainsRefreshing = true;
+        Utilities.globalQueue.postRunnable(() -> {
+            String valid = null;
+            for (String url : WEBSOCKET_DOMAINS_URLS) {
+                String body = fetchWebSocketDomains(url);
+                if (body == null) {
+                    continue;
+                }
+                String parsed = parseWebSocketDomains(body);
+                if (parsed != null) {
+                    valid = parsed;
+                    break;
+                }
+            }
+            webSocketDomainsRefreshing = false;
+            if (valid == null) {
+                return;
+            }
+            SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
+            editor.putString("webSocketDomainsCache", valid);
+            editor.putLong("webSocketDomainsCacheTime", System.currentTimeMillis());
+            editor.commit();
+            AndroidUtilities.runOnUIThread(ConnectionsManager::pushWebSocketPool);
+        });
+    }
+
+    private static String fetchWebSocketDomains(String url) {
+        try {
+            URLConnection conn = new URL(url).openConnection();
+            conn.setConnectTimeout(8000);
+            conn.setReadTimeout(8000);
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+            InputStream is = conn.getInputStream();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[4096];
+            int r;
+            while ((r = is.read(buf)) != -1) {
+                bos.write(buf, 0, r);
+            }
+            is.close();
+            return new String(bos.toByteArray(), "UTF-8");
+        } catch (Throwable e) {
+            FileLog.e(e);
+            return null;
+        }
+    }
+
+    private static String parseWebSocketDomains(String body) {
+        StringBuilder valid = new StringBuilder();
+        for (String line : body.split("\\s+")) {
+            line = line.trim();
+            if (line.isEmpty() || TextUtils.isEmpty(decodeCfDomain(line))) {
+                continue;
+            }
+            if (valid.length() > 0) {
+                valid.append("\n");
+            }
+            valid.append(line);
+        }
+        return valid.length() == 0 ? null : valid.toString();
+    }
+
     public static native void native_switchBackend(int currentAccount, boolean restart);
     public static native int native_isTestBackend(int currentAccount);
     public static native void native_pauseNetwork(int currentAccount);
@@ -1009,6 +1185,7 @@ public class ConnectionsManager extends BaseController {
     public static native void native_setUserId(int currentAccount, long id);
     public static native void native_init(int currentAccount, int version, int layer, int apiId, String deviceModel, String systemVersion, String appVersion, String langCode, String systemLangCode, String configPath, String logPath, String regId, String cFingerprint, String installer, String packageId, int timezoneOffset, long userId, boolean userPremium, boolean enablePushConnection, boolean hasNetwork, int networkType, int performanceClass);
     public static native void native_setProxySettings(int currentAccount, String address, int port, String username, String password, String secret);
+    public static native void native_setWebSocketConfig(int currentAccount, boolean enabled, String userDomain, String pool);
     public static native void native_setLangCode(int currentAccount, String langCode);
     public static native void native_setRegId(int currentAccount, String regId);
     public static native void native_setSystemLangCode(int currentAccount, String langCode);

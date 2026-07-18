@@ -69,6 +69,10 @@ public:
     void setIpStrategy(uint8_t value);
     void init(uint32_t version, int32_t layer, int32_t apiId, std::string deviceModel, std::string systemVersion, std::string appVersion, std::string langCode, std::string systemLangCode, std::string configPath, std::string logPath, std::string regId, std::string cFingerprint, std::string installerId, std::string packageId, int32_t timezoneOffset, int64_t userId, bool userPremium, bool isPaused, bool enablePushConnection, bool hasNetwork, int32_t networkType, int32_t performanceClass);
     void setProxySettings(std::string address, uint16_t port, std::string username, std::string password, std::string secret);
+    void setWebSocketConfig(bool value, std::string userDomain, std::vector<std::string> pool);
+    std::string getWebSocketDomainForDc(uint32_t datacenterId);
+    void markWebSocketDomainResult(uint32_t datacenterId, std::string domain, bool success);
+    bool isWebSocketSuppressed();
     void setLangCode(std::string langCode);
     void setRegId(std::string regId);
     void setSystemLangCode(std::string langCode);
@@ -190,6 +194,15 @@ private:
     std::string proxyAddress = "";
     std::string proxySecret = "";
     uint16_t proxyPort = 1080;
+    bool useWebSocket = false;
+    std::string webSocketUserDomain = "";
+    std::vector<std::string> webSocketDomainPool;
+    std::map<std::string, int64_t> webSocketDomainCooldownUntil;
+    std::map<std::string, int32_t> webSocketDomainStrikes;
+    std::map<uint32_t, std::string> webSocketDcDomain;
+    uint32_t webSocketRotation = 0;
+    int32_t webSocketConsecutiveFailures = 0;
+    int64_t webSocketSuppressedUntil = 0;
     int32_t lastPingProxyId = 2000000;
     std::vector<std::unique_ptr<ProxyCheckInfo>> proxyCheckQueue;
     std::vector<std::unique_ptr<ProxyCheckInfo>> proxyActiveChecks;
