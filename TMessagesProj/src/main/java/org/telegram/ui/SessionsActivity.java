@@ -57,6 +57,7 @@ import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.SvgHelper;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
+import org.telegram.messenger.forkgram.AccountSelector;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
@@ -100,6 +101,8 @@ public class SessionsActivity extends BaseFragment implements NotificationCenter
 
     public static final int TYPE_DEVICES = 0;
     public static final int TYPE_WEB_SESSIONS = 1;
+
+    private static final int accountSelectorId = 1;
 
     private ListAdapter listAdapter;
     private RecyclerListView listView;
@@ -223,6 +226,9 @@ public class SessionsActivity extends BaseFragment implements NotificationCenter
         });
         if (parentLayout != null && parentLayout.isRightLayout()) {
             simpleActionBar.setBackButtonImage(R.drawable.ic_ab_close);
+        }
+        if (currentType == TYPE_DEVICES) {
+            AccountSelector.addToMenu(this, simpleActionBar.createMenu(), accountSelectorId, this::switchAccount);
         }
 
         listAdapter = new ListAdapter(context);
@@ -911,7 +917,7 @@ public class SessionsActivity extends BaseFragment implements NotificationCenter
                     break;
                 case VIEW_TYPE_SESSION:
                 default:
-                    view = new SessionCell(mContext, currentType);
+                    view = new SessionCell(mContext, currentType, currentAccount);
                     break;
             }
             return new RecyclerListView.Holder(view);
@@ -1270,6 +1276,15 @@ public class SessionsActivity extends BaseFragment implements NotificationCenter
             }
         }
 }
+
+    private void switchAccount(int account) {
+        if (account == currentAccount || parentLayout == null) {
+            return;
+        }
+        final SessionsActivity fragment = new SessionsActivity(currentType);
+        fragment.setCurrentAccount(account);
+        presentFragment(fragment, true, true);
+    }
 
     private void openCameraScanActivity() {
         CameraScanActivity.showAsSheet(SessionsActivity.this, false, CameraScanActivity.TYPE_QR_LOGIN, new CameraScanActivity.CameraScanActivityDelegate() {
