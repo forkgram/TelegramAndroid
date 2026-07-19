@@ -4575,7 +4575,7 @@ public class Theme {
             @Override
             public void draw(@NonNull Canvas canvas) {
                 final Rect b = getBounds();
-                canvas.drawCircle(b.centerX(), b.centerY(), size / 2.0f, paint);
+                AndroidUtilities.drawAvatarRoundRect(canvas, b.centerX(), b.centerY(), size / 2.0f, paint);
             }
             @Override
             public void setAlpha(int alpha) {

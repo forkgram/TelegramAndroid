@@ -46,6 +46,7 @@ public class SessionBottomSheet extends BottomSheet {
     public SessionBottomSheet(BaseFragment fragment, TLRPC.TL_authorization session, boolean isCurrentSession, Callback callback) {
         super(fragment.getParentActivity(), false);
         setOpenNoDelay(true);
+        currentAccount = fragment.getCurrentAccount();
         Context context = fragment.getParentActivity();
         this.session = session;
         this.parentFragment = fragment;
