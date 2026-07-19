@@ -73,7 +73,13 @@ public class SessionCell extends FrameLayout {
     private int currentAccount = UserConfig.selectedAccount;
 
     public SessionCell(Context context, int type) {
+        this(context, type, UserConfig.selectedAccount);
+    }
+
+    public SessionCell(Context context, int type, int account) {
         super(context);
+
+        currentAccount = account;
 
         linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
