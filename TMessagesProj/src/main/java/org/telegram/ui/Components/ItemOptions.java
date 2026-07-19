@@ -605,7 +605,7 @@ public class ItemOptions {
         BackupImageView imageView = new BackupImageView(context);
         AvatarDrawable avatarDrawable = new AvatarDrawable();
         avatarDrawable.setInfo(obj);
-        imageView.setRoundRadius(dp(34));
+        imageView.setRoundRadius(dp(17));
         imageView.setForUserOrChat(obj, avatarDrawable);
         imageView.setScaleX(checked ? 0.84f : 1.0f);
         imageView.setScaleY(checked ? 0.84f : 1.0f);
@@ -657,7 +657,7 @@ public class ItemOptions {
         imageView.getImageReceiver().setCurrentAccount(account);
         AvatarDrawable avatarDrawable = new AvatarDrawable();
         avatarDrawable.setInfo(user);
-        imageView.setRoundRadius(dp(34));
+        imageView.setRoundRadius(dp(17));
         imageView.setForUserOrChat(user, avatarDrawable);
         imageView.setScaleX(checked ? 0.84f : 1.0f);
         imageView.setScaleY(checked ? 0.84f : 1.0f);
