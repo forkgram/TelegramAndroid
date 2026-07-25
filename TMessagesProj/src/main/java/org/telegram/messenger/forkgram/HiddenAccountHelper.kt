@@ -166,9 +166,7 @@ object HiddenAccountHelper {
             }
             out.add(a)
         }
-        out.sortWith { account1, account2 ->
-            UserConfig.getInstance(account1).loginTime.compareTo(UserConfig.getInstance(account2).loginTime)
-        }
+        AccountOrder.sort(out)
     }
 
     @JvmStatic
