@@ -160,7 +160,7 @@ public final class HiddenAccountHelper {
             }
             out.add(a);
         }
-        out.sort((o1, o2) -> Long.compare(UserConfig.getInstance(o1).loginTime, UserConfig.getInstance(o2).loginTime));
+        AccountOrder.sort(out);
     }
 
     public static boolean canHideAccount(int account) {

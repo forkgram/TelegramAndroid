@@ -39,6 +39,7 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
+import org.telegram.messenger.forkgram.AccountOrder;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLObject;
@@ -257,6 +258,8 @@ public class UserInfoActivity extends UniversalFragment implements NotificationC
 
         super.createView(context);
         this.listView = super.listView;
+        listView.listenReorder(this::whenAccountsReordered);
+        listView.allowReorder(true);
         listView.setSections();
         listView.setClipToPadding(false);
         actionBar.setAdaptiveBackground(listView);
@@ -302,6 +305,15 @@ public class UserInfoActivity extends UniversalFragment implements NotificationC
     private final ArrayList<Integer> accountNumbers = new ArrayList<>();
     private void updateAccounts() {
         HiddenAccountHelper.collectVisibleAccountNumbers(accountNumbers, currentAccount);
+    }
+
+    private void whenAccountsReordered(int sectionId, ArrayList<UItem> items) {
+        final ArrayList<Integer> accounts = new ArrayList<>();
+        for (UItem item : items) {
+            accounts.add(item.intValue);
+        }
+        AccountOrder.save(accounts);
+        updateAccounts();
     }
 
     @Keep
@@ -414,9 +426,11 @@ public class UserInfoActivity extends UniversalFragment implements NotificationC
             if (!hasAddAccount) {
                 items.add(UItem.asHeader(getString(R.string.SettingsAccounts)));
             }
-            for (int i = 0; i < accountNumbers.size(); ++i) {
-                items.add(SettingsActivity.AccountCell.Factory.of(i, accountNumbers.get(i)));
+            adapter.reorderSectionStart();
+            for (int account : accountNumbers) {
+                items.add(SettingsActivity.AccountCell.Factory.of(account, account, accountNumbers.size() > 1));
             }
+            adapter.reorderSectionEnd();
             if (!UserConfig.hasPremiumOnAccounts()) {
                 final int moreAccounts = Math.max(0, UserConfig.getMaxAccountCount() - UserConfig.getActivatedAccountsCount());
                 items.add(UItem.asShadow(
@@ -456,7 +470,12 @@ public class UserInfoActivity extends UniversalFragment implements NotificationC
 
     @Override
     protected void onClick(UItem item, View view, int position, float x, float y) {
-        if (item.id == BUTTON_ADD_ACCOUNT) {
+        if (item.instanceOf(SettingsActivity.AccountCell.Factory.class)) {
+            final int account = item.intValue;
+            if (LaunchActivity.instance != null) {
+                LaunchActivity.instance.switchToAccount(account, true);
+            }
+        } else if (item.id == BUTTON_ADD_ACCOUNT) {
             int freeAccounts = 0;
             Integer availableAccount = null;
             for (int a = UserConfig.MAX_ACCOUNT_COUNT - 1; a >= 0; a--) {
@@ -474,11 +493,6 @@ public class UserInfoActivity extends UniversalFragment implements NotificationC
                 presentFragment(new LoginActivity(availableAccount));
             } else if (!UserConfig.hasPremiumOnAccounts()) {
                 showDialog(new LimitReachedBottomSheet(this, getContext(), TYPE_ACCOUNTS, currentAccount, null));
-            }
-        } else if (item.instanceOf(SettingsActivity.AccountCell.Factory.class)) {
-            final int account = item.intValue;
-            if (LaunchActivity.instance != null) {
-                LaunchActivity.instance.switchToAccount(account, true);
             }
         } else if (item.id == BUTTON_BIRTHDAY || item.id == INFO_BIRTHDAY) {
             showDialog(AlertsCreator.createBirthdayPickerDialog(
