@@ -58,6 +58,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -2598,7 +2599,22 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         }
         if (stopService) {
             CastSync.stop();
+            stopMediaSessionPlayback();
         }
+    }
+
+    private void stopMediaSessionPlayback() {
+        if (playingMessageObject != null) {
+            return;
+        }
+        TelegramMediaSession mediaSession = TelegramMediaSession.peekInstance();
+        if (mediaSession == null) {
+            return;
+        }
+        mediaSession.publishPlaybackState(new PlaybackStateCompat.Builder()
+                .setState(PlaybackStateCompat.STATE_STOPPED, 0, 0f)
+                .setActions(mediaSession.getAvailableActions())
+                .build());
     }
 
     public boolean isGoingToShowMessageObject(MessageObject messageObject) {
