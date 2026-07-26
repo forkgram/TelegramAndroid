@@ -1,11 +1,17 @@
 package org.telegram.ui.Components;
 
 import android.graphics.Bitmap;
+import android.media.MediaCodec;
+import android.media.MediaCodecInfo;
+import android.media.MediaCodecList;
+import android.media.MediaFormat;
 import android.os.Build;
 import android.os.Trace;
 
 import org.telegram.messenger.AnimatedFileDrawableStream;
 import org.telegram.messenger.BuildConfig;
+import org.telegram.messenger.BuildVars;
+import org.telegram.messenger.FileLog;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -152,10 +158,88 @@ public class AnimatedFileNative {
     public static void getVideoInfo(String src, int[] params, long fileOffset) {
         Trace.beginSection("AnimatedFileNative#getVideoInfo");
         try {
-            nGetVideoInfo(Build.VERSION.SDK_INT, src, params, fileOffset);
+            nGetVideoInfo(Build.VERSION.SDK_INT, src, params, fileOffset, getMaxAv1DecodePixels());
         } finally {
             Trace.endSection();
         }
+    }
+
+    private static final String AV1_MIME = "video/av01";
+    private static final int[][] AV1_SIZES = { { 3840, 2160 }, { 2560, 1440 }, { 1920, 1080 }, { 1280, 720 } };
+    private static final int AV1_UNDECLARED_MAX_PIXELS = 1920 * 1080;
+    private static volatile int maxAv1DecodePixels = -1;
+
+    public static int getMaxAv1DecodePixels() {
+        if (maxAv1DecodePixels >= 0) {
+            return maxAv1DecodePixels;
+        }
+        int pixels = 0;
+        try {
+            for (int[] size : AV1_SIZES) {
+                final int candidate = size[0] * size[1];
+                if (candidate > AV1_UNDECLARED_MAX_PIXELS && !isSizeDeclaredByHardwareDecoder(size[0], size[1])) {
+                    continue;
+                }
+                if (canDecodeAv1(size[0], size[1])) {
+                    pixels = candidate;
+                    break;
+                }
+            }
+        } catch (Throwable e) {
+            FileLog.e(e);
+        }
+        if (BuildVars.LOGS_ENABLED) {
+            FileLog.d("av1 max decode pixels = " + pixels);
+        }
+        maxAv1DecodePixels = pixels;
+        return pixels;
+    }
+
+    private static boolean isSizeDeclaredByHardwareDecoder(int width, int height) {
+        final int count = MediaCodecList.getCodecCount();
+        for (int i = 0; i < count; ++i) {
+            final MediaCodecInfo info = MediaCodecList.getCodecInfoAt(i);
+            if (info.isEncoder() || !isHardwareDecoder(info)) {
+                continue;
+            }
+            for (String type : info.getSupportedTypes()) {
+                if (!AV1_MIME.equalsIgnoreCase(type)) {
+                    continue;
+                }
+                final MediaCodecInfo.VideoCapabilities capabilities = info.getCapabilitiesForType(type).getVideoCapabilities();
+                if (capabilities != null && (capabilities.isSizeSupported(width, height) || capabilities.isSizeSupported(height, width))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean canDecodeAv1(int width, int height) {
+        MediaCodec decoder = null;
+        try {
+            decoder = MediaCodec.createDecoderByType(AV1_MIME);
+            decoder.configure(MediaFormat.createVideoFormat(AV1_MIME, width, height), null, null, 0);
+            decoder.start();
+            return true;
+        } catch (Throwable e) {
+            return false;
+        } finally {
+            if (decoder != null) {
+                try {
+                    decoder.release();
+                } catch (Throwable ignore) {
+                }
+            }
+        }
+    }
+
+    private static boolean isHardwareDecoder(MediaCodecInfo info) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return info.isHardwareAccelerated();
+        }
+        final String name = info.getName().toLowerCase();
+        return !name.startsWith("omx.google.") && !name.startsWith("c2.android.") && !name.startsWith("c2.google.") && !name.endsWith(".sw.dec");
     }
 
 
@@ -174,5 +258,5 @@ public class AnimatedFileNative {
 
     private static native void nPrepareToSeek(long ptr);
 
-    private static native void nGetVideoInfo(int sdkVersion, String src, int[] params, long fileOffset);
+    private static native void nGetVideoInfo(int sdkVersion, String src, int[] params, long fileOffset, int maxAv1DecodePixels);
 }

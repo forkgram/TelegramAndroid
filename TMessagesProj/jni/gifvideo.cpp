@@ -351,7 +351,7 @@ static int64_t offsetSeek(void *opaque, int64_t pos, int whence) {
     return lseek(ctx->fd, ctx->offset + pos, whence);
 }
 
-extern "C" JNIEXPORT void JNICALL Java_org_telegram_ui_Components_AnimatedFileNative_nGetVideoInfo(JNIEnv *env, jclass clazz, jint sdkVersion, jstring src, jintArray data, jlong fileOffset) {
+extern "C" JNIEXPORT void JNICALL Java_org_telegram_ui_Components_AnimatedFileNative_nGetVideoInfo(JNIEnv *env, jclass clazz, jint sdkVersion, jstring src, jintArray data, jlong fileOffset, jint maxAv1DecodePixels) {
     VideoInfo *info = new VideoInfo();
 
     char const *srcString = env->GetStringUTFChars(src, 0);
@@ -434,7 +434,9 @@ extern "C" JNIEXPORT void JNICALL Java_org_telegram_ui_Components_AnimatedFileNa
                 info->video_stream->codecpar->codec_id == AV_CODEC_ID_MPEG4 ||
                 info->video_stream->codecpar->codec_id == AV_CODEC_ID_VP8 ||
                 info->video_stream->codecpar->codec_id == AV_CODEC_ID_VP9 ||
-                (sdkVersion > 21 && info->video_stream->codecpar->codec_id == AV_CODEC_ID_HEVC);
+                (sdkVersion > 21 && info->video_stream->codecpar->codec_id == AV_CODEC_ID_HEVC) ||
+                (maxAv1DecodePixels > 0 && info->video_stream->codecpar->codec_id == AV_CODEC_ID_AV1 &&
+                 (int64_t) info->video_stream->codecpar->width * info->video_stream->codecpar->height <= (int64_t) maxAv1DecodePixels);
 
         if (strstr(info->fmt_ctx->iformat->name, "mov") != 0 && dataArr[PARAM_NUM_SUPPORTED_VIDEO_CODEC]) {
             MOVStreamContext *mov = (MOVStreamContext *) info->video_stream->priv_data;
