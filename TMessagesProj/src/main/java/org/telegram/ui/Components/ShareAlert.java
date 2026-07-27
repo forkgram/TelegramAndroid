@@ -89,6 +89,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.forkgram.AsCopy;
+import org.telegram.messenger.forkgram.ShareOptions;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.NativeByteBuffer;
 import org.telegram.tgnet.TLObject;
@@ -148,6 +149,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         public boolean noText = false;
         public boolean silent = false;
         public boolean replyTo = false;
+        public int deleted = 0;
     }
 
     private int btnContainerW = 60;
@@ -224,6 +226,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
     private boolean panTranslationMoveLayout;
 
     private ShareAlertDelegate delegate;
+    private final ShareOptions shareOptions;
     private float currentPanTranslationY;
 
     private float captionEditTextTopOffset;
@@ -232,6 +235,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
 
     RecyclerItemsEnterAnimator recyclerItemsEnterAnimator;
     FragmentSearchField searchView;
+    ImageView optionsButton;
     ActionBar topicsBackActionBar;
     private boolean updateSearchAdapter;
 
@@ -506,6 +510,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             }
         }
         sendingMessageObjects = messages;
+        shareOptions = new ShareOptions(currentAccount, sendingMessageObjects, fragment);
         searchAdapter = new ShareSearchAdapter(context);
         isChannel = channel;
         sendingText[0] = text;
@@ -1144,7 +1149,18 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             AndroidUtilities.showKeyboard(searchView.editText);
         });
 
-        frameLayout.addView(searchView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 40, Gravity.BOTTOM | Gravity.LEFT, 11, 7, 11, 11));
+        final boolean hasShareOptions = !shareOptions.isEmpty();
+        frameLayout.addView(searchView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 40, Gravity.BOTTOM | Gravity.LEFT, 11, 7, hasShareOptions ? 51 : 11, 11));
+        if (hasShareOptions) {
+            optionsButton = new ImageView(context);
+            optionsButton.setScaleType(ImageView.ScaleType.CENTER);
+            optionsButton.setImageResource(R.drawable.ic_ab_other);
+            optionsButton.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_dialogTextGray2), PorterDuff.Mode.MULTIPLY));
+            optionsButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP));
+            optionsButton.setContentDescription(LocaleController.getString(R.string.AccDescrMoreOptions));
+            optionsButton.setOnClickListener(v -> shareOptions.showMenu(container, resourcesProvider, optionsButton));
+            frameLayout.addView(optionsButton, LayoutHelper.createFrame(40, 40, Gravity.BOTTOM | Gravity.RIGHT, 11, 7, 8, 11));
+        }
         topicsBackActionBar = new ActionBar(context);
         topicsBackActionBar.setOccupyStatusBar(false);
         topicsBackActionBar.setBackButtonImage(R.drawable.ic_ab_back);
@@ -1852,7 +1868,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         writeButton.setCirclePadding(dp(1), dp(6));
         writeButton.newCounterPos = true;
         writeButtonContainer.addView(writeButton, LayoutHelper.createFrameMatchParent());
-        writeButton.setOnClickListener(v -> sendInternal(true));
+        writeButton.setOnClickListener(v -> sendInternal(!shareOptions.isSendWithoutSound()));
         writeButton.setOnLongClickListener(v -> {
             return onSendLongClick(writeButton);
         });
@@ -1931,7 +1947,9 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                             notify,
                             monoForumPeerId,
                             replyInput);
-                        onSend(selectedDialogs, selectedDialogs.size(), keyTopic, info);
+                        if (!deleteOriginalsThenNotify(sendingMessageObjects.size() + (hasComment ? 1 : 0), info, selectedDialogs.size(), keyTopic)) {
+                            onSend(selectedDialogs, selectedDialogs.size(), keyTopic, info);
+                        }
                         dismiss();
                         return;
                     }
@@ -1947,7 +1965,12 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                         notify,
                         monoForumPeerId);
                 }
-                onSend(selectedDialogs, selectedDialogs.size(), selectedDialogTopics.get(selectedDialogs.valueAt(0)), info);
+                final TLRPC.TL_forumTopic sentTopic = selectedDialogTopics.get(selectedDialogs.valueAt(0));
+                final int perDialog = sendingMessageObjects.size()
+                    + (frameLayout2.getTag() != null && commentTextView.length() > 0 ? 1 : 0);
+                if (!deleteOriginalsThenNotify(perDialog, info, selectedDialogs.size(), sentTopic)) {
+                    onSend(selectedDialogs, selectedDialogs.size(), sentTopic, info);
+                }
             } else {
                 withSendingText.run();
             }
@@ -1976,7 +1999,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                 anonRightMargin,
                 0));
         anonymButtonContainer.setOnClickListener(v -> {
-            performAsCopySend.accept(true, false);
+            performAsCopySend.accept(!shareOptions.isSendWithoutSound(), false);
         });
         anonymButtonContainer.setLongClickable(true);
         anonymButtonContainer.setOnLongClickListener(v -> {
@@ -2004,7 +2027,7 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                 anonRightMargin + btnContainerW,
                 0));
         nonTextButtonContainer.setOnClickListener(v -> {
-            performAsCopySend.accept(true, true);
+            performAsCopySend.accept(!shareOptions.isSendWithoutSound(), true);
         });
         nonTextButtonContainer.setLongClickable(true);
         nonTextButtonContainer.setOnLongClickListener(v -> {
@@ -2492,6 +2515,10 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
         searchView.setScaleY(0.9f + (1f - value) * 0.1f);
         searchView.setAlpha(1f - value);
 
+        if (optionsButton != null) {
+            optionsButton.setAlpha(1f - value);
+        }
+
         topicsBackActionBar.getBackButton().setTranslationX(-dp(16) * (1f - value));
         topicsBackActionBar.getTitleTextView().setTranslationY(dp(16) * (1f - value));
         topicsBackActionBar.getSubtitleTextView().setTranslationY(dp(16) * (1f - value));
@@ -2808,7 +2835,13 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
                     }
                 }
                 if (!selectedDialogs.isEmpty()) {
-                    onSend(selectedDialogs, sendingMessageObjects.size(), selectedDialogs.size() == 1 ? selectedDialogTopics.get(selectedDialogs.valueAt(0)) : null, !hadPaid);
+                    final boolean withComment = frameLayout2.getTag() != null && commentTextView.length() > 0;
+                    final TLRPC.TL_forumTopic sentTopic = selectedDialogs.size() == 1 ? selectedDialogTopics.get(selectedDialogs.valueAt(0)) : null;
+                    final UndoInfo deleteInfo = new UndoInfo();
+                    deleteInfo.count = sendingMessageObjects.size();
+                    if (!deleteOriginalsThenNotify(sendingMessageObjects.size() + (withComment ? 1 : 0), deleteInfo, sendingMessageObjects.size(), sentTopic)) {
+                        onSend(selectedDialogs, sendingMessageObjects.size(), sentTopic, !hadPaid);
+                    }
                 }
             } else {
                 int num;
@@ -2875,6 +2908,36 @@ public class ShareAlert extends BottomSheet implements NotificationCenter.Notifi
             }
             dismiss();
         });
+    }
+
+    private boolean deleteOriginalsThenNotify(int messagesPerDialog, UndoInfo info, int count, TLRPC.TL_forumTopic topic) {
+        if (!shareOptions.isDeleteEnabled()) {
+            return false;
+        }
+        final LongSparseArray<TLRPC.Dialog> dids = selectedDialogs.clone();
+        final ArrayList<Long> targetDialogIds = new ArrayList<>();
+        for (int a = 0; a < dids.size(); a++) {
+            targetDialogIds.add(dids.keyAt(a));
+        }
+        shareOptions.deleteOriginalsWhenSent(targetDialogIds, messagesPerDialog, deleted -> {
+            info.deleted = deleted;
+            if (parentFragment != null) {
+                onSend(dids, count, topic, info);
+            } else {
+                showDeletedBulletin(deleted);
+            }
+        });
+        return true;
+    }
+
+    private void showDeletedBulletin(int deleted) {
+        final BaseFragment fragment = LaunchActivity.getSafeLastFragment();
+        if (fragment == null || fragment.getParentActivity() == null) {
+            return;
+        }
+        final Bulletin bulletin = BulletinFactory.createDeleteMessagesBulletin(fragment, deleted, fragment.getResourceProvider());
+        bulletin.hideAfterBottomSheet = false;
+        bulletin.show();
     }
 
     protected void onSend(LongSparseArray<TLRPC.Dialog> dids, int count, TLRPC.TL_forumTopic topic, UndoInfo info) {
