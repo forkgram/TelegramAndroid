@@ -1713,4 +1713,5 @@
     <string name="FolderTabsStyleIconText">Icone ed etichette</string>
     <string name="FolderTabsStyleIcon">Icone</string>
     <string name="FolderTabsStyleInfo">Scegli come appaiono le cartelle nella barra delle schede. Assegna un\'icona a ogni cartella nelle sue impostazioni.</string>
+    <string name="ShareDeleteOriginals">Elimina i messaggi originali</string>
 </resources>

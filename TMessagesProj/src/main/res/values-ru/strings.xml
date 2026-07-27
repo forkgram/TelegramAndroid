@@ -454,4 +454,5 @@
     <string name="FolderTabsStyleIconText">Значки и названия</string>
     <string name="FolderTabsStyleIcon">Значки</string>
     <string name="FolderTabsStyleInfo">Выберите, как папки отображаются на панели вкладок. Значок можно задать в настройках каждой папки.</string>
+    <string name="ShareDeleteOriginals">Удалить исходные сообщения</string>
 </resources>
