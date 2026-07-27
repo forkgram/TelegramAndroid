@@ -362,7 +362,14 @@ public class UndoView extends FrameLayout {
         return currentAction == ACTION_QR_SESSION_ACCEPTED || currentAction == ACTION_PROXIMITY_SET || currentAction == ACTION_ARCHIVE_HIDDEN || currentAction == ACTION_ARCHIVE_HINT || currentAction == ACTION_ARCHIVE_FEW_HINT ||
                 currentAction == ACTION_QUIZ_CORRECT || currentAction == ACTION_QUIZ_INCORRECT ||
                 currentAction == ACTION_REPORT_SENT || currentAction == ACTION_ARCHIVE_PINNED && MessagesController.getInstance(currentAccount).dialogFilters.isEmpty() || currentAction == ACTION_RINGTONE_ADDED || currentAction == ACTION_HINT_SWIPE_TO_REPLY ||
-                currentAction == ACTION_SHARED_FOLDER_DELETED && currentInfoObject2 != null && ((Integer) currentInfoObject2) > 0;
+                currentAction == ACTION_SHARED_FOLDER_DELETED && currentInfoObject2 != null && ((Integer) currentInfoObject2) > 0 ||
+                hasDeletedOriginals(currentInfoObject);
+    }
+
+    private boolean hasDeletedOriginals(Object infoObject) {
+        return currentAction == ACTION_FWD_MESSAGES
+                && infoObject instanceof ShareAlert.UndoInfo
+                && ((ShareAlert.UndoInfo) infoObject).deleted > 0;
     }
 
     public boolean isMultilineSubInfo() {
@@ -1158,6 +1165,14 @@ public class UndoView extends FrameLayout {
 
             layoutParams.leftMargin = AndroidUtilities.dp(58);
             layoutParams.rightMargin = AndroidUtilities.dp(8);
+
+            if (hasDeletedOriginals(infoObject)) {
+                layoutParams.topMargin = AndroidUtilities.dp(6);
+                infoTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+                infoTextView.setTypeface(AndroidUtilities.bold());
+                subinfoTextView.setText(LocaleController.formatPluralString("MessagesDeletedHint", ((ShareAlert.UndoInfo) infoObject).deleted));
+                subinfoTextView.setVisibility(VISIBLE);
+            }
 
             leftImageView.setProgress(0);
             leftImageView.playAnimation();
