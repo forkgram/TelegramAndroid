@@ -11399,4 +11399,5 @@
     <string name="FolderTabsStyleIconText">Icons and labels</string>
     <string name="FolderTabsStyleIcon">Icons</string>
     <string name="FolderTabsStyleInfo">Choose how folders appear in the tab bar. Assign an icon to each folder in its settings.</string>
+    <string name="ShareDeleteOriginals">Delete original messages</string>
 </resources>

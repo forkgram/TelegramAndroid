@@ -1254,4 +1254,5 @@
     <string name="FolderTabsStyleIconText">Pictogrammen en labels</string>
     <string name="FolderTabsStyleIcon">Pictogrammen</string>
     <string name="FolderTabsStyleInfo">Kies hoe mappen in de tabbalk verschijnen. Wijs in de instellingen van elke map een pictogram toe.</string>
+    <string name="ShareDeleteOriginals">Oorspronkelijke berichten verwijderen</string>
 </resources>
