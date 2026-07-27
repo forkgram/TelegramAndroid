@@ -1545,4 +1545,5 @@
     <string name="FolderTabsStyleIconText">Symbole und Beschriftungen</string>
     <string name="FolderTabsStyleIcon">Symbole</string>
     <string name="FolderTabsStyleInfo">Lege fest, wie Ordner in der Tab-Leiste erscheinen. Ein Symbol kannst du in den Einstellungen jedes Ordners festlegen.</string>
+    <string name="ShareDeleteOriginals">Originalnachrichten löschen</string>
 </resources>

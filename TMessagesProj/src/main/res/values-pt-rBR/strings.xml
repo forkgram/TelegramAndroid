@@ -1436,4 +1436,5 @@
     <string name="FolderTabsStyleIconText">Ícones e rótulos</string>
     <string name="FolderTabsStyleIcon">Ícones</string>
     <string name="FolderTabsStyleInfo">Escolha como as pastas aparecem na barra de abas. Defina um ícone para cada pasta nas configurações dela.</string>
+    <string name="ShareDeleteOriginals">Excluir as mensagens originais</string>
 </resources>
