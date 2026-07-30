@@ -10,6 +10,8 @@
     <string name="WebSocketTransportInfo">Тунелює трафік Telegram через зашифроване з\'єднання WebSocket (WSS). Може допомогти, коли звичайне з\'єднання сповільнюють або блокують. Залиште поле домену порожнім, щоб використовувати автоматично оновлювані публічні релеї, або вкажіть власний домен для стабільності. Публічні релеї належать третім особам і бачать вашу IP-адресу та метадані з\'єднання, але не вміст повідомлень. Вимкніть, якщо з\'єднання перестало працювати.</string>
     <string name="WebSocketDomain">Домен WebSocket</string>
     <string name="WebSocketDomainAuto">Автоматично</string>
+    <string name="SatelliteDataSaving">Економія трафіку в супутникових мережах</string>
+    <string name="SatelliteDataSavingInfo">Призупиняє автозавантаження медіа та історій під час підключення до супутникової мережі або мережі з обмеженою пропускною здатністю. Ручне завантаження продовжує працювати. Потрібен Android 15 або новіший.</string>
     <string name="ForkSectionBackup">Резервна копія</string>
     <string name="VoiceQualityLow">Низька (16 кбіт/с)</string>
     <string name="VoiceQualityMedium">Середня (32 кбіт/с)</string>

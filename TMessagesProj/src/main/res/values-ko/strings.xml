@@ -10,6 +10,8 @@
     <string name="WebSocketTransportInfo">Telegram 트래픽을 암호화된 WebSocket(WSS) 연결을 통해 전달합니다. 일반 연결이 제한되거나 차단될 때 도움이 될 수 있습니다. 도메인을 비워 두면 자동으로 업데이트되는 공용 릴레이를 사용하고, 안정적인 연결을 위해 직접 도메인을 입력할 수도 있습니다. 공용 릴레이는 제3자가 운영하며 사용자의 IP 주소와 연결 메타데이터를 볼 수 있지만 메시지 내용은 볼 수 없습니다. 연결이 작동하지 않으면 끄세요.</string>
     <string name="WebSocketDomain">WebSocket 도메인</string>
     <string name="WebSocketDomainAuto">자동</string>
+    <string name="SatelliteDataSaving">위성 네트워크에서 데이터 절약</string>
+    <string name="SatelliteDataSavingInfo">위성 네트워크 또는 대역폭이 제한된 네트워크에 연결되어 있는 동안 미디어와 스토리 자동 다운로드를 일시 중지합니다. 수동 다운로드는 계속 사용할 수 있습니다. Android 15 이상이 필요합니다.</string>
     <string name="ForkSectionBackup">백업</string>
     <string name="VoiceQualityLow">낮음 (16 kbps)</string>
     <string name="VoiceQualityMedium">보통 (32 kbps)</string>

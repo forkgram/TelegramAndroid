@@ -10,6 +10,8 @@
     <string name="WebSocketTransportInfo">Incanala il traffico di Telegram attraverso una connessione WebSocket crittografata (WSS). Può essere utile quando la connessione normale è rallentata o bloccata. Lascia vuoto il dominio per usare relay pubblici aggiornati automaticamente, oppure inserisci il tuo dominio per maggiore affidabilità. I relay pubblici sono gestiti da terze parti e possono vedere il tuo indirizzo IP e i metadati della connessione, ma non il contenuto dei tuoi messaggi. Disattiva se la connessione smette di funzionare.</string>
     <string name="WebSocketDomain">Dominio WebSocket</string>
     <string name="WebSocketDomainAuto">Automatico</string>
+    <string name="SatelliteDataSaving">Risparmia dati sulle reti satellitari</string>
+    <string name="SatelliteDataSavingInfo">Sospende il download automatico di media e storie quando sei connesso a una rete satellitare o a banda limitata. I download manuali continuano a funzionare. Richiede Android 15 o successivo.</string>
     <string name="ForkSectionBackup">Backup</string>
     <string name="VoiceQualityLow">Bassa (16 kbps)</string>
     <string name="VoiceQualityMedium">Media (32 kbps)</string>

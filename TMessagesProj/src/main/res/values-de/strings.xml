@@ -10,6 +10,8 @@
     <string name="WebSocketTransportInfo">Leitet den Telegram-Datenverkehr über eine verschlüsselte WebSocket-Verbindung (WSS). Kann helfen, wenn die normale Verbindung gedrosselt oder blockiert wird. Lass das Domain-Feld leer, um automatisch aktualisierte öffentliche Relays zu verwenden, oder gib deine eigene Domain für mehr Zuverlässigkeit ein. Öffentliche Relays werden von Dritten betrieben und sehen deine IP-Adresse und Verbindungs-Metadaten, aber nicht den Inhalt deiner Nachrichten. Deaktivieren, wenn die Verbindung nicht mehr funktioniert.</string>
     <string name="WebSocketDomain">WebSocket-Domain</string>
     <string name="WebSocketDomainAuto">Automatisch</string>
+    <string name="SatelliteDataSaving">Daten in Satellitennetzen sparen</string>
+    <string name="SatelliteDataSavingInfo">Pausiert das automatische Herunterladen von Medien und Stories, solange eine Satelliten- oder bandbreitenbeschränkte Verbindung besteht. Manuelle Downloads funktionieren weiterhin. Erfordert Android 15 oder neuer.</string>
     <string name="ForkSectionBackup">Sicherung</string>
     <string name="VoiceQualityLow">Niedrig (16 kbit/s)</string>
     <string name="VoiceQualityMedium">Mittel (32 kbit/s)</string>
