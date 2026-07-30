@@ -10,6 +10,8 @@
     <string name="WebSocketTransportInfo">Tunnelt Telegram-verkeer via een versleutelde WebSocket-verbinding (WSS). Kan helpen wanneer de normale verbinding wordt vertraagd of geblokkeerd. Laat het domeinveld leeg om automatisch bijgewerkte openbare relays te gebruiken, of voer je eigen domein in voor meer betrouwbaarheid. Openbare relays worden beheerd door derden en kunnen je IP-adres en verbindingsmetadata zien, maar niet de inhoud van je berichten. Schakel uit als de verbinding niet meer werkt.</string>
     <string name="WebSocketDomain">WebSocket-domein</string>
     <string name="WebSocketDomainAuto">Automatisch</string>
+    <string name="SatelliteDataSaving">Data besparen op satellietnetwerken</string>
+    <string name="SatelliteDataSavingInfo">Pauzeert het automatisch downloaden van media en verhalen zolang je verbonden bent met een satelliet- of bandbreedtebeperkt netwerk. Handmatige downloads blijven werken. Vereist Android 15 of nieuwer.</string>
     <string name="UnifiedPushDistributor">UnifiedPush-distributeurs</string>
     <string name="UnifiedPushGateway">UnifiedPush-gateway (PUT naar POST)</string>
     <string name="UnifiedPushGatewayInfo">Standaard wordt het pushadres rechtstreeks bij Telegram geregistreerd, zonder gateway.\n\nAls jouw opstelling toch een ‘PUT naar POST’-gateway nodig heeft, vul die hier in of laat het veld leeg voor directe bezorging:</string>
