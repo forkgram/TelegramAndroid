@@ -25,6 +25,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -63,9 +64,16 @@ public class ApplicationLoader extends Application {
 
     private static ConnectivityManager connectivityManager;
     private static volatile boolean applicationInited = false;
-    private static volatile  ConnectivityManager.NetworkCallback networkCallback;
+    private static volatile ConnectivityManager.NetworkCallback networkCallback;
+    private static volatile Network currentCapabilitiesNetwork;
+    private static volatile boolean bandwidthConstrained;
     private static long lastNetworkCheckTypeTime;
     private static int lastKnownNetworkType = -1;
+
+    // Public constants are unavailable with compileSdk 35, but Android explicitly permits
+    // these values so apps can support constrained networks on earlier SDK extensions.
+    private static final int NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED = 37;
+    private static final int TRANSPORT_SATELLITE = 10;
 
     public static long startTime;
 
@@ -531,7 +539,7 @@ public class ApplicationLoader extends Application {
                 currentNetworkInfo = connectivityManager.getActiveNetworkInfo();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     if (networkCallback == null) {
-                        networkCallback = new ConnectivityManager.NetworkCallback() {
+                        ConnectivityManager.NetworkCallback newNetworkCallback = new ConnectivityManager.NetworkCallback() {
                             @Override
                             public void onAvailable(@NonNull Network network) {
                                 lastKnownNetworkType = -1;
@@ -540,9 +548,31 @@ public class ApplicationLoader extends Application {
                             @Override
                             public void onCapabilitiesChanged(@NonNull Network network, @NonNull NetworkCapabilities networkCapabilities) {
                                 lastKnownNetworkType = -1;
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                                    currentCapabilitiesNetwork = network;
+                                    setBandwidthConstrained(!networkCapabilities.hasCapability(NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED)
+                                            || networkCapabilities.hasTransport(TRANSPORT_SATELLITE));
+                                }
+                            }
+
+                            @Override
+                            public void onLost(@NonNull Network network) {
+                                if (network.equals(currentCapabilitiesNetwork)) {
+                                    currentCapabilitiesNetwork = null;
+                                    setBandwidthConstrained(false);
+                                }
                             }
                         };
-                        connectivityManager.registerDefaultNetworkCallback(networkCallback);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                            NetworkRequest request = new NetworkRequest.Builder()
+                                    .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                                    .removeCapability(NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED)
+                                    .build();
+                            connectivityManager.registerBestMatchingNetworkCallback(request, newNetworkCallback, applicationHandler);
+                        } else {
+                            connectivityManager.registerDefaultNetworkCallback(newNetworkCallback);
+                        }
+                        networkCallback = newNetworkCallback;
                     }
                 }
             } catch (Throwable ignore) {
@@ -589,6 +619,9 @@ public class ApplicationLoader extends Application {
     }
 
     public static boolean isConnectionSlow() {
+        if (bandwidthConstrained) {
+            return true;
+        }
         try {
             ensureCurrentNetworkGet(false);
             if (currentNetworkInfo != null && currentNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
@@ -605,6 +638,29 @@ public class ApplicationLoader extends Application {
 
         }
         return false;
+    }
+
+    public static boolean isBandwidthConstrained() {
+        ensureCurrentNetworkGet(false);
+        return bandwidthConstrained;
+    }
+
+    private static void setBandwidthConstrained(boolean constrained) {
+        if (bandwidthConstrained == constrained) {
+            return;
+        }
+        bandwidthConstrained = constrained;
+        if (BuildVars.LOGS_ENABLED) {
+            FileLog.d("bandwidth constrained network = " + constrained);
+        }
+        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                continue;
+            }
+            ConnectionsManager.getInstance(a).checkConnection();
+            FileLoader.getInstance(a).onNetworkChanged(constrained || isConnectionSlow());
+            DownloadController.getInstance(a).checkAutodownloadSettings();
+        }
     }
 
     public static int getAutodownloadNetworkType() {
