@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -139,6 +140,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_LOCK_PREMIUM = 83;
     public static final int ID_WEBSOCKET_TRANSPORT = 84;
     public static final int ID_WEBSOCKET_DOMAIN = 85;
+    public static final int ID_SATELLITE_DATA_SAVING = 86;
 
     public static final int ID_LASTFM_LOGIN = 90;
 
@@ -634,6 +636,10 @@ public class ForkSettingsActivity extends BaseFragment {
             items.add(UItem.asSettingsCell(ID_WEBSOCKET_DOMAIN, LocaleController.getString(R.string.WebSocketDomain), getWebSocketDomainText()));
         }
         items.add(UItem.asSettingsCell(ID_UNIFIED_PUSH, LocaleController.getString(R.string.UnifiedPush), null));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            items.add(UItem.asButtonCheck(ID_SATELLITE_DATA_SAVING, LocaleController.getString(R.string.SatelliteDataSaving), LocaleController.getString(R.string.SatelliteDataSavingInfo))
+                .setChecked(pref("satelliteDataSaving", true)).setMultiline(true));
+        }
         items.add(UItem.asSettingsCell(ID_UPDATE_CHECK_INTERVAL, LocaleController.getString(R.string.UpdateCheckInterval), getUpdateIntervalText()));
         if (AndroidUtilities.isTabletInternal()) {
             items.add(UItem.asButtonCheck(ID_DISABLE_TABLET_MODE, LocaleController.getString(R.string.DisableTabletMode), LocaleController.getString(R.string.DisableTabletModeInfo))
@@ -820,6 +826,8 @@ public class ForkSettingsActivity extends BaseFragment {
             showWebSocketDomainDialog();
         } else if (id == ID_UNIFIED_PUSH) {
             presentFragment(new NotificationsSettingsActivity().highlightUnifiedPush());
+        } else if (id == ID_SATELLITE_DATA_SAVING) {
+            ApplicationLoader.setSatelliteDataSavingEnabled(toggle("satelliteDataSaving", item, view));
         } else if (id == ID_UPDATE_CHECK_INTERVAL) {
             showUpdateIntervalDialog();
         } else if (id == ID_DISABLE_TABLET_MODE) {
