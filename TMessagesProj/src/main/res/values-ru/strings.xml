@@ -10,6 +10,8 @@
     <string name="WebSocketTransportInfo">Туннелирует трафик Telegram через зашифрованное WebSocket-соединение (WSS). Может помочь, когда обычное соединение замедляют или блокируют. Оставьте домен пустым для авто-обновляемых публичных релеев или укажите свой домен для стабильности. Публичные релеи принадлежат третьим лицам и видят ваш IP-адрес и метаданные соединения, но не содержимое сообщений. Отключите, если соединение перестало работать.</string>
     <string name="WebSocketDomain">Домен WebSocket</string>
     <string name="WebSocketDomainAuto">Автоматически</string>
+    <string name="SatelliteDataSaving">Экономия трафика в спутниковых сетях</string>
+    <string name="SatelliteDataSavingInfo">Приостанавливает автозагрузку медиа и историй при подключении к спутниковой сети или сети с ограниченной пропускной способностью. Ручная загрузка продолжает работать. Требуется Android 15 или новее.</string>
     <string name="UnifiedPushDistributor">Дистрибьюторы UnifiedPush</string>
     <string name="UnifiedPushGateway">Шлюз UnifiedPush PUT в POST</string>
     <string name="UnifiedPushGatewayInfo">По умолчанию адрес для уведомлений регистрируется в Telegram напрямую, без шлюза.\n\nЕсли вашей связке всё же нужен шлюз «PUT в POST», укажите его здесь или оставьте поле пустым для прямой доставки:</string>

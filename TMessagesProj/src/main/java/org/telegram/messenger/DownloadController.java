@@ -480,6 +480,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public int getAutodownloadMask() {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return 0;
+        }
         int result = 0;
         int[] masksArray;
         int networkType = ApplicationLoader.getAutodownloadNetworkType();
@@ -617,6 +620,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public boolean canDownloadMedia(MessageObject messageObject) {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return false;
+        }
         if (messageObject.type == MessageObject.TYPE_STORY) {
             if (!SharedConfig.isAutoplayVideo()) return false;
             TLRPC.TL_messageMediaStory mediaStory = (TLRPC.TL_messageMediaStory) MessageObject.getMedia(messageObject);
@@ -635,6 +641,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public boolean canDownloadMedia(int type, long size) {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return false;
+        }
         Preset preset;
         int networkType = ApplicationLoader.getAutodownloadNetworkType();
         if (networkType == StatsController.TYPE_WIFI) {
@@ -660,6 +669,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public int canDownloadMediaType(MessageObject messageObject) {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return 0;
+        }
         if (messageObject.type == MessageObject.TYPE_STORY) {
             if (!SharedConfig.isAutoplayVideo()) return 0;
             TLRPC.TL_messageMediaStory mediaStory = (TLRPC.TL_messageMediaStory) MessageObject.getMedia(messageObject);
@@ -678,6 +690,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public int canDownloadMediaType(MessageObject messageObject, long overrideSize) {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return 0;
+        }
         if (messageObject.type == MessageObject.TYPE_STORY) {
             if (!SharedConfig.isAutoplayVideo()) return 0;
             TLRPC.TL_messageMediaStory mediaStory = (TLRPC.TL_messageMediaStory) MessageObject.getMedia(messageObject);
@@ -877,6 +892,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public int canDownloadMedia(TLRPC.Message message) {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return 0;
+        }
         if (message == null || message.media instanceof TLRPC.TL_messageMediaStory) {
             return canPreloadStories() ? 2 : 0;
         }
@@ -958,6 +976,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public int canDownloadMedia(TLRPC.Message message, TLRPC.MessageMedia media) {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return 0;
+        }
         if (message == null || media instanceof TLRPC.TL_messageMediaStory) {
             return canPreloadStories() ? 2 : 0;
         }
@@ -1040,6 +1061,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     protected boolean canDownloadNextTrack() {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return false;
+        }
         int networkType = ApplicationLoader.getAutodownloadNetworkType();
         if (networkType == StatsController.TYPE_WIFI) {
             return wifiPreset.enabled && getCurrentWiFiPreset().preloadMusic;
@@ -1051,6 +1075,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public int getCurrentDownloadMask() {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return 0;
+        }
         int networkType = ApplicationLoader.getAutodownloadNetworkType();
         if (networkType == StatsController.TYPE_WIFI) {
             if (!wifiPreset.enabled) {
@@ -1807,6 +1834,9 @@ public class DownloadController extends BaseController implements NotificationCe
     }
 
     public boolean canPreloadStories() {
+        if (ApplicationLoader.isBandwidthConstrained()) {
+            return false;
+        }
         Preset preset;
         int networkType = ApplicationLoader.getAutodownloadNetworkType();
         if (networkType == StatsController.TYPE_WIFI) {
