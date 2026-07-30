@@ -25,8 +25,10 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
@@ -63,9 +65,16 @@ public class ApplicationLoader extends Application {
 
     private static ConnectivityManager connectivityManager;
     private static volatile boolean applicationInited = false;
-    private static volatile  ConnectivityManager.NetworkCallback networkCallback;
+    private static volatile ConnectivityManager.NetworkCallback networkCallback;
+    private static volatile ConnectivityManager.NetworkCallback constrainedNetworkCallback;
+    private static volatile Network constrainedNetwork;
+    private static volatile boolean bandwidthConstrained;
+    private static volatile Boolean satelliteDataSaving;
     private static long lastNetworkCheckTypeTime;
     private static int lastKnownNetworkType = -1;
+
+    private static final int NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED = 37;
+    private static final int TRANSPORT_SATELLITE = 10;
 
     public static long startTime;
 
@@ -547,6 +556,44 @@ public class ApplicationLoader extends Application {
             } catch (Throwable ignore) {
 
             }
+            ensureConstrainedNetworkCallback();
+        }
+    }
+
+    private static synchronized void ensureConstrainedNetworkCallback() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM || constrainedNetworkCallback != null || connectivityManager == null) {
+            return;
+        }
+        HandlerThread thread = null;
+        try {
+            final NetworkRequest request = new NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .removeCapability(NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED)
+                .build();
+            final ConnectivityManager.NetworkCallback callback = new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onCapabilitiesChanged(@NonNull Network network, @NonNull NetworkCapabilities networkCapabilities) {
+                    constrainedNetwork = network;
+                    setBandwidthConstrained(!networkCapabilities.hasCapability(NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED)
+                        || networkCapabilities.hasTransport(TRANSPORT_SATELLITE));
+                }
+
+                @Override
+                public void onLost(@NonNull Network network) {
+                    if (network.equals(constrainedNetwork)) {
+                        constrainedNetwork = null;
+                        setBandwidthConstrained(false);
+                    }
+                }
+            };
+            thread = new HandlerThread("ConstrainedNetworkMonitor");
+            thread.start();
+            connectivityManager.registerBestMatchingNetworkCallback(request, callback, new Handler(thread.getLooper()));
+            constrainedNetworkCallback = callback;
+        } catch (Throwable ignore) {
+            if (thread != null) {
+                thread.quitSafely();
+            }
         }
     }
 
@@ -588,6 +635,9 @@ public class ApplicationLoader extends Application {
     }
 
     public static boolean isConnectionSlow() {
+        if (isBandwidthConstrained()) {
+            return true;
+        }
         try {
             ensureCurrentNetworkGet(false);
             if (currentNetworkInfo != null && currentNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
@@ -604,6 +654,56 @@ public class ApplicationLoader extends Application {
 
         }
         return false;
+    }
+
+    public static boolean isBandwidthConstrained() {
+        return bandwidthConstrained && isSatelliteDataSavingEnabled();
+    }
+
+    public static boolean isSatelliteDataSavingEnabled() {
+        Boolean enabled = satelliteDataSaving;
+        if (enabled == null) {
+            enabled = MessagesController.getGlobalMainSettings().getBoolean("satelliteDataSaving", true);
+            satelliteDataSaving = enabled;
+        }
+        return enabled;
+    }
+
+    public static void setSatelliteDataSavingEnabled(boolean enabled) {
+        if (isSatelliteDataSavingEnabled() == enabled) {
+            return;
+        }
+        satelliteDataSaving = enabled;
+        if (bandwidthConstrained) {
+            notifyBandwidthConstrainedChanged();
+        }
+    }
+
+    private static void setBandwidthConstrained(boolean constrained) {
+        if (bandwidthConstrained == constrained) {
+            return;
+        }
+        bandwidthConstrained = constrained;
+        if (BuildVars.LOGS_ENABLED) {
+            FileLog.d("bandwidth constrained network = " + constrained);
+        }
+        if (isSatelliteDataSavingEnabled()) {
+            notifyBandwidthConstrainedChanged();
+        }
+    }
+
+    private static void notifyBandwidthConstrainedChanged() {
+        AndroidUtilities.runOnUIThread(() -> {
+            final boolean isSlow = isConnectionSlow();
+            for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                    continue;
+                }
+                ConnectionsManager.getInstance(a).checkConnection();
+                FileLoader.getInstance(a).onNetworkChanged(isSlow);
+                DownloadController.getInstance(a).checkAutodownloadSettings();
+            }
+        });
     }
 
     public static int getAutodownloadNetworkType() {
