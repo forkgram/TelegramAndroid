@@ -118,7 +118,7 @@ public class TranscribeButton {
 
         this.isOpen = false;
         this.shouldBeOpen = false;
-        premium = parent.getMessageObject() != null && (UserConfig.getInstance(parent.getMessageObject().currentAccount).isPremium() || org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive());
+        premium = parent.getMessageObject() != null && (UserConfig.getInstance(parent.getMessageObject().currentAccount).isPremium() || org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.WhisperSTT.isConfigured() || org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive());
 
         loadingFloat = new AnimatedFloat(parent, 250, CubicBezierInterpolator.EASE_OUT_QUINT);
         animatedDrawLock = new AnimatedFloat(parent, 250, CubicBezierInterpolator.EASE_OUT_QUINT);
@@ -763,7 +763,7 @@ public class TranscribeButton {
                     }
                     return;
                 }
-                if (org.telegram.messenger.CloudflareSTT.isConfigured()) {
+                if (org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.WhisperSTT.isConfigured()) {
                     File path = null;
                     String attachPath = messageObject.messageOwner.attachPath;
                     if (!TextUtils.isEmpty(attachPath)) {
@@ -792,7 +792,7 @@ public class TranscribeButton {
                         transcribeOperationsByDialogPosition = new HashMap<>();
                     }
                     transcribeOperationsByDialogPosition.put(reqInfoHash(messageObject), messageObject);
-                    org.telegram.messenger.CloudflareSTT.requestWorkersAi(path.getAbsolutePath(), messageObject.isRoundVideo(), (text, exception) -> {
+                    java.util.function.BiConsumer<String, Exception> onTranscribed = (text, exception) -> {
                         if (text != null) {
                             if (transcribeOperationsById == null) {
                                 transcribeOperationsById = new HashMap<>();
@@ -817,7 +817,12 @@ public class TranscribeButton {
                                 org.telegram.messenger.CloudflareSTT.showErrorDialog(exception);
                             });
                         }
-                    });
+                    };
+                    if (org.telegram.messenger.WhisperSTT.isConfigured()) {
+                        org.telegram.messenger.WhisperSTT.requestTranscription(path.getAbsolutePath(), messageObject.isRoundVideo(), onTranscribed);
+                    } else {
+                        org.telegram.messenger.CloudflareSTT.requestWorkersAi(path.getAbsolutePath(), messageObject.isRoundVideo(), onTranscribed);
+                    }
                     return;
                 }
                 TLRPC.TL_messages_transcribeAudio req = new TLRPC.TL_messages_transcribeAudio();
@@ -996,7 +1001,7 @@ public class TranscribeButton {
         if (messageObject == null || messageObject.messageOwner == null) {
             return false;
         }
-        if (org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive()) {
+        if (org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.WhisperSTT.isConfigured() || org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive()) {
             return false;
         }
         if (isFreeTranscribeInChat(messageObject)) {

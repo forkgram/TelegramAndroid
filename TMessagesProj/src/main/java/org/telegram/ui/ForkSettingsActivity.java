@@ -127,6 +127,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_CLOUDFLARE_ENABLE_STT = 63;
     public static final int ID_CLOUDFLARE_CREDENTIALS = 64;
     public static final int ID_TRANSLATION_PROVIDER = 65;
+    public static final int ID_WHISPER_ENABLE_STT = 66;
+    public static final int ID_WHISPER_SETTINGS = 67;
 
     public static final int ID_BOT_SKIP_SHARE = 70;
     public static final int ID_BOT_SKIP_FULLSCREEN = 71;
@@ -613,6 +615,9 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asCheck(ID_CLOUDFLARE_ENABLE_STT, LocaleController.getString(R.string.CloudflareEnableSTT))
             .setChecked(SharedConfig.cfEnableStt));
         items.add(UItem.asSettingsCell(ID_CLOUDFLARE_CREDENTIALS, LocaleController.getString(R.string.CloudflareCredentials), ""));
+        items.add(UItem.asCheck(ID_WHISPER_ENABLE_STT, LocaleController.getString(R.string.WhisperEnableSTT))
+            .setChecked(SharedConfig.whisperEnableStt));
+        items.add(UItem.asSettingsCell(ID_WHISPER_SETTINGS, LocaleController.getString(R.string.WhisperSettings), ""));
         items.add(UItem.asSettingsCell(ID_TRANSLATION_PROVIDER, LocaleController.getString(R.string.TranslationEngine), getTranslationProviderText()));
         items.add(UItem.asShadow(null));
 
@@ -801,6 +806,16 @@ public class ForkSettingsActivity extends BaseFragment {
             setCellChecked(view, SharedConfig.cfEnableStt);
         } else if (id == ID_CLOUDFLARE_CREDENTIALS) {
             showCfCredentialsDialog();
+        } else if (id == ID_WHISPER_ENABLE_STT) {
+            if (!SharedConfig.whisperEnableStt && TextUtils.isEmpty(SharedConfig.whisperUrl)) {
+                showWhisperSettingsDialog();
+                return;
+            }
+            SharedConfig.whisperEnableStt = !SharedConfig.whisperEnableStt;
+            SharedConfig.saveConfig();
+            setCellChecked(view, SharedConfig.whisperEnableStt);
+        } else if (id == ID_WHISPER_SETTINGS) {
+            showWhisperSettingsDialog();
         } else if (id == ID_TRANSLATION_PROVIDER) {
             showTranslationProviderDialog();
 
@@ -980,6 +995,92 @@ public class ForkSettingsActivity extends BaseFragment {
                 SharedConfig.cfApiToken = apiToken == null ? "" : apiToken.toString();
                 if (!android.text.TextUtils.isEmpty(SharedConfig.cfAccountID) && !android.text.TextUtils.isEmpty(SharedConfig.cfApiToken)) {
                     SharedConfig.cfEnableStt = true;
+                }
+                SharedConfig.saveConfig();
+                listView.adapter.update(false);
+                dialog.dismiss();
+            });
+        }
+    }
+
+    private EditTextBoldCursor makeDialogEditText(android.content.Context context, String text, String hint, int imeOptions) {
+        var editText = new EditTextBoldCursor(context) {
+            @Override
+            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(64), MeasureSpec.EXACTLY));
+            }
+        };
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        editText.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+        editText.setText(text);
+        editText.setHintText(hint);
+        editText.setHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
+        editText.setHeaderHintColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueHeader));
+        editText.setSingleLine(true);
+        editText.setFocusable(true);
+        editText.setTransformHintToHeader(true);
+        editText.setLineColors(Theme.getColor(Theme.key_windowBackgroundWhiteInputField), Theme.getColor(Theme.key_windowBackgroundWhiteInputFieldActivated), Theme.getColor(Theme.key_text_RedRegular));
+        editText.setImeOptions(imeOptions);
+        editText.setBackground(null);
+        editText.setPadding(0, 0, 0, 0);
+        return editText;
+    }
+
+    private void showWhisperSettingsDialog() {
+        var context = getParentActivity();
+        if (context == null) {
+            return;
+        }
+        var builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString(R.string.WhisperSettings));
+        builder.setMessage(LocaleController.getString(R.string.WhisperSettingsDialog));
+        builder.setCustomViewOffset(0);
+
+        var ll = new LinearLayout(context);
+        ll.setOrientation(LinearLayout.VERTICAL);
+
+        var editTextUrl = makeDialogEditText(context, SharedConfig.whisperUrl, LocaleController.getString(R.string.WhisperServerURL), EditorInfo.IME_ACTION_NEXT);
+        editTextUrl.requestFocus();
+        ll.addView(editTextUrl, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 0, 24, 0, 24, 0));
+
+        var editTextHeaderName = makeDialogEditText(context, SharedConfig.whisperAuthHeaderName, LocaleController.getString(R.string.WhisperAuthHeaderName), EditorInfo.IME_ACTION_NEXT);
+        ll.addView(editTextHeaderName, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 0, 24, 0, 24, 0));
+
+        var editTextHeaderValue = makeDialogEditText(context, SharedConfig.whisperAuthHeaderValue, LocaleController.getString(R.string.WhisperAuthHeaderValue), EditorInfo.IME_ACTION_DONE);
+        ll.addView(editTextHeaderValue, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 0, 24, 0, 24, 0));
+
+        builder.setView(ll);
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        builder.setPositiveButton(LocaleController.getString(R.string.OK), null);
+        var dialog = builder.create();
+        showDialog(dialog);
+        var button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (button != null) {
+            button.setOnClickListener(v -> {
+                var urlText = editTextUrl.getText();
+                var url = urlText == null ? "" : urlText.toString().trim();
+                if (!TextUtils.isEmpty(url) && !url.startsWith("http://") && !url.startsWith("https://")) {
+                    AndroidUtilities.shakeViewSpring(editTextUrl, -6);
+                    BotWebViewVibrationEffect.APP_ERROR.vibrate();
+                    return;
+                }
+                var headerNameText = editTextHeaderName.getText();
+                var headerName = headerNameText == null ? "" : headerNameText.toString().trim();
+                // RFC 7230 header field name: reject here so a bad name fails
+                // at save time instead of on every transcription request.
+                if (!TextUtils.isEmpty(headerName) && !headerName.matches("[!#$%&'*+.^_`|~0-9A-Za-z-]+")) {
+                    AndroidUtilities.shakeViewSpring(editTextHeaderName, -6);
+                    BotWebViewVibrationEffect.APP_ERROR.vibrate();
+                    return;
+                }
+                var headerValue = editTextHeaderValue.getText();
+                SharedConfig.whisperUrl = url;
+                SharedConfig.whisperAuthHeaderName = headerName;
+                SharedConfig.whisperAuthHeaderValue = headerValue == null ? "" : headerValue.toString().trim();
+                if (!TextUtils.isEmpty(SharedConfig.whisperUrl)) {
+                    SharedConfig.whisperEnableStt = true;
+                } else {
+                    SharedConfig.whisperEnableStt = false;
                 }
                 SharedConfig.saveConfig();
                 listView.adapter.update(false);

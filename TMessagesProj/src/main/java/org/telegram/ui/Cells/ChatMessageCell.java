@@ -12622,6 +12622,8 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 ||
                 org.telegram.messenger.CloudflareSTT.isConfigured()
                 ||
+                org.telegram.messenger.WhisperSTT.isConfigured()
+                ||
                 org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive()
                 ||
                 TranscribeButton.isFreeTranscribeInChat(currentMessageObject)
