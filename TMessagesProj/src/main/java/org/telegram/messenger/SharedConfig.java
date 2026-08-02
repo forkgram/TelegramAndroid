@@ -65,6 +65,11 @@ public class SharedConfig {
     public static String cfApiToken = "";
     public static boolean cfEnableStt = false;
 
+    public static String whisperUrl = "";
+    public static String whisperAuthHeaderName = "";
+    public static String whisperAuthHeaderValue = "";
+    public static boolean whisperEnableStt = false;
+
     public static boolean loopStickers() {
         return LiteMode.isEnabled(LiteMode.FLAG_ANIMATED_STICKERS_CHAT);
     }
@@ -482,6 +487,10 @@ public class SharedConfig {
                 editor.putString("cfAccountID", cfAccountID);
                 editor.putString("cfApiToken", cfApiToken);
                 editor.putBoolean("cfEnableStt", cfEnableStt);
+                editor.putString("whisperUrl", whisperUrl);
+                editor.putString("whisperAuthHeaderName", whisperAuthHeaderName);
+                editor.putString("whisperAuthHeaderValue", whisperAuthHeaderValue);
+                editor.putBoolean("whisperEnableStt", whisperEnableStt);
 
                 if (pendingAppUpdate != null) {
                     try {
@@ -552,6 +561,10 @@ public class SharedConfig {
             cfAccountID = preferences.getString("cfAccountID", "");
             cfApiToken = preferences.getString("cfApiToken", "");
             cfEnableStt = preferences.getBoolean("cfEnableStt", false);
+            whisperUrl = preferences.getString("whisperUrl", "");
+            whisperAuthHeaderName = preferences.getString("whisperAuthHeaderName", "");
+            whisperAuthHeaderValue = preferences.getString("whisperAuthHeaderValue", "");
+            whisperEnableStt = preferences.getBoolean("whisperEnableStt", false);
             String authKeyString = preferences.getString("pushAuthKey", null);
             if (!TextUtils.isEmpty(authKeyString)) {
                 pushAuthKey = Base64.decode(authKeyString, Base64.DEFAULT);

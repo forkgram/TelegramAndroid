@@ -2238,6 +2238,13 @@
     <string name="CloudflareAccountID">Account ID</string>
     <string name="CloudflareAPIToken">API Token</string>
     <string name="CloudflareCredentialsDialog">Configure Cloudflare Account ID and API Token.</string>
+    <string name="WhisperEnableSTT">Use self-hosted Whisper for Voice-to-Text</string>
+    <string name="WhisperSettings">Whisper server settings</string>
+    <string name="WhisperSettingsDialog">Configure a whisper-asr-webservice instance. The auth header is optional and sent verbatim with every request.</string>
+    <string name="WhisperServerURL">Server URL</string>
+    <string name="WhisperAuthHeaderName">Auth header name</string>
+    <string name="WhisperAuthHeaderValue">Auth header value</string>
+    <string name="WhisperNotConfigured">Whisper server is not configured.</string>
     <string name="None">None</string>
     <!--stickers view-->
     <string name="StickersName">Stickers</string>

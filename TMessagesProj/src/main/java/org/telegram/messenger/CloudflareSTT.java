@@ -51,7 +51,7 @@ public class CloudflareSTT {
         }
     }
 
-    private static void extractAudio(String inputFilePath, String outputFilePath) throws IOException {
+    static void extractAudio(String inputFilePath, String outputFilePath) throws IOException {
         var extractor = new MediaExtractor();
         MediaMuxer muxer = null;
         try {
@@ -119,6 +119,7 @@ public class CloudflareSTT {
                     extractAudio(path, audioFile.getAbsolutePath());
                 } catch (IOException e) {
                     FileLog.e(e);
+                    audioFile.delete();
                     callback.accept(null, e);
                     return;
                 }
@@ -132,6 +133,12 @@ public class CloudflareSTT {
             } catch (IOException e) {
                 callback.accept(null, e);
                 return;
+            } finally {
+                if (video) {
+                    // The extracted m4a is only an upload staging file; the
+                    // original video stays in the cache.
+                    audioPath.delete();
+                }
             }
 
             var payload = new WhisperRequest();
