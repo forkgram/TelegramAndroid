@@ -143,6 +143,11 @@ public final class AnimatedFileDrawable extends BitmapDrawable implements Animat
 
     private final Runnable uiRunnableNoFrame = this::uiRunnableNoFrameImpl;
 
+    private int consecutiveNoFrames;
+    private static final int NO_FRAME_BACKOFF_AFTER = 3;
+    private static final int NO_FRAME_GIVE_UP_AFTER = 120;
+    private final Runnable scheduleNextGetFrameRunnable = this::scheduleNextGetFrame;
+
     @UiThread
     private void uiRunnableNoFrameImpl() {
         chekDestroyDecoder();
@@ -151,8 +156,28 @@ public final class AnimatedFileDrawable extends BitmapDrawable implements Animat
             pendingSeekToUI = -1;
             invalidateAfter = 0;
         }
-        scheduleNextGetFrame();
+        scheduleNextGetFrameAfterNoFrame();
         invalidateInternal();
+    }
+
+    @UiThread
+    private void scheduleNextGetFrameAfterNoFrame() {
+        if (isLoadingStream()) {
+            consecutiveNoFrames = 0;
+            scheduleNextGetFrame();
+            return;
+        }
+        consecutiveNoFrames++;
+        if (consecutiveNoFrames > NO_FRAME_GIVE_UP_AFTER) {
+            return;
+        }
+        if (consecutiveNoFrames <= NO_FRAME_BACKOFF_AFTER) {
+            scheduleNextGetFrame();
+            return;
+        }
+        final long delay = Math.min(1000L, 50L * (consecutiveNoFrames - NO_FRAME_BACKOFF_AFTER));
+        AndroidUtilities.cancelRunOnUIThread(scheduleNextGetFrameRunnable);
+        AndroidUtilities.runOnUIThread(scheduleNextGetFrameRunnable, delay);
     }
 
 
@@ -219,6 +244,7 @@ public final class AnimatedFileDrawable extends BitmapDrawable implements Animat
 
     @UiThread
     private void uiRunnableImpl() {
+        consecutiveNoFrames = 0;
         chekDestroyDecoder();
         if (stream != null && pendingRemoveLoading) {
             FileLoader.getInstance(currentAccount).removeLoadingVideo(stream.getDocument(), false, false);
@@ -641,6 +667,7 @@ public final class AnimatedFileDrawable extends BitmapDrawable implements Animat
             pendingSeekTo = ms;
             pendingSeekToUI = ms;
             scheduledForSeek = false;
+            consecutiveNoFrames = 0;
             if (mDecoder != null) {
                 mDecoder.prepareToSeek();
             }
@@ -769,6 +796,7 @@ public final class AnimatedFileDrawable extends BitmapDrawable implements Animat
         }
         isRunning = true;
         isPaused = false;
+        consecutiveNoFrames = 0;
         scheduleNextGetFrame();
         AndroidUtilities.runOnUIThread(mStartTask);
         checkChoreographer();
