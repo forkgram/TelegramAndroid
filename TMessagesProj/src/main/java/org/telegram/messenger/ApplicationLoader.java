@@ -434,6 +434,17 @@ public class ApplicationLoader extends Application {
         }
     }
 
+    private static void stopPushService() {
+        if (NotificationsService.isForegroundStartPending()) {
+            NotificationsService.requestStopWhenForeground();
+            return;
+        }
+        try {
+            applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
+        } catch (Throwable ignore) {
+        }
+    }
+
     public static void startPushService() {
         SharedPreferences preferences = MessagesController.getGlobalNotificationsSettings();
         boolean enabled;
@@ -463,24 +474,23 @@ public class ApplicationLoader extends Application {
             cancelLegacyKeepAliveAlarms(pendingIntentFlags);
             if (unifiedPushActive) {
                 Log.d("Fork Client", "UnifiedPush is active, skipping push service watchdog");
-                try {
-                    applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
-                } catch (Throwable ignore) {
-                }
+                stopPushService();
                 return;
             }
             try {
                 Log.d("TFOSS", "Starting push service...");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationsService.onForegroundStartRequested();
                     applicationContext.startForegroundService(new Intent(applicationContext, NotificationsService.class));
                 } else {
                     applicationContext.startService(new Intent(applicationContext, NotificationsService.class));
                 }
             } catch (Throwable ignore) {
+                NotificationsService.onForegroundStartFailed();
                 Log.d("TFOSS", "Failed to start push service");
             }
         } else {
-            applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
+            stopPushService();
             try {
             PendingIntent pintent = PendingIntent.getService(applicationContext, 0, new Intent(applicationContext, NotificationsService.class), PendingIntent.FLAG_MUTABLE);
             AlarmManager alarm = (AlarmManager)applicationContext.getSystemService(Context.ALARM_SERVICE);
