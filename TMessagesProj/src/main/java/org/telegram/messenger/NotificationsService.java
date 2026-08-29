@@ -24,40 +24,41 @@ import android.util.Log;
 
 public class NotificationsService extends Service {
 
+    private static final int NOTIFICATION_ID = 9999;
+    private static final String CHANNEL_ID = "push_service_channel";
+
+    private static volatile boolean foregroundStartPending;
+    private static volatile boolean stopWhenForeground;
+
+    private Notification notification;
+
+    public static void onForegroundStartRequested() {
+        stopWhenForeground = false;
+        foregroundStartPending = true;
+    }
+
+    public static void onForegroundStartFailed() {
+        foregroundStartPending = false;
+    }
+
+    public static boolean isForegroundStartPending() {
+        return foregroundStartPending;
+    }
+
+    public static void requestStopWhenForeground() {
+        stopWhenForeground = true;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int pendingIntentFlags;
-            if (Build.VERSION.SDK_INT >= 34) {
-                pendingIntentFlags = PendingIntent.FLAG_IMMUTABLE;
-            } else {
-                pendingIntentFlags = PendingIntent.FLAG_MUTABLE;
-            }
-            String CHANNEL_ID = "push_service_channel";
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,"Push Notifications Service",NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-            Intent explainIntent = new Intent("android.intent.action.VIEW");
-            explainIntent.setData(Uri.parse("https://github.com/forkgram/TelegramAndroid"));
-            try {
-            PendingIntent explainPendingIntent = PendingIntent.getActivity(this, 0, explainIntent, pendingIntentFlags);
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentIntent(explainPendingIntent)
-                    .setShowWhen(false)
-                    .setOngoing(true)
-                    .setSmallIcon(R.drawable.notification)
-                    .setContentText("Push service: tap to learn more").build();
-            startForeground(9999,notification);
-            } catch (Throwable ignore) {
-                Log.d("Fork Client", "Failed to set intent");
-            }
-        }
+        moveToForeground();
         ApplicationLoader.postInitApplication();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        moveToForeground();
         return START_STICKY;
     }
 
@@ -68,11 +69,54 @@ public class NotificationsService extends Service {
 
     public void onDestroy() {
         super.onDestroy();
+        foregroundStartPending = false;
+        stopWhenForeground = false;
         SharedPreferences preferences = MessagesController.getGlobalNotificationsSettings();
         if (preferences.getBoolean("pushService", true)) {
             Intent intent = new Intent("org.telegram.start");
             intent.setPackage(getPackageName());
             sendBroadcast(intent);
         }
+    }
+
+    private void moveToForeground() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                startForeground(NOTIFICATION_ID, getNotification());
+            } catch (Throwable e) {
+                Log.d("Fork Client", "Failed to move push service to foreground");
+            }
+        }
+        foregroundStartPending = false;
+        if (stopWhenForeground) {
+            stopSelf();
+        }
+    }
+
+    private Notification getNotification() {
+        if (notification == null) {
+            int pendingIntentFlags;
+            if (Build.VERSION.SDK_INT >= 34) {
+                pendingIntentFlags = PendingIntent.FLAG_IMMUTABLE;
+            } else {
+                pendingIntentFlags = PendingIntent.FLAG_MUTABLE;
+            }
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(new NotificationChannel(CHANNEL_ID, "Push Notifications Service", NotificationManager.IMPORTANCE_DEFAULT));
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setShowWhen(false)
+                    .setOngoing(true)
+                    .setSmallIcon(R.drawable.notification)
+                    .setContentText("Push service: tap to learn more");
+            try {
+                Intent explainIntent = new Intent("android.intent.action.VIEW");
+                explainIntent.setData(Uri.parse("https://github.com/forkgram/TelegramAndroid"));
+                builder.setContentIntent(PendingIntent.getActivity(this, 0, explainIntent, pendingIntentFlags));
+            } catch (Throwable ignore) {
+                Log.d("Fork Client", "Failed to set intent");
+            }
+            notification = builder.build();
+        }
+        return notification;
     }
 }
