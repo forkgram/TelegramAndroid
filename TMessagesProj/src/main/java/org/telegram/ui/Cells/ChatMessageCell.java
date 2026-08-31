@@ -19383,6 +19383,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             } else {
                 avatarAlpha = drawNameAvatar ? 1.0f : 0.0f;
             }
+            float nameAvatarLeft = 0, nameAvatarTop = 0, nameAvatarBottom = 0;
             if (avatarAlpha > 0.0f) {
                 float avatarX = nx;
                 if (currentNameBotVerificationId != 0) {
@@ -19395,6 +19396,8 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 final float wasAlpha = avatarImage.getAlpha();
                 final float scale = lerp(.1f, 1.0f, avatarAlpha);
                 final boolean wasVisible = avatarImage.getVisible();
+                final float avatarY = ny + dp(13) * (1.0f - scale);
+                final float avatarSize = dp(26) * scale;
                 avatarImage.setVisible(true, false);
                 if (isCompactMode()) {
                     final float size = dp(NAME_AVATAR_COMPACT_SIZE);
@@ -19407,6 +19410,9 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 avatarImage.setImageCoords(wasX, wasY, wasWidth, wasHeight);
                 avatarImage.setAlpha(wasAlpha);
                 avatarImage.setVisible(wasVisible, false);
+                nameAvatarLeft = avatarX;
+                nameAvatarTop = avatarY;
+                nameAvatarBottom = avatarY + avatarSize;
             }
             nx += getNameAvatarOffset() * avatarAlpha;
             // in compact mode the avatar sits inline, the name keeps its line
@@ -19425,11 +19431,19 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 } else if (nameLayoutSelectorColor != selectorColor) {
                     Theme.setSelectorDrawableColor(nameLayoutSelector, nameLayoutSelectorColor = selectorColor, true);
                 }
+                float nameSelectorLeft = nx + nameOffsetX - dp(4);
+                float nameSelectorTop = ny - dp(1.33f);
+                float nameSelectorBottom = ny + nameLayout.getHeight() + dp(1.33f);
+                if (avatarAlpha > 0.0f) {
+                    nameSelectorLeft = Math.min(nameSelectorLeft, nameAvatarLeft - dp(2));
+                    nameSelectorTop = Math.min(nameSelectorTop, nameAvatarTop - dp(1.33f));
+                    nameSelectorBottom = Math.max(nameSelectorBottom, nameAvatarBottom + dp(1.33f));
+                }
                 nameLayoutSelector.setBounds(
-                    (int) (nx + nameOffsetX - dp(4)),
-                    (int) (ny - dp(1.33f)),
+                    (int) nameSelectorLeft,
+                    (int) nameSelectorTop,
                     (int) (nx + nameOffsetX + (viaNameWidth > 0 ? viaNameWidth - dp(4 + 28) : nameLayoutWidth) + dp(4)),
-                    (int) (ny + nameLayout.getHeight() + dp(1.33f))
+                    (int) nameSelectorBottom
                 );
                 nameLayoutSelector.setAlpha((int) (0xFF * nameAlpha));
                 nameLayoutSelector.draw(canvas);
