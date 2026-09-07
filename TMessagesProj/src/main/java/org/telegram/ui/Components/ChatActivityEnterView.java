@@ -3489,6 +3489,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             sendMessage();
         });
         sendButton.setOnLongClickListener(this::onSendLongClick);
+        sendButton.setOnTouchListener(this::onSendButtonSlide);
         if (AndroidUtilities.isAccessibilityScreenReaderEnabled()) {
             sendButtonContainer.setOnLongClickListener(this::onSendLongClick);
         }
@@ -3524,6 +3525,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 delegate.onUpdateSlowModeButton(slowModeButton, true, slowModeButton.getText());
             }
         });
+        slowModeButton.setOnTouchListener(this::onSendButtonSlide);
         slowModeButton.setOnLongClickListener(v -> {
             if (messageEditText == null || messageEditText.length() <= 0) {
                 return false;
@@ -4746,10 +4748,71 @@ public class ChatActivityEnterView extends FrameLayout implements
         return false;
     }
 
+    private ItemOptions messageSendPreviewOptions;
+    private final ArrayList<View> sendMenuItems = new ArrayList<>();
+    private View sendMenuItemUnderFinger;
+
+    private void collectSendMenuItems() {
+        sendMenuItems.clear();
+        if (messageSendPreview != null && messageSendPreview.isShowing() && messageSendPreviewOptions != null) {
+            for (int i = 0; i < messageSendPreviewOptions.getItemsCount(); i++) {
+                sendMenuItems.add(messageSendPreviewOptions.getItemAt(i));
+            }
+        } else if (sendPopupWindow != null && sendPopupWindow.isShowing() && sendPopupLayout != null) {
+            for (int i = 0; i < sendPopupLayout.getItemsCount(); i++) {
+                sendMenuItems.add(sendPopupLayout.getItemAt(i));
+            }
+        }
+    }
+
+    private boolean onSendButtonSlide(View view, MotionEvent event) {
+        final int action = event.getActionMasked();
+        collectSendMenuItems();
+        if (action == MotionEvent.ACTION_MOVE) {
+            sendMenuItemUnderFinger = null;
+            for (int i = 0; i < sendMenuItems.size(); i++) {
+                final View item = sendMenuItems.get(i);
+                if (item == null || !item.isClickable() || item.getVisibility() != VISIBLE) {
+                    continue;
+                }
+                item.getLocationOnScreen(location);
+                final float x = event.getRawX() - location[0];
+                final float y = event.getRawY() - location[1];
+                final boolean hovered = x >= 0 && y >= 0 && x < item.getWidth() && y < item.getHeight();
+                if (hovered) {
+                    item.drawableHotspotChanged(x, y);
+                    sendMenuItemUnderFinger = item;
+                }
+                item.setPressed(hovered);
+                item.setSelected(hovered);
+            }
+            return false;
+        }
+        final View item = sendMenuItemUnderFinger;
+        sendMenuItemUnderFinger = null;
+        if (item == null) {
+            return false;
+        }
+        item.setPressed(false);
+        item.setSelected(false);
+        if (action != MotionEvent.ACTION_UP || !sendMenuItems.contains(item)) {
+            return false;
+        }
+        final MotionEvent cancel = MotionEvent.obtain(event);
+        cancel.setAction(MotionEvent.ACTION_CANCEL);
+        view.onTouchEvent(cancel);
+        cancel.recycle();
+        item.performClick();
+        return true;
+    }
+
     private ActionBarMenuSubItem actionScheduleButton;
     private boolean onSendLongClick(View view) {
         if (isInScheduleMode() || parentFragment != null && parentFragment.getChatMode() == ChatActivity.MODE_QUICK_REPLIES || animatorEphemeralMessageVisibility.getValue()) {
             return false;
+        }
+        if (view.getParent() != null) {
+            view.getParent().requestDisallowInterceptTouchEvent(true);
         }
 
         if (isStories || (messageEditText == null || TextUtils.isEmpty(messageEditText.getText())) && parentFragment != null && parentFragment.messagePreviewParams != null && parentFragment.messagePreviewParams.forwardMessages != null && parentFragment.messagePreviewParams.forwardMessages.messages != null && !parentFragment.messagePreviewParams.forwardMessages.messages.isEmpty()) {
@@ -4896,6 +4959,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         };
         messageSendPreview.setOnDismissListener(di -> {
             messageSendPreview = null;
+            messageSendPreviewOptions = null;
         });
 
         final boolean containsSendMessage = audioToSendMessageObject != null || messageEditText != null && !TextUtils.isEmpty(messageEditText.getText());
@@ -5035,6 +5099,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         }
 
         ItemOptions options = ItemOptions.makeOptions(this, resourcesProvider, sendButton);
+        messageSendPreviewOptions = options;
 
         final boolean self = parentFragment != null && UserObject.isUserSelf(parentFragment.getCurrentUser());
         boolean scheduleButtonValue = parentFragment != null && parentFragment.canScheduleMessage();
