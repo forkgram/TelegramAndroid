@@ -2207,13 +2207,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                                 } else {
                                     TLRPC.Dialog dialog = getMessagesController().dialogs_dict.get(dialogId);
                                     if (dialog != null) {
-                                        if (ChatObject.isCommunity(currentAccount, dialogId)) {
-                                            ArrayList<Long> selectedDialogs = new ArrayList<>();
-                                            selectedDialogs.add(dialogId);
-                                            performSelectedDialogsAction(selectedDialogs, community_ungroup, true, false);
-                                        } else {
-                                            performSwipeAction(dialogId, dialog);
-                                        }
+                                        performSwipeAction(dialogId, dialog);
                                     }
                                 }
                             }
@@ -2511,16 +2505,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     return;
                 }
 
-                if (!getMessagesController().isPromoDialog(dialogId, false) && SharedConfig.getChatSwipeAction(currentAccount) == SwipeGestureSettingsView.SWIPE_GESTURE_READ) {
+                if (ChatObject.isCommunity(currentAccount, dialogId)
+                    || !getMessagesController().isPromoDialog(dialogId, false)
+                    && SharedConfig.getChatSwipeAction(currentAccount) == SwipeGestureSettingsView.SWIPE_GESTURE_READ) {
                     performSwipeAction(dialogId, dialog);
-                    return;
-                }
-
-                TLRPC.Chat chat = getMessagesController().getChat(-dialogId);
-                if (ChatObject.isCommunity(chat)) {
-                    ArrayList<Long> selectedDialogs = new ArrayList<>();
-                    selectedDialogs.add(dialogId);
-                    performSelectedDialogsAction(selectedDialogs, community_ungroup, true, false);
                     return;
                 }
 
@@ -9626,6 +9614,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void performSwipeAction(long dialogId, TLRPC.Dialog dialog) {
+        if (ChatObject.isCommunity(currentAccount, dialogId)) {
+            performCommunitySwipeAction(dialogId, dialog);
+            return;
+        }
         final ArrayList<Long> selectedDialogs = new ArrayList<>();
         selectedDialogs.add(dialogId);
         switch (SharedConfig.getChatSwipeAction(currentAccount)) {
@@ -9652,6 +9644,62 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             case SwipeGestureSettingsView.SWIPE_GESTURE_DELETE:
                 performSelectedDialogsAction(selectedDialogs, delete, true, false);
                 break;
+        }
+    }
+
+    private void performCommunitySwipeAction(long dialogId, TLRPC.Dialog dialog) {
+        final ArrayList<TLRPC.Dialog> peers = getMessagesController().getDialogsByCommunity(-dialogId);
+        if (peers.isEmpty()) {
+            return;
+        }
+        final ArrayList<Long> peerIds = new ArrayList<>();
+        for (int a = 0, N = peers.size(); a < N; a++) {
+            peerIds.add(peers.get(a).id);
+        }
+        switch (SharedConfig.getChatSwipeAction(currentAccount)) {
+            case SwipeGestureSettingsView.SWIPE_GESTURE_READ: {
+                canReadCount = 0;
+                for (int a = 0, N = peers.size(); a < N; a++) {
+                    if (peers.get(a).unread_count > 0 || peers.get(a).unread_mark) {
+                        canReadCount++;
+                    }
+                }
+                performSelectedDialogsAction(peerIds, read, true, false);
+                break;
+            }
+            case SwipeGestureSettingsView.SWIPE_GESTURE_MUTE: {
+                final boolean mute = !getMessagesController().isCommunityMuted(-dialogId);
+                for (int a = 0, N = peerIds.size(); a < N; a++) {
+                    getNotificationsController().setDialogNotificationsSettings(peerIds.get(a), 0,
+                        mute ? NotificationsController.SETTING_MUTE_FOREVER : NotificationsController.SETTING_MUTE_UNMUTE);
+                }
+                if (BulletinFactory.canShowBulletin(this)) {
+                    BulletinFactory.createMuteBulletin(this, mute, peerIds.size(), null).show();
+                }
+                break;
+            }
+            case SwipeGestureSettingsView.SWIPE_GESTURE_PIN: {
+                final ArrayList<Long> selectedDialogs = new ArrayList<>();
+                selectedDialogs.add(dialogId);
+                canPinCount = isDialogPinned(dialog) ? 0 : 1;
+                performSelectedDialogsAction(selectedDialogs, pin, true, false);
+                break;
+            }
+            case SwipeGestureSettingsView.SWIPE_GESTURE_DELETE: {
+                performSelectedDialogsAction(peerIds, delete, true, false);
+                break;
+            }
+            default: {
+                int archivedCount = 0;
+                for (int a = 0, N = peers.size(); a < N; a++) {
+                    if (peers.get(a).folder_id != 0) {
+                        archivedCount++;
+                    }
+                }
+                canUnarchiveCount = archivedCount == peers.size() ? archivedCount : 0;
+                performSelectedDialogsAction(peerIds, archive, true, false);
+                break;
+            }
         }
     }
 
