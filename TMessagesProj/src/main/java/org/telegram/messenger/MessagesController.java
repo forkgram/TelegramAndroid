@@ -9855,6 +9855,19 @@ public class MessagesController extends BaseController implements NotificationCe
         return unreadCounts;
     }
 
+    public boolean isCommunityMuted(long communityId) {
+        final ArrayList<TLRPC.Dialog> dialogs = dialogsByCommunity.get(communityId);
+        if (dialogs == null || dialogs.isEmpty()) {
+            return false;
+        }
+        for (int a = 0, N = dialogs.size(); a < N; a++) {
+            if (!isDialogMuted(dialogs.get(a).id, 0)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public MessageObject findCommunityLastMessage(long communityId) {
         final ArrayList<TLRPC.Dialog> dialogs = dialogsByCommunity.get(communityId);
         if (dialogs == null) {
