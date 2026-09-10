@@ -3879,12 +3879,8 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                     backgroundColor = Theme.getColor(Theme.key_chats_archiveBackground, resourcesProvider);
                     revealBackgroundColor = Theme.getColor(Theme.key_chats_archivePinBackground, resourcesProvider);
 
-                    if (ChatObject.isCommunity(chat)) {
-                        swipeMessage = getString(swipeMessageStringId = R.string.SwipeUngroupCommunity);
-                        backgroundColor = revealBackgroundColor = Theme.getColor(Theme.key_dialogSwipeRemove, resourcesProvider);
-                        translationDrawable = Theme.dialogs_swipeCommunityUngroup;
-                    } else if (SharedConfig.getChatSwipeAction(currentAccount) == SwipeGestureSettingsView.SWIPE_GESTURE_MUTE) {
-                        if (dialogMuted) {
+                    if (SharedConfig.getChatSwipeAction(currentAccount) == SwipeGestureSettingsView.SWIPE_GESTURE_MUTE) {
+                        if (isDialogCommunity() ? MessagesController.getInstance(currentAccount).isCommunityMuted(currentDialogCommunityId) : dialogMuted) {
                             swipeMessage = getString(swipeMessageStringId = R.string.SwipeUnmute);
                             translationDrawable = Theme.dialogs_swipeUnmuteDrawable;
                         } else {
