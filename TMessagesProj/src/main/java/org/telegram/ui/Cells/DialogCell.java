@@ -3875,7 +3875,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                     revealBackgroundColor = Theme.getColor(Theme.key_chats_archivePinBackground, resourcesProvider);
                     swipeMessage = getString(swipeMessageStringId = R.string.PsaHide);
                     translationDrawable = Theme.dialogs_hidePsaDrawable;
-                } else if (folderId == 0) {
+                } else {
                     backgroundColor = Theme.getColor(Theme.key_chats_archiveBackground, resourcesProvider);
                     revealBackgroundColor = Theme.getColor(Theme.key_chats_archivePinBackground, resourcesProvider);
 
@@ -3911,15 +3911,15 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                             swipeMessage = getString(swipeMessageStringId = R.string.SwipePin);
                             translationDrawable = Theme.dialogs_swipePinDrawable;
                         }
-                    } else {
+                    } else if (folderId == 0) {
                         swipeMessage = getString(swipeMessageStringId = R.string.Archive);
                         translationDrawable = Theme.dialogs_archiveDrawable;
+                    } else {
+                        backgroundColor = Theme.getColor(Theme.key_chats_archivePinBackground, resourcesProvider);
+                        revealBackgroundColor = Theme.getColor(Theme.key_chats_archiveBackground, resourcesProvider);
+                        swipeMessage = getString(swipeMessageStringId = R.string.Unarchive);
+                        translationDrawable = Theme.dialogs_unarchiveDrawable;
                     }
-                } else {
-                    backgroundColor = Theme.getColor(Theme.key_chats_archivePinBackground, resourcesProvider);
-                    revealBackgroundColor = Theme.getColor(Theme.key_chats_archiveBackground, resourcesProvider);
-                    swipeMessage = getString(swipeMessageStringId = R.string.Unarchive);
-                    translationDrawable = Theme.dialogs_unarchiveDrawable;
                 }
             }
 
