@@ -11458,4 +11458,13 @@
     <string name="FolderTabsStyleIcon">Icons</string>
     <string name="FolderTabsStyleInfo">Choose how folders appear in the tab bar. Assign an icon to each folder in its settings.</string>
     <string name="ShareDeleteOriginals">Delete original messages</string>
+    <string name="AppFont">App font</string>
+    <string name="AppFontSelector">Select App Font</string>
+    <string name="AppFontSelectorInfo">Choose a font to apply across the entire application.</string>
+    <string name="AppFontPreviewSample">به نام خداوند جان و خرد — 12345</string>
+    <string name="AppFontApplied">Font applied successfully</string>
+    <string name="FontDefault">Telegram Default (Roboto)</string>
+    <string name="FontVazirmatn">Vazirmatn</string>
+    <string name="FontFarNazanin">Far Nazanin</string>
+    <string name="FontFarTitr">Far Titr (Bold)</string>
 </resources>

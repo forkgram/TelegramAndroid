@@ -1168,7 +1168,7 @@ public class SharedConfig {
 
     public static void toggleUseSystemBoldFont() {
         useSystemBoldFont = !useSystemBoldFont;
-        AndroidUtilities.mediumTypeface = null;
+        AndroidUtilities.clearTypefaceCache();
         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("useSystemBoldFont", useSystemBoldFont);

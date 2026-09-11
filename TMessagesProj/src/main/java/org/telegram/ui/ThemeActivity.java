@@ -60,6 +60,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
+import org.telegram.messenger.PersianFontManager;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
@@ -96,6 +97,7 @@ import org.telegram.ui.Cells.ThemesHorizontalListCell;
 import org.telegram.ui.Components.AlertsCreator;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.CubicBezierInterpolator;
+import org.telegram.ui.Components.FontSelectBottomSheet;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.PermissionRequest;
 import org.telegram.ui.Components.RLottieDrawable;
@@ -174,6 +176,8 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
     private int contactsReimportRow;
     private int contactsSortRow;
 
+    @Keep
+    private int appFontRow;
     @Keep
     private int nightThemeRow;
     @Keep
@@ -602,6 +606,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
         swipeGestureRow = -1;
         swipeGestureInfoRow = -1;
 
+        appFontRow = -1;
         selectThemeHeaderRow = -1;
         themePreviewRow = -1;
         editThemeRow = -1;
@@ -680,6 +685,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
             swipeGestureRow = rowCount++;
             swipeGestureInfoRow = rowCount++;
 
+            appFontRow = rowCount++;
             nightThemeRow = rowCount++;
             browserRow = rowCount++;
             liteModeRow = rowCount++;
@@ -1485,6 +1491,22 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
                 createNewTheme();
             } else if (position == editThemeRow) {
                 editTheme();
+            } else if (position == appFontRow) {
+                FontSelectBottomSheet.show(this, fontKey -> {
+                    updateRows(false);
+                    if (listAdapter != null) {
+                        listAdapter.notifyDataSetChanged();
+                    }
+                    if (parentLayout != null) {
+                        parentLayout.rebuildAllFragmentViews(false, false);
+                    }
+                    try {
+                        BulletinFactory.of(ThemeActivity.this)
+                            .createSimpleBulletin(R.raw.done, LocaleController.getString("AppFontApplied", R.string.AppFontApplied))
+                            .show();
+                    } catch (Throwable ignore) {
+                    }
+                });
             } else if (position == stickersRow) {
                 presentFragment(new StickersActivity(MediaDataController.TYPE_IMAGE, null));
             } else if (position == liteModeRow) {
@@ -2473,7 +2495,10 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
             switch (holder.getItemViewType()) {
                 case TYPE_TEXT_SETTING: {
                     TextSettingsCell cell = (TextSettingsCell) holder.itemView;
-                    if (position == nightThemeRow) {
+                    if (position == appFontRow) {
+                        PersianFontManager.FontItem font = PersianFontManager.getCurrentFont();
+                        cell.setTextAndValue(getString("AppFont", R.string.AppFont), font != null ? font.name : "", true);
+                    } else if (position == nightThemeRow) {
                         if (Theme.selectedAutoNightType == Theme.AUTO_NIGHT_TYPE_NONE || Theme.getCurrentNightTheme() == null) {
                             cell.setTextAndValue(getString(R.string.AutoNightTheme), getString(R.string.AutoNightThemeOff), false);
                         } else {
@@ -2730,7 +2755,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
 
         @Override
         public int getItemViewType(int position) {
-            if (position == scheduleFromRow || position == distanceRow ||
+            if (position == appFontRow || position == scheduleFromRow || position == distanceRow ||
                     position == scheduleToRow || position == scheduleUpdateLocationRow ||
                     position == contactsReimportRow || position == contactsSortRow ||
                     position == bluetoothScoRow || position == searchEngineRow) {

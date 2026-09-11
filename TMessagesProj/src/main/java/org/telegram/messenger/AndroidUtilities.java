@@ -254,6 +254,7 @@ public class AndroidUtilities {
     public final static String TYPEFACE_MERRIWEATHER_BOLD = "fonts/mw_bold.ttf";
 
     public static Typeface mediumTypeface;
+    public static Typeface regularTypeface;
     public static ThreadLocal<byte[]> readBufferLocal = new ThreadLocal<>();
     public static ThreadLocal<byte[]> bufferLocal = new ThreadLocal<>();
 
@@ -266,6 +267,33 @@ public class AndroidUtilities {
             }
         }
         return mediumTypeface;
+    }
+
+    public static Typeface regular() {
+        if (regularTypeface == null) {
+            String fontKey = PersianFontManager.getCurrentFontKey();
+            if (PersianFontManager.FONT_DEFAULT.equals(fontKey)) {
+                regularTypeface = Typeface.DEFAULT;
+            } else {
+                PersianFontManager.FontItem item = PersianFontManager.getCurrentFont();
+                String path = item != null ? item.regularPath : null;
+                if (path != null) {
+                    regularTypeface = getTypeface(path);
+                }
+                if (regularTypeface == null) {
+                    regularTypeface = Typeface.DEFAULT;
+                }
+            }
+        }
+        return regularTypeface;
+    }
+
+    public static void clearTypefaceCache() {
+        synchronized (typefaceCache) {
+            typefaceCache.clear();
+        }
+        mediumTypeface = null;
+        regularTypeface = null;
     }
 
     private static final Hashtable<String, Typeface> typefaceCache = new Hashtable<>();
@@ -2409,34 +2437,55 @@ public class AndroidUtilities {
     }
 
     public static Typeface getTypeface(String assetPath) {
+        if (assetPath == null) {
+            return null;
+        }
+        String resolvedPath = PersianFontManager.getMappedAssetPath(assetPath);
+        if (resolvedPath == null) {
+            resolvedPath = assetPath;
+        }
         synchronized (typefaceCache) {
-            if (!typefaceCache.containsKey(assetPath)) {
+            if (!typefaceCache.containsKey(resolvedPath)) {
                 try {
                     Typeface t;
                     if (Build.VERSION.SDK_INT >= 26) {
-                        Typeface.Builder builder = new Typeface.Builder(ApplicationLoader.applicationContext.getAssets(), assetPath);
-                        if (assetPath.contains("rextrabold")) {
+                        Typeface.Builder builder = new Typeface.Builder(ApplicationLoader.applicationContext.getAssets(), resolvedPath);
+                        if (resolvedPath.contains("rextrabold") || resolvedPath.contains("titr") || resolvedPath.contains("bold")) {
                             builder.setWeight(800);
-                        }
-                        if (assetPath.contains("medium") || assetPath.contains("rbold")) {
+                        } else if (resolvedPath.contains("medium") || resolvedPath.contains("rbold")) {
                             builder.setWeight(700);
                         }
-                        if (assetPath.contains("italic")) {
+                        if (resolvedPath.contains("italic")) {
                             builder.setItalic(true);
                         }
                         t = builder.build();
                     } else {
+                        t = Typeface.createFromAsset(ApplicationLoader.applicationContext.getAssets(), resolvedPath);
+                    }
+                    if (t == null && !resolvedPath.equals(assetPath)) {
                         t = Typeface.createFromAsset(ApplicationLoader.applicationContext.getAssets(), assetPath);
                     }
-                    typefaceCache.put(assetPath, t);
+                    if (t != null) {
+                        typefaceCache.put(resolvedPath, t);
+                    }
                 } catch (Exception e) {
                     if (BuildVars.LOGS_ENABLED) {
-                        FileLog.e("Could not get typeface '" + assetPath + "' because " + e.getMessage());
+                        FileLog.e("Could not get typeface '" + resolvedPath + "' (" + assetPath + ") because " + e.getMessage());
+                    }
+                    if (!resolvedPath.equals(assetPath)) {
+                        try {
+                            Typeface fallback = Typeface.createFromAsset(ApplicationLoader.applicationContext.getAssets(), assetPath);
+                            if (fallback != null) {
+                                typefaceCache.put(resolvedPath, fallback);
+                                return fallback;
+                            }
+                        } catch (Exception ignored) {
+                        }
                     }
                     return null;
                 }
             }
-            return typefaceCache.get(assetPath);
+            return typefaceCache.get(resolvedPath);
         }
     }
 
