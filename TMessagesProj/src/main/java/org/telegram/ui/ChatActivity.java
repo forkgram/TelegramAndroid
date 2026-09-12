@@ -15949,6 +15949,14 @@ public class ChatActivity extends BaseFragment implements
         }
     }
 
+    private void moveScrollToFirstMessage() {
+        if (chatListView != null && chatAdapter != null && !messages.isEmpty() && !pinchToZoomHelper.isInOverlayMode()) {
+            chatAdapter.updateRowsSafe();
+            chatLayoutManager.scrollToPositionWithOffset(chatAdapter.messagesStartRow + messages.size() - 1, dp(4), false);
+            chatListView.stopScroll();
+        }
+    }
+
     private Runnable sendSecretMessageRead(MessageObject messageObject, boolean readNow) {
         if (messageObject == null || messageObject.isOut() || !messageObject.isSecretMedia() || messageObject.messageOwner.destroyTime != 0 || messageObject.messageOwner.ttl <= 0) {
             return null;
@@ -22206,7 +22214,11 @@ public class ChatActivity extends BaseFragment implements
                         scrollToMessage = null;
                     } else if (!fakePostponedScroll) {
                         addSponsoredMessages(!isFirstLoading);
-                        moveScrollToLastMessage(true);
+                        if (chatMode == MODE_SCHEDULED) {
+                            moveScrollToFirstMessage();
+                        } else {
+                            moveScrollToLastMessage(true);
+                        }
                     }
                     if (loaded_mentions_count != 0) {
                         showMentionDownButton(true, true);
