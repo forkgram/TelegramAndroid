@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ForkSettingsLock">Instellingenvergrendeling</string>
+    <string name="ForkSettingsLockChangeCode">Code wijzigen</string>
+    <string name="ForkSettingsLockCodesDoNotMatch">De codes komen niet overeen. Voer een nieuwe code in.</string>
+    <string name="ForkSettingsLockConfirmCodeInfo">Voer de code nogmaals in ter bevestiging.</string>
+    <string name="ForkSettingsLockConfirmCurrentCodeInfo">Voer de huidige code in om deze te wijzigen of te verwijderen.</string>
+    <string name="ForkSettingsLockInfo">Gebruik een aparte 4-cijferige code om de instellingen van de Fork-client te openen. De code beschermt alleen dit instellingenscherm: het wissen van de app-gegevens of het installeren van een andere build verwijdert hem.</string>
+    <string name="ForkSettingsLockRemoveCode">Code verwijderen</string>
+    <string name="ForkSettingsLockRemoveCodeConfirm">De instellingen van de Fork-client worden dan zonder code geopend.</string>
+    <string name="ForkSettingsLockSetCode">Code instellen</string>
+    <string name="ForkSettingsLockUnlockInfo">Voer de code in om de instellingen van de Fork-client te openen.</string>
     <string name="DeleteFromDevice">Van apparaat verwijderen</string>
     <string name="DeleteFromDeviceDone">Bestand van apparaat verwijderd</string>
     <string name="DeleteFromDeviceMessage">Dit bestand wordt definitief van je apparaat verwijderd.</string>
