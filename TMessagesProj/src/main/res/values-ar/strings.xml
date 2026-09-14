@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ForkSettingsLock">قفل الإعدادات</string>
+    <string name="ForkSettingsLockChangeCode">تغيير الرمز</string>
+    <string name="ForkSettingsLockCodesDoNotMatch">الرمزان غير متطابقين. أدخل رمزًا جديدًا.</string>
+    <string name="ForkSettingsLockConfirmCodeInfo">أدخل الرمز مرة أخرى للتأكيد.</string>
+    <string name="ForkSettingsLockConfirmCurrentCodeInfo">أدخل الرمز الحالي لتغييره أو إزالته.</string>
+    <string name="ForkSettingsLockInfo">استخدم رمزًا منفصلًا من 4 أرقام لفتح إعدادات عميل Fork. يحمي هذا الرمز شاشة الإعدادات هذه فقط: مسح بيانات التطبيق أو تثبيت نسخة أخرى يزيله.</string>
+    <string name="ForkSettingsLockRemoveCode">إزالة الرمز</string>
+    <string name="ForkSettingsLockRemoveCodeConfirm">ستُفتح إعدادات عميل Fork بدون رمز.</string>
+    <string name="ForkSettingsLockSetCode">تعيين الرمز</string>
+    <string name="ForkSettingsLockUnlockInfo">أدخل الرمز لفتح إعدادات عميل Fork.</string>
     <string name="DeleteFromDevice">حذف من الجهاز</string>
     <string name="DeleteFromDeviceDone">تم حذف الملف من الجهاز</string>
     <string name="DeleteFromDeviceMessage">سيُحذف هذا الملف نهائيًا من جهازك.</string>

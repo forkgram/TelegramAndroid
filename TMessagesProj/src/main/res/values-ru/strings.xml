@@ -228,6 +228,16 @@
     <string name="HideStoriesInArchive">Скрыть истории в архиве</string>
     <string name="ExtractMediaFromPreview">Отправлять медиа из превью ссылки как вложение</string>
 
+    <string name="ForkSettingsLock">Блокировка настроек</string>
+    <string name="ForkSettingsLockInfo">Отдельный код из 4 цифр для входа в настройки Fork Client. Код защищает только этот экран настроек: очистка данных приложения или установка другой сборки снимут его.</string>
+    <string name="ForkSettingsLockUnlockInfo">Введите код, чтобы открыть настройки Fork Client.</string>
+    <string name="ForkSettingsLockConfirmCurrentCodeInfo">Введите текущий код, чтобы изменить или удалить его.</string>
+    <string name="ForkSettingsLockConfirmCodeInfo">Введите код ещё раз для подтверждения.</string>
+    <string name="ForkSettingsLockCodesDoNotMatch">Коды не совпадают. Введите новый код.</string>
+    <string name="ForkSettingsLockSetCode">Установить код</string>
+    <string name="ForkSettingsLockChangeCode">Изменить код</string>
+    <string name="ForkSettingsLockRemoveCode">Удалить код</string>
+    <string name="ForkSettingsLockRemoveCodeConfirm">Настройки Fork Client будут открываться без кода.</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Русский</string>
