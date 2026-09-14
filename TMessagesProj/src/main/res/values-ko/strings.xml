@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ForkSettingsLock">설정 잠금</string>
+    <string name="ForkSettingsLockChangeCode">코드 변경</string>
+    <string name="ForkSettingsLockCodesDoNotMatch">코드가 일치하지 않습니다. 새 코드를 입력하세요.</string>
+    <string name="ForkSettingsLockConfirmCodeInfo">확인을 위해 코드를 다시 입력하세요.</string>
+    <string name="ForkSettingsLockConfirmCurrentCodeInfo">코드를 변경하거나 삭제하려면 현재 코드를 입력하세요.</string>
+    <string name="ForkSettingsLockInfo">포크 클라이언트 설정을 열려면 별도의 4자리 코드를 사용합니다. 이 코드는 이 설정 화면만 보호하며, 앱 데이터를 지우거나 다른 빌드를 설치하면 사라집니다.</string>
+    <string name="ForkSettingsLockRemoveCode">코드 삭제</string>
+    <string name="ForkSettingsLockRemoveCodeConfirm">포크 클라이언트 설정이 코드 없이 열립니다.</string>
+    <string name="ForkSettingsLockSetCode">코드 설정</string>
+    <string name="ForkSettingsLockUnlockInfo">포크 클라이언트 설정을 열려면 코드를 입력하세요.</string>
     <string name="DeleteFromDevice">기기에서 삭제</string>
     <string name="DeleteFromDeviceDone">파일이 기기에서 삭제되었습니다</string>
     <string name="DeleteFromDeviceMessage">이 파일이 기기에서 영구적으로 삭제됩니다.</string>
