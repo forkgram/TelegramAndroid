@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ForkSettingsLock">Bloqueo de ajustes</string>
+    <string name="ForkSettingsLockChangeCode">Cambiar código</string>
+    <string name="ForkSettingsLockCodesDoNotMatch">Los códigos no coinciden. Pon un código nuevo.</string>
+    <string name="ForkSettingsLockConfirmCodeInfo">Pon el código otra vez para confirmarlo.</string>
+    <string name="ForkSettingsLockConfirmCurrentCodeInfo">Pon el código actual para cambiarlo o eliminarlo.</string>
+    <string name="ForkSettingsLockInfo">Usa un código de 4 dígitos aparte para abrir las Configuraciones del cliente Fork. El código protege solo esta pantalla de ajustes: se elimina al borrar los datos de la app o al instalar otra compilación.</string>
+    <string name="ForkSettingsLockRemoveCode">Eliminar código</string>
+    <string name="ForkSettingsLockRemoveCodeConfirm">Las Configuraciones del cliente Fork se abrirán sin código.</string>
+    <string name="ForkSettingsLockSetCode">Poner un código</string>
+    <string name="ForkSettingsLockUnlockInfo">Pon el código para abrir las Configuraciones del cliente Fork.</string>
     <string name="DeleteFromDevice">Eliminar del dispositivo</string>
     <string name="DeleteFromDeviceDone">Archivo eliminado del dispositivo</string>
     <string name="DeleteFromDeviceMessage">Este archivo se eliminará permanentemente de tu dispositivo.</string>

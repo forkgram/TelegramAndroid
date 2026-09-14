@@ -5,6 +5,7 @@
 package org.telegram.ui;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,13 +15,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.forkgram.FolderIcons;
@@ -38,6 +42,7 @@ import org.telegram.messenger.Utilities;
 import org.telegram.messenger.browser.Browser;
 import org.telegram.messenger.forkgram.ForkOfflineTranscribe;
 import org.telegram.messenger.forkgram.ForkOfflineTranslate;
+import org.telegram.messenger.forkgram.ForkSettingsLock;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.forkgram.SettingsBackup;
 import org.telegram.ui.ActionBar.ActionBar;
@@ -77,6 +82,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_HIDE_SENSITIVE_USERNAME = 7;
     public static final int ID_HIDE_SENSITIVE_BIO = 8;
     public static final int ID_HIDE_SENSITIVE_ID = 9;
+    public static final int ID_FORK_SETTINGS_LOCK = 98;
 
     public static final int ID_HIDE_IN_APP_HINTS = 10;
     public static final int ID_HIDE_BOTTOM_BUTTON = 11;
@@ -156,10 +162,18 @@ public class ForkSettingsActivity extends BaseFragment {
     private ActionBarMenuItem searchItem;
     private String searchQuery = "";
     private int highlightItemId;
+    private boolean unlocked = true;
+    private AlertDialog unlockDialog;
 
     public ForkSettingsActivity highlight(int itemId) {
         highlightItemId = itemId;
         return this;
+    }
+
+    @Override
+    public boolean onFragmentCreate() {
+        unlocked = !ForkSettingsLock.hasCode();
+        return super.onFragmentCreate();
     }
 
     private class StickerSizeCell extends FrameLayout {
@@ -299,6 +313,10 @@ public class ForkSettingsActivity extends BaseFragment {
         }
     }
 
+    private static String getForkSettingsLockText() {
+        return LocaleController.getString(ForkSettingsLock.hasCode() ? R.string.PasswordOn : R.string.PasswordOff);
+    }
+
     private String getHiddenAccountsText() {
         int hiddenCount = HiddenAccountHelper.getHiddenAccountsCount();
         return hiddenCount > 0 ? Integer.toString(hiddenCount) : LocaleController.getString(R.string.PasswordOff);
@@ -352,6 +370,7 @@ public class ForkSettingsActivity extends BaseFragment {
             });
         searchItem.setSearchFieldHint(LocaleController.getString(R.string.Search));
         searchItem.setContentDescription(LocaleController.getString(R.string.Search));
+        searchItem.setVisibility(unlocked ? View.VISIBLE : View.GONE);
 
         fragmentView = new FrameLayout(context);
         fragmentView.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundGray));
@@ -361,19 +380,46 @@ public class ForkSettingsActivity extends BaseFragment {
         listView.setGlowColor(Theme.getColor(Theme.key_avatar_backgroundActionBarBlue));
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT));
 
-        if (highlightItemId != 0) {
-            final int itemId = highlightItemId;
-            highlightItemId = 0;
-            listView.highlightRow(() -> {
-                int position = listView.findPositionByItemId(itemId);
-                if (position >= 0) {
-                    listView.layoutManager.scrollToPositionWithOffset(position, AndroidUtilities.dp(60));
-                }
-                return position;
-            });
+        if (unlocked) {
+            applyHighlight();
         }
 
         return fragmentView;
+    }
+
+    private void applyHighlight() {
+        if (highlightItemId == 0 || listView == null) {
+            return;
+        }
+        final int itemId = highlightItemId;
+        highlightItemId = 0;
+        listView.highlightRow(() -> {
+            int position = listView.findPositionByItemId(itemId);
+            if (position >= 0) {
+                listView.layoutManager.scrollToPositionWithOffset(position, AndroidUtilities.dp(60));
+            }
+            return position;
+        });
+    }
+
+    @Override
+    public void onBecomeFullyVisible() {
+        super.onBecomeFullyVisible();
+        if (!unlocked) {
+            showUnlockDialog();
+        }
+    }
+
+    @Override
+    protected void onDialogDismiss(Dialog dialog) {
+        super.onDialogDismiss(dialog);
+        if (dialog != unlockDialog) {
+            return;
+        }
+        unlockDialog = null;
+        if (!unlocked && !isPaused() && !isFinishing()) {
+            AndroidUtilities.runOnUIThread(this::finishFragment);
+        }
     }
 
     private boolean isSearching() {
@@ -381,6 +427,9 @@ public class ForkSettingsActivity extends BaseFragment {
     }
 
     private void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
+        if (!unlocked) {
+            return;
+        }
         if (isSearching()) {
             fillSearchResults(items);
         } else {
@@ -476,6 +525,7 @@ public class ForkSettingsActivity extends BaseFragment {
         if (HiddenAccountHelper.shouldShowSettingsEntry(currentAccount)) {
             items.add(UItem.asSettingsCell(ID_HIDDEN_ACCOUNTS, LocaleController.getString(R.string.HiddenAccounts), getHiddenAccountsText()));
         }
+        items.add(UItem.asSettingsCell(ID_FORK_SETTINGS_LOCK, LocaleController.getString(R.string.ForkSettingsLock), getForkSettingsLockText()));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionAppearance)));
@@ -704,6 +754,12 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("dropScreenshotCaption", item, view);
         } else if (id == ID_HIDDEN_ACCOUNTS) {
             presentFragment(new HiddenAccountsActivity());
+        } else if (id == ID_FORK_SETTINGS_LOCK) {
+            if (ForkSettingsLock.hasCode()) {
+                showCurrentCodeDialog(this::showForkSettingsLockActions);
+            } else {
+                showSetCodeDialog(false);
+            }
 
         } else if (id == ID_HIDE_IN_APP_HINTS) {
             toggle("hideInAppHints", item, view);
@@ -851,6 +907,234 @@ public class ForkSettingsActivity extends BaseFragment {
             exportSettings();
         } else if (id == ID_IMPORT_SETTINGS) {
             importSettings();
+        }
+    }
+
+    private CodeFieldContainer createCodeContainer(Context context, Utilities.Callback<CodeFieldContainer> onCompleted) {
+        CodeFieldContainer container = new CodeFieldContainer(context) {
+            @Override
+            protected void processNextPressed() {
+                onCompleted.run(this);
+            }
+        };
+        container.setNumbersCount(4, CodeFieldContainer.TYPE_PASSCODE);
+        for (CodeNumberField field : container.codeField) {
+            field.setShowSoftInputOnFocusCompat(true);
+            field.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            field.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+        }
+        return container;
+    }
+
+    private static LinearLayout wrapCodeContainer(Context context, CodeFieldContainer container) {
+        LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(AndroidUtilities.dp(24), AndroidUtilities.dp(4), AndroidUtilities.dp(24), AndroidUtilities.dp(4));
+        layout.addView(container, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
+        return layout;
+    }
+
+    private static void focusCodeContainer(CodeFieldContainer container) {
+        container.codeField[0].requestFocus();
+        AndroidUtilities.runOnUIThread(() -> AndroidUtilities.showKeyboard(container.codeField[0]), 100);
+    }
+
+    private static void clearCodeContainer(CodeFieldContainer container) {
+        for (CodeNumberField field : container.codeField) {
+            field.setText("");
+        }
+        container.codeField[0].requestFocus();
+    }
+
+    private static void showCodeError(CodeFieldContainer container) {
+        try {
+            container.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+        } catch (Exception ignore) {
+        }
+        clearCodeContainer(container);
+        for (CodeNumberField field : container.codeField) {
+            field.animateErrorProgress(1f);
+        }
+        AndroidUtilities.shakeViewSpring(container, 10, () -> AndroidUtilities.runOnUIThread(() -> {
+            for (CodeNumberField field : container.codeField) {
+                field.animateErrorProgress(0f);
+            }
+        }, 150));
+    }
+
+    private void showUnlockDialog() {
+        if (unlockDialog != null || unlocked) {
+            return;
+        }
+        Context context = getParentActivity();
+        if (context == null) {
+            return;
+        }
+        final AlertDialog[] dialogRef = new AlertDialog[1];
+        final Utilities.Callback<CodeFieldContainer> onCompleted = container -> {
+            if (!ForkSettingsLock.checkCode(container.getCode())) {
+                showCodeError(container);
+                return;
+            }
+            unlocked = true;
+            AndroidUtilities.hideKeyboard(container);
+            dialogRef[0].dismiss();
+            if (searchItem != null) {
+                searchItem.setVisibility(View.VISIBLE);
+            }
+            if (listView != null) {
+                listView.adapter.update(false);
+            }
+            applyHighlight();
+        };
+
+        CodeFieldContainer container = createCodeContainer(context, onCompleted);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString(R.string.ForkSettingsTitle));
+        builder.setMessage(LocaleController.getString(R.string.ForkSettingsLockUnlockInfo));
+        builder.setView(wrapCodeContainer(context, container));
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        builder.setPositiveButton(LocaleController.getString(R.string.Continue), null);
+
+        AlertDialog dialog = builder.create();
+        dialogRef[0] = dialog;
+        if (showDialog(dialog) == null) {
+            return;
+        }
+        unlockDialog = dialog;
+        focusCodeContainer(container);
+        View button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (button != null) {
+            button.setOnClickListener(v -> onCompleted.run(container));
+        }
+    }
+
+    private void showCurrentCodeDialog(Runnable onVerified) {
+        Context context = getParentActivity();
+        if (context == null) {
+            return;
+        }
+        final AlertDialog[] dialogRef = new AlertDialog[1];
+        final Utilities.Callback<CodeFieldContainer> onCompleted = container -> {
+            if (!ForkSettingsLock.checkCode(container.getCode())) {
+                showCodeError(container);
+                return;
+            }
+            AndroidUtilities.hideKeyboard(container);
+            dialogRef[0].dismiss();
+            onVerified.run();
+        };
+
+        CodeFieldContainer container = createCodeContainer(context, onCompleted);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString(R.string.ForkSettingsLock));
+        builder.setMessage(LocaleController.getString(R.string.ForkSettingsLockConfirmCurrentCodeInfo));
+        builder.setView(wrapCodeContainer(context, container));
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        builder.setPositiveButton(LocaleController.getString(R.string.Continue), null);
+
+        AlertDialog dialog = builder.create();
+        dialogRef[0] = dialog;
+        if (showDialog(dialog) == null) {
+            return;
+        }
+        focusCodeContainer(container);
+        View button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (button != null) {
+            button.setOnClickListener(v -> onCompleted.run(container));
+        }
+    }
+
+    private void showForkSettingsLockActions() {
+        Context context = getParentActivity();
+        if (context == null) {
+            return;
+        }
+        CharSequence[] actions = new CharSequence[] {
+            LocaleController.getString(R.string.ForkSettingsLockChangeCode),
+            LocaleController.getString(R.string.ForkSettingsLockRemoveCode)
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString(R.string.ForkSettingsLock));
+        builder.setItems(actions, (dialog, which) -> {
+            if (which == 0) {
+                showSetCodeDialog(true);
+            } else {
+                showRemoveCodeDialog();
+            }
+        });
+        showDialog(builder.create());
+    }
+
+    private void showSetCodeDialog(boolean replacing) {
+        Context context = getParentActivity();
+        if (context == null) {
+            return;
+        }
+        final AlertDialog[] dialogRef = new AlertDialog[1];
+        final String[] firstCode = new String[1];
+        final Utilities.Callback<CodeFieldContainer> onCompleted = container -> {
+            String code = container.getCode();
+            if (!ForkSettingsLock.isValidCode(code)) {
+                showCodeError(container);
+                return;
+            }
+            if (firstCode[0] == null) {
+                firstCode[0] = code;
+                clearCodeContainer(container);
+                dialogRef[0].setMessage(LocaleController.getString(R.string.ForkSettingsLockConfirmCodeInfo));
+                return;
+            }
+            if (!TextUtils.equals(firstCode[0], code)) {
+                firstCode[0] = null;
+                dialogRef[0].setMessage(LocaleController.getString(R.string.ForkSettingsLockCodesDoNotMatch));
+                showCodeError(container);
+                return;
+            }
+            ForkSettingsLock.setCode(code);
+            AndroidUtilities.hideKeyboard(container);
+            dialogRef[0].dismiss();
+            listView.adapter.update(true);
+        };
+
+        CodeFieldContainer container = createCodeContainer(context, onCompleted);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString(replacing ? R.string.ForkSettingsLockChangeCode : R.string.ForkSettingsLockSetCode));
+        builder.setMessage(LocaleController.getString(R.string.ForkSettingsLockInfo));
+        builder.setView(wrapCodeContainer(context, container));
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        builder.setPositiveButton(LocaleController.getString(R.string.Save), null);
+
+        AlertDialog dialog = builder.create();
+        dialogRef[0] = dialog;
+        if (showDialog(dialog) == null) {
+            return;
+        }
+        focusCodeContainer(container);
+        View button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (button != null) {
+            button.setOnClickListener(v -> onCompleted.run(container));
+        }
+    }
+
+    private void showRemoveCodeDialog() {
+        Context context = getParentActivity();
+        if (context == null) {
+            return;
+        }
+        AlertDialog dialog = new AlertDialog.Builder(context)
+            .setTitle(LocaleController.getString(R.string.ForkSettingsLockRemoveCode))
+            .setMessage(LocaleController.getString(R.string.ForkSettingsLockRemoveCodeConfirm))
+            .setNegativeButton(LocaleController.getString(R.string.Cancel), null)
+            .setPositiveButton(LocaleController.getString(R.string.Remove), (d, which) -> {
+                ForkSettingsLock.removeCode();
+                listView.adapter.update(true);
+            })
+            .create();
+        showDialog(dialog);
+        TextView button = (TextView) dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (button != null) {
+            button.setTextColor(Theme.getColor(Theme.key_text_RedBold));
         }
     }
 

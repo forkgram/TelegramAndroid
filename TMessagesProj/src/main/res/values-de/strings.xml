@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="ForkSettingsLock">Einstellungssperre</string>
+    <string name="ForkSettingsLockChangeCode">Code ändern</string>
+    <string name="ForkSettingsLockCodesDoNotMatch">Die Codes stimmen nicht überein. Gib einen neuen Code ein.</string>
+    <string name="ForkSettingsLockConfirmCodeInfo">Gib den Code zur Bestätigung erneut ein.</string>
+    <string name="ForkSettingsLockConfirmCurrentCodeInfo">Gib den aktuellen Code ein, um ihn zu ändern oder zu entfernen.</string>
+    <string name="ForkSettingsLockInfo">Verwende einen separaten 4-stelligen Code, um die Einstellungen des Fork-Clients zu öffnen. Der Code schützt nur diesen Einstellungsbildschirm: Das Löschen der App-Daten oder das Installieren einer anderen Version entfernt ihn.</string>
+    <string name="ForkSettingsLockRemoveCode">Code entfernen</string>
+    <string name="ForkSettingsLockRemoveCodeConfirm">Die Einstellungen des Fork-Clients lassen sich dann ohne Code öffnen.</string>
+    <string name="ForkSettingsLockSetCode">Code einrichten</string>
+    <string name="ForkSettingsLockUnlockInfo">Gib den Code ein, um die Einstellungen des Fork-Clients zu öffnen.</string>
     <string name="DeleteFromDevice">Vom Gerät löschen</string>
     <string name="DeleteFromDeviceDone">Datei vom Gerät gelöscht</string>
     <string name="DeleteFromDeviceMessage">Diese Datei wird endgültig von deinem Gerät gelöscht.</string>
