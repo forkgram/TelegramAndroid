@@ -191,6 +191,7 @@ import org.telegram.messenger.VideoEditedInfo;
 import org.telegram.messenger.WebFile;
 import org.telegram.messenger.browser.Browser;
 import org.telegram.messenger.camera.Size;
+import org.telegram.messenger.forkgram.PhotoCollage;
 //import org.telegram.messenger.chromecast.ChromecastController;
 import org.telegram.messenger.chromecast.ChromecastMedia;
 import org.telegram.messenger.chromecast.ChromecastMediaVariations;
@@ -7447,6 +7448,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             final boolean showWithoutSound = !(canEdit && canReplace) && !userIsSelf;
             final boolean multipleSelected = placeProvider != null && placeProvider.getSelectedCount() > 1;
             final boolean showSendAsRound = isCurrentVideo && !multipleSelected && !canEdit && !canReplace && sendPhotoType == 0 && (parentChatActivity != null || (placeProvider != null && placeProvider.getDialogId() != 0));
+            final ArrayList<MediaController.PhotoEntry> collagePhotos = placeProvider == null ? null : PhotoCollage.collect(placeProvider.getSelectedPhotos(), placeProvider.getSelectedPhotosOrder());
+            final boolean showSendAsCollage = collagePhotos != null && !isCurrentVideo && !canEdit && !canReplace && !hasTtl && sendPhotoType == 0;
 
             final ItemOptions options = ItemOptions.makeOptions(containerView, new DarkThemeResourceProvider(), view)
                 .addIf(showSendAsFile, R.drawable.msg_sendfile, getString(multipleSelected ? R.string.SendAsFiles : R.string.SendAsFile), () -> sendPressed(true, 0, 0, false, true, false))
@@ -7457,7 +7460,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 .addIf(showSendAsRound, R.drawable.msg_video, getString(R.string.SendAsRoundVideo), () -> {
                     applyRoundVideo = true;
                     sendPressed(true, 0, 0);
-                });
+                })
+                .addIf(showSendAsCollage, R.drawable.msg_photos, getString(R.string.SendAsSinglePhoto), () -> sendAsSinglePhoto(collagePhotos));
 
             if (options.getItemsCount() == 0) return false;
 
@@ -7990,6 +7994,49 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
     private void replacePressed() {
         sendPressed(false, 0, 0, true, false, false);
+    }
+
+    private void sendAsSinglePhoto(ArrayList<MediaController.PhotoEntry> photos) {
+        if (placeProvider == null || photos == null) {
+            return;
+        }
+        applyCaption();
+        CharSequence collageCaption = null;
+        ArrayList<TLRPC.MessageEntity> collageEntities = null;
+        for (int a = 0; a < photos.size(); a++) {
+            if (!TextUtils.isEmpty(photos.get(a).caption)) {
+                collageCaption = photos.get(a).caption;
+                collageEntities = photos.get(a).entities;
+                break;
+            }
+        }
+        final CharSequence caption = collageCaption;
+        final ArrayList<TLRPC.MessageEntity> entities = collageEntities;
+        Utilities.globalQueue.postRunnable(() -> {
+            final MediaController.PhotoEntry collage = PhotoCollage.create(photos);
+            AndroidUtilities.runOnUIThread(() -> {
+                if (placeProvider == null || !isVisible()) {
+                    return;
+                }
+                if (collage == null) {
+                    BulletinFactory.of(containerView, resourcesProvider).createErrorBulletin(getString(R.string.UnknownError)).show();
+                    return;
+                }
+                final HashMap<Object, Object> selectedPhotos = placeProvider.getSelectedPhotos();
+                final ArrayList<Object> selectedPhotosOrder = placeProvider.getSelectedPhotosOrder();
+                if (selectedPhotos == null || selectedPhotosOrder == null) {
+                    return;
+                }
+                collage.caption = caption;
+                collage.entities = entities;
+                selectedPhotos.clear();
+                selectedPhotosOrder.clear();
+                selectedPhotos.put(collage.imageId, collage);
+                selectedPhotosOrder.add(collage.imageId);
+                hasCaptionForAllMedia = false;
+                sendPressed(true, 0, 0);
+            });
+        });
     }
 
     private void sendPressed(boolean notify, int scheduleDate, int scheduleRepeatPeriod, boolean replace, boolean forceDocument, boolean confirmed) {
