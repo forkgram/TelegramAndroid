@@ -1490,4 +1490,5 @@
     <string name="FolderTabsStyleIcon">الأيقونات</string>
     <string name="FolderTabsStyleInfo">اختر كيفية ظهور المجلدات في شريط علامات التبويب. عيّن أيقونة لكل مجلد من إعداداته.</string>
     <string name="ShareDeleteOriginals">حذف الرسائل الأصلية</string>
+    <string name="SendAsSinglePhoto">إرسال كصورة واحدة</string>
 </resources>

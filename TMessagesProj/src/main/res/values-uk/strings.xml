@@ -523,4 +523,5 @@
     <string name="FolderTabsStyleIcon">Значки</string>
     <string name="FolderTabsStyleInfo">Виберіть, як папки відображаються на панелі вкладок. Значок можна задати в налаштуваннях кожної папки.</string>
     <string name="ShareDeleteOriginals">Видалити початкові повідомлення</string>
+    <string name="SendAsSinglePhoto">Надіслати одним фото</string>
 </resources>
