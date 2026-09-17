@@ -327,6 +327,7 @@ public class MessageObject {
     public CharSequence editingMessage;
     public ArrayList<TLRPC.MessageEntity> editingMessageEntities;
     public boolean editingMessageSearchWebPage;
+    public Boolean editingMediaSpoiler;
     public ArrayList<TLRPC.MessageEntity> webPageDescriptionEntities;
 
     public String previousMessage;
