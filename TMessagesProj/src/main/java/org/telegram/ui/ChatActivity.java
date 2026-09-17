@@ -190,6 +190,7 @@ import org.telegram.messenger.camera.CameraView;
 import org.telegram.messenger.forkgram.ForkUtils;
 import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.messenger.forkgram.FormattingMenu;
+import org.telegram.messenger.forkgram.MediaSpoiler;
 import org.telegram.messenger.support.LongSparseIntArray;
 import org.telegram.messenger.utils.FBool;
 import org.telegram.messenger.utils.OnPostDrawView;
@@ -865,6 +866,8 @@ public class ChatActivity extends BaseFragment implements
     private int cantForwardMessagesCount;
     private int canForwardMessagesCount;
     private int canEditMessagesCount;
+    private int canSpoilerMessagesCount;
+    private int spoileredMessagesCount;
     private int cantSaveMessagesCount;
     private int canSaveMusicCount;
     private int canSaveDocumentsCount;
@@ -1858,6 +1861,8 @@ public class ChatActivity extends BaseFragment implements
     private final static int charge_fee = 72;
 
     private final static int chat_menu_topic_create = 73;
+
+    private final static int media_spoiler = 75;
 
     private final static int id_chat_compose_panel = 1000;
 
@@ -3839,6 +3844,8 @@ public class ChatActivity extends BaseFragment implements
         dummyMessageCell = null;
         cantDeleteMessagesCount = 0;
         canEditMessagesCount = 0;
+        canSpoilerMessagesCount = 0;
+        spoileredMessagesCount = 0;
         cantForwardMessagesCount = 0;
         canForwardMessagesCount = 0;
         cantSaveMessagesCount = 0;
@@ -4116,6 +4123,23 @@ public class ChatActivity extends BaseFragment implements
                             MessageObject msg = selectedMessagesCanStarIds[a].valueAt(b);
                             getMediaDataController().addRecentSticker(MediaDataController.TYPE_FAVE, msg, msg.getDocument(), (int) (System.currentTimeMillis() / 1000), !hasUnfavedSelected);
                         }
+                    }
+                    clearSelectionMode();
+                } else if (id == media_spoiler) {
+                    final boolean spoiler = hasUnspoileredSelected;
+                    final ArrayList<MessageObject> messages = new ArrayList<>();
+                    for (int a = 1; a >= 0; a--) {
+                        for (int b = 0; b < selectedMessagesIds[a].size(); b++) {
+                            messages.add(selectedMessagesIds[a].valueAt(b));
+                        }
+                    }
+                    for (int a = 0; a < messages.size(); a++) {
+                        final MessageObject message = messages.get(a);
+                        if (!MediaSpoiler.canToggle(message) || MediaSpoiler.isSpoilered(message) == spoiler) {
+                            continue;
+                        }
+                        message.editingMediaSpoiler = spoiler;
+                        getSendMessagesHelper().editMessage(message, null, null, null, null, null, null, false, spoiler, message);
                     }
                     clearSelectionMode();
                 } else if (id == edit) {
@@ -10551,6 +10575,23 @@ public class ChatActivity extends BaseFragment implements
         return INavigationLayout.BackButtonState.BACK;
     }
 
+    private boolean hasUnspoileredSelected;
+
+    private void updateMediaSpoilerItem(ActionBarMenuItem item) {
+        if (item == null) {
+            return;
+        }
+        final int selectedCount = selectedMessagesIds[0].size() + selectedMessagesIds[1].size();
+        hasUnspoileredSelected = spoileredMessagesCount < selectedCount;
+        if (selectedCount == 0 || canSpoilerMessagesCount != selectedCount) {
+            item.setVisibility(View.GONE);
+            return;
+        }
+        item.setVisibility(View.VISIBLE);
+        item.setIcon(hasUnspoileredSelected ? R.drawable.msg_spoiler : R.drawable.msg_spoiler_off);
+        item.setContentDescription(LocaleController.getString(hasUnspoileredSelected ? R.string.EnablePhotoSpoiler : R.string.DisablePhotoSpoiler));
+    }
+
     private void createActionMode() {
         if (selectedMessagesCountTextView != null || getContext() == null) {
             return;
@@ -10609,6 +10650,7 @@ public class ChatActivity extends BaseFragment implements
             final boolean isSavedMessages = getDialogId() == getUserConfig().getClientUserId() && (chatMode == 0 || chatMode == MODE_SAVED);
             actionModeViews.add(actionMode.addItemWithWidth(save_to, R.drawable.msg_download, dp(48), LocaleController.getString(R.string.SaveToMusic)));
             actionModeViews.add(actionMode.addItemWithWidth(edit, R.drawable.msg_edit, dp(48), LocaleController.getString(R.string.Edit)));
+            actionModeViews.add(actionMode.addItemWithWidth(media_spoiler, R.drawable.msg_spoiler, dp(48), LocaleController.getString(R.string.EnablePhotoSpoiler)));
             if (isSavedMessages) {
                 actionModeViews.add(actionMode.addItemWithWidth(tag_message, R.drawable.menu_tag_edit, dp(48), LocaleController.getString(R.string.AccDescrTagMessage)));
             }
@@ -10631,6 +10673,7 @@ public class ChatActivity extends BaseFragment implements
         }
         updateMultipleSelection(actionMode);
         actionMode.setItemVisibility(edit, canEditMessagesCount == 1 && selectedMessagesIds[0].size() + selectedMessagesIds[1].size() == 1 ? View.VISIBLE : View.GONE);
+        updateMediaSpoilerItem(actionMode.getItem(media_spoiler));
         actionMode.setItemVisibility(copy, !isPeerNoForwards() && selectedMessagesCanCopyIds[0].size() + selectedMessagesCanCopyIds[1].size() != 0 ? View.VISIBLE : View.GONE);
         actionMode.setItemVisibility(star, selectedMessagesCanStarIds[0].size() + selectedMessagesCanStarIds[1].size() != 0 ? View.VISIBLE : View.GONE);
         actionMode.setItemVisibility(delete, cantDeleteMessagesCount == 0 ? View.VISIBLE : View.GONE);
@@ -19736,6 +19779,12 @@ public class ChatActivity extends BaseFragment implements
                     if (messageObject.canEditMessage(currentChat)) {
                         canEditMessagesCount--;
                     }
+                    if (MediaSpoiler.canToggle(messageObject) && messageObject.canEditMessage(currentChat)) {
+                        canSpoilerMessagesCount--;
+                        if (MediaSpoiler.isSpoilered(messageObject)) {
+                            spoileredMessagesCount--;
+                        }
+                    }
                     if (!messageObject.canDeleteMessage(chatMode == MODE_SCHEDULED, currentChat)) {
                         cantDeleteMessagesCount--;
                     }
@@ -19772,6 +19821,12 @@ public class ChatActivity extends BaseFragment implements
                     }
                     if (messageObject.canEditMessage(currentChat)) {
                         canEditMessagesCount++;
+                    }
+                    if (MediaSpoiler.canToggle(messageObject) && messageObject.canEditMessage(currentChat)) {
+                        canSpoilerMessagesCount++;
+                        if (MediaSpoiler.isSpoilered(messageObject)) {
+                            spoileredMessagesCount++;
+                        }
                     }
                     if (!messageObject.canDeleteMessage(chatMode == MODE_SCHEDULED, currentChat)) {
                         cantDeleteMessagesCount++;
@@ -19886,6 +19941,7 @@ public class ChatActivity extends BaseFragment implements
                 if (starItem != null) {
                     starItem.setIcon(hasUnfavedSelected ? R.drawable.msg_fave : R.drawable.msg_unfave);
                 }
+                updateMediaSpoilerItem(actionBar.createActionMode().getItem(media_spoiler));
                 final int newEditVisibility = canEditMessagesCount == 1 && selectedCount == 1 ? View.VISIBLE : View.GONE;
                 if (actionsButtonsLayout != null) {
                     boolean allowChatActions = true;
@@ -31305,6 +31361,8 @@ public class ChatActivity extends BaseFragment implements
         }
         cantDeleteMessagesCount = 0;
         canEditMessagesCount = 0;
+        canSpoilerMessagesCount = 0;
+        spoileredMessagesCount = 0;
         cantForwardMessagesCount = 0;
         canSaveMusicCount = 0;
         canSaveDocumentsCount = 0;
