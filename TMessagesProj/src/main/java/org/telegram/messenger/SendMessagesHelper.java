@@ -53,6 +53,7 @@ import androidx.core.view.inputmethod.InputContentInfoCompat;
 
 import org.json.JSONObject;
 import org.telegram.messenger.audioinfo.AudioInfo;
+import org.telegram.messenger.forkgram.MediaSpoiler;
 import org.telegram.messenger.support.SparseLongArray;
 import org.telegram.messenger.utils.EphemeralMessagesHelper;
 import org.telegram.messenger.utils.tlutils.AmountUtils;
@@ -1503,6 +1504,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
 
     private void revertEditingMessageObject(MessageObject object) {
         object.cancelEditing = true;
+        object.editingMediaSpoiler = null;
         object.messageOwner.media = object.previousMedia;
         object.messageOwner.message = object.previousMessage;
         object.messageOwner.entities = object.previousMessageEntities;
@@ -3180,14 +3182,20 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                 if (type == 11) {
                     inputMedia = pollToAddOptionMessageObject.input_media;
                 } else if (type == 1) {
-                    if ((newMsg.media == null || newMsg.media instanceof TLRPC.TL_messageMediaEmpty || newMsg.media != null && newMsg.media.webpage instanceof TLRPC.TL_webPageEmpty) && !messageObject.editingMessageSearchWebPage) {
-                        inputMedia = new TLRPC.TL_inputMediaEmpty();
-                    } else if (newMsg != null && newMsg.media != null && newMsg.media.webpage != null) {
-                        TLRPC.TL_inputMediaWebPage inputWebpage = new TLRPC.TL_inputMediaWebPage();
-                        inputWebpage.url = newMsg.media.webpage.url;
-                        inputWebpage.force_small_media = newMsg.media.force_small_media;
-                        inputWebpage.force_large_media = newMsg.media.force_large_media;
-                        inputMedia = inputWebpage;
+                    if (messageObject.editingMediaSpoiler != null) {
+                        inputMedia = MediaSpoiler.inputMedia(messageObject, messageObject.editingMediaSpoiler);
+                        messageObject.editingMediaSpoiler = null;
+                    }
+                    if (inputMedia == null) {
+                        if ((newMsg.media == null || newMsg.media instanceof TLRPC.TL_messageMediaEmpty || newMsg.media != null && newMsg.media.webpage instanceof TLRPC.TL_webPageEmpty) && !messageObject.editingMessageSearchWebPage) {
+                            inputMedia = new TLRPC.TL_inputMediaEmpty();
+                        } else if (newMsg != null && newMsg.media != null && newMsg.media.webpage != null) {
+                            TLRPC.TL_inputMediaWebPage inputWebpage = new TLRPC.TL_inputMediaWebPage();
+                            inputWebpage.url = newMsg.media.webpage.url;
+                            inputWebpage.force_small_media = newMsg.media.force_small_media;
+                            inputWebpage.force_large_media = newMsg.media.force_large_media;
+                            inputMedia = inputWebpage;
+                        }
                     }
                 } else if (type == 2) {
                     TLRPC.TL_inputMediaUploadedPhoto uploadedPhoto = new TLRPC.TL_inputMediaUploadedPhoto();
