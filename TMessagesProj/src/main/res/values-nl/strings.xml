@@ -237,6 +237,16 @@
     <string name="EnableLastSeenDots">Gekleurde stippen voor laatst gezien inschakelen</string>
     <string name="HideStoriesInArchive">Verhalen in archief verbergen</string>
     <string name="ExtractMediaFromPreview">Media uit linkvoorbeeld als bijlage verzenden</string>
+    <string name="ReplaceLinksOnPaste">Links vervangen bij plakken</string>
+    <string name="ReplaceLinksOnPasteInfo">Links die je in een bericht plakt, worden vervangen volgens de regels hieronder. Handig voor diensten waarvan Telegram geen voorbeeldweergave kan tonen.</string>
+    <string name="LinkReplacementRules">Vervangingsregels</string>
+    <string name="LinkReplacementRulesInfo">Elke regel bestaat uit een reguliere expressie en de tekst die een overeenkomst vervangt. Gebruik \$1 om een vastgelegde groep in te voegen.</string>
+    <string name="LinkReplacementAdd">Regel toevoegen</string>
+    <string name="LinkReplacementEdit">Regel bewerken</string>
+    <string name="LinkReplacementFind">Zoeken</string>
+    <string name="LinkReplacementReplaceWith">Vervangen door</string>
+    <string name="LinkReplacementInvalid">Ongeldige expressie</string>
+    <string name="LinkReplacedOnPaste">Link vervangen</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

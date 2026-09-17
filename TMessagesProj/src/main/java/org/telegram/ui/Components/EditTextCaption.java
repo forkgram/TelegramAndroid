@@ -49,6 +49,7 @@ import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.CodeHighlighting;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.forkgram.LinkReplacements;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.R;
@@ -991,12 +992,18 @@ public class EditTextCaption extends EditTextBoldCursor implements FloatingToolb
                     } else {
                         QuoteSpan.normalizeQuotes(pasted);
                     }
-                    setText(getText().replace(start, end, pasted));
-                    setSelection(start + pasted.length(), start + pasted.length());
+                    if (!LinkReplacements.pasteWithReplacements(this, pasted)) {
+                        setText(getText().replace(start, end, pasted));
+                        setSelection(start + pasted.length(), start + pasted.length());
+                    }
                     return true;
                 } catch (Exception e) {
                     FileLog.e(e);
                 }
+            }
+            if (clipData != null && clipData.getItemCount() == 1
+                && LinkReplacements.pasteWithReplacements(this, clipData.getItemAt(0).coerceToText(getContext()))) {
+                return true;
             }
         } else if (id == android.R.id.copy) {
             int start = Math.max(0, getSelectionStart());

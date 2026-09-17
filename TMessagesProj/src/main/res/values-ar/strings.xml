@@ -237,6 +237,16 @@
     <string name="EnableLastSeenDots">تفعيل نقاط ملونة لآخر ظهور</string>
     <string name="HideStoriesInArchive">إخفاء القصص في الأرشيف</string>
     <string name="ExtractMediaFromPreview">إرسال الوسائط من معاينة الرابط كمرفق</string>
+    <string name="ReplaceLinksOnPaste">استبدال الروابط عند اللصق</string>
+    <string name="ReplaceLinksOnPasteInfo">الروابط التي تلصقها في رسالة يتم استبدالها وفق القواعد أدناه. مفيد للخدمات التي لا يستطيع تيليجرام عرض معاينتها.</string>
+    <string name="LinkReplacementRules">قواعد الاستبدال</string>
+    <string name="LinkReplacementRulesInfo">كل قاعدة تتكون من تعبير نمطي والنص الذي يحل محل التطابق. استخدم \$1 لإدراج مجموعة ملتقطة.</string>
+    <string name="LinkReplacementAdd">إضافة قاعدة</string>
+    <string name="LinkReplacementEdit">تعديل قاعدة</string>
+    <string name="LinkReplacementFind">بحث</string>
+    <string name="LinkReplacementReplaceWith">استبدال بـ</string>
+    <string name="LinkReplacementInvalid">تعبير غير صالح</string>
+    <string name="LinkReplacedOnPaste">تم استبدال الرابط</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>

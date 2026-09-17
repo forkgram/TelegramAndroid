@@ -237,6 +237,16 @@
     <string name="EnableLastSeenDots">Farbige Punkte für „Zuletzt gesehen“ aktivieren</string>
     <string name="HideStoriesInArchive">Stories im Archiv ausblenden</string>
     <string name="ExtractMediaFromPreview">Medien aus der Linkvorschau als Anhang senden</string>
+    <string name="ReplaceLinksOnPaste">Links beim Einfügen ersetzen</string>
+    <string name="ReplaceLinksOnPasteInfo">Links, die du in eine Nachricht einfügst, werden nach den Regeln unten ersetzt. Nützlich für Dienste, deren Vorschau Telegram nicht darstellen kann.</string>
+    <string name="LinkReplacementRules">Ersetzungsregeln</string>
+    <string name="LinkReplacementRulesInfo">Jede Regel besteht aus einem regulären Ausdruck und dem Text, der einen Treffer ersetzt. Mit \$1 fügst du eine erfasste Gruppe ein.</string>
+    <string name="LinkReplacementAdd">Regel hinzufügen</string>
+    <string name="LinkReplacementEdit">Regel bearbeiten</string>
+    <string name="LinkReplacementFind">Suchen</string>
+    <string name="LinkReplacementReplaceWith">Ersetzen durch</string>
+    <string name="LinkReplacementInvalid">Ungültiger Ausdruck</string>
+    <string name="LinkReplacedOnPaste">Link ersetzt</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
