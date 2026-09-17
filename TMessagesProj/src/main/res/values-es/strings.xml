@@ -237,6 +237,16 @@
     <string name="EnableLastSeenDots">Activar puntos de color de última conexión</string>
     <string name="HideStoriesInArchive">Ocultar historias en el archivo</string>
     <string name="ExtractMediaFromPreview">Enviar medios de la vista previa del enlace como adjunto</string>
+    <string name="ReplaceLinksOnPaste">Reemplazar enlaces al pegar</string>
+    <string name="ReplaceLinksOnPasteInfo">Los enlaces que pegas en un mensaje se reemplazan según las reglas de abajo. Útil para servicios cuya vista previa Telegram no puede mostrar.</string>
+    <string name="LinkReplacementRules">Reglas de reemplazo</string>
+    <string name="LinkReplacementRulesInfo">Cada regla es una expresión regular y el texto que reemplaza la coincidencia. Usa \$1 para insertar un grupo capturado.</string>
+    <string name="LinkReplacementAdd">Añadir regla</string>
+    <string name="LinkReplacementEdit">Editar regla</string>
+    <string name="LinkReplacementFind">Buscar</string>
+    <string name="LinkReplacementReplaceWith">Reemplazar con</string>
+    <string name="LinkReplacementInvalid">Expresión no válida</string>
+    <string name="LinkReplacedOnPaste">Enlace reemplazado</string>
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="LanguageName">Español</string>

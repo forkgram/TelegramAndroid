@@ -136,6 +136,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
+import org.telegram.messenger.forkgram.LinkReplacements;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.RichMessageLayout;
 import org.telegram.messenger.MessageSuggestionParams;
@@ -10851,8 +10852,10 @@ public class ChatActivityEnterView extends FrameLayout implements
             } else {
                 QuoteSpan.normalizeQuotes(pasted);
             }
-            messageEditText.setText(messageEditText.getText().replace(start, end, pasted));
-            messageEditText.setSelection(Math.min(start + pasted.length(), messageEditText.getText().length()));
+            if (!LinkReplacements.pasteWithReplacements(messageEditText, pasted)) {
+                messageEditText.setText(messageEditText.getText().replace(start, end, pasted));
+                messageEditText.setSelection(Math.min(start + pasted.length(), messageEditText.getText().length()));
+            }
             return true;
         } catch (Exception e) {
             FileLog.e(e);
