@@ -72,7 +72,7 @@ public class MarkdownParser {
             java.util.regex.Pattern.compile("^(\\d+)[.)]\\s");
 
     private static final int MAX_RICH_TEXT_LEN = 8192;
-    private static final int MAX_FILE_SIZE = 64 * 1024;
+    private static final int MAX_FILE_SIZE = 320 * 1024;
 
     public static boolean isMarkdown(MessageObject msg) {
         if (msg == null) return false;
