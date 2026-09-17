@@ -154,6 +154,16 @@
     <string name="EnableLastSeenDots">Enable colored last seen dots</string>
     <string name="HideStoriesInArchive">Hide Stories in Archive</string>
     <string name="ExtractMediaFromPreview">Send media from link preview as attachment</string>
+    <string name="ReplaceLinksOnPaste">Replace links on paste</string>
+    <string name="ReplaceLinksOnPasteInfo">Links you paste into a message are rewritten by the rules below. Useful for services whose previews Telegram cannot render.</string>
+    <string name="LinkReplacementRules">Replacement rules</string>
+    <string name="LinkReplacementRulesInfo">Each rule is a regular expression and the text that replaces a match. Use \$1 to insert a captured group.</string>
+    <string name="LinkReplacementAdd">Add rule</string>
+    <string name="LinkReplacementEdit">Edit rule</string>
+    <string name="LinkReplacementFind">Find</string>
+    <string name="LinkReplacementReplaceWith">Replace with</string>
+    <string name="LinkReplacementInvalid">Invalid expression</string>
+    <string name="LinkReplacedOnPaste">Link replaced</string>
     <string name="ForkSettingsLock">Settings Lock</string>
     <string name="ForkSettingsLockInfo">Use a separate 4-digit code to open Fork Client Settings. The code guards this settings screen only: clearing the app data or installing another build removes it.</string>
     <string name="ForkSettingsLockUnlockInfo">Enter the code to open Fork Client Settings.</string>

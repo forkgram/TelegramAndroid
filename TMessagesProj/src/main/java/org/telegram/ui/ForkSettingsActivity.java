@@ -44,6 +44,7 @@ import org.telegram.messenger.forkgram.ForkOfflineTranscribe;
 import org.telegram.messenger.forkgram.ForkOfflineTranslate;
 import org.telegram.messenger.forkgram.ForkSettingsLock;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
+import org.telegram.messenger.forkgram.LinkReplacements;
 import org.telegram.messenger.forkgram.SettingsBackup;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
@@ -110,6 +111,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_FORMAT_WITH_SECONDS = 36;
     public static final int ID_HIDE_AI_EDITOR = 37;
     public static final int ID_FORMATTING_MENU = 38;
+    public static final int ID_LINK_REPLACEMENTS = 39;
 
     public static final int ID_DISABLE_QUICK_REACTION = 40;
     public static final int ID_HIDE_MESSAGE_REACTIONS = 41;
@@ -315,6 +317,13 @@ public class ForkSettingsActivity extends BaseFragment {
 
     private static String getForkSettingsLockText() {
         return LocaleController.getString(ForkSettingsLock.hasCode() ? R.string.PasswordOn : R.string.PasswordOff);
+    }
+
+    private String getLinkReplacementsText() {
+        if (!LinkReplacements.isEnabled()) {
+            return LocaleController.getString(R.string.PasswordOff);
+        }
+        return Integer.toString(LinkReplacements.enabledCount());
     }
 
     private String getHiddenAccountsText() {
@@ -609,6 +618,7 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asButtonCheck(ID_HIDE_AI_EDITOR, LocaleController.getString(R.string.HideAiEditor), LocaleController.getString(R.string.HideAiEditorInfo))
             .setChecked(pref("hideAiEditor", false)).setMultiline(true));
         items.add(UItem.asSettingsCell(ID_FORMATTING_MENU, LocaleController.getString(R.string.FormattingMenu), null));
+        items.add(UItem.asSettingsCell(ID_LINK_REPLACEMENTS, LocaleController.getString(R.string.ReplaceLinksOnPaste), getLinkReplacementsText()));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.Reactions)));
@@ -809,6 +819,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideAiEditor", item, view);
         } else if (id == ID_FORMATTING_MENU) {
             presentFragment(new FormattingMenuActivity());
+        } else if (id == ID_LINK_REPLACEMENTS) {
+            presentFragment(new LinkReplacementsActivity());
 
         } else if (id == ID_DISABLE_QUICK_REACTION) {
             toggle("disableQuickReaction", item, view);

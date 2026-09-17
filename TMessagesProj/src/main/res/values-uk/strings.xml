@@ -237,6 +237,16 @@
     <string name="EnableLastSeenDots">Увімкнути кольорові крапки останнього входу</string>
     <string name="HideStoriesInArchive">Сховати історії в архіві</string>
     <string name="ExtractMediaFromPreview">Надсилати медіа з попереднього перегляду посилання як вкладення</string>
+    <string name="ReplaceLinksOnPaste">Замінювати посилання при вставленні</string>
+    <string name="ReplaceLinksOnPasteInfo">Посилання, вставлені в повідомлення, замінюються за правилами нижче. Корисно для сервісів, прев\'ю яких Telegram не вміє показувати.</string>
+    <string name="LinkReplacementRules">Правила заміни</string>
+    <string name="LinkReplacementRulesInfo">Кожне правило — це регулярний вираз і текст, який замінить збіг. \$1 вставляє захоплену групу.</string>
+    <string name="LinkReplacementAdd">Додати правило</string>
+    <string name="LinkReplacementEdit">Змінити правило</string>
+    <string name="LinkReplacementFind">Знайти</string>
+    <string name="LinkReplacementReplaceWith">Замінити на</string>
+    <string name="LinkReplacementInvalid">Неправильний вираз</string>
+    <string name="LinkReplacedOnPaste">Посилання замінено</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
