@@ -154,6 +154,16 @@
     <string name="EnableLastSeenDots">فعال کردن نقطه‌های رنگی آخرین بازدید</string>
     <string name="HideStoriesInArchive">پنهان کردن استوری‌ها در آرشیو</string>
     <string name="ExtractMediaFromPreview">ارسال رسانهٔ پیش‌نمایش پیوند به‌صورت پیوست</string>
+    <string name="ReplaceLinksOnPaste">جایگزینی پیوندها هنگام چسباندن</string>
+    <string name="ReplaceLinksOnPasteInfo">پیوندهایی که در پیام می‌چسبانید بر اساس قواعد زیر جایگزین می‌شوند. برای سرویس‌هایی مفید است که تلگرام نمی‌تواند پیش‌نمایش آن‌ها را نمایش دهد.</string>
+    <string name="LinkReplacementRules">قواعد جایگزینی</string>
+    <string name="LinkReplacementRulesInfo">هر قاعده از یک عبارت باقاعده و متنی که جایگزین مورد منطبق می‌شود تشکیل شده است. برای درج گروه ثبت‌شده از \$1 استفاده کنید.</string>
+    <string name="LinkReplacementAdd">افزودن قاعده</string>
+    <string name="LinkReplacementEdit">ویرایش قاعده</string>
+    <string name="LinkReplacementFind">یافتن</string>
+    <string name="LinkReplacementReplaceWith">جایگزینی با</string>
+    <string name="LinkReplacementInvalid">عبارت نامعتبر</string>
+    <string name="LinkReplacedOnPaste">پیوند جایگزین شد</string>
     <string name="ForkSettingsLock">قفل تنظیمات</string>
     <string name="ForkSettingsLockInfo">برای باز کردن تنظیمات Fork Client از یک کد ۴ رقمی جداگانه استفاده می‌شود. این کد فقط از همین صفحهٔ تنظیمات محافظت می‌کند: پاک کردن داده‌های برنامه یا نصب نسخه‌ای دیگر آن را حذف می‌کند.</string>
     <string name="ForkSettingsLockUnlockInfo">برای باز کردن تنظیمات Fork Client کد را وارد کنید.</string>

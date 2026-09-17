@@ -227,6 +227,16 @@
     <string name="EnableLastSeenDots">Включить цветные точки последнего входа</string>
     <string name="HideStoriesInArchive">Скрыть истории в архиве</string>
     <string name="ExtractMediaFromPreview">Отправлять медиа из превью ссылки как вложение</string>
+    <string name="ReplaceLinksOnPaste">Заменять ссылки при вставке</string>
+    <string name="ReplaceLinksOnPasteInfo">Ссылки, вставленные в сообщение, заменяются по правилам ниже. Полезно для сервисов, превью которых Telegram не умеет показывать.</string>
+    <string name="LinkReplacementRules">Правила замены</string>
+    <string name="LinkReplacementRulesInfo">Каждое правило — это регулярное выражение и текст, который заменит совпадение. \$1 вставляет захваченную группу.</string>
+    <string name="LinkReplacementAdd">Добавить правило</string>
+    <string name="LinkReplacementEdit">Изменить правило</string>
+    <string name="LinkReplacementFind">Найти</string>
+    <string name="LinkReplacementReplaceWith">Заменить на</string>
+    <string name="LinkReplacementInvalid">Неверное выражение</string>
+    <string name="LinkReplacedOnPaste">Ссылка заменена</string>
 
     <string name="ForkSettingsLock">Блокировка настроек</string>
     <string name="ForkSettingsLockInfo">Отдельный код из 4 цифр для входа в настройки Fork Client. Код защищает только этот экран настроек: очистка данных приложения или установка другой сборки снимут его.</string>

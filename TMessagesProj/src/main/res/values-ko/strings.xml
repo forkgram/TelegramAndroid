@@ -237,6 +237,16 @@
     <string name="EnableLastSeenDots">마지막 접속 색상 점 활성화</string>
     <string name="HideStoriesInArchive">보관함에서 스토리 숨기기</string>
     <string name="ExtractMediaFromPreview">링크 미리보기의 미디어를 첨부 파일로 전송</string>
+    <string name="ReplaceLinksOnPaste">붙여넣을 때 링크 바꾸기</string>
+    <string name="ReplaceLinksOnPasteInfo">메시지에 붙여넣은 링크가 아래 규칙에 따라 바뀝니다. 텔레그램이 미리보기를 표시하지 못하는 서비스에 유용합니다.</string>
+    <string name="LinkReplacementRules">바꾸기 규칙</string>
+    <string name="LinkReplacementRulesInfo">각 규칙은 정규 표현식과 일치하는 부분을 대체할 텍스트로 이루어집니다. \$1을 입력하면 캡처된 그룹이 삽입됩니다.</string>
+    <string name="LinkReplacementAdd">규칙 추가</string>
+    <string name="LinkReplacementEdit">규칙 편집</string>
+    <string name="LinkReplacementFind">찾기</string>
+    <string name="LinkReplacementReplaceWith">바꿀 내용</string>
+    <string name="LinkReplacementInvalid">잘못된 표현식</string>
+    <string name="LinkReplacedOnPaste">링크가 바뀌었습니다</string>
 
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
