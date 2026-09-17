@@ -151,6 +151,7 @@ import org.telegram.messenger.forkgram.AppUpdater;
 import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.messenger.forkgram.GoTo;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
+import org.telegram.messenger.forkgram.LinkReplacements;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLParseException;
@@ -1840,6 +1841,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                             }
                         } else if (sendingText == null/* && sendingLocation == null*/) {
                             error = true;
+                        } else if (type == null || type.equals("text/plain") || type.equals("text/html") || type.equals("text/uri-list")) {
+                            sendingText = LinkReplacements.replaceSharedText(sendingText);
                         }
                     }
                     if (error) {

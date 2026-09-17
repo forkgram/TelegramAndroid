@@ -23,6 +23,7 @@ import android.text.TextUtils;
 
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.forkgram.UrlTracking;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.CustomTabsCopyReceiver;
@@ -372,6 +373,9 @@ public class Browser {
         final int currentAccount = UserConfig.selectedAccount;
         boolean[] forceBrowser = new boolean[]{false};
         boolean internalUri = isInternalUri(uri, forceBrowser);
+        if (!internalUri && !keepWebAuthTokens) {
+            uri = UrlTracking.cleanOpened(uri);
+        }
         String browserPackage = getBrowserPackageName(browser);
         if (browserPackage != null) {
             tryTelegraph = false;
