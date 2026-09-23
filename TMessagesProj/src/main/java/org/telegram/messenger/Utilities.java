@@ -9,7 +9,6 @@
 package org.telegram.messenger;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -19,7 +18,6 @@ import android.net.Uri;
 import com.carrotsearch.randomizedtesting.Xoroshiro128PlusRandom;
 
 import org.telegram.tgnet.ConnectionsManager;
-import org.telegram.tgnet.TLRPC;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,12 +63,9 @@ public class Utilities {
         }
     }
 
-    public native static int pinBitmap(Bitmap bitmap);
-    public native static void unpinBitmap(Bitmap bitmap);
-    public native static void blurBitmap(Object bitmap, int radius, int unpin, int width, int height, int stride);
-    public native static int needInvert(Object bitmap, int unpin, int width, int height, int stride);
+    public native static void blurBitmap(Object bitmap, int radius);
+    public native static int needInvert(Object bitmap);
     public native static void calcCDT(ByteBuffer hsvBuffer, int width, int height, ByteBuffer buffer, ByteBuffer calcBuffer);
-    public native static int convertVideoFrame(ByteBuffer src, ByteBuffer dest, int destFormat, int width, int height, int padding, int swap);
     private native static void aesIgeEncryption(ByteBuffer buffer, byte[] key, byte[] iv, boolean encrypt, int offset, int length);
     private native static void aesIgeEncryptionByteArray(byte[] buffer, byte[] key, byte[] iv, boolean encrypt, int offset, int length);
     public native static void aesCtrDecryption(ByteBuffer buffer, byte[] key, byte[] iv, int offset, int length);
@@ -84,11 +79,16 @@ public class Utilities {
     public native static void clearDir(String path, int docType, long time, boolean subdirs);
     private native static int pbkdf2(byte[] password, byte[] salt, byte[] dst, int iterations);
     public static native void stackBlurBitmap(Bitmap bitmap, int radius);
-    public static native void drawDitheredGradient(Bitmap bitmap, int[] colors, int startX, int startY, int endX, int endY);
+    public static native boolean drawDitheredGradient(Bitmap bitmap, int[] colors, int startX, int startY, int endX, int endY);
 //    public static native int saveProgressiveJpeg(Bitmap bitmap, int width, int height, int stride, int quality, String path);
-    public static native void generateGradient(Bitmap bitmap, boolean unpin, int phase, float progress, int width, int height, int stride, int[] colors);
+    public static native void generateGradient(Bitmap bitmap, int phase, float progress, int[] colors);
     public static native boolean applySoftLight(Bitmap inputBitmap, Bitmap outputBitmap, int color);
+    public static native boolean applyAlphaInvert(Bitmap inputBitmap, Bitmap outputBitmap, int intensity);
+    public static native boolean expandAlphaToBlack(Bitmap inputBitmap, Bitmap outputBitmap);
+    public static native boolean extractAlpha(Bitmap inputBitmap, Bitmap outputBitmap);
     public static native boolean copyBitmaps(Bitmap src, Bitmap dst);
+    public static native int averageBitmapColor(Bitmap bitmap, int left, int top, int right, int bottom);
+    public static native boolean drawReplyLinePattern(Bitmap bitmap, int color1, int color2, int color3, int barHeight, boolean hasColor3);
     public static native void setupNativeCrashesListener(String path);
 
     public static Bitmap stackBlurBitmapMax(Bitmap bitmap) {
@@ -159,34 +159,26 @@ public class Utilities {
         if (value == null) {
             return 0;
         }
-        if (BuildConfig.BUILD_HOST_IS_WINDOWS) {
-            Matcher matcher = pattern.matcher(value);
-            if (matcher.find()) {
-                return Integer.valueOf(matcher.group());
+        int val = 0;
+        try {
+            int start = -1, end;
+            for (end = 0; end < value.length(); ++end) {
+                char character = value.charAt(end);
+                boolean allowedChar = character == '-' || character >= '0' && character <= '9';
+                if (allowedChar && start < 0) {
+                    start = end;
+                } else if (!allowedChar && start >= 0) {
+                    end++;
+                    break;
+                }
             }
-        } else {
-            int val = 0;
-            try {
-                int start = -1, end;
-                for (end = 0; end < value.length(); ++end) {
-                    char character = value.charAt(end);
-                    boolean allowedChar = character == '-' || character >= '0' && character <= '9';
-                    if (allowedChar && start < 0) {
-                        start = end;
-                    } else if (!allowedChar && start >= 0) {
-                        end++;
-                        break;
-                    }
-                }
-                if (start >= 0) {
-                    String str = value.subSequence(start, end).toString();
+            if (start >= 0) {
+                String str = value.subSequence(start, end).toString();
 //                val = parseInt(str);
-                    val = Integer.parseInt(str);
-                }
-            } catch (Exception ignore) {}
-            return val;
-        }
-        return 0;
+                val = Integer.parseInt(str);
+            }
+        } catch (Exception ignore) {}
+        return val;
     }
 
     private static int parseInt(final String s) {
@@ -645,4 +637,14 @@ public class Utilities {
         return (a + b - 1) / b;
     }
 
+
+
+    public enum libyuv_ScaleFilter {
+        None, Linear, Bilinear, Box
+    }
+
+    private static native boolean nLibyuvARGBSaleBitmap(Bitmap src, Bitmap dst, int filterMode);
+    public static boolean libyuvARGBSaleBitmap(Bitmap src, Bitmap dst, libyuv_ScaleFilter mode) {
+        return nLibyuvARGBSaleBitmap(src, dst, mode.ordinal());
+    }
 }

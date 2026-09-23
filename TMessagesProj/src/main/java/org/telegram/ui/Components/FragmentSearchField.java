@@ -174,6 +174,10 @@ public class FragmentSearchField extends FrameLayout implements FactorAnimator.T
         updateColors();
     }
 
+    public void setHintText(CharSequence text, boolean animated) {
+        editText.setHintText(text, animated);
+    }
+
     public void addAdditionalIcon(View icon) {
         additionalIconsLayout.addView(icon);
     }
@@ -497,11 +501,12 @@ public class FragmentSearchField extends FrameLayout implements FactorAnimator.T
             FiltersView.MediaFilterData filter = localFilters.get(i);
             ActionBarMenuItem.SearchFilterView searchFilterView;
             if (filter.reaction != null) {
-                searchFilterView = new ActionBarMenuItem.ReactionFilterView(getContext(), resourcesProvider, true);
+                searchFilterView = new ActionBarMenuItem.ReactionFilterView(getContext(), resourcesProvider, false);
             } else {
-                searchFilterView = new ActionBarMenuItem.SearchFilterView(getContext(), resourcesProvider, true);
+                searchFilterView = new ActionBarMenuItem.SearchFilterView(getContext(), resourcesProvider, false);
             }
 
+            searchFilterView.setGlass();
             searchFilterView.setData(filter);
             searchFilterView.setOnClickListener(view -> {
                 int index = currentSearchFilters.indexOf(searchFilterView.getFilter());

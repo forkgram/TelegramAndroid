@@ -5,11 +5,9 @@ import static org.telegram.messenger.AndroidUtilities.dp;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.view.View;
 
+import org.telegram.messenger.AndroidUtilities;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.TextSelectionHelper;
 import org.telegram.ui.Components.RecyclerListView;
@@ -19,7 +17,7 @@ import org.telegram.ui.Components.UniversalRecyclerView;
 
 import java.util.ArrayList;
 
-public class RichDividerCell extends View
+public class RichDividerCell extends RichBlockCell
     implements Theme.Colorable, TextSelectionHelper.ArticleSelectableView {
 
     public interface Delegate {
@@ -29,23 +27,29 @@ public class RichDividerCell extends View
     private final Theme.ResourcesProvider resourcesProvider;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint selectionPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint stubPaint = new TextPaint();
-    private Layout stubLayout;
 
-    private BlockRow currentRow;
     private Delegate delegate;
+    private boolean blockRtl;
 
     public RichDividerCell(Context context, Theme.ResourcesProvider resourcesProvider) {
         super(context);
         this.resourcesProvider = resourcesProvider;
-        stubPaint.setTextSize(1);
+        setWillNotDraw(false);
         updateColors();
     }
+
+    @Override
+    protected void onBlockInsetChanged(int px) { invalidate(); }
 
     public void bind(BlockRow row, Delegate delegate) {
         this.currentRow = row;
         this.delegate = delegate;
+        blockRtl = RichBlockChrome.rtl();
+        bindBlockInset(row);
     }
+
+    private int regionLo() { return blockRtl ? 0 : blockInset(); }
+    private int regionHi() { return getMeasuredWidth() - (blockRtl ? blockInset() : 0); }
 
     public BlockRow getRow() {
         return currentRow;
@@ -53,34 +57,22 @@ public class RichDividerCell extends View
 
     @Override
     public void updateColors() {
-        paint.setColor(Theme.getColor(Theme.key_divider, resourcesProvider));
+        paint.setColor(Theme.getColor(Theme.key_chat_inDivider, resourcesProvider));
         selectionPaint.setColor(Theme.getColor(Theme.key_chat_inTextSelectionHighlight, resourcesProvider));
     }
 
     @Override
     public void fillTextLayoutBlocks(ArrayList<TextSelectionHelper.TextLayoutBlock> out) {
-        if (stubLayout == null) {
-            int w = Math.max(1, getMeasuredWidth());
-            stubLayout = new StaticLayout("•", stubPaint, w, Layout.Alignment.ALIGN_NORMAL, 1f, 0f, false);
-        }
-        final Layout layout = stubLayout;
-        out.add(new TextSelectionHelper.TextLayoutBlock() {
-            @Override public Layout getLayout() { return layout; }
-            @Override public int getX() { return 0; }
-            @Override public int getY() { return 0; }
-            @Override public int getRow() { return 0; }
-        });
+        final int lo = regionLo();
+        final int width = regionHi() - lo;
+        final int x1 = lo + width / 4;
+        final int x2 = regionHi() - width / 4;
+        out.add(RichBlockSelection.of(x1 - dp(12), 0, x2 + dp(12), dp(12)));
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), dp(24));
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        stubLayout = null;
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), dp(12));
     }
 
     private boolean isCellSelected() {
@@ -95,15 +87,20 @@ public class RichDividerCell extends View
 
     @Override
     protected void onDraw(Canvas canvas) {
+        final int lo = regionLo();
+        final int width = regionHi() - lo;
+        final int x1 = lo + width / 4;
+        final int x2 = regionHi() - width / 4;
         if (isCellSelected()) {
             canvas.drawRoundRect(
-                dp(8), dp(2), getMeasuredWidth() - dp(8), getMeasuredHeight() - dp(2),
+                x1 - dp(12), 0, x2 + dp(12), dp(12),
                 dp(6), dp(6),
                 selectionPaint
             );
         }
-        int cy = getMeasuredHeight() / 2;
-        canvas.drawRect(dp(16), cy - 1, getMeasuredWidth() - dp(16), cy + 1, paint);
+        final float top = (dp(12) - dp(1)) / 2f;
+        AndroidUtilities.rectTmp.set(x1, top, x2, top + dp(1));
+        canvas.drawRoundRect(AndroidUtilities.rectTmp, dp(.5f), dp(.5f), paint);
     }
 
     public static final class Factory extends UItem.UItemFactory<RichDividerCell> {

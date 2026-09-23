@@ -40,6 +40,7 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
+import org.telegram.messenger.utils.DrawableUtils;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.BaseFragment;
@@ -60,7 +61,7 @@ import org.telegram.ui.NotificationsSettingsActivity;
 import org.telegram.ui.Stories.StoriesListPlaceProvider;
 import org.telegram.ui.Stories.StoriesUtilities;
 
-public class UserCell extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
+public class UserCell extends FrameLayout implements NotificationCenter.NotificationCenterDelegate, Theme.Colorable {
 
     public BackupImageView avatarImageView;
     protected SimpleTextView nameTextView;
@@ -118,6 +119,7 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
     }
 
     protected long dialogId;
+    private boolean isCommunity;
 
     public UserCell(Context context, int padding, int checkbox, boolean admin) {
         this(context, padding, checkbox, admin, false, null);
@@ -516,6 +518,7 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
         TLRPC.User currentUser = null;
         TLRPC.Chat currentChat = null;
         dialogId = 0;
+        isCommunity = false;
         if (currentObject instanceof TLRPC.User) {
             currentUser = (TLRPC.User) currentObject;
             if (currentUser.photo != null) {
@@ -528,6 +531,7 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
                 photo = currentChat.photo.photo_small;
             }
             dialogId = currentChat.id;
+            isCommunity = ChatObject.isCommunity(currentChat);
         }
 
         if (mask != 0) {
@@ -741,9 +745,25 @@ public class UserCell extends FrameLayout implements NotificationCenter.Notifica
             avatarImageView.setImageDrawable(avatarDrawable);
         }
 
-        avatarImageView.setRoundRadius(currentChat != null && currentChat.forum ? dp(14) : dp(24));
+        avatarImageView.setRoundRadius(isCommunity ? dp(46 * 20 / 72f) :
+                (currentChat != null && currentChat.forum ? dp(14) : dp(24)));
 
         nameTextView.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText, resourcesProvider));
+    }
+
+    @Override
+    protected boolean drawChild(@NonNull Canvas canvas, View child, long drawingTime) {
+        if (isCommunity && child == avatarImageView) {
+            DrawableUtils.drawCommunityCardDrawable(canvas, Theme.dialogs_communityCardsDrawable,
+                child.getX() + child.getWidth() / 2f,
+                child.getY() + child.getHeight() / 2f,
+                child.getHeight());
+        }
+        return super.drawChild(canvas, child, drawingTime);
+    }
+
+    @Override
+    public void updateColors() {
     }
 
     public void setSelfAsSavedMessages(boolean value) {

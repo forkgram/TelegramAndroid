@@ -493,7 +493,7 @@ public class ShareDialogCell extends FrameLayout implements NotificationCenter.N
             paint.setShader(gradient);
 
             if (animate) {
-                lottieDrawable = new RLottieDrawable(R.raw.story_repost, "story_repost", dp(42), dp(42), true, null);
+                lottieDrawable = new RLottieDrawable(R.raw.story_repost, dp(42), dp(42), true, null);
                 lottieDrawable.setMasterParent(parentView);
                 AndroidUtilities.runOnUIThread(lottieDrawable::start, 450);
                 drawable = null;
@@ -511,10 +511,7 @@ public class ShareDialogCell extends FrameLayout implements NotificationCenter.N
             canvas.translate(getBounds().left, getBounds().top);
             AndroidUtilities.rectTmp.set(0, 0, getBounds().width(), getBounds().height());
             paint.setAlpha(alpha);
-            float r2 = Math.min(getBounds().width(), getBounds().height()) / 2f * ((float) alpha / 0xFF);
-            if (MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
-                r2 = 0;
-            }
+            float r2 = AndroidUtilities.avatarCornerRadius(Math.min(getBounds().width(), getBounds().height())) * ((float) alpha / 0xFF);
             canvas.drawRoundRect(AndroidUtilities.rectTmp, r2, r2, paint);
             canvas.restore();
 

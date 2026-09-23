@@ -18,7 +18,6 @@ import android.os.SystemClock;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.util.StateSet;
 import android.view.MotionEvent;
 
@@ -28,7 +27,6 @@ import androidx.core.graphics.ColorUtils;
 import androidx.core.math.MathUtils;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
-import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.ChatObject;
@@ -40,14 +38,12 @@ import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.MessagesStorage;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
-import org.telegram.messenger.TranslateController;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.ChatMessageCell;
-import org.telegram.ui.PremiumPreviewFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -93,7 +89,7 @@ public class TranscribeButton {
         this.pressBounds = new Rect(this.bounds);
         this.pressBounds.inset(dp(8), dp(8));
 
-        outIconDrawable = new RLottieDrawable(R.raw.transcribe_out, "transcribe_out", dp(26), dp(26));
+        outIconDrawable = new RLottieDrawable(R.raw.transcribe_out, dp(26), dp(26));
         outIconDrawable.setCurrentFrame(0);
         outIconDrawable.setCallback(parent);
         outIconDrawable.setOnFinishCallback(() -> {
@@ -104,7 +100,7 @@ public class TranscribeButton {
         }, 19);
         outIconDrawable.setAllowDecodeSingleFrame(true);
 
-        inIconDrawable = new RLottieDrawable(R.raw.transcribe_in, "transcribe_in", dp(26), dp(26));
+        inIconDrawable = new RLottieDrawable(R.raw.transcribe_in, dp(26), dp(26));
         inIconDrawable.setCurrentFrame(0);
         inIconDrawable.setCallback(parent);
         inIconDrawable.setMasterParent(parent);
@@ -118,7 +114,7 @@ public class TranscribeButton {
 
         this.isOpen = false;
         this.shouldBeOpen = false;
-        premium = parent.getMessageObject() != null && (UserConfig.getInstance(parent.getMessageObject().currentAccount).isPremium() || org.telegram.messenger.CloudflareSTT.isConfigured());
+        premium = parent.getMessageObject() != null && (UserConfig.getInstance(parent.getMessageObject().currentAccount).isPremium() || org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive());
 
         loadingFloat = new AnimatedFloat(parent, 250, CubicBezierInterpolator.EASE_OUT_QUINT);
         animatedDrawLock = new AnimatedFloat(parent, 250, CubicBezierInterpolator.EASE_OUT_QUINT);
@@ -212,6 +208,12 @@ public class TranscribeButton {
             return;
         }
         clickedToOpen = false;
+        if (!shouldBeOpen && loading && isOfflineTranscribing(parent.getMessageObject())) {
+            setLoading(false, true);
+            pressed = false;
+            transcribePressed(parent.getMessageObject(), false, parent.getDelegate());
+            return;
+        }
         boolean processClick, toOpen = !shouldBeOpen;
         if (!shouldBeOpen) {
             processClick = !loading;
@@ -276,13 +278,13 @@ public class TranscribeButton {
         }
         if (newColor) {
             inIconDrawable.beginApplyLayerColors();
-            inIconDrawable.setLayerColor("Artboard Outlines.**", this.iconColor);
+            inIconDrawable.setLayerColor("Artboard Outlines", this.iconColor);
             inIconDrawable.commitApplyLayerColors();
             inIconDrawable.setAllowDecodeSingleFrame(true);
             inIconDrawable.updateCurrentFrame(0, false);
             inIconDrawable.setAlpha(inIconDrawableAlpha = (int) (Color.alpha(color)));
             outIconDrawable.beginApplyLayerColors();
-            outIconDrawable.setLayerColor("Artboard Outlines.**", this.iconColor);
+            outIconDrawable.setLayerColor("Artboard Outlines", this.iconColor);
             outIconDrawable.commitApplyLayerColors();
             outIconDrawable.setAllowDecodeSingleFrame(true);
             outIconDrawable.updateCurrentFrame(0, false);
@@ -575,15 +577,28 @@ public class TranscribeButton {
         private RLottieDrawable lottie;
         private int lastColor;
         private Paint paint;
+        private final Drawable.Callback callback = new Callback() {
+            @Override
+            public void invalidateDrawable(@NonNull Drawable who) {
+                invalidateSelf();
+            }
+
+            @Override
+            public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
+
+            }
+
+            @Override
+            public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+
+            }
+        };
+
         public LoadingPointsDrawable(TextPaint textPaint) {
             this.paint = textPaint;
             float fontSize = textPaint.getTextSize() * 0.89f;
-            lottie = new RLottieDrawable(R.raw.dots_loading, "dots_loading", (int) fontSize, (int) (fontSize * 1.25f)) {
-                @Override
-                protected boolean hasParentView() {
-                    return true;
-                }
-            };
+            lottie = new RLottieDrawable(R.raw.dots_loading, (int) fontSize, (int) (fontSize * 1.25f));
+            lottie.setCallback(callback);
             lottie.setAutoRepeat(1);
             lottie.setCurrentFrame((int) (SystemClock.elapsedRealtime() / 16f % 60f));
             lottie.setAllowDecodeSingleFrame(true);
@@ -592,7 +607,7 @@ public class TranscribeButton {
 
         public void setColor(int color) {
             lottie.beginApplyLayerColors();
-            lottie.setLayerColor("Comp 1.**", color);
+            lottie.setLayerColor("Comp 1", color);
             lottie.commitApplyLayerColors();
             lottie.setAllowDecodeSingleFrame(true);
             lottie.updateCurrentFrame(0, false);
@@ -630,6 +645,7 @@ public class TranscribeButton {
 
     private static HashMap<Long, MessageObject> transcribeOperationsById;
     private static HashMap<Integer, MessageObject> transcribeOperationsByDialogPosition;
+    private static HashMap<Integer, org.telegram.messenger.forkgram.TranscriptionCancellable> offlineTranscribeOperations;
     private static ArrayList<Integer> videoTranscriptionsOpen;
 
     public static void openVideoTranscription(MessageObject messageObject) {
@@ -659,6 +675,10 @@ public class TranscribeButton {
         );
     }
 
+    public static boolean isOfflineTranscribing(MessageObject messageObject) {
+        return offlineTranscribeOperations != null && messageObject != null && offlineTranscribeOperations.containsKey((Integer) reqInfoHash(messageObject));
+    }
+
     private static void transcribePressed(MessageObject messageObject, boolean open, ChatMessageCell.ChatMessageCellDelegate delegate) {
         if (messageObject == null || messageObject.messageOwner == null || !messageObject.isSent()) {
             return;
@@ -669,7 +689,8 @@ public class TranscribeButton {
         long dialogId = DialogObject.getPeerDialogId(peer);
         int messageId = messageObject.messageOwner.id;
         if (open) {
-            if (messageObject.messageOwner.voiceTranscription != null && messageObject.messageOwner.voiceTranscriptionFinal) {
+            boolean offlineRetry = TextUtils.isEmpty(messageObject.messageOwner.voiceTranscription) && org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive();
+            if (messageObject.messageOwner.voiceTranscription != null && messageObject.messageOwner.voiceTranscriptionFinal && !offlineRetry) {
                 TranscribeButton.openVideoTranscription(messageObject);
                 messageObject.messageOwner.voiceTranscriptionOpen = true;
                 MessagesStorage.getInstance(account).updateMessageVoiceTranscriptionOpen(dialogId, messageId, messageObject.messageOwner);
@@ -679,6 +700,77 @@ public class TranscribeButton {
             } else {
                 if (BuildVars.LOGS_ENABLED) {
                     FileLog.d("sending Transcription request, msg_id=" + messageId + " dialog_id=" + dialogId);
+                }
+                if (org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive()) {
+                    File path = null;
+                    String attachPath = messageObject.messageOwner.attachPath;
+                    if (!TextUtils.isEmpty(attachPath)) {
+                        File temp = new File(attachPath);
+                        if (temp.exists()) {
+                            path = temp;
+                        }
+                    }
+                    if (path == null) {
+                        path = org.telegram.messenger.FileLoader.getInstance(account).getPathToMessage(messageObject.messageOwner);
+                        if (path != null && !path.exists()) {
+                            path = null;
+                        }
+                    }
+                    if (path == null) {
+                        path = org.telegram.messenger.FileLoader.getInstance(account).getPathToAttach(messageObject.getDocument(), true);
+                    }
+                    if (path == null || !path.exists()) {
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject);
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.updateTranscriptionLock);
+                        NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_ERROR, LocaleController.getString(R.string.PleaseDownload));
+                        return;
+                    }
+                    long id = org.telegram.messenger.Utilities.random.nextLong();
+                    if (transcribeOperationsByDialogPosition == null) {
+                        transcribeOperationsByDialogPosition = new HashMap<>();
+                    }
+                    transcribeOperationsByDialogPosition.put(reqInfoHash(messageObject), messageObject);
+                    org.telegram.messenger.forkgram.TranscriptionCancellable cancellable = org.telegram.messenger.forkgram.ForkOfflineTranscribe.requestTranscription(path.getAbsolutePath(), "", (partial) -> AndroidUtilities.runOnUIThread(() -> {
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject, (Long) id, (String) partial, (Boolean) true, (Boolean) false);
+                    }), (text, exception) -> {
+                        if (offlineTranscribeOperations != null) {
+                            offlineTranscribeOperations.remove(reqInfoHash(messageObject));
+                        }
+                        if (text != null) {
+                            if (transcribeOperationsById == null) {
+                                transcribeOperationsById = new HashMap<>();
+                            }
+                            transcribeOperationsById.put(id, messageObject);
+                            messageObject.messageOwner.voiceTranscriptionId = id;
+
+                            final long duration = SystemClock.elapsedRealtime() - start;
+                            TranscribeButton.openVideoTranscription(messageObject);
+                            messageObject.messageOwner.voiceTranscriptionOpen = true;
+                            messageObject.messageOwner.voiceTranscriptionFinal = true;
+
+                            MessagesStorage.getInstance(account).updateMessageVoiceTranscription(dialogId, messageId, text, messageObject.messageOwner);
+                            AndroidUtilities.runOnUIThread(() -> finishTranscription(messageObject, id, text), Math.max(0, minDuration - duration));
+                        } else {
+                            final boolean cancelled = exception instanceof org.telegram.messenger.forkgram.TranscriptionCancelledException;
+                            AndroidUtilities.runOnUIThread(() -> {
+                                if (transcribeOperationsByDialogPosition != null) {
+                                    transcribeOperationsByDialogPosition.remove(reqInfoHash(messageObject));
+                                }
+                                NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject);
+                                NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.updateTranscriptionLock);
+                                if (!cancelled) {
+                                    NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.showBulletin, Bulletin.TYPE_ERROR, LocaleController.getString(R.string.ErrorOccurred));
+                                }
+                            });
+                        }
+                    });
+                    if (cancellable != null) {
+                        if (offlineTranscribeOperations == null) {
+                            offlineTranscribeOperations = new HashMap<>();
+                        }
+                        offlineTranscribeOperations.put(reqInfoHash(messageObject), cancellable);
+                    }
+                    return;
                 }
                 if (org.telegram.messenger.CloudflareSTT.isConfigured()) {
                     File path = null;
@@ -816,6 +908,12 @@ public class TranscribeButton {
             if (transcribeOperationsByDialogPosition != null) {
                 transcribeOperationsByDialogPosition.remove((Integer) reqInfoHash(messageObject));
             }
+            if (offlineTranscribeOperations != null) {
+                org.telegram.messenger.forkgram.TranscriptionCancellable pending = offlineTranscribeOperations.remove((Integer) reqInfoHash(messageObject));
+                if (pending != null) {
+                    pending.cancel();
+                }
+            }
             messageObject.messageOwner.voiceTranscriptionOpen = false;
             MessagesStorage.getInstance(account).updateMessageVoiceTranscriptionOpen(dialogId, messageId, messageObject.messageOwner);
             AndroidUtilities.runOnUIThread(() -> {
@@ -907,7 +1005,7 @@ public class TranscribeButton {
         if (messageObject == null || messageObject.messageOwner == null) {
             return false;
         }
-        if (org.telegram.messenger.CloudflareSTT.isConfigured()) {
+        if (org.telegram.messenger.CloudflareSTT.isConfigured() || org.telegram.messenger.forkgram.ForkOfflineTranscribe.isActive()) {
             return false;
         }
         if (isFreeTranscribeInChat(messageObject)) {

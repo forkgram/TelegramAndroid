@@ -819,6 +819,7 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
         sourceBitmap = source;
         this.orientation = orientation;
         detectedEmoji = null;
+        segmentWholeImage(orientation, whenEmpty);
         /*
         segment(source, orientation, subjects -> {
             final ArrayList<SegmentedObject> finalObjects = new ArrayList<>();
@@ -896,6 +897,49 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
 
             });
         }, whenEmpty);*/
+    }
+
+    private void segmentWholeImage(int orientation, Utilities.Callback<SegmentedObject> whenEmpty) {
+        segmentingLoading = true;
+        Utilities.themeQueue.postRunnable(() -> {
+            if (sourceBitmap == null || segmentingLoaded) {
+                segmentingLoading = false;
+                return;
+            }
+            Matrix matrix = new Matrix();
+            matrix.postScale(1f / sourceBitmap.getWidth(), 1f / sourceBitmap.getHeight());
+            matrix.postTranslate(-.5f, -.5f);
+            matrix.postRotate(orientation);
+            matrix.postTranslate(.5f, .5f);
+            if (orientation / 90 % 2 != 0) {
+                matrix.postScale(sourceBitmap.getHeight(), sourceBitmap.getWidth());
+            } else {
+                matrix.postScale(sourceBitmap.getWidth(), sourceBitmap.getHeight());
+            }
+            SegmentedObject object = new SegmentedObject();
+            object.bounds.set(0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight());
+            object.rotatedBounds.set(object.bounds);
+            matrix.mapRect(object.rotatedBounds);
+            object.orientation = orientation;
+            object.image = createSmoothEdgesSegmentedImage(0, 0, sourceBitmap, false);
+            if (object.image == null) {
+                FileLog.e(new RuntimeException("createSmoothEdgesSegmentedImage failed on empty image"));
+                segmentingLoading = false;
+                return;
+            }
+            object.darkMaskImage = object.makeDarkMaskImage();
+            createSegmentImagePath(object, this.containerWidth, this.containerHeight);
+            segmentBorderImageWidth = object.borderImageWidth;
+            segmentBorderImageHeight = object.borderImageHeight;
+            selectedObject = object;
+            segmentingLoaded = true;
+            segmentingLoading = false;
+            AndroidUtilities.runOnUIThread(() -> {
+                empty = true;
+                objects = new SegmentedObject[] { object };
+                whenEmpty.run(object);
+            });
+        });
     }
 
     private static class SubjectMock {
@@ -1533,7 +1577,7 @@ public class StickerMakerView extends FrameLayout implements NotificationCenter.
                 stickerUploader.sendToDialogId,
                 null, null, null, null, null,
                 true, 0, 0, false,
-                null, null, 0, 0, 0,
+                null, null, 0, 0,
                 null
             );
             if (loadingToast != null) {

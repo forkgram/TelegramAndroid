@@ -927,7 +927,7 @@ public class ChatAttachAlertDocumentLayout extends ChatAttachAlert.AttachAlertLa
     }
 
     public void loadRecentFiles() {
-        if (MessagesController.getGlobalMainSettings().getBoolean("disableSlideToNextChannel", false)) {
+        if (MessagesController.getGlobalMainSettings().getBoolean("disableRecentFilesAttachment", false)) {
             listAdapter.recentItems.clear();
             return;
         }

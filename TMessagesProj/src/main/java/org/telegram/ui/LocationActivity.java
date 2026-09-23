@@ -1334,7 +1334,7 @@ public class LocationActivity extends BaseFragment implements NotificationCenter
                 super.onLayout(changed, left, top, right, bottom);
                 AndroidUtilities.runOnUIThread(() -> {
                     if (moveToBounds != null) {
-                        mapView.zoomToBoundingBox(moveToBounds, false, AndroidUtilities.dp(80 + 33));
+                        zoomToBoundingBoxSafe(moveToBounds, false, AndroidUtilities.dp(80 + 33)); // [classic] #73
                         moveToBounds = null;
                     }
                 });
@@ -1554,11 +1554,41 @@ public class LocationActivity extends BaseFragment implements NotificationCenter
                 points.add(move(center, -minSpan / 2, -minSpan / 2));
             }
             BoundingBox bounds = BoundingBox.fromGeoPoints(points);
-            mapView.zoomToBoundingBox(bounds, animated, dp(60));
+            zoomToBoundingBoxSafe(bounds, animated, dp(60)); // [classic] #73
             return true;
         } catch (Exception e) {
             FileLog.e(e);
             return false;
+        }
+    }
+
+    // [classic] #73: osmdroid's MapView.zoomToBoundingBox() hangs the UI thread (infinite loop
+    // inside Projection.getCloserPixel) when the map has no usable size yet. With a non-positive
+    // width/height the zoom it computes is NaN, so TileSystem.MapSize(NaN) is NaN and
+    // getCloserPixel's "pPixel -= NaN" (truncated to 0L) keeps "0 >= 0" true forever. This froze
+    // the app when viewing a live location shared by two people: getRecentLocations() ->
+    // fetchRecentLocations() fits the bounding box synchronously during map setup, before the
+    // first layout. Guard the call: defer until the map is laid out, and never let the border
+    // exceed the map size (which would also drive the zoom to NaN).
+    private void zoomToBoundingBoxSafe(BoundingBox bounds, boolean animated, int border) {
+        if (mapView == null || bounds == null) {
+            return;
+        }
+        final int w = mapView.getWidth();
+        final int h = mapView.getHeight();
+        if (!mapView.isLayoutOccurred() || w <= 0 || h <= 0) {
+            mapView.addOnFirstLayoutListener((v, left, top, right, bottom) -> zoomToBoundingBoxSafe(bounds, animated, border));
+            return;
+        }
+        int clampedBorder = border;
+        final int maxBorder = (Math.min(w, h) - 1) / 2;
+        if (clampedBorder > maxBorder) {
+            clampedBorder = Math.max(0, maxBorder);
+        }
+        try {
+            mapView.zoomToBoundingBox(bounds, animated, clampedBorder);
+        } catch (Exception e) {
+            FileLog.e(e);
         }
     }
 
@@ -2750,7 +2780,7 @@ public class LocationActivity extends BaseFragment implements NotificationCenter
                     if (messages.size() > 1) {
                         try {
                             moveToBounds = bounds;
-                            mapView.zoomToBoundingBox(bounds, false, dp(80 + 33));
+                            zoomToBoundingBoxSafe(bounds, false, dp(80 + 33)); // [classic] #73
                             moveToBounds = null;
                         } catch (Exception e) {
                             FileLog.e(e);
@@ -3212,11 +3242,11 @@ public class LocationActivity extends BaseFragment implements NotificationCenter
             themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Wibe Big", Theme.key_undo_background));
             themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Wibe Big 3", Theme.key_undo_infoColor));
             themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Wibe Small", Theme.key_undo_infoColor));
-            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Body Main.**", Theme.key_undo_infoColor));
-            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Body Top.**", Theme.key_undo_infoColor));
-            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Line.**", Theme.key_undo_infoColor));
-            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Curve Big.**", Theme.key_undo_infoColor));
-            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Curve Small.**", Theme.key_undo_infoColor));
+            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Body Main", Theme.key_undo_infoColor));
+            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Body Top", Theme.key_undo_infoColor));
+            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Line", Theme.key_undo_infoColor));
+            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Curve Big", Theme.key_undo_infoColor));
+            themeDescriptions.add(new ThemeDescription(undoView[a], 0, new Class[]{UndoView.class}, new String[]{"leftImageView"}, "Curve Small", Theme.key_undo_infoColor));
         }
 
         themeDescriptions.add(new ThemeDescription(fragmentView, ThemeDescription.FLAG_BACKGROUND, null, null, null, cellDelegate, Theme.key_dialogBackground));

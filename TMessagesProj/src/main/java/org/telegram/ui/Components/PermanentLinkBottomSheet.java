@@ -70,7 +70,7 @@ public class PermanentLinkBottomSheet extends BottomSheet {
         linkActionView = new LinkActionView(context, fragment, this, chatId, true, isChannel);
         linkActionView.setPermanent(true);
         imageView = new RLottieImageView(context);
-        linkIcon = new RLottieDrawable(R.raw.shared_link_enter, "" + R.raw.shared_link_enter, AndroidUtilities.dp(90), AndroidUtilities.dp(90), false, null);
+        linkIcon = new RLottieDrawable(R.raw.shared_link_enter, AndroidUtilities.dp(90), AndroidUtilities.dp(90), false, null);
         linkIcon.setCustomEndFrame(42);
         imageView.setAnimation(linkIcon);
         linkActionView.setUsers(0, null);
@@ -193,9 +193,9 @@ public class PermanentLinkBottomSheet extends BottomSheet {
         imageView.setBackground(Theme.createCircleDrawable(AndroidUtilities.dp(90), Theme.getColor(Theme.key_featuredStickers_addButton)));
         manage.setBackground(Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(8), Color.TRANSPARENT, ColorUtils.setAlphaComponent(Theme.getColor(Theme.key_featuredStickers_addButton), 120)));
         int color = Theme.getColor(Theme.key_featuredStickers_buttonText);
-        linkIcon.setLayerColor("Top.**", color);
-        linkIcon.setLayerColor("Bottom.**", color);
-        linkIcon.setLayerColor("Center.**", color);
+        linkIcon.setLayerColor("Top", color);
+        linkIcon.setLayerColor("Bottom", color);
+        linkIcon.setLayerColor("Center", color);
         linkActionView.updateColors();
         setBackgroundColor(Theme.getColor(Theme.key_dialogBackground));
     }

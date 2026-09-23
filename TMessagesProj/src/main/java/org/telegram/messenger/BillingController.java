@@ -16,7 +16,6 @@ import androidx.core.util.Consumer;
 import androidx.core.util.Pair;
 
 
-import com.google.android.exoplayer2.util.Util;
 
 import org.checkerframework.checker.units.qual.A;
 import org.telegram.messenger.utils.BillingUtilities;
@@ -149,6 +148,7 @@ public class BillingController {
             case 6: return "ERROR";
             case 7: return "ITEM_ALREADY_OWNED";
             case 8: return "ITEM_NOT_OWNED";
+            case 12: return "NETWORK_ERROR";
         }
         return "BILLING_UNKNOWN_ERROR";
     }

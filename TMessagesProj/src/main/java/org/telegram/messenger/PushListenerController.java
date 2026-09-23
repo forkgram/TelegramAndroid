@@ -33,12 +33,14 @@ import java.util.concurrent.CountDownLatch;
 public class PushListenerController {
     public static final int PUSH_TYPE_FIREBASE = 2,
         PUSH_TYPE_SIMPLE = 4,
+        PUSH_TYPE_WEB = 10,
         PUSH_TYPE_HUAWEI = 13;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
             PUSH_TYPE_FIREBASE,
             PUSH_TYPE_SIMPLE,
+            PUSH_TYPE_WEB,
             PUSH_TYPE_HUAWEI
     })
     public @interface PushType {}
@@ -50,6 +52,9 @@ public class PushListenerController {
         Utilities.stageQueue.postRunnable(() -> {
             ConnectionsManager.setRegId(token, pushType, SharedConfig.pushStringStatus);
             if (token == null) {
+                return;
+            }
+            if (pushType == SharedConfig.pushType && token.equals(SharedConfig.pushString) && !hasUnregisteredAccount()) {
                 return;
             }
             boolean sendStat = false;
@@ -1659,10 +1664,33 @@ public class PushListenerController {
     @Keep
     public interface IPushListenerServiceProvider {
         boolean hasServices();
+        boolean needsPushToken();
         String getLogTitle();
         void onRequestPushToken();
         @PushType
         int getPushType();
+    }
+
+    private static boolean hasUnregisteredAccount() {
+        for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            UserConfig userConfig = UserConfig.getInstance(a);
+            if (userConfig.isClientActivated() && !userConfig.registeredForPush) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isUnifiedPushActive() {
+        if (SharedConfig.disableUnifiedPush) {
+            return false;
+        }
+        try {
+            IPushListenerServiceProvider provider = ApplicationLoader.getPushProvider();
+            return provider instanceof UnifiedPushListenerServiceProvider && provider.hasServices() && !provider.needsPushToken() && UnifiedPushService.isRegistrationFresh();
+        } catch (Throwable e) {
+            return false;
+        }
     }
 
     public final static class GooglePushListenerServiceProvider implements IPushListenerServiceProvider {
@@ -1671,6 +1699,11 @@ public class PushListenerController {
         private Boolean hasServices;
 
         private GooglePushListenerServiceProvider() {}
+
+        @Override
+        public boolean needsPushToken() {
+            return TextUtils.isEmpty(SharedConfig.pushString) || hasUnregisteredAccount();
+        }
 
         @Override
         public String getLogTitle() {
@@ -1747,6 +1780,21 @@ public class PushListenerController {
         }
 
         @Override
+        public boolean needsPushToken() {
+            if (SharedConfig.disableUnifiedPush) {
+                return false;
+            }
+            try {
+                if (UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext) == null) {
+                    return true;
+                }
+            } catch (Throwable e) {
+                return true;
+            }
+            return TextUtils.isEmpty(SharedConfig.pushString) || hasUnregisteredAccount();
+        }
+
+        @Override
         public String getLogTitle() {
             return "UnifiedPush";
         }
@@ -1771,10 +1819,13 @@ public class PushListenerController {
                         SharedConfig.pushStringGetTimeStart = SystemClock.elapsedRealtime();
                         SharedConfig.saveConfig();
                         if (UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext) == null) {
+                            String savedDistributor = UnifiedPush.getSavedDistributor(ApplicationLoader.applicationContext);
                             List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext);
-                            if (distributors.size() > 0) {
-                                String distributor = distributors.get(0);
-                                UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, distributor);
+                            if (savedDistributor == null || !distributors.contains(savedDistributor)) {
+                                if (distributors.isEmpty()) {
+                                    return;
+                                }
+                                UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, distributors.get(0));
                             }
                         }
                         UnifiedPush.register(
@@ -1782,6 +1833,7 @@ public class PushListenerController {
                                 "default",
                                 "Telegram Simple Push",
                                 null);
+                        UnifiedPushService.awaitRegistrationAnswer();
                     } catch (Throwable e) {
                         FileLog.e(e);
                     }

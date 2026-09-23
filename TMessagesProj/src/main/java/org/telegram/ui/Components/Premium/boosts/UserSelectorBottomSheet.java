@@ -30,7 +30,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearSmoothScrollerCustom;
+import org.telegram.ui.recyclerview.LinearSmoothScrollerCustom;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -908,7 +908,7 @@ public class UserSelectorBottomSheet extends BottomSheetWithRecyclerListView imp
                 if (tonIcon == null) {
                     final CombinedDrawable icon = new CombinedDrawable(
                         Theme.createCircleDrawable(dp(46), Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider)),
-                        getContext().getResources().getDrawable(R.drawable.ton).mutate()
+                        getContext().getResources().getDrawable(R.drawable.mini_gram_72).mutate()
                     );
                     icon.setIconSize(dp(24), dp(24));
                     tonIcon = icon;

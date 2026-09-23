@@ -4,10 +4,12 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import org.telegram.tgnet.NativeByteBuffer;
 import org.telegram.tgnet.TLObject;
 
 import org.telegram.messenger.MediaDataController;
 import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_ephemeral;
 import org.telegram.tgnet.tl.TL_stars;
 
 import java.nio.charset.StandardCharsets;
@@ -22,6 +24,8 @@ public class TlUtils {
             return ((TLRPC.TL_messages_sendMessage) request).peer;
         } else if (request instanceof TLRPC.TL_messages_sendMedia) {
             return ((TLRPC.TL_messages_sendMedia) request).peer;
+        } else if (request instanceof TL_ephemeral.TL_sendMessage) {
+            return ((TL_ephemeral.TL_sendMessage) request).peer;
         } else if (request instanceof TLRPC.TL_messages_sendInlineBotResult) {
             return ((TLRPC.TL_messages_sendInlineBotResult) request).peer;
         } else if (request instanceof TLRPC.TL_messages_forwardMessages) {
@@ -37,6 +41,8 @@ public class TlUtils {
             return ((TLRPC.TL_messages_sendMessage) request).reply_to;
         } else if (request instanceof TLRPC.TL_messages_sendMedia) {
             return ((TLRPC.TL_messages_sendMedia) request).reply_to;
+        } else if (request instanceof TL_ephemeral.TL_sendMessage) {
+            return ((TL_ephemeral.TL_sendMessage) request).reply_to;
         } else if (request instanceof TLRPC.TL_messages_sendInlineBotResult) {
             return ((TLRPC.TL_messages_sendInlineBotResult) request).reply_to;
         } else if (request instanceof TLRPC.TL_messages_forwardMessages) {
@@ -52,6 +58,8 @@ public class TlUtils {
             return ((TLRPC.TL_messages_sendMessage) request).message;
         } else if (request instanceof TLRPC.TL_messages_sendMedia) {
             return ((TLRPC.TL_messages_sendMedia) request).message;
+        } else if (request instanceof TL_ephemeral.TL_sendMessage) {
+            return ((TL_ephemeral.TL_sendMessage) request).message;
         } else if (request instanceof TLRPC.TL_messages_sendMultiMedia) {
             final TLRPC.TL_messages_sendMultiMedia messages = (TLRPC.TL_messages_sendMultiMedia) request;
             for (TLRPC.TL_inputSingleMedia m: messages.multi_media) {
@@ -71,6 +79,9 @@ public class TlUtils {
         } else if (request instanceof TLRPC.TL_messages_sendMedia) {
             ((TLRPC.TL_messages_sendMedia) request).reply_to = replyTo;
             ((TLRPC.TL_messages_sendMedia) request).flags |= 1;
+        } else if (request instanceof TL_ephemeral.TL_sendMessage) {
+            ((TL_ephemeral.TL_sendMessage) request).reply_to = replyTo;
+            ((TL_ephemeral.TL_sendMessage) request).flags |= TLObject.FLAG_5;
         } else if (request instanceof TLRPC.TL_messages_sendInlineBotResult) {
             ((TLRPC.TL_messages_sendInlineBotResult) request).reply_to = replyTo;
             ((TLRPC.TL_messages_sendInlineBotResult) request).flags |= 1;
@@ -117,6 +128,8 @@ public class TlUtils {
             return ((TLRPC.TL_messages_sendMessage) request).random_id;
         } else if (request instanceof TLRPC.TL_messages_sendMedia) {
             return ((TLRPC.TL_messages_sendMedia) request).random_id;
+        } else if (request instanceof TL_ephemeral.TL_sendMessage) {
+            return ((TL_ephemeral.TL_sendMessage) request).random_id;
         } else if (request instanceof TLRPC.TL_messages_sendInlineBotResult) {
             return ((TLRPC.TL_messages_sendInlineBotResult) request).random_id;
         } else if (request instanceof TLRPC.TL_messages_forwardMessages) {
@@ -263,6 +276,51 @@ public class TlUtils {
 
             poll.shuffled_answers = new ArrayList<>(poll.answers);
             poll.shuffled_answers.sort((a1, a2) -> Long.compareUnsigned(a1.shuffle_hash, a2.shuffle_hash));
+        }
+    }
+
+    public static boolean tlEquals(TLObject object1, TLObject object2) {
+        if (object1 == object2) {
+            return true;
+        }
+        if (object1 == null || object2 == null) {
+            return false;
+        }
+
+        final int size1 = object1.getObjectSize();
+        final int size2 = object2.getObjectSize();
+        if (size1 != size2) {
+            return false;
+        }
+
+        try {
+            NativeByteBuffer data1 = new NativeByteBuffer(size1);
+            object1.serializeToStream(data1);
+            data1.rewind();
+
+            NativeByteBuffer data2 = new NativeByteBuffer(size2);
+            object2.serializeToStream(data2);
+            data2.rewind();
+
+            int remaining = size1;
+
+            while (remaining >= 8) {
+                if (data1.readInt64(true) != data2.readInt64(true)) {
+                    return false;
+                }
+                remaining -= 8;
+            }
+
+            while (remaining > 0) {
+                if (data1.readByte(true) != data2.readByte(true)) {
+                    return false;
+                }
+                remaining--;
+            }
+
+            return true;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 }

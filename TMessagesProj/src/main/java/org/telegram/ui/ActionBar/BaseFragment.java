@@ -20,6 +20,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Trace;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -59,6 +60,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.utils.LeakDetector;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.ui.ArticleViewer;
+import org.telegram.ui.Components.Bulletin;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.LaunchActivity;
@@ -212,6 +214,13 @@ public abstract class BaseFragment {
         if (BuildConfig.DEBUG_PRIVATE_VERSION) {
             LeakDetector.getInstance().add(this);
         }
+
+        Bulletin.addDelegate(this, new Bulletin.Delegate() {
+            @Override
+            public int getBottomOffset(int tag) {
+                return isSupportEdgeToEdge() ? AndroidUtilities.navigationBarHeight : 0;
+            }
+        });
     }
 
     public void setCurrentAccount(int account) {
@@ -245,7 +254,23 @@ public abstract class BaseFragment {
         this.fragmentView = fragmentView;
     }
 
-    public View createView(Context context) {
+    public View performCreateView(Context context) {
+        if (!BuildConfig.DEBUG_PRIVATE_VERSION) {
+            return createView(context);
+        }
+
+        final String className = getClass().getSimpleName();
+        final String sectionNameBase = "Fragment#createView#";
+        final String sectionName = TextUtils.isEmpty(className) ? sectionNameBase : (sectionNameBase + className);
+        Trace.beginSection(sectionName);
+        try {
+            return createView(context);
+        } finally {
+            Trace.endSection();
+        }
+    }
+
+    protected View createView(Context context) {
         return null;
     }
 
@@ -475,7 +500,7 @@ public abstract class BaseFragment {
         }
 
         if (hasForceLightStatusBar() && !AndroidUtilities.isTablet() && getParentLayout().getLastFragment() == this && getParentActivity() != null && !finishing) {
-            AndroidUtilities.setLightStatusBar(getParentActivity().getWindow(), Theme.getColor(Theme.key_actionBarDefault) == Color.WHITE);
+            AndroidUtilities.setLightStatusBar(getParentActivity(), Theme.getColor(Theme.key_actionBarDefault) == Color.WHITE);
         }
 
         if (sheetsStack != null) {
@@ -988,7 +1013,7 @@ public abstract class BaseFragment {
                 } else {
                     AndroidUtilities.setLightNavigationBar(bottomSheet[0], true);
                 }
-                AndroidUtilities.setLightStatusBar(getWindow(), fragment.isLightStatusBar());
+                AndroidUtilities.setLightStatusBar(this, fragment.isLightStatusBar());
                 fragment.onBottomSheetCreated();
             }
 
@@ -1402,6 +1427,13 @@ public abstract class BaseFragment {
         public boolean occupyNavigationBar;
     }
 
+    public EdgeToEdgeSupportMode getEdgeToEdgeSupportMode() {
+        return isSupportEdgeToEdge() ?
+            EdgeToEdgeSupportMode.VERTICAL :
+            EdgeToEdgeSupportMode.NONE;
+    }
+
+    @Deprecated
     public boolean isSupportEdgeToEdge() {
         // warn: overridden method must return a constant
         return false;
@@ -1426,6 +1458,16 @@ public abstract class BaseFragment {
 
     }
 
+
+    private Bulletin.Delegate bulletinDelegate;
+
+    public void setBulletinDelegate(Bulletin.Delegate bulletinDelegate) {
+        this.bulletinDelegate = bulletinDelegate;
+    }
+
+    public Bulletin.Delegate getBulletinDelegate() {
+        return bulletinDelegate;
+    }
 
 
     protected void dumpCanvas() {

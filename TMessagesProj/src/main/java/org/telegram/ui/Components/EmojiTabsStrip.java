@@ -853,7 +853,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                lottieDrawable = new RLottieDrawable(lottieId, "" + lottieId, AndroidUtilities.dp(24), AndroidUtilities.dp(24), false, null);
+                lottieDrawable = new RLottieDrawable(lottieId, AndroidUtilities.dp(24), AndroidUtilities.dp(24), false, null);
                 lottieDrawable.setBounds(AndroidUtilities.dp(3), AndroidUtilities.dp(3), AndroidUtilities.dp(27), AndroidUtilities.dp(27));
                 lottieDrawable.setMasterParent(this);
                 lottieDrawable.setAllowDecodeSingleFrame(true);
@@ -1391,7 +1391,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
             if (currentType == SelectAnimatedEmojiDialog.TYPE_SET_REPLY_ICON || currentType == SelectAnimatedEmojiDialog.TYPE_SET_REPLY_ICON_BOTTOM) {
                 color = accentColor;
             }
-            PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
             if (imageView != null && !isAnimatedEmoji) {
                 imageView.setColorFilter(colorFilter);
                 imageView.invalidate();

@@ -1,8 +1,7 @@
 name: Fd
 
 on:
-  release:
-    types: released
+  workflow_dispatch:
 
 jobs:
   linux:

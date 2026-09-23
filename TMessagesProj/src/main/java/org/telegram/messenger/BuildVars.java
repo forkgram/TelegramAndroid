@@ -46,8 +46,6 @@ public class BuildVars {
     // works only on official app ids, disable on your forks
     public static boolean SUPPORTS_PASSKEYS = true;
 
-    public static boolean USE_LEGACY_SYSTEM_INSETS = false;
-
     static {
         if (ApplicationLoader.applicationContext != null) {
             SharedPreferences sharedPreferences = ApplicationLoader.applicationContext.getSharedPreferences("systemConfig", Context.MODE_PRIVATE);
@@ -71,7 +69,7 @@ public class BuildVars {
         DEBUG_VERSION = false;
         CHECK_UPDATES = (BuildConfig.CHECK_UPDATES != 0);
     }
-    public static long USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
+    public static int USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
     public static String USER_REPO = BuildConfig.USER_REPO;
 
     public static boolean useInvoiceBilling() {

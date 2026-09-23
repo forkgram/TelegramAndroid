@@ -18,8 +18,8 @@ API_KEYS
 *.hprof
 TMessagesProj/jni/cache_keys/
 TMessagesProj/.externalNativeBuild/
-TMessagesProj/jni/ffmpeg/android/
-TMessagesProj/jni/ffmpeg/build/
-TMessagesProj/jni/boringssl/build/
-TMessagesProj/jni/tde2e/x86*
-TMessagesProj/jni/tde2e/arm*
+TMessagesProj/jni/prebuild/build/
+TMessagesProj/jni/prebuild/lib/
+TMessagesProj/jni/prebuild/include/
+TMessagesProj/jni/prebuild/pkgconfig/
+TMessagesProj/jni/prebuild/build_env.txt

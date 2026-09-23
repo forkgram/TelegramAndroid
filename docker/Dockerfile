@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     unzip \
     ninja-build \
+    cmake \
     make \
     yasm \
     nasm \
@@ -35,15 +36,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ============================================================
 # Environment
 # ============================================================
-# NDK 21.4 is used by the native dependency build scripts in TMessagesProj/jni.
-# Gradle's externalNativeBuild uses NDK 27.2 (see TMessagesProj/build.gradle).
-# Both must be installed for an end-to-end reproducible build.
+# NDK 27.2 is used both by the native dependency build scripts in TMessagesProj/jni
+# and by gradle's externalNativeBuild (see TMessagesProj/build.gradle).
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV ANDROID_HOME=/opt/android-sdk
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
-ENV ANDROID_NDK_HOME=/opt/android-sdk/ndk/21.4.7075529
+ENV ANDROID_NDK_HOME=/opt/android-sdk/ndk/27.2.12479018
 ENV ANDROID_SDK=/opt/android-sdk
-ENV ANDROID_NDK=/opt/android-sdk/ndk/21.4.7075529
+ENV ANDROID_NDK=/opt/android-sdk/ndk/27.2.12479018
 ENV PATH="${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${PATH}"
 
 # ============================================================
@@ -57,20 +57,22 @@ RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && \
     rm /tmp/cmdline-tools.zip
 
 # ============================================================
-# SDK components (SDK 35, Build Tools 35, NDK 21.4 + 23.2 + 27.2, CMake 3.10)
+# SDK components (SDK 36, Build Tools 36, NDK 27.2, CMake 3.22.1)
 # ============================================================
 RUN yes | sdkmanager --licenses > /dev/null 2>&1 && \
     sdkmanager \
-      "platforms;android-35" \
-      "build-tools;35.0.0" \
-      "ndk;21.4.7075529" \
-      "ndk;23.2.8568313" \
+      "platforms;android-36" \
+      "build-tools;36.0.0" \
       "ndk;27.2.12479018" \
-      "cmake;3.10.2.4988404"
+      "cmake;3.22.1"
 
-# Make SDK cmake available as system cmake (Gradle needs 3.10.2 for AndroidNdkModules)
-# Also provide cmake3 alias for tde2e build
-RUN ln -sf /opt/android-sdk/cmake/3.10.2.4988404/bin/cmake /usr/local/bin/cmake && \
-    ln -sf /opt/android-sdk/cmake/3.10.2.4988404/bin/cmake /usr/local/bin/cmake3
+# ============================================================
+# Rust toolchain (tlottie is a Rust staticlib, see jni/prebuild/build_tlottie.sh)
+# ============================================================
+ENV RUSTUP_HOME=/opt/rustup
+ENV CARGO_HOME=/opt/cargo
+ENV PATH="${CARGO_HOME}/bin:${PATH}"
+RUN wget -qO- https://sh.rustup.rs | sh -s -- -y --no-modify-path --profile minimal --default-toolchain stable && \
+    rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 
 WORKDIR /project

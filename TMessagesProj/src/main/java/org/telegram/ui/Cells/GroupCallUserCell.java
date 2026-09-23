@@ -380,8 +380,8 @@ public class GroupCallUserCell extends FrameLayout {
         fullAboutTextView.setVisibility(View.GONE);
         addView(fullAboutTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 20 * 3, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.TOP, 14, 32, 14, 0));
 
-        muteDrawable = new RLottieDrawable(R.raw.voice_outlined2, "" + R.raw.voice_outlined2, AndroidUtilities.dp(34), AndroidUtilities.dp(32), true, null);
-        shakeHandDrawable = new RLottieDrawable(R.raw.hand_1, "" + R.raw.hand_1, AndroidUtilities.dp(34), AndroidUtilities.dp(32), true, null);
+        muteDrawable = new RLottieDrawable(R.raw.voice_outlined2, AndroidUtilities.dp(34), AndroidUtilities.dp(32), true, null);
+        shakeHandDrawable = new RLottieDrawable(R.raw.hand_1, AndroidUtilities.dp(34), AndroidUtilities.dp(32), true, null);
 
         muteButton = new RLottieImageView(context);
         muteButton.setScaleType(ImageView.ScaleType.CENTER);
@@ -612,7 +612,7 @@ public class GroupCallUserCell extends FrameLayout {
             grayIconColor = key;
         }
         if (currentIconGray) {
-            muteButton.setColorFilter(new PorterDuffColorFilter(value, PorterDuff.Mode.MULTIPLY));
+            muteButton.setColorFilter(new PorterDuffColorFilter(value, PorterDuff.Mode.SRC_IN));
             Theme.setSelectorDrawableColor(muteButton.getDrawable(), value & 0x24ffffff, true);
         }
     }
@@ -787,12 +787,12 @@ public class GroupCallUserCell extends FrameLayout {
                 animator.addUpdateListener(animation -> {
                     float value = animation.getAnimatedFraction();
                     int color = AndroidUtilities.getOffsetColor(oldColor, newMuteColor, value, 1.0f);
-                    muteButton.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
+                    muteButton.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
                     Theme.setSelectorDrawableColor(muteButton.getDrawable(), color & 0x24ffffff, true);
                 });
                 animators.add(animator);
             } else {
-                muteButton.setColorFilter(new PorterDuffColorFilter(lastMuteColor = newMuteColor, PorterDuff.Mode.MULTIPLY));
+                muteButton.setColorFilter(new PorterDuffColorFilter(lastMuteColor = newMuteColor, PorterDuff.Mode.SRC_IN));
                 Theme.setSelectorDrawableColor(muteButton.getDrawable(), newMuteColor & 0x24ffffff, true);
             }
         }
@@ -901,6 +901,11 @@ public class GroupCallUserCell extends FrameLayout {
     }
 
     private void applyStatus(int newStatus) {
+        // Visibility toggling is disabled to allow the alpha cross-fade; gate accessibility
+        // importance instead so TalkBack announces only the current status, not all four.
+        for (int a = 0; a < statusTextView.length; a++) {
+            statusTextView[a].setImportantForAccessibility(a == newStatus ? IMPORTANT_FOR_ACCESSIBILITY_YES : IMPORTANT_FOR_ACCESSIBILITY_NO);
+        }
         if (newStatus == 0) {
             for (int a = 0; a < statusTextView.length; a++) {
                 //statusTextView[a].setVisibility(a == newStatus ? VISIBLE : INVISIBLE);

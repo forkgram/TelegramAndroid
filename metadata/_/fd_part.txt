@@ -6,12 +6,16 @@
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y ninja-build golang-go yasm cmake libuv1 make
+      - apt-get install -y ninja-build golang-go yasm cmake meson gperf pkg-config libuv1 make
     gradle:
       - V_AFAT
     rm:
       - TMessagesProj_AppHuawei
+      - TMessagesProj_Modules/media/gradle/wrapper/gradle-wrapper.jar
     prebuild: ./prebuild_fdroid.sh V_NUM 14577864 54d3ae230fd8f985ce9adccf08fbd9d6
+    scanignore:
+      - TMessagesProj/emoji/metadata.bin
+      - TMessagesProj_Modules/media/libraries/test_data
     scandelete:
       - TMessagesProj/jni
     ndk: r21e

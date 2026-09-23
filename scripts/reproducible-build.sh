@@ -43,9 +43,7 @@ docker run --rm \
         cd TMessagesProj/jni
         export NDK=\${ANDROID_NDK_HOME}
         export NINJA_PATH=/usr/bin/ninja
-        ./build_libvpx_clang.sh
-        ./build_ffmpeg_clang.sh
-        ./patch_ffmpeg.sh
+        ./ffmpeg/build_ffmpeg_libvpx_dav1d_android_ndk27_merged.sh
         ./patch_boringssl.sh
         ./build_boringssl.sh
         cd /project

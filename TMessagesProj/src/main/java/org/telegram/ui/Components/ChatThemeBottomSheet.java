@@ -180,7 +180,7 @@ public class ChatThemeBottomSheet extends BottomSheet implements NotificationCen
 
         int drawableColor = getThemedColor(Theme.key_featuredStickers_addButton);
         int drawableSize = dp(28);
-        darkThemeDrawable = new RLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, drawableSize, drawableSize, false, null);
+        darkThemeDrawable = new RLottieDrawable(R.raw.sun_outline, drawableSize, drawableSize, false, null);
         forceDark = !Theme.getActiveTheme().isDark();
         setForceDark(Theme.getActiveTheme().isDark(), false);
         darkThemeDrawable.setAllowDecodeSingleFrame(true);
@@ -965,10 +965,10 @@ public class ChatThemeBottomSheet extends BottomSheet implements NotificationCen
     }
 
     private void setDarkButtonColor(int color) {
-        darkThemeDrawable.setLayerColor("Sunny.**", color);
-        darkThemeDrawable.setLayerColor("Path.**", color);
-        darkThemeDrawable.setLayerColor("Path 10.**", color);
-        darkThemeDrawable.setLayerColor("Path 11.**", color);
+        darkThemeDrawable.setLayerColor("Sunny", color);
+        darkThemeDrawable.setLayerColor("Path", color);
+        darkThemeDrawable.setLayerColor("Path 10", color);
+        darkThemeDrawable.setLayerColor("Path 11", color);
     }
 
     private void setForceDark(boolean isDark, boolean playAnimation) {

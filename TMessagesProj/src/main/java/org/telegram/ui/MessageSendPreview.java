@@ -34,7 +34,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.ChatListItemAnimator;
+import org.telegram.ui.recyclerview.ChatListItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManagerFixed;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -154,6 +154,8 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
         this.context = context;
         this.resourcesProvider = resourcesProvider;
 
+        AndroidUtilities.enableEdgeToEdge(getWindow());
+
         activityVisibilityController = LaunchActivity.obtainActivityVisibilityController();
         windowView = new FrameLayout(context) {
             @Override
@@ -211,8 +213,9 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
                         AndroidUtilities.showKeyboard(newFocus);
                         if (anchorSendButton != null) {
                             anchorSendButton.getLocationOnScreen(sendButtonInitialPosition);
-//                                sendButtonInitialPosition[0] = Math.min(sendButtonInitialPosition[0] + anchorSendButton.getWidth(), AndroidUtilities.displaySize.x) - anchorSendButton.getWidth();
                             sendButtonInitialPosition[0] += anchorSendButton.getWidth() - anchorSendButton.width(anchorSendButton.getHeight()) - dp(6);
+                            this.sendButton.setScaleX(anchorSendButton.getScaleX());
+                            this.sendButton.setScaleY(anchorSendButton.getScaleY());
                         }
                     }, 100);
                 }, 200);
@@ -435,7 +438,7 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
         ViewCompat.setOnApplyWindowInsetsListener(windowView, new OnApplyWindowInsetsListener() {
             @Override
             public @NonNull WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat i) {
-                insets = i.getInsets(WindowInsetsCompat.Type.displayCutout() | WindowInsetsCompat.Type.systemBars());
+                insets = AndroidUtilities.getDefaultWindowInsets(i, false);
                 containerView.setPadding(insets.left, insets.top, insets.right, insets.bottom);
                 windowView.requestLayout();
                 return WindowInsetsCompat.CONSUMED;
@@ -452,7 +455,7 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
                 );
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-                final int right = Math.max(sendButtonWidth, (int) -(sendButtonInitialPosition[0] + dp(7) - getMeasuredWidth()));
+                final int right = Math.max(getSendButtonWidth() + dp(12), (int) -(sendButtonInitialPosition[0] + dp(7) - getMeasuredWidth()));
                 final int diff = Math.max(0, messageObjectsWidth - (getMeasuredWidth() - right - dp(8 + (groupedMessagesMap.isEmpty() ? 0 : 40))));
                 final float scale = (float) Math.max(1, getMeasuredWidth() - right) / Math.max(1, getMeasuredWidth() - right - dp(8) + diff);
                 setPivotX(getMeasuredWidth());
@@ -1165,9 +1168,6 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         params.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-        if (Build.VERSION.SDK_INT >= 28) {
-            params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-        }
         window.setAttributes(params);
 
         windowView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_VISIBLE);
@@ -1233,10 +1233,9 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
         this.drawEditTextBackground = drawEditTextBackground;
     }
 
-    public void setSendButton(ChatActivityEnterView.SendButton sendButton, boolean fillWhenClose, View.OnClickListener onClick) {
+    public ChatActivityEnterView.SendButton setSendButton(ChatActivityEnterView.SendButton sendButton, boolean fillWhenClose, View.OnClickListener onClick) {
         this.anchorSendButton = sendButton;
         anchorSendButton.getLocationOnScreen(sendButtonInitialPosition);
-//        sendButtonInitialPosition[0] = Math.min(sendButtonInitialPosition[0] + anchorSendButton.getWidth(), AndroidUtilities.displaySize.x) - anchorSendButton.getWidth();
         this.sendButton = new ChatActivityEnterView.SendButton(getContext(), sendButton.resId, resourcesProvider) {
             @Override
             public boolean isInScheduleMode() {
@@ -1259,12 +1258,24 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
                 return sendButton.getFillColor();
             }
         };
+        this.sendButton.setScaleX(anchorSendButton.getScaleX());
+        this.sendButton.setScaleY(anchorSendButton.getScaleY());
         this.anchorSendButton.copyTo(this.sendButton);
         this.sendButton.open.set(sendButton.open.get(), true);
         this.sendButton.setOnClickListener(onClick);
         containerView.addView(this.sendButton, new ViewGroup.LayoutParams(sendButton.getWidth(), sendButton.getHeight()));
         sendButtonWidth = anchorSendButton.width(sendButton.getHeight());
         sendButtonInitialPosition[0] += anchorSendButton.getWidth() - anchorSendButton.width(sendButton.getHeight()) - dp(6);
+        return this.sendButton;
+    }
+    private boolean customSendButtonWidth;
+    public void setSendButtonWidth(int width) {
+        customSendButtonWidth = true;
+        sendButtonWidth = width;
+    }
+    private int getSendButtonWidth() {
+        if (customSendButtonWidth) return sendButtonWidth;
+        return anchorSendButton.width();
     }
 
     public void setItemOptions(ItemOptions options) {
@@ -1480,8 +1491,9 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
 
         int[] pos = new int[2];
         anchorSendButton.getLocationOnScreen(pos);
-//        pos[0] = Math.min(pos[0] + anchorSendButton.getWidth(), AndroidUtilities.displaySize.x) - anchorSendButton.getWidth();
         pos[0] += anchorSendButton.getWidth() - anchorSendButton.width() - dp(6);
+        this.sendButton.setScaleX(anchorSendButton.getScaleX());
+        this.sendButton.setScaleY(anchorSendButton.getScaleY());
 
         sendButtonInitialPosition[0] = pos[0];
         sendButtonInitialPosition[1] = pos[1];
@@ -1503,6 +1515,10 @@ public class MessageSendPreview extends Dialog implements NotificationCenter.Not
 
         sendButton.setX(pos[0] - (sendButton.getWidth() - sendButton.width()) + dp(6));
         sendButton.setY(pos[1]);
+
+        if (customSendButtonWidth) {
+            pos[0] -= sendButtonWidth - anchorSendButton.width();
+        }
 
         chatListView.setX(pos[0] + dp(7) - chatListView.getMeasuredWidth());
         if (layoutDone) {

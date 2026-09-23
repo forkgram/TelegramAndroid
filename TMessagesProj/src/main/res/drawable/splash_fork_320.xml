@@ -1,49 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt">
-    <aapt:attr name="android:drawable">
-        <vector
-            android:width="320dp"
-            android:height="320dp"
-            android:viewportWidth="320"
-            android:viewportHeight="320">
-            <path
-                android:pathData="M 160 60 C 133.489 60 108.036 70.543 89.289 89.289 C 70.543 108.036 60 133.489 60 160 C 60 186.511 70.543 211.964 89.289 230.711 C 108.036 249.457 133.489 260 160 260 C 186.511 260 211.964 249.457 230.711 230.711 C 249.457 211.964 260 186.511 260 160 C 260 133.489 249.457 108.036 230.711 89.289 C 211.964 70.543 186.511 60 160 60 Z">
-                <aapt:attr name="android:fillColor">
-                    <gradient
-                        android:type="linear"
-                        android:startX="260" android:startY="60"
-                        android:endX="60" android:endY="260"
-                        android:startColor="#1e95fc"
-                        android:centerColor="#3365fc"
-                        android:endColor="#9625da"/>
-                </aapt:attr>
-            </path>
-            <group
-                android:name="iconMove"
-                android:translateX="-110"
-                android:translateY="110">
-                <path
-                    android:name="forkIcon"
-                    android:fillColor="#FFFFFFFF"
-                    android:fillAlpha="0"
-                    android:fillType="evenOdd"
-                    android:pathData="M 209.02 137.83 L 190.3 147.62 L 183.49 188.89 L 163.91 177.83 L 180.09 168.04 L 182.64 151.45 L 163.49 162.09 L 136.26 175.28 L 134.55 176.98 L 134.55 178.68 L 190.72 214.0 L 193.7 214.85 L 196.68 214.0 L 198.81 211.87 L 200.51 206.34 Z M 211.57 115.28 L 209.45 113.15 L 206.04 113.15 L 199.23 115.7 L 107.32 156.55 L 95.4 161.23 L 92.43 163.36 L 92.0 165.49 L 93.28 167.19 L 102.21 170.6 L 117.11 175.28 L 121.79 175.28 L 178.38 143.79 L 210.3 128.47 L 212.0 121.66 Z"/>
-            </group>
-        </vector>
-    </aapt:attr>
-
-    <target android:name="iconMove">
-        <aapt:attr name="android:animation">
-            <set>
-                <objectAnimator android:propertyName="translateX" android:duration="300" android:startOffset="200" android:valueFrom="-110" android:valueTo="0" android:valueType="floatType" android:interpolator="@android:interpolator/linear_out_slow_in"/>
-                <objectAnimator android:propertyName="translateY" android:duration="300" android:startOffset="200" android:valueFrom="110" android:valueTo="0" android:valueType="floatType" android:interpolator="@android:interpolator/linear_out_slow_in"/>
-            </set>
-        </aapt:attr>
-    </target>
-    <target android:name="forkIcon">
-        <aapt:attr name="android:animation">
-            <objectAnimator android:propertyName="fillAlpha" android:duration="300" android:startOffset="200" android:valueFrom="0" android:valueTo="1" android:valueType="floatType"/>
-        </aapt:attr>
-    </target>
-</animated-vector>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="320dp"
+    android:viewportWidth="320"
+    android:viewportHeight="320">
+    <path
+        android:fillColor="#9F55DF"
+        android:pathData="M 160 60 C 133.489 60 108.036 70.543 89.289 89.289 C 70.543 108.036 60 133.489 60 160 C 60 186.511 70.543 211.964 89.289 230.711 C 108.036 249.457 133.489 260 160 260 C 186.511 260 211.964 249.457 230.711 230.711 C 249.457 211.964 260 186.511 260 160 C 260 133.489 249.457 108.036 230.711 89.289 C 211.964 70.543 186.511 60 160 60 Z"/>
+    <group
+        android:translateX="107"
+        android:translateY="107"
+        android:pivotX="53"
+        android:pivotY="53"
+        android:scaleX="2"
+        android:scaleY="2">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M69.3,33.6l-9.1,9.4c0.1,0.1,0.2,0.1,0.2,0.2l1.4,1.4l7-7.3c0,0,2.5-2,3.1-1.4c0.6,0.6-1.3,3.1-1.3,3.1l-7,7.3 l1.4,1.4c0.1,0.1,0.2,0.2,0.3,0.3l9.1-9.4c1.6,1.6-3.6,7.2-3.6,7.2s-4.1,4.3-5.7,6c-0.1,0.1-0.2,0.2-0.3,0.3l-1.2,1.2 c-1.1,1.1-2.9,1.2-4.1,0.1l-1.1-1.1c-5.7,7.4-15.3,18.4-16.3,19.3c-1.4,1.4-3.6,1.4-5,0.1c-1.4-1.4-1.4-3.6-0.1-5 c0.9-1,11.6-10.9,18.9-16.8l-1-1c-1.1-1.1-1.2-2.9-0.1-4.1l1.5-1.6c0.1-0.1,0.2-0.2,0.3-0.3c1.8-1.9,5.4-5.7,5.4-5.7 S67.7,32,69.3,33.6z"/>
+    </group>
+</vector>

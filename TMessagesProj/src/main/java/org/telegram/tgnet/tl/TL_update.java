@@ -9,6 +9,10 @@ import org.telegram.tgnet.Vector;
 import java.util.ArrayList;
 
 public class TL_update {
+    private TL_update() {
+
+    }
+
     public static class TL_updateStarsRevenueStatus extends TLRPC.Update {
         public static final int constructor = 0xa584b019;
 
@@ -2648,12 +2652,12 @@ public class TL_update {
 
         public TLRPC.Peer peer;
         public long bot_id;
-        public ArrayList<TLRPC.TL_botCommand> commands = new ArrayList<>();
+        public ArrayList<TLRPC.BotCommand> commands = new ArrayList<>();
 
         public void readParams(InputSerializedData stream, boolean exception) {
             peer = TLRPC.Peer.TLdeserialize(stream, stream.readInt32(exception), exception);
             bot_id = stream.readInt64(exception);
-            commands = Vector.deserialize(stream, TLRPC.TL_botCommand::TLdeserialize, exception);
+            commands = Vector.deserialize(stream, TLRPC.BotCommand::TLdeserialize, exception);
         }
 
         public void serializeToStream(OutputSerializedData stream) {
@@ -2879,6 +2883,100 @@ public class TL_update {
                 stream.writeBool(open_external_browser);
             }
             exception.serializeToStream(stream);
+        }
+    }
+
+    public static class TL_updateNewEphemeralMessage extends TLRPC.Update {
+        public static final int constructor = 0x20BCBBA1;
+
+        public TL_ephemeral.EphemeralMessage message;
+
+        public void readParams(InputSerializedData stream, boolean exception) {
+            message = TL_ephemeral.EphemeralMessage.TLdeserialize(stream, stream.readInt32(exception), exception);
+        }
+
+        public void serializeToStream(OutputSerializedData stream) {
+            stream.writeInt32(constructor);
+            message.serializeToStream(stream);
+        }
+    }
+
+    public static class TL_updateDeleteEphemeralMessages extends TLRPC.Update {
+        public static final int constructor = 0x56DBFCF8;
+
+        public TLRPC.Peer peer;
+        public ArrayList<Integer> ids = new ArrayList<>();
+
+        public void readParams(InputSerializedData stream, boolean exception) {
+            peer = TLRPC.Peer.TLdeserialize(stream, stream.readInt32(exception), exception);
+            ids = Vector.deserializeInt(stream, exception);
+        }
+
+        public void serializeToStream(OutputSerializedData stream) {
+            stream.writeInt32(constructor);
+            peer.serializeToStream(stream);
+            Vector.serializeInt(stream, ids);
+        }
+    }
+
+    public static class TL_updateEditEphemeralMessage extends TLRPC.Update {
+        public static final int constructor = 0x4BBB8F01;
+
+        public TL_ephemeral.EphemeralMessage message;
+
+        public void readParams(InputSerializedData stream, boolean exception) {
+            message = TL_ephemeral.EphemeralMessage.TLdeserialize(stream, stream.readInt32(exception), exception);
+        }
+
+        public void serializeToStream(OutputSerializedData stream) {
+            stream.writeInt32(constructor);
+            message.serializeToStream(stream);
+        }
+    }
+
+    public static class TL_updateEphemeralBotCallbackQuery extends TLRPC.Update {
+        public static final int constructor = 0x7C1079D6;
+
+        public int flags;
+        public long query_id;
+        public long user_id;
+        public TLRPC.Peer peer;
+        public int msg_id;
+        public byte[] data;
+        public long chat_instance;
+        public TL_ephemeral.EphemeralMessage message;
+
+        public void readParams(InputSerializedData stream, boolean exception) {
+            flags = stream.readInt32(exception);
+            query_id = stream.readInt64(exception);
+            user_id = stream.readInt64(exception);
+            if (hasFlag(flags, FLAG_0)) {
+                peer = TLRPC.Peer.TLdeserialize(stream, stream.readInt32(exception), exception);
+            }
+            msg_id = stream.readInt32(exception);
+            data = stream.readByteArray(exception);
+            if (hasFlag(flags, FLAG_1)) {
+                chat_instance = stream.readInt64(exception);
+            }
+            message = TL_ephemeral.EphemeralMessage.TLdeserialize(stream, stream.readInt32(exception), exception);
+        }
+
+        public void serializeToStream(OutputSerializedData stream) {
+            stream.writeInt32(constructor);
+            flags = setFlag(flags, FLAG_0, peer != null);
+            flags = setFlag(flags, FLAG_1, chat_instance != 0);
+            stream.writeInt32(flags);
+            stream.writeInt64(query_id);
+            stream.writeInt64(user_id);
+            if (hasFlag(flags, FLAG_0)) {
+                peer.serializeToStream(stream);
+            }
+            stream.writeInt32(msg_id);
+            stream.writeByteArray(data);
+            if (hasFlag(flags, FLAG_1)) {
+                stream.writeInt64(chat_instance);
+            }
+            message.serializeToStream(stream);
         }
     }
 }

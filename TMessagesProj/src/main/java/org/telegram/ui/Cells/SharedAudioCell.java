@@ -11,6 +11,7 @@ import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -205,6 +206,13 @@ public class SharedAudioCell extends FrameLayout implements DownloadController.F
                 captionLayoutLeft = captionLayout.getLineCount() > 0 ? captionLayout.getLineLeft(0) : 0;
                 captionLayoutWidth = captionLayout.getLineCount() > 0 ? captionLayout.getLineWidth(0) : 0;
             }
+            captionLayoutEmojis = AnimatedEmojiSpan.update(AnimatedEmojiDrawable.CACHE_TYPE_MESSAGES, this, captionLayoutEmojis, captionLayout);
+        } else if ((currentMessageObject.isVoice() || currentMessageObject.isRoundVideo()) && !TextUtils.isEmpty(currentMessageObject.messageOwner.message)) {
+            CharSequence caption = Emoji.replaceEmoji(currentMessageObject.messageOwner.message.replace("\n", " ").replaceAll(" +", " ").trim(), Theme.chat_msgTextPaint.getFontMetricsInt(), false);
+            caption = TextUtils.ellipsize(caption, captionTextPaint, maxWidth, TextUtils.TruncateAt.END);
+            captionLayout = new StaticLayout(caption, captionTextPaint, maxWidth + dp(4), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+            captionLayoutLeft = captionLayout.getLineCount() > 0 ? captionLayout.getLineLeft(0) : 0;
+            captionLayoutWidth = captionLayout.getLineCount() > 0 ? captionLayout.getLineWidth(0) : 0;
             captionLayoutEmojis = AnimatedEmojiSpan.update(AnimatedEmojiDrawable.CACHE_TYPE_MESSAGES, this, captionLayoutEmojis, captionLayout);
         }
         try {
@@ -611,12 +619,41 @@ public class SharedAudioCell extends FrameLayout implements DownloadController.F
         if (currentMessageObject.isMusic()) {
             info.setText(LocaleController.formatString("AccDescrMusicInfo", R.string.AccDescrMusicInfo, currentMessageObject.getMusicAuthor(), currentMessageObject.getMusicTitle()));
         } else if (titleLayout != null && descriptionLayout != null) {
-            info.setText(titleLayout.getText() + ", " + descriptionLayout.getText());
+            if (captionLayout != null) {
+                info.setText(titleLayout.getText() + ", " + captionLayout.getText() + ", " + descriptionLayout.getText());
+            } else {
+                info.setText(titleLayout.getText() + ", " + descriptionLayout.getText());
+            }
         }
         if (checkBox.isChecked()) {
             info.setCheckable(true);
             info.setChecked(true);
         }
+        CharSequence actionLabel;
+        switch (getIconForCurrentState()) {
+            case MediaActionDrawable.ICON_PAUSE:
+                actionLabel = LocaleController.getString("AccActionPause", R.string.AccActionPause);
+                break;
+            case MediaActionDrawable.ICON_DOWNLOAD:
+                actionLabel = LocaleController.getString("AccActionDownload", R.string.AccActionDownload);
+                break;
+            case MediaActionDrawable.ICON_CANCEL:
+                actionLabel = LocaleController.getString("AccActionCancelDownload", R.string.AccActionCancelDownload);
+                break;
+            default:
+                actionLabel = LocaleController.getString("AccActionPlay", R.string.AccActionPlay);
+                break;
+        }
+        info.addAction(new AccessibilityNodeInfo.AccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, actionLabel));
+    }
+
+    @Override
+    public boolean performAccessibilityAction(int action, Bundle arguments) {
+        if (action == AccessibilityNodeInfo.ACTION_CLICK) {
+            didPressedButton();
+            return true;
+        }
+        return super.performAccessibilityAction(action, arguments);
     }
 
     @Override

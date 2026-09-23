@@ -57,6 +57,7 @@ import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
 import org.telegram.ui.ActionBar.BaseFragment;
+import org.telegram.ui.ActionBar.MessageDrawable;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.ChatActionCell;
 import org.telegram.ui.ChatActivity;
@@ -311,7 +312,7 @@ public class ChatAttachAlertPhotoLayoutPreview extends ChatAttachAlert.AttachAle
     }
 
     private static HashMap<MediaController.PhotoEntry, Boolean> photoRotate = new HashMap<>();
-    private class GroupCalculator {
+    public static class GroupCalculator {
 
         public ArrayList<MessageObject.GroupedMessagePosition> posArray = new ArrayList<>();
         public HashMap<MediaController.PhotoEntry, MessageObject.GroupedMessagePosition> positions = new HashMap<>();
@@ -344,13 +345,16 @@ public class ChatAttachAlertPhotoLayoutPreview extends ChatAttachAlert.AttachAle
             return (float) maxSizeWidth / sum;
         }
 
-        int width, maxX, maxY;
-        float height;
+        public int width, maxX, maxY;
+        public float height;
 
         ArrayList<MediaController.PhotoEntry> photos;
 
-        public GroupCalculator(ArrayList<MediaController.PhotoEntry> photos) {
+        private final int backgroundPaddingLeft;
+
+        public GroupCalculator(ArrayList<MediaController.PhotoEntry> photos, int backgroundPaddingLeft) {
             this.photos = photos;
+            this.backgroundPaddingLeft = backgroundPaddingLeft;
             calculate();
         }
 
@@ -450,7 +454,7 @@ public class ChatAttachAlertPhotoLayoutPreview extends ChatAttachAlert.AttachAle
 
             if (count == 1) {
                 MessageObject.GroupedMessagePosition position1 = posArray.get(0);
-                int widthPx = AndroidUtilities.displaySize.x - parentAlert.getBackgroundPaddingLeft() * 2;
+                int widthPx = AndroidUtilities.displaySize.x - backgroundPaddingLeft * 2;
                 float maxHeight = Math.max(AndroidUtilities.displaySize.x, AndroidUtilities.displaySize.y) * .5f;
                 position1.set(0, 0, 0, 0, 800, (widthPx * .8f) / position1.aspectRatio / maxHeight, POSITION_FLAG_LEFT | POSITION_FLAG_RIGHT | POSITION_FLAG_TOP | POSITION_FLAG_BOTTOM);
             } else if (!forceCalc && (count == 2 || count == 3 || count == 4)) {
@@ -979,7 +983,7 @@ public class ChatAttachAlertPhotoLayoutPreview extends ChatAttachAlert.AttachAle
                 photos.add((MediaController.PhotoEntry) photosMap.get(imageId));
                 if (i % 10 == 9 || i == photosOrderLast) {
                     PreviewGroupCell groupCell = new PreviewGroupCell();
-                    groupCell.setGroup(new GroupCalculator(photos), false);
+                    groupCell.setGroup(new GroupCalculator(photos, parentAlert.getBackgroundPaddingLeft()), false);
                     groupCells.add(groupCell);
                     photos = new ArrayList<>();
                 }
@@ -1877,7 +1881,7 @@ public class ChatAttachAlertPhotoLayoutPreview extends ChatAttachAlert.AttachAle
                         nextGroupCell = new PreviewGroupCell();
                         ArrayList<MediaController.PhotoEntry> newPhotos = new ArrayList<>();
                         newPhotos.add(jumpPhoto);
-                        nextGroupCell.setGroup(new GroupCalculator(newPhotos), true);
+                        nextGroupCell.setGroup(new GroupCalculator(newPhotos, parentAlert.getBackgroundPaddingLeft()), true);
                         invalidate();
                     } else {
                         pushToGroup(nextGroupCell, jumpPhoto, 0);
@@ -2530,8 +2534,8 @@ public class ChatAttachAlertPhotoLayoutPreview extends ChatAttachAlert.AttachAle
             private long buttonTextPrice;
             private final Paint buttonTextBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-            private final Theme.MessageDrawable messageBackground = (Theme.MessageDrawable) getThemedDrawable(Theme.key_drawable_msgOutMedia);
-            private final Theme.MessageDrawable.PathDrawParams backgroundCacheParams = new Theme.MessageDrawable.PathDrawParams();
+            private final MessageDrawable messageBackground = (MessageDrawable) getThemedDrawable(Theme.key_drawable_msgOutMedia);
+            private final MessageDrawable.PathDrawParams backgroundCacheParams = new MessageDrawable.PathDrawParams();
             public boolean draw(Canvas canvas) {
                 boolean update = false;
                 final float t = interpolator.getInterpolation(Math.min(1, (SystemClock.elapsedRealtime() - lastMediaUpdate) / (float) updateDuration));

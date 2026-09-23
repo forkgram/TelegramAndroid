@@ -25,13 +25,18 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.view.ViewGroup;
 import com.google.android.gms.ads.MobileAds;
+
+import android.text.TextUtils;
+import android.util.Log;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -64,9 +69,16 @@ public class ApplicationLoader extends Application {
 
     private static ConnectivityManager connectivityManager;
     private static volatile boolean applicationInited = false;
-    private static volatile  ConnectivityManager.NetworkCallback networkCallback;
+    private static volatile ConnectivityManager.NetworkCallback networkCallback;
+    private static volatile ConnectivityManager.NetworkCallback constrainedNetworkCallback;
+    private static volatile Network constrainedNetwork;
+    private static volatile boolean bandwidthConstrained;
+    private static volatile Boolean satelliteDataSaving;
     private static long lastNetworkCheckTypeTime;
     private static int lastKnownNetworkType = -1;
+
+    private static final int NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED = 37;
+    private static final int TRANSPORT_SATELLITE = 10;
 
     public static long startTime;
 
@@ -325,12 +337,12 @@ public class ApplicationLoader extends Application {
         }
 
         super.onCreate();
-        try {
-            com.google.android.gms.ads.MobileAds.initialize(this, initializationStatus -> {
-            });
-        } catch (Throwable ignore) {
-        }
+
+        // AndroidUtilities must be initialized before FileLog
+        final String helloWorld = AndroidUtilities.getHelloWorld();
+
         if (BuildVars.LOGS_ENABLED) {
+            FileLog.d(helloWorld);
             FileLog.d("app start time = " + (startTime = SystemClock.elapsedRealtime()));
             try {
                 final PackageInfo info = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
@@ -376,6 +388,10 @@ public class ApplicationLoader extends Application {
                 }
             }
         };
+        if (BuildConfig.DEBUG_VERSION) {
+            new ANRDetector(FileLog::dumpANR);
+        }
+
         if (BuildVars.LOGS_ENABLED) {
             FileLog.d("load libs time = " + (SystemClock.elapsedRealtime() - startTime));
         }
@@ -397,6 +413,40 @@ public class ApplicationLoader extends Application {
         }
         org.osmdroid.config.Configuration.getInstance().setUserAgentValue("Telegram-FOSS(F-Droid) "+VERSIONNAME);
         org.osmdroid.config.Configuration.getInstance().setOsmdroidBasePath(new File(getCacheDir(),"osmdroid"));
+    }
+
+    private static final String LEGACY_KEEP_ALIVE_ACTION = "org.telegram.start";
+
+    private static void cancelLegacyKeepAliveAlarms(int pendingIntentFlags) {
+        try {
+            AlarmManager am = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
+            PendingIntent keepAlive = PendingIntent.getBroadcast(applicationContext, 0, new Intent(applicationContext, AppStartReceiver.class).setAction(LEGACY_KEEP_ALIVE_ACTION), pendingIntentFlags | PendingIntent.FLAG_NO_CREATE);
+            if (keepAlive != null) {
+                am.cancel(keepAlive);
+                keepAlive.cancel();
+            }
+            PendingIntent undeliverable = PendingIntent.getBroadcast(applicationContext, 0, new Intent(applicationContext, NotificationsService.class), pendingIntentFlags | PendingIntent.FLAG_NO_CREATE);
+            if (undeliverable != null) {
+                am.cancel(undeliverable);
+                undeliverable.cancel();
+            }
+            if (pendingIntent != null) {
+                am.cancel(pendingIntent);
+                pendingIntent = null;
+            }
+        } catch (Throwable ignore) {
+        }
+    }
+
+    private static void stopPushService() {
+        if (NotificationsService.isForegroundStartPending()) {
+            NotificationsService.requestStopWhenForeground();
+            return;
+        }
+        try {
+            applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
+        } catch (Throwable ignore) {
+        }
     }
 
     public static void startPushService() {
@@ -424,70 +474,27 @@ public class ApplicationLoader extends Application {
             pendingIntentFlags = PendingIntent.FLAG_MUTABLE;
         }
         if (enabled) {
-            boolean unifiedPushActive = false;
-            try {
-                unifiedPushActive = org.unifiedpush.android.connector.UnifiedPush.getAckDistributor(applicationContext) != null;
-            } catch (Throwable ignore) {
-            }
+            final boolean unifiedPushActive = PushListenerController.isUnifiedPushActive();
+            cancelLegacyKeepAliveAlarms(pendingIntentFlags);
             if (unifiedPushActive) {
                 Log.d("Fork Client", "UnifiedPush is active, skipping push service watchdog");
-                try {
-                    applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
-                    AlarmManager alarm = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
-                    if (pendingIntent != null) {
-                        alarm.cancel(pendingIntent);
-                    }
-                } catch (Throwable ignore) {
-                }
+                stopPushService();
                 return;
-            }
-            boolean googlePlayAvailable = false;
-            try {
-                googlePlayAvailable = com.google.android.gms.common.GoogleApiAvailability.getInstance()
-                    .isGooglePlayServicesAvailable(applicationContext) ==com.google.android.gms.common.ConnectionResult.SUCCESS;
-            } catch (Throwable ignore) {
-            }
-            if (googlePlayAvailable) {
-                Log.d("Fork Client", "Google Play Services available, skipping push service watchdog");
-                try {
-                    applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
-                    AlarmManager alarm = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
-                    if (pendingIntent != null) {
-                        alarm.cancel(pendingIntent);
-                    }
-                } catch (Throwable ignore) {
-                }
-                return;
-            }
-            Log.d("TFOSS", "Trying to start push service every minute");
-            // Telegram-FOSS: unconditionally enable push service
-            AlarmManager am = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
-            Intent i = new Intent(applicationContext, NotificationsService.class);
-            try {
-            pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, i, pendingIntentFlags);
-
-            am.cancel(pendingIntent);
-            am.setInexactRepeating(
-                AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                pendingIntent
-            );
-            } catch (Throwable ignore) {
-                Log.d("Fork Client", "Failed to set intent");
             }
             try {
                 Log.d("TFOSS", "Starting push service...");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationsService.onForegroundStartRequested();
                     applicationContext.startForegroundService(new Intent(applicationContext, NotificationsService.class));
                 } else {
                     applicationContext.startService(new Intent(applicationContext, NotificationsService.class));
                 }
             } catch (Throwable ignore) {
+                NotificationsService.onForegroundStartFailed();
                 Log.d("TFOSS", "Failed to start push service");
             }
         } else {
-            applicationContext.stopService(new Intent(applicationContext, NotificationsService.class));
+            stopPushService();
             try {
             PendingIntent pintent = PendingIntent.getService(applicationContext, 0, new Intent(applicationContext, NotificationsService.class), PendingIntent.FLAG_MUTABLE);
             AlarmManager alarm = (AlarmManager)applicationContext.getSystemService(Context.ALARM_SERVICE);
@@ -571,6 +578,44 @@ public class ApplicationLoader extends Application {
             } catch (Throwable ignore) {
 
             }
+            ensureConstrainedNetworkCallback();
+        }
+    }
+
+    private static synchronized void ensureConstrainedNetworkCallback() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM || constrainedNetworkCallback != null || connectivityManager == null) {
+            return;
+        }
+        HandlerThread thread = null;
+        try {
+            final NetworkRequest request = new NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .removeCapability(NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED)
+                .build();
+            final ConnectivityManager.NetworkCallback callback = new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onCapabilitiesChanged(@NonNull Network network, @NonNull NetworkCapabilities networkCapabilities) {
+                    constrainedNetwork = network;
+                    setBandwidthConstrained(!networkCapabilities.hasCapability(NET_CAPABILITY_NOT_BANDWIDTH_CONSTRAINED)
+                        || networkCapabilities.hasTransport(TRANSPORT_SATELLITE));
+                }
+
+                @Override
+                public void onLost(@NonNull Network network) {
+                    if (network.equals(constrainedNetwork)) {
+                        constrainedNetwork = null;
+                        setBandwidthConstrained(false);
+                    }
+                }
+            };
+            thread = new HandlerThread("ConstrainedNetworkMonitor");
+            thread.start();
+            connectivityManager.registerBestMatchingNetworkCallback(request, callback, new Handler(thread.getLooper()));
+            constrainedNetworkCallback = callback;
+        } catch (Throwable ignore) {
+            if (thread != null) {
+                thread.quitSafely();
+            }
         }
     }
 
@@ -612,6 +657,9 @@ public class ApplicationLoader extends Application {
     }
 
     public static boolean isConnectionSlow() {
+        if (isBandwidthConstrained()) {
+            return true;
+        }
         try {
             ensureCurrentNetworkGet(false);
             if (currentNetworkInfo != null && currentNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
@@ -628,6 +676,56 @@ public class ApplicationLoader extends Application {
 
         }
         return false;
+    }
+
+    public static boolean isBandwidthConstrained() {
+        return bandwidthConstrained && isSatelliteDataSavingEnabled();
+    }
+
+    public static boolean isSatelliteDataSavingEnabled() {
+        Boolean enabled = satelliteDataSaving;
+        if (enabled == null) {
+            enabled = MessagesController.getGlobalMainSettings().getBoolean("satelliteDataSaving", true);
+            satelliteDataSaving = enabled;
+        }
+        return enabled;
+    }
+
+    public static void setSatelliteDataSavingEnabled(boolean enabled) {
+        if (isSatelliteDataSavingEnabled() == enabled) {
+            return;
+        }
+        satelliteDataSaving = enabled;
+        if (bandwidthConstrained) {
+            notifyBandwidthConstrainedChanged();
+        }
+    }
+
+    private static void setBandwidthConstrained(boolean constrained) {
+        if (bandwidthConstrained == constrained) {
+            return;
+        }
+        bandwidthConstrained = constrained;
+        if (BuildVars.LOGS_ENABLED) {
+            FileLog.d("bandwidth constrained network = " + constrained);
+        }
+        if (isSatelliteDataSavingEnabled()) {
+            notifyBandwidthConstrainedChanged();
+        }
+    }
+
+    private static void notifyBandwidthConstrainedChanged() {
+        AndroidUtilities.runOnUIThread(() -> {
+            final boolean isSlow = isConnectionSlow();
+            for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
+                    continue;
+                }
+                ConnectionsManager.getInstance(a).checkConnection();
+                FileLoader.getInstance(a).onNetworkChanged(isSlow);
+                DownloadController.getInstance(a).checkAutodownloadSettings();
+            }
+        });
     }
 
     public static int getAutodownloadNetworkType() {
@@ -810,7 +908,7 @@ public class ApplicationLoader extends Application {
     }
 
     public void onResume() {
-
+        UnifiedPushService.refreshRegistration();
     }
 
     public boolean onPause() {
