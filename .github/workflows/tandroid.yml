@@ -23,19 +23,25 @@ jobs:
             name: " compressed"
             updates: 1
     steps:
-      - uses: actions/checkout@v3.1.0
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: 'recursive'
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Free up some disk space.
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
         with:
           tool-cache: false
           android: false
+
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
           cache: gradle
+
       - uses: nttld/setup-ndk@v1.4.2
         id: setup-ndk-r21e
         with:
@@ -47,10 +53,13 @@ jobs:
         with:
           ndk-version: r23c
           link-to-sdk: true
+
       - name: Install NDK for the JNI build (ndkVersion).
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;27.2.12479018"
+
       - name: Install SDK platform 36.
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+
       - name: Prepare additional build number.
         env:
           ADDITIONAL_BUILD: ${{ secrets.ADDITIONAL_BUILD_NUMBER }}
@@ -60,6 +69,7 @@ jobs:
           echo "ADDITIONAL_BUILD_NUMBER=$result" >> $GITHUB_ENV
           echo "USER_REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
           echo "CHECK_UPDATES=${{ matrix.updates }}" >> $GITHUB_ENV
+
       - name: Build.
         run: |
           ###
@@ -88,7 +98,6 @@ jobs:
           sudo apt -y install ninja-build meson unzip pip gperf
           ./gradlew :TMessagesProj_App:${{ matrix.afat }}
 
-          #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
           grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/${{ matrix.type }}/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
 
           mkdir -p artifact
@@ -112,6 +121,7 @@ jobs:
           tempVer=$(cat ver.txt)
           tempVer=${tempVer::-2}
           echo "NEW_OFFICIAL_TAG_TEXT=$tempVer" >> $GITHUB_ENV
+
       - name: Build App Bundle for Play Store.
         if: matrix.type == 'release'
         run: |
@@ -137,7 +147,7 @@ jobs:
     if: ${{ contains(github.event.head_commit.message, '[Release]') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v4
       - name: Download debug artifact
         uses: actions/download-artifact@v4.3.0
         with:
