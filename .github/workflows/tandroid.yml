@@ -90,7 +90,7 @@ jobs:
           echo "UPDATE_CHANNEL_USERNAME=${{ secrets.UPDATE_CHANNEL_USERNAME }}" >> $vars
           echo "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}" >> $vars
           echo "LASTFM_API_SECRET=${{ secrets.LASTFM_API_SECRET }}" >> $vars
-          echo "NATIVE_DEPS_NDK_DIR=${{ steps.setup-ndk-r21e.outputs.ndk-path }}" >> $vars
+          echo "NATIVE_DEPS_NDK_DIR=${{ steps.setup-ndk-r23c.outputs.ndk-path }}" >> $vars
 
           ###
           echo $ADDITIONAL_BUILD_NUMBER
