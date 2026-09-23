@@ -14740,6 +14740,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             } else {
                 bottomLayout.setVisibility(View.GONE);
                 bottomLayout.setTag(null);
+                setVideoPlayerControlVisible(false, animated);
             }
             if (isInvoice) {
                 setItemVisible(masksItem, false, animated);
