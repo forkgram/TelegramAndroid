@@ -375,7 +375,7 @@ public class ContactsController extends BaseController {
     }
 
     public String getInviteText(int contacts) {
-        String link = inviteLink == null ? "https://telegram.org/dl" : inviteLink;
+        String link = inviteLink == null ? "https://play.google.com/store/apps/details?id=org.novagram.messenger" : inviteLink;
         if (contacts <= 1) {
             return LocaleController.formatString(R.string.InviteText2, link);
         } else {

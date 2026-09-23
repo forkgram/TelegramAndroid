@@ -254,7 +254,12 @@ public class SessionCell extends FrameLayout {
             detailExTextView.setText(spannableStringBuilder);
 
             stringBuilder = new StringBuilder();
-            stringBuilder.append(session.app_name);
+            String appName = session.app_name;
+            if (appName != null && appName.equals("Nnmmmm")) {
+                stringBuilder.append("Novagram Android");
+            } else {
+                stringBuilder.append(session.app_name);
+            }
             stringBuilder.append(" ").append(session.app_version);
 
             detailTextView.setText(stringBuilder);

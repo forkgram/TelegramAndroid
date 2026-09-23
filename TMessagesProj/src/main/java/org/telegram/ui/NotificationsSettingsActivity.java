@@ -27,6 +27,7 @@ import android.text.TextUtils;
 import android.util.LongSparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -908,6 +909,97 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(!enabled);
             }
+            else if (position == unifiedPushDistributorRow) {
+                AtomicReference<Dialog> dialogRef = new AtomicReference<>();
+
+                LinearLayout linearLayout = new LinearLayout(context);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                List<String> distributors = UnifiedPush.getDistributors(ApplicationLoader.applicationContext);
+                CharSequence[] items = distributors.toArray(new CharSequence[distributors.size()]);
+
+                String distributor = UnifiedPush.getAckDistributor(ApplicationLoader.applicationContext);
+
+                for (int i = 0; i < items.length; ++i) {
+                    final int index = i;
+                    RadioColorCell cell = new RadioColorCell(getParentActivity());
+                    cell.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), 0);
+                    cell.setCheckColor(Theme.getColor(Theme.key_radioBackground), Theme.getColor(Theme.key_dialogRadioBackgroundChecked));
+                    cell.setTextAndValue(items[index], items[index].equals(distributor));
+                    cell.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
+                    linearLayout.addView(cell);
+                    cell.setOnClickListener(v -> {
+                        UnifiedPush.saveDistributor(ApplicationLoader.applicationContext, items[index].toString());
+                        UnifiedPush.register(ApplicationLoader.applicationContext,
+                                "default",
+                                "Telegram Simple Push",
+                                null);
+                        updateUnifiedPushDistributor = true;
+                        adapter.notifyItemChanged(position);
+                        dialogRef.get().dismiss();
+                    });
+                }
+
+                Dialog dialog = new AlertDialog.Builder(getParentActivity())
+                        .setTitle(LocaleController.getString("UnifiedPushDistributor", R.string.UnifiedPushDistributor))
+                        .setView(linearLayout)
+                        .setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null)
+                        .create();
+                dialogRef.set(dialog);
+                showDialog(dialog);
+            } else if (position == unifiedPushGatewayRow) {
+                final EditText input = new EditText(getParentActivity());
+                input.setText(SharedConfig.unifiedPushGateway);
+                input.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
+                input.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText));
+                Dialog dialog = new AlertDialog.Builder(getParentActivity())
+                        .setTitle(LocaleController.getString("UnifiedPushGateway", R.string.UnifiedPushGateway))
+                        .setMessage(LocaleController.getString("UnifiedPushGatewayInfo", R.string.UnifiedPushGatewayInfo))
+                        .setView(input)
+                        .setPositiveButton(LocaleController.getString("OK", R.string.OK), (di, w) -> {
+                            String value = String.valueOf(input.getText());
+                            if (!value.endsWith("/")) {
+                                value += "/";
+                            }
+                            SharedConfig.setUnifiedPushGateway(value);
+                            UnifiedPush.register(ApplicationLoader.applicationContext,
+                                    "default",
+                                    "Telegram Simple Push",
+                                    null);
+                            updateUnifiedPushGateway = true;
+                            adapter.notifyItemChanged(position);
+                        }).setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null)
+                        .create();
+                showDialog(dialog);
+            }
+            if (view instanceof TextCheckCell) {
+                ((TextCheckCell) view).setChecked(!enabled);
+            }
+        });
+        listView.setOnItemLongClickListener((view, position, x, y) -> {
+            if (getParentActivity() == null) {
+                return false;
+            }
+            if (position == unifiedPushDistributorRow) {
+                String txt;
+                if (UnifiedPushService.getNumOfReceivedNotifications() == 0) {
+                    txt = "You never received notifications with UnifiedPush since Forkgram was started.";
+                } else {
+                    txt = String.format("The last received notification with UnifiedPush was %d seconds ago.\n" +
+                                        "You received %d notifications since Forkgram was started.",
+                                        (SystemClock.elapsedRealtime() - UnifiedPushService.getLastReceivedNotification()) / 1000,
+                                        UnifiedPushService.getNumOfReceivedNotifications());
+                }
+                txt += String.format("\n\nThe current UnifiedPush endpoint is: %s", SharedConfig.pushString);
+                Dialog dialog = new AlertDialog.Builder(getParentActivity())
+                        .setTitle("UnifiedPush Notifications")
+                        .setMessage(txt)
+                        .setNegativeButton(LocaleController.getString("OK", R.string.OK), null)
+                        .create();
+                showDialog(dialog);
+                return true;
+            }
+            return false;
         });
         listView.setOnItemLongClickListener((view, position, x, y) -> {
             if (getParentActivity() == null) {

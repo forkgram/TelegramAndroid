@@ -1,38 +1,65 @@
-name: Fork Client
+name: Novagram
 
-on:
-  push:
-    branches:
-      - '**'
+on: [push]
 
 jobs:
   linux:
     name: Build
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
       attestations: write
+    strategy:
+      matrix:
+        type: [debug, release]
+        include:
+          - type: debug
+            afat: assembleAfatDebug
+            name: ""
+            updates: 1
+          - type: release
+            afat: assembleAfatRelease
+            name: " compressed"
+            updates: 1
     steps:
-      - uses: actions/checkout@v3.1.0
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: 'recursive'
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Free up some disk space.
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
         with:
           tool-cache: false
           android: false
+
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: gradle
+
       - uses: nttld/setup-ndk@v1.4.2
-        id: setup-ndk-r27c
+        id: setup-ndk-r21e
         with:
-          ndk-version: r27c
+          ndk-version: r21e
           link-to-sdk: true
+
+      - uses: nttld/setup-ndk@v1.4.2
+        id: setup-ndk-r23c
+        with:
+          ndk-version: r23c
+          link-to-sdk: true
+
       - name: Install NDK for the JNI build (ndkVersion).
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;27.2.12479018"
+
+      - name: Install SDK platform 36.
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+
       - name: Prepare additional build number.
         env:
           ADDITIONAL_BUILD: ${{ secrets.ADDITIONAL_BUILD_NUMBER }}
@@ -41,7 +68,8 @@ jobs:
           echo "ADDITIONAL_BUILD_NUMBER = $result should be between 0 and 10!"
           echo "ADDITIONAL_BUILD_NUMBER=$result" >> $GITHUB_ENV
           echo "USER_REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
-          echo "CHECK_UPDATES=1" >> $GITHUB_ENV
+          echo "CHECK_UPDATES=${{ matrix.updates }}" >> $GITHUB_ENV
+
       - name: Build.
         run: |
           ###
@@ -57,47 +85,37 @@ jobs:
           echo "RELEASE_KEYSTORE_FILE=$PWD/TMessagesProj/config/release.keystore" >> $vars
           echo "ADDITIONAL_BUILD_NUMBER=$ADDITIONAL_BUILD_NUMBER" >> $vars
           echo "USER_REPO=$USER_REPO" >> $vars
-          echo "CHECK_UPDATES=1" >> $vars
+          echo "CHECK_UPDATES=${{ matrix.updates }}" >> $vars
           echo "USER_ID_OWNER=${{ secrets.USER_ID_OWNER }}" >> $vars
           echo "UPDATE_CHANNEL_USERNAME=${{ secrets.UPDATE_CHANNEL_USERNAME }}" >> $vars
           echo "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}" >> $vars
           echo "LASTFM_API_SECRET=${{ secrets.LASTFM_API_SECRET }}" >> $vars
+          echo "NATIVE_DEPS_NDK_DIR=${{ steps.setup-ndk-r23c.outputs.ndk-path }}" >> $vars
 
           ###
           echo $ADDITIONAL_BUILD_NUMBER
           sudo apt update
-          sudo apt -y install ninja-build meson nasm gperf pkg-config unzip pip
+          sudo apt -y install ninja-build meson unzip pip gperf
+          
           rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
-          ./gradlew :TMessagesProj_App:assembleAfatRelease
+          
+          ./gradlew :TMessagesProj_App:${{ matrix.afat }}
 
-          #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
-          grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/release/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
+          grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/${{ matrix.type }}/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
 
           mkdir -p artifact
-          mv TMessagesProj_App/build/outputs/apk/afat/release/app.apk app.apk
-          cp app.apk "artifact/ForkClient $(cat ver.txt).apk"
+          mv TMessagesProj_App/build/outputs/apk/afat/${{ matrix.type }}/app.apk app.apk
+          cp app.apk "artifact/Novagram $(cat ver.txt)${{ matrix.name }}.apk"
           mkdir -p tag_asset
-          cp app.apk "tag_asset/ForkClient_$(cat ver.txt).apk"
+          cp app.apk "tag_asset/Novagram_$(cat ver.txt)${{ matrix.name }}.apk"
 
           # Upload to channel.
           if [[ "${{ contains(github.event.head_commit.message, '[Release]') }}" == "true" ]]; then
-            FORK_UPLOAD_MODE=release
-          elif [[ "${{ contains(github.event.head_commit.message, '[Optional]') }}" == "true" ]]; then
-            FORK_UPLOAD_MODE=optional
-          else
-            FORK_UPLOAD_MODE=
-          fi
-          if [[ -n "$FORK_UPLOAD_MODE" ]]; then
             set +x
-            pip install requests tgcrypto-pyrofork Kurigram
-            cp app.apk "ForkClient $(cat ver.txt).apk"
-            echo "${{ secrets.BASE64_ZIP }}" | base64 --decode > output.zip
-            unzip -j output.zip -d .
-            ls
-            FORK_UPLOAD_MODE=$FORK_UPLOAD_MODE python3 upload.py
+            cp app.apk "Novagram $(cat ver.txt)${{ matrix.name }}.apk"
             set -x
           else
-            echo "Skipping channel upload (no [Release] or [Optional] marker in commit message)."
+            echo "Skipping channel upload (no [Release] marker in commit message)."
           fi
           ###
 
@@ -106,17 +124,24 @@ jobs:
           tempVer=$(cat ver.txt)
           tempVer=${tempVer::-2}
           echo "NEW_OFFICIAL_TAG_TEXT=$tempVer" >> $GITHUB_ENV
+
+      - name: Build App Bundle for Play Store.
+        if: matrix.type == 'release'
+        run: |
+          ./gradlew :TMessagesProj_App:bundleAfatRelease
+          cp TMessagesProj_App/build/outputs/bundle/afatRelease/*.aab "artifact/Novagram $(cat ver.txt)${{ matrix.name }}.aab"
+          
       - name: Attest build provenance
-        if: ${{ contains(github.event.head_commit.message, '[Release]') }}
+        if: true
         uses: actions/attest-build-provenance@v2
         with:
-          subject-path: 'artifact/*.apk'
+          subject-path: 'artifact/*'
 
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         name: Upload artifact
-        if: ${{ contains(github.event.head_commit.message, '[Release]') }}
+        if: true
         with:
-          name: ForkClient
+          name: Novagram-${{ matrix.type }}
           path: artifact/
 
   release:
@@ -125,24 +150,32 @@ jobs:
     if: ${{ contains(github.event.head_commit.message, '[Release]') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.1.0
-      - name: Download artifact
+      - uses: actions/checkout@v4
+      - name: Download debug artifact
         uses: actions/download-artifact@v4.3.0
         with:
-          name: ForkClient
-          path: asset
+          name: Novagram-debug
+          path: debug_asset
+      - name: Download release artifact
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: Novagram-release
+          path: release_asset
       - name: Get version info
         run: |
-          find asset -name "*.apk" | head -1 | sed 's/.*ForkClient //;s/\.apk//' > version.txt
+          find debug_asset -name "*.apk" | head -1 | sed 's/.*Novagram //;s/\.apk//' > version.txt
           echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
           echo "OFFICIAL_VERSION=$(cat version.txt | sed 's/..$//')" >> $GITHUB_ENV
       - name: Create Release
         uses: softprops/action-gh-release@v0.1.15
         env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           draft: true
-          files: asset/*
+          files: |
+            debug_asset/*
+            release_asset/*
           tag_name: ${{ env.VERSION }}
-          name: "ForkClient ${{ env.VERSION }}"
+          name: "Novagram ${{ env.VERSION }}"
           body: "— Updated to ${{ env.OFFICIAL_VERSION }} build of the official Telegram."
+          

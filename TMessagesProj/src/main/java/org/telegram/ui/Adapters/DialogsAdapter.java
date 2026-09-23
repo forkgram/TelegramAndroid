@@ -127,6 +127,7 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
     private ArrayList<Long> selectedDialogs;
     private boolean hasHints;
     private boolean hasChatlistHint;
+    private boolean hasForkAdRow;
     private int currentAccount;
     private boolean dialogsListFrozen;
     private boolean isReordering;
@@ -180,6 +181,9 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
     }
 
     public int fixPosition(int position) {
+        if (hasForkAdRow) {
+            position--;
+        }
         if (hasChatlistHint) {
             position--;
         }
@@ -796,6 +800,10 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
                 };
                 break;
             }
+            case VIEW_TYPE_FORK_AD: {
+                view = new FrameLayout(mContext);
+                break;
+            }
             case VIEW_TYPE_TEXT:
             default: {
                 view = new TextCell(mContext);
@@ -836,6 +844,12 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
         switch (holder.getItemViewType()) {
+            case VIEW_TYPE_FORK_AD: {
+                if (parentFragment != null) {
+                    parentFragment.forkBindAdRow((FrameLayout) holder.itemView);
+                }
+                break;
+            }
             case VIEW_TYPE_FORWARD_TO_STORIES_CELL: {
                 TLRPC.Dialog nextDialog = (TLRPC.Dialog) getItem(i + 1);
 
@@ -1492,6 +1506,12 @@ public class DialogsAdapter extends RecyclerListView.SelectionAdapter implements
     private void updateItemListForCommunity() {
         itemInternals.clear();
         updateHasHints();
+
+        hasForkAdRow = (dialogsType == DialogsActivity.DIALOGS_TYPE_DEFAULT || dialogsType == 7 || dialogsType == 8) && folderId == 0
+                && parentFragment != null && parentFragment.forkShouldShowAdRow();
+        if (hasForkAdRow) {
+            itemInternals.add(new ItemInternal(VIEW_TYPE_FORK_AD));
+        }
 
         MessagesController messagesController = MessagesController.getInstance(currentAccount);
         MessagesController.CommunityPeersDialog communityPeersDialog = messagesController.buildCommunityPeers(communityId);

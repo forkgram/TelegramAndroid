@@ -275,7 +275,7 @@
     <string name="WrongNumberFormat">Неправильний формат</string>
     <string name="ShortNumberInfo">Вказаний номер є занадто коротким для **%1$s**:\n\n**%2$s**\n\nВведіть номер телефону повністю, разом із кодом країни.</string>
     <string name="EditNumber">Змінити номер</string>
-    <string name="DidNotGetTheCodeInfo">Якщо ви не одержали коду в SMS або виклику, перевірте **налаштування мобільної мережі** та номер телефону:\n\n**%1$s**\n\nЯкщо це не допоможе, вам залишиться спробувати інший номер телефону або звʼязатися з підтримкою Telegram. Натисніть **Допомога**, щоб надіслати нам технічну інформацію і ми могли зʼясувати проблему.</string>
+    <string name="DidNotGetTheCodeInfo">Якщо ви не одержали коду в SMS або виклику, перевірте **налаштування мобільної мережі** та номер телефону:\n\n**%1$s**\n\nЯкщо це не допоможе, вам залишиться спробувати інший номер телефону або звʼязатися з підтримкою Novagram. Натисніть **Допомога**, щоб надіслати нам технічну інформацію і ми могли зʼясувати проблему.</string>
     <string name="DidNotGetTheCodeHelpButton">Допомога</string>
     <string name="DidNotGetTheCodeEditNumberButton">Змінити номер</string>
     <!--code enter view-->
@@ -408,7 +408,7 @@
     <string name="CancelPasswordResetNo">НІ</string>
     <string name="CancelReset">Скасувати скидання</string>
     <string name="CancelEmailQuestionTitle">Перервати увімкнення</string>
-    <string name="TurnPasswordOffPassport">Усі дані, збережені в Telegram Passport, буде втрачено.</string>
+    <string name="TurnPasswordOffPassport">Усі дані, збережені в Novagram Passport, буде втрачено.</string>
     <string name="PasswordHint">Підказка пароля</string>
     <string name="PasswordHintDescription">За бажанням ви можете додати підказку до пароля.</string>
     <string name="PasswordHintPlaceholder">Підказка</string>
@@ -444,9 +444,9 @@
     <string name="RestoreEmailNoAccess">Не маєте доступу до %1$s?</string>
     <string name="ResetPasswordWait">Ви нещодавно запитували скидання пароля, але запит був скасований. Будь ласка, зачекайте %1$s, перш ніж зробити новий запит.</string>
     <string name="ResetMyAccount">СКИНУТИ МІЙ АКАУНТ</string>
-    <string name="ResetMyAccountText">Ви втратите всі чати, повідомлення, фото, відео й файли в Telegram, якщо ви продовжите скидання акаунта.</string>
+    <string name="ResetMyAccountText">Ви втратите всі чати, повідомлення, фото, відео й файли в Novagram, якщо ви продовжите скидання акаунта.</string>
     <string name="ResetMyAccountWarning">Попередження</string>
-    <string name="ResetMyAccountWarningText">Це незворотна дія. Ви втратите всі чати, повідомлення, фото, відео й файли в Telegram, якщо продовжите скидання акаунта.</string>
+    <string name="ResetMyAccountWarningText">Це незворотна дія. Ви втратите всі чати, повідомлення, фото, відео й файли в Novagram, якщо продовжите скидання акаунта.</string>
     <string name="ResetMyAccountWarningReset">Скинути акаунт</string>
     <string name="LoginPassword">Пароль</string>
     <string name="LoginPasswordText">Ви вмикали двоетапну перевірку. Ваш акаунт захищений додатковим паролем.</string>
@@ -459,9 +459,9 @@
     <string name="VerificationCode">Код підтвердження</string>
     <string name="EnterCode">Введіть код</string>
     <string name="ResendCodeInfo">На вашу е-пошту надіслано код підтвердження.</string>
-    <string name="EnabledPasswordText">Увімкнено двоетапну перевірку.\nДля входу в акаунт Telegram вам знадобиться встановлений тут пароль.</string>
+    <string name="EnabledPasswordText">Увімкнено двоетапну перевірку.\nДля входу в акаунт Novagram вам знадобиться встановлений тут пароль.</string>
     <string name="AddEmailTitle">Вкажіть е-пошту для входу</string>
-    <string name="AddEmailSubtitle">Ви отримуватимете коди для входу в Telegram на е-пошту, а не через SMS. Будь ласка, додайте адресу, до якої ви маєте доступ.</string>
+    <string name="AddEmailSubtitle">Ви отримуватимете коди для входу в Novagram на е-пошту, а не через SMS. Будь ласка, додайте адресу, до якої ви маєте доступ.</string>
     <string name="EnterNewEmail">Вкажіть нову е-пошту</string>
     <string name="VerificationCodeSubtitle">"Перевірте свою е-пошту %1$s і введіть код, який ми вам щойно надіслали. Не забудьте перевірити теку зі спамом. "</string>
     <string name="CheckYourEmail">Перевірте вашу е-пошту</string>
@@ -470,18 +470,18 @@
     <string name="CheckYourNewEmailSubtitle">Введіть код, який ми щойно надіслали на вашу нову е-пошту %1$s.</string>
     <string name="LoginOrSingInWithGoogle">або</string>
     <!--Intro view-->
-    <string name="Page1Title">Telegram</string>
+    <string name="Page1Title">Novagram</string>
     <string name="Page2Title">Швидкий</string>
     <string name="Page3Title">Безплатний</string>
     <string name="Page4Title">Захищений</string>
     <string name="Page5Title">Потужний</string>
     <string name="Page6Title">Хмарний</string>
     <string name="Page1Message">**Найшвидший** месенджер у світі.\n**Безплатний** і **захищений**.</string>
-    <string name="Page2Message">**Telegram** доставляє повідомлення\nшвидше за всі інші застосунки.</string>
-    <string name="Page3Message">У **Telegram** можна безплатно зберігати\nскільки завгодно повідомлень і медіафайлів.</string>
-    <string name="Page4Message">**Telegram** оберігає ваші повідомлення\nвід хакерських атак.</string>
-    <string name="Page5Message">**Telegram** не обмежує вас\nу розмірі чатів і медіа.</string>
-    <string name="Page6Message">**Telegram** надає вам доступ до\nповідомлень з безлічі пристроїв.</string>
+    <string name="Page2Message">**Novagram** доставляє повідомлення\nшвидше за всі інші застосунки.</string>
+    <string name="Page3Message">У **Novagram** можна безплатно зберігати\nскільки завгодно повідомлень і медіафайлів.</string>
+    <string name="Page4Message">**Novagram** оберігає ваші повідомлення\nвід хакерських атак.</string>
+    <string name="Page5Message">**Novagram** не обмежує вас\nу розмірі чатів і медіа.</string>
+    <string name="Page6Message">**Novagram** надає вам доступ до\nповідомлень з безлічі пристроїв.</string>
     <string name="StartMessaging">Почати спілкування</string>
     <!--date formatters-->
     <string name="formatterBoostExpired">dd MMM yyyy</string>

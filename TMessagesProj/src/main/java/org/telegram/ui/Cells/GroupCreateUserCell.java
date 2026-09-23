@@ -557,6 +557,7 @@ public class GroupCreateUserCell extends FrameLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        final boolean squareAvatars = MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false);
         super.onDraw(canvas);
         float lockT = premiumBlockedT.set(premiumBlocked);
         if (lockT > 0) {

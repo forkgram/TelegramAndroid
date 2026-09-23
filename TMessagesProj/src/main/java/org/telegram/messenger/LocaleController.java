@@ -1463,6 +1463,29 @@ public class LocaleController {
         return getStringInternal(key, null, 0, res);
     }
 
+    private android.content.Context cachedLocalizedAppContext;
+    private Locale cachedLocalizedAppContextLocale;
+
+    // Returns an applicationContext whose Resources are pinned to currentLocale, regardless of
+    // whether the global applicationContext Configuration has drifted (e.g., FingerprintController
+    // briefly toggling Locale, or system Configuration events arriving before our
+    // onConfigurationChanged listener has reapplied the override). Cloud-loaded strings live in
+    // localeValues so they are immune; locally-shipped strings fall through to context.getString
+    // and are the ones that occasionally rendered in the wrong language without this.
+    private synchronized android.content.Context getLocalizedAppContext() {
+        final android.content.Context appContext = ApplicationLoader.applicationContext;
+        if (currentLocale == null) {
+            return appContext;
+        }
+        if (cachedLocalizedAppContext == null || !currentLocale.equals(cachedLocalizedAppContextLocale)) {
+            android.content.res.Configuration config = new android.content.res.Configuration(appContext.getResources().getConfiguration());
+            config.setLocale(currentLocale);
+            cachedLocalizedAppContext = appContext.createConfigurationContext(config);
+            cachedLocalizedAppContextLocale = currentLocale;
+        }
+        return cachedLocalizedAppContext;
+    }
+
     private String getStringInternal(String key, String fallback, int fallbackRes, int res) {
         String value = BuildVars.USE_CLOUD_STRINGS ? localizationExternal.getByResNameOrResId(ApplicationLoader.applicationContext, key, res) : null;
         if (value == null) {
@@ -1505,8 +1528,51 @@ public class LocaleController {
 
     // deprecated: String key is no longer necessary
     @Deprecated
+    private static final java.util.Set<String> KEEP_KEYS = new java.util.HashSet<>(java.util.Arrays.asList(
+        "AuthAnotherClientInfo2", "TelegramPassportCreatePasswordInfo",
+        "QRLoginSubtitle", "QRLoginStep1", "SessionsListInfo",
+        "TelegramVersion", "TelegramFaq",
+        "AuthAnotherClientInfo1", "AuthAnotherClientInfo4", "AuthAnotherClientInfo5",
+        "DidNotGetTheCodeInfo", "SentAppCode", "SentAppCodeTitle", "SentAppCodeWithPhone"
+    ));
+    private static final String[] PROTECTED_PHRASES = {
+        "Telegram Premium", "Telegram Stars", "Telegram Business", "Telegram Terms of Service",
+        "Telegram Desktop", "Telegram Web", "Telegram Support", "Telegram FAQ"
+    };
+
+    private static String rebrand(String key, String value) {
+        if ("TelegramFaq".equals(key) || "TelegramFAQ".equals(key)) return "Telegram FAQ";
+        if (value == null || key == null) return value;
+        if (KEEP_KEYS.contains(key)) return value;
+        if (!value.contains("elegram")) return value;
+        StringBuilder sb = new StringBuilder();
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("https?://[^\\s\"'<>]+").matcher(value);
+        java.util.List<String> urls = new java.util.ArrayList<>();
+        int last = 0;
+        while (m.find()) {
+            sb.append(value, last, m.start()).append("@@U").append(urls.size()).append("@@");
+            urls.add(m.group());
+            last = m.end();
+        }
+        sb.append(value.substring(last));
+        String temp = sb.toString();
+        for (int i = 0; i < PROTECTED_PHRASES.length; i++) {
+            temp = temp.replace(PROTECTED_PHRASES[i], "@@P" + i + "@@");
+        }
+        String out = temp
+            .replace("Telegram", "Novagram")
+            .replace("telegram", "novagram")
+            .replace("TELEGRAM", "NOVAGRAM");
+        for (int i = 0; i < PROTECTED_PHRASES.length; i++) {
+            out = out.replace("@@P" + i + "@@", PROTECTED_PHRASES[i]);
+        }
+        for (int i = 0; i < urls.size(); i++)
+            out = out.replace("@@U" + i + "@@", urls.get(i));
+        return out;
+    }
+
     public static String getString(String key, @StringRes int res) {
-        return getInstance().getStringInternal(key, res);
+        return rebrand(key, getInstance().getStringInternal(key, res));
     }
 
     // deprecated: String key is no longer necessary
@@ -1707,9 +1773,9 @@ public class LocaleController {
             }
 
             if (getInstance().currentLocale != null) {
-                return String.format(getInstance().currentLocale, value, args);
+                return rebrand(key, String.format(getInstance().currentLocale, value, args));
             } else {
-                return String.format(value, args);
+                return rebrand(key, String.format(value, args));
             }
         } catch (Exception e) {
             FileLog.e(e);

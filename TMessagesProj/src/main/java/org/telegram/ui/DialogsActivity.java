@@ -81,6 +81,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.telegram.messenger.support.LongSparseIntArray;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -275,6 +276,8 @@ import org.telegram.ui.community.cells.CommunityRequestsCell;
 
 import org.telegram.ui.ProfileActivity;
 
+import org.telegram.ui.ProfileActivity;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -289,6 +292,166 @@ import me.vkryl.android.util.ClickHelper;
 
 public class DialogsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, FloatingDebugProvider, FactorAnimator.Target, MainTabsActivity.TabFragmentDelegate {
     private final int ADDITIONAL_LIST_HEIGHT_DP = Build.VERSION.SDK_INT >= 31 ? 48 : 0;
+
+    // --- Fixed top banner ad (limited frequency, cooldown-based) ---
+    // Design (final): the ad is a genuine row inside the chat list's own RecyclerView adapter
+    // (DialogsAdapter, view type VIEW_TYPE_FORK_AD, inserted as item 0 -- see updateItemList()
+    // and fixPosition() there). It is not an overlay, not a translated/margin-shifted sibling,
+    // and does not touch ContentView's layout at all. This means:
+    //   - Standard RecyclerView layout guarantees it can never overlap a chat, a button, or
+    //     anything else -- it is measured and positioned exactly like any other row.
+    //   - It scrolls away with the list naturally when the user swipes, and sits glued right
+    //     above the first chat when the list is at the top -- both "for free", with no manual
+    //     position math anywhere.
+    // This file only owns the AdMob AdView itself (loading, cooldown, lifecycle). The adapter
+    // asks forkShouldShowAdRow() whether to include the row, and forkBindAdRow(container) to
+    // place the (single, reused) AdView into whichever row container is currently on screen.
+    private static final String FORK_ADS_PREFS = "forkgram_ads";
+    private com.google.android.gms.ads.interstitial.InterstitialAd forkInterstitialAd;
+    private static final String FORK_INTERSTITIAL_TEST_AD_UNIT_ID = "ca-app-pub-8212461864193378/5856108669"; // Google test interstitial id
+    private static final long FORK_INTERSTITIAL_COOLDOWN_MS = 2L * 60 * 60 * 1000; // 3 days
+    private static final String FORK_INTERSTITIAL_LAST_SHOWN_KEY = "interstitial_last_shown";
+    private static final String FORK_INTERSTITIAL_CLOSE_COUNT_KEY = "interstitial_close_count";
+    private static final String FORK_ADS_LAST_SHOWN_KEY = "top_banner_last_shown";
+    private static final long FORK_TOP_BANNER_COOLDOWN_MS = 2 * 60 * 1000L; // 20 minutes; change as needed
+    private static final String FORK_TOP_BANNER_TEST_AD_UNIT_ID = "ca-app-pub-8212461864193378/7169190336"; // Google test banner id
+    private com.google.android.gms.ads.AdView topBannerAdView;
+    private boolean forkBannerAdReady; // true once the ad has actually loaded
+
+    private boolean forkShouldShowTopBannerAdNow(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(FORK_ADS_PREFS, Context.MODE_PRIVATE);
+        long lastShown = prefs.getLong(FORK_ADS_LAST_SHOWN_KEY, 0L);
+        return System.currentTimeMillis() - lastShown >= FORK_TOP_BANNER_COOLDOWN_MS;
+    }
+
+    private void forkMarkTopBannerAdShown(Context context) {
+        context.getSharedPreferences(FORK_ADS_PREFS, Context.MODE_PRIVATE)
+                .edit()
+                .putLong(FORK_ADS_LAST_SHOWN_KEY, System.currentTimeMillis())
+                .apply();
+    }
+
+    // Starts loading the ad. Does not attach it to any view -- the adapter pulls it in via
+    // forkBindAdRow() once forkShouldShowAdRow() turns true and the list rebuilds its rows.
+    private void forkCreateTopBannerAd(Context context) {
+        topBannerAdView = new com.google.android.gms.ads.AdView(context);
+        topBannerAdView.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
+        topBannerAdView.setAdUnitId(FORK_TOP_BANNER_TEST_AD_UNIT_ID);
+        topBannerAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
+            @Override
+            public void onAdLoaded() {
+                forkBannerAdReady = true;
+                forkMarkTopBannerAdShown(context);
+                forkRefreshAdRows();
+            }
+
+            @Override
+            public void onAdFailedToLoad(com.google.android.gms.ads.LoadAdError loadAdError) {
+                forkBannerAdReady = false;
+                forkRefreshAdRows();
+            }
+        });
+        topBannerAdView.loadAd(new com.google.android.gms.ads.AdRequest.Builder().build());
+        forkScheduleAdRefresh(context);
+    }
+
+    // Called by DialogsAdapter.updateItemList() to decide whether to include the ad row.
+    public boolean forkShouldShowAdRow() {
+        return forkBannerAdReady && !searchIsShowed;
+    }
+
+    // Called by DialogsAdapter.onBindViewHolder() with the row's container view. Moves the
+    // single shared AdView into it (RecyclerView can reuse/recreate row containers, but there
+    // is only ever one real AdView instance, so it is never recreated or reloaded here).
+    public void forkBindAdRow(FrameLayout container) {
+        if (topBannerAdView == null || container == null) {
+            return;
+        }
+        if (topBannerAdView.getParent() != container) {
+            android.view.ViewParent oldParent = topBannerAdView.getParent();
+            if (oldParent instanceof ViewGroup) {
+                ((ViewGroup) oldParent).removeView(topBannerAdView);
+            }
+            container.addView(topBannerAdView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
+        }
+    }
+
+    // Tells every chats-tab adapter to re-check forkShouldShowAdRow() and rebuild its rows
+    // (adds/removes the ad row accordingly). Safe/cheap to call whenever the ad's readiness
+    // or the search state changes -- notifyDataSetChanged() is this adapter's normal, existing
+    // refresh path (used throughout this file already), not anything new or ad-specific.
+    private void forkRefreshAdRows() {
+        if (viewPages == null) {
+            return;
+        }
+        for (ViewPage vp : viewPages) {
+            if (vp != null && vp.dialogsAdapter != null) {
+                vp.dialogsAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private Runnable forkAdRefreshRunnable;
+
+    private void forkScheduleAdRefresh(Context context) {
+        if (forkAdRefreshRunnable != null) {
+            AndroidUtilities.cancelRunOnUIThread(forkAdRefreshRunnable);
+        }
+        forkAdRefreshRunnable = () -> {
+            if (topBannerAdView != null) {
+                topBannerAdView.loadAd(new com.google.android.gms.ads.AdRequest.Builder().build());
+                forkMarkTopBannerAdShown(context);
+            }
+            forkScheduleAdRefresh(context); // reschedule -> repeats forever while screen exists
+        };
+        AndroidUtilities.runOnUIThread(forkAdRefreshRunnable, FORK_TOP_BANNER_COOLDOWN_MS);
+    }
+
+    private void forkPreloadInterstitial(Context context) {
+        com.google.android.gms.ads.interstitial.InterstitialAd.load(
+                context,
+                FORK_INTERSTITIAL_TEST_AD_UNIT_ID,
+                new com.google.android.gms.ads.AdRequest.Builder().build(),
+                new com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(com.google.android.gms.ads.interstitial.InterstitialAd ad) {
+                        forkInterstitialAd = ad;
+                    }
+                    @Override
+                    public void onAdFailedToLoad(com.google.android.gms.ads.LoadAdError loadAdError) {
+                        forkInterstitialAd = null;
+                    }
+                });
+    }
+
+    // true = is back-press ko rok kar ad dikhaya; false = normal exit hone do
+    private boolean forkMaybeShowExitInterstitial(boolean invoked) {
+        if (!invoked) return false;
+        Activity activity = getParentActivity();
+        if (activity == null || forkInterstitialAd == null) return false;
+
+        Context context = activity;
+        SharedPreferences prefs = context.getSharedPreferences(FORK_ADS_PREFS, Context.MODE_PRIVATE);
+        long lastShown = prefs.getLong(FORK_INTERSTITIAL_LAST_SHOWN_KEY, 0L);
+        if (System.currentTimeMillis() - lastShown < FORK_INTERSTITIAL_COOLDOWN_MS) {
+            return false; // 3 din pure nahi hue
+        }
+        prefs.edit().putLong(FORK_INTERSTITIAL_LAST_SHOWN_KEY, System.currentTimeMillis()).apply();
+
+        com.google.android.gms.ads.interstitial.InterstitialAd adToShow = forkInterstitialAd;
+        forkInterstitialAd = null;
+        adToShow.setFullScreenContentCallback(new com.google.android.gms.ads.FullScreenContentCallback() {
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                forkPreloadInterstitial(context);
+                activity.finish(); // ad ke baad app close -- agar aapka exit tareeka alag hai to ye line badal dein
+            }
+        });
+        adToShow.show(activity);
+        return true;
+    }
+    // --- end fixed top banner ad ---
+
 
     private static final boolean TMP_DISABLE_TOPICS_TWO_COLUMNS = false;
 
@@ -1634,6 +1797,53 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
     private float getSearchFieldAdditionOffset() {
         return -lerp(dp(4), dp(SEARCH_FIELD_HEIGHT), animatorSearchVisible.getFloatValue());
+    }
+
+    private void autoSeedDefaultFolders() {
+        try {
+            if (getParentActivity() == null) return;
+            if (getMessagesController().dialogFiltersById == null) return;
+
+            int allTypes = MessagesController.DIALOG_FILTER_FLAG_CONTACTS
+                | MessagesController.DIALOG_FILTER_FLAG_NON_CONTACTS
+                | MessagesController.DIALOG_FILTER_FLAG_GROUPS
+                | MessagesController.DIALOG_FILTER_FLAG_CHANNELS
+                | MessagesController.DIALOG_FILTER_FLAG_BOTS;
+
+            ensureLocalFolder("Unread", allTypes | MessagesController.DIALOG_FILTER_FLAG_EXCLUDE_READ);
+            ensureLocalFolder("Groups", MessagesController.DIALOG_FILTER_FLAG_GROUPS);
+            ensureLocalFolder("Channels", MessagesController.DIALOG_FILTER_FLAG_CHANNELS);
+            ensureLocalFolder("Bots", MessagesController.DIALOG_FILTER_FLAG_BOTS);
+        } catch (Throwable t) {
+        }
+    }
+
+    private void ensureLocalFolder(String name, int flags) {
+        for (int i = 0; i < getMessagesController().dialogFilters.size(); i++) {
+            if (name.equals(getMessagesController().dialogFilters.get(i).name)) {
+                return;
+            }
+        }
+        int nextId = 2;
+        while (getMessagesController().dialogFiltersById.get(nextId) != null) {
+            nextId++;
+        }
+        MessagesController.DialogFilter filter = new MessagesController.DialogFilter();
+        filter.id = nextId;
+        filter.name = name;
+        filter.flags = flags;
+        filter.order = getMessagesController().getDialogFilters().size();
+        filter.pendingUnreadCount = filter.unreadCount = -1;
+        filter.entities = new ArrayList<>();
+        filter.alwaysShow = new ArrayList<>();
+        filter.neverShow = new ArrayList<>();
+        filter.pinnedDialogs = new org.telegram.messenger.support.LongSparseIntArray();
+        filter.color = -1;
+
+        getMessagesController().dialogFilters.add(filter);
+        getMessagesController().dialogFiltersById.put(filter.id, filter);
+        getMessagesStorage().saveDialogFilter(filter, false, false);
+        getNotificationCenter().postNotificationName(NotificationCenter.dialogFiltersUpdated);
     }
 
     private void updateStoriesViewAlpha(float alpha) {
@@ -3050,6 +3260,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     @Override
     public void onFragmentDestroy() {
         super.onFragmentDestroy();
+        if (topBannerAdView != null) {
+            topBannerAdView.destroy();
+            topBannerAdView = null;
+        }
+        if (forkAdRefreshRunnable != null) {
+            AndroidUtilities.cancelRunOnUIThread(forkAdRefreshRunnable);
+            forkAdRefreshRunnable = null;
+        }
         if (observersGroup != null) {
             observersGroup.removeAllObservers();
             observersGroup = null;
@@ -5327,6 +5545,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             final FrameLayout.LayoutParams layoutParams = LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT);
             contentView.addView(actionBar, layoutParams);
         //}
+        if (!onlySelect && !inPreviewMode) {
+            forkCreateTopBannerAd(context);
+            forkPreloadInterstitial(context);
+        }
         if (!onlySelect) {
             animatedStatusView = new AnimatedStatusView(context, 20, 60);
             contentView.addView(animatedStatusView, LayoutHelper.createFrame(20, 20, Gravity.LEFT | Gravity.TOP));
@@ -7086,9 +7308,68 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         }
     }
 
+    private void checkChannelJoinPrompt() {
+        SharedPreferences prefs = getMessagesController().getMainSettings();
+        if (prefs.getBoolean("channelPromptJoined", false)) {
+            return;
+        }
+        long lastShown = prefs.getLong("channelPromptLastShown", 0);
+        long now = System.currentTimeMillis();
+        long THIRTY_DAYS = 30L * 24 * 60 * 60 * 1000;
+        if (lastShown != 0 && (now - lastShown) < THIRTY_DAYS) {
+            return;
+        }
+
+        AndroidUtilities.runOnUIThread(() -> {
+            if (getParentActivity() == null) return;
+            AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+            builder.setTopImage(
+                getParentActivity().getResources().getDrawable(R.drawable.channel_promo),
+                Theme.getColor(Theme.key_dialogTopBackground)
+            );
+            builder.setTitle("Join Official Novagram Channel");
+            builder.setMessage("Get the latest updates, features and announcements here first!");
+            builder.setPositiveButton("Join", (dialog, which) -> {
+                joinOurChannelAndPin(prefs);
+                prefs.edit().putLong("channelPromptLastShown", now).commit();
+            });
+            builder.setOnCancelListener(d -> {
+                prefs.edit().putLong("channelPromptLastShown", now).commit();
+            });
+            showDialog(builder.create());
+        }, 1500);
+    }
+
+    private void joinOurChannelAndPin(SharedPreferences prefs) {
+        TLRPC.TL_contacts_resolveUsername req = new TLRPC.TL_contacts_resolveUsername();
+        req.username = "novagram_updates";
+        getConnectionsManager().sendRequest(req, (response, error) -> {
+            if (error == null) {
+                TLRPC.TL_contacts_resolvedPeer res = (TLRPC.TL_contacts_resolvedPeer) response;
+                if (!res.chats.isEmpty()) {
+                    TLRPC.Chat chat = res.chats.get(0);
+                    getMessagesController().putChats(res.chats, false);
+                    AndroidUtilities.runOnUIThread(() ->
+                        getMessagesController().addUserToChat(
+                            chat.id,
+                            getUserConfig().getCurrentUser(),
+                            0, null, null, true,
+                            () -> {
+                                prefs.edit().putBoolean("channelPromptJoined", true).commit();
+                            },
+                            null, null
+                        )
+                    );
+                }
+            }
+        });
+    }
     @Override
     public void onResume() {
+        checkChannelJoinPrompt();
         super.onResume();
+        AndroidUtilities.runOnUIThread(this::autoSeedDefaultFolders, 1500);
+        autoSeedDefaultFolders();
         if (dialogStoriesCell != null) {
             dialogStoriesCell.onResume();
         }
@@ -7380,6 +7661,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             return false;
         } else if (dialogStoriesCell.isFullExpanded() && dialogStoriesCell.scrollToFirst()) {
             return false;
+        } else if (forkMaybeShowExitInterstitial(invoked)) {
+            return false;
         }
         return super.onBackPressed(invoked);
     }
@@ -7553,6 +7836,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             searchAnimator = null;
         }
         searchIsShowed = show;
+        forkRefreshAdRows();
         blur3_InvalidateBlur();
         if (show) {
             boolean onlyDialogsAdapter;

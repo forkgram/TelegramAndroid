@@ -43,8 +43,13 @@ public class SenderSelectView extends View {
     private boolean scaleOut;
     private boolean scaleIn;
 
+    private int round = 16;
+
     public SenderSelectView(Context context) {
         super(context);
+        if (org.telegram.messenger.MessagesController.getGlobalMainSettings().getBoolean("squareAvatars", false)) {
+            round = 0;
+        }
         avatarImage.setRoundRadius(AndroidUtilities.dp(28));
         menuPaint.setStrokeWidth(AndroidUtilities.dp(2));
         menuPaint.setStrokeCap(Paint.Cap.ROUND);

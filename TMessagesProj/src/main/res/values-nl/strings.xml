@@ -275,7 +275,7 @@
     <string name="WrongNumberFormat">Verkeerd formaat</string>
     <string name="ShortNumberInfo">Het nummer dat je hebt verstrekt, is te kort voor **%1$s**:\n\n**%2$s**\n\nVoer alsjeblieft het juiste nummer in (inclusief de landcode).</string>
     <string name="EditNumber">Nummer wijzigen</string>
-    <string name="DidNotGetTheCodeInfo">Als je de code niet via SMS of telefonisch hebt ontvangen, controleer dan je **mobiele data-instellingen** en telefoonnummer:\n\n**%1$s**\n\nJe resterende mogelijkheden zijn om een ander nummer te proberen of contact op te nemen met de ondersteuning van Telegram. Tik op **Hulp** om de technische details naar ons te sturen, zodat we het probleem kunnen identificeren.</string>
+    <string name="DidNotGetTheCodeInfo">Als je de code niet via SMS of telefonisch hebt ontvangen, controleer dan je **mobiele data-instellingen** en telefoonnummer:\n\n**%1$s**\n\nJe resterende mogelijkheden zijn om een ander nummer te proberen of contact op te nemen met de ondersteuning van Novagram. Tik op **Hulp** om de technische details naar ons te sturen, zodat we het probleem kunnen identificeren.</string>
     <string name="DidNotGetTheCodeHelpButton">Help</string>
     <string name="DidNotGetTheCodeEditNumberButton">Nummer wijzigen</string>
     <!--code enter view-->
@@ -375,7 +375,7 @@
     <string name="ExternalFolderInfo">Blader door je externe opslag</string>
     <string name="SearchMusic">Zoek muziek</string>
     <!--notification-->
-    <string name="NotificationMessageGiftCode">%1$s heeft je een cadeaucode voor %2$s Telegram Premium gestuurd</string>
+    <string name="NotificationMessageGiftCode">%1$s heeft je een cadeaucode voor %2$s Novagram Premium gestuurd</string>
     <string name="NotificationMessageGiveaway">%1$s heeft je een winactie voor %2$s premium-abonnementen van %3$s maanden gestuurd</string>
     <string name="NotificationMessageChannelGiveaway">%1$s is een winactie voor %2$s premium-abonnementen van %3$s maanden gestart</string>
     <string name="NotificationMessageChatGiveaway">%1$s heeft een winactie voor %3$s premium-abonnementen van %4$s maanden naar de groep %2$s gestuurd</string>
@@ -457,15 +457,15 @@
     <string name="NotificationGroupKickMember">%1$s heeft %3$s verwijderd uit de groep %2$s</string>
     <string name="NotificationGroupKickYou">%1$s heeft je verwijderd uit de groep %2$s</string>
     <string name="NotificationGroupLeftMember">%1$s heeft de groep %2$s verlaten</string>
-    <string name="NotificationContactJoined">%1$s zit nu op Telegram!</string>
-    <string name="NotificationUnrecognizedDevice">%1$s,\nEr is op %2$s vanaf een nieuw apparaat op je account ingelogd.\n\nApparaat: %3$s\nLocatie: %4$s\n\nAls dit niet door jou is gedaan, kun je gaan naar Instellingen &gt; Apparaten en deze sessie beëindigen.\n\nAls je gelooft dat iemand zonder jouw toestemming op je account is ingelogd, kun je tweestapsverificatie inschakelen via Instellingen &gt; Privacy en veiligheid.\n\nMet vriendelijke groet,\nHet Telegram-team</string>
+    <string name="NotificationContactJoined">%1$s zit nu op Novagram!</string>
+    <string name="NotificationUnrecognizedDevice">%1$s,\nEr is op %2$s vanaf een nieuw apparaat op je account ingelogd.\n\nApparaat: %3$s\nLocatie: %4$s\n\nAls dit niet door jou is gedaan, kun je gaan naar Instellingen &gt; Apparaten en deze sessie beëindigen.\n\nAls je gelooft dat iemand zonder jouw toestemming op je account is ingelogd, kun je tweestapsverificatie inschakelen via Instellingen &gt; Privacy en veiligheid.\n\nMet vriendelijke groet,\nHet Novagram-team</string>
     <string name="NotificationContactNewPhoto">%1$s heeft zijn/haar profielfoto gewijzigd</string>
     <string name="NotificationInvitedToGroupByLink">%1$s is nu lid van de groep %2$s via uitnodigingslink</string>
     <string name="NotificationGroupFew">%1$s heeft %3$s naar de groep %2$s gestuurd</string>
     <string name="NotificationGroupAlbum">%1$s heeft een album naar de groep %2$s gestuurd</string>
     <string name="NotificationGroupForwardedFew">%1$s heeft %3$s naar de groep %2$s doorgestuurd</string>
-    <string name="NotificationHiddenName">Telegram</string>
-    <string name="NotificationHiddenChatName">Telegram</string>
+    <string name="NotificationHiddenName">Novagram</string>
+    <string name="NotificationHiddenChatName">Novagram</string>
     <string name="NotificationHiddenChatUserName">Gebruiker</string>
     <string name="NotificationHiddenMessage">Nieuw bericht</string>
     <string name="Reply">Antwoorden</string>
@@ -529,7 +529,7 @@
     <string name="NotificationActionPinnedGeoLiveUser">\n%1$s zette een Live-locatie vast</string>
     <string name="NotificationActionPinnedGifUser">\n%1$s zette een GIF vast</string>
     <string name="NotificationActionPinnedMusicUser">\n%1$s zette een audiobestand vast</string>
-    <string name="SecretChatName">Telegram</string>
+    <string name="SecretChatName">Novagram</string>
     <!--usernames-->
     <string name="Username">Gebruikersnaam</string>
     <string name="UsernameAlso">ook %1$s</string>
@@ -541,7 +541,7 @@
     <string name="UsernameInvalidShortPurchase">De minimumlengte voor gebruikersnamen is normaliter 5 tekens. Echter, korte verzamelbare gebruikersnamen zoals deze staan momenteel te koop. **Lees meer...**</string>
     <string name="UsernameInvalidLong">Naam mag niet langer dan 32 tekens zijn.</string>
     <string name="UsernameInvalidStartNumber">Gebruikersnamen kunnen niet met een nummer beginnen.</string>
-    <string name="UsernameHelp">Je kunt een gebruikersnaam instellen op **Telegram**. Op die manier kunnen anderen je vinden en contact met je opnemen zonder je telefoonnummer te kennen.\n\nJe kunt **a–z**, **0–9** en underscores gebruiken. De minimumlengte is **5** tekens.</string>
+    <string name="UsernameHelp">Je kunt een gebruikersnaam instellen op **Novagram**. Op die manier kunnen anderen je vinden en contact met je opnemen zonder je telefoonnummer te kennen.\n\nJe kunt **a–z**, **0–9** en underscores gebruiken. De minimumlengte is **5** tekens.</string>
     <string name="UsernameHelpLink">Via deze link wordt een chat met jou geopend: %1$s</string>
     <string name="UsernameChecking">Gebruikersnaam controleren...</string>
     <string name="UsernameAvailable">%1$s is beschikbaar.</string>
@@ -584,7 +584,7 @@
     <string name="NotificationsAndSounds">Meldingen en geluiden</string>
     <string name="CustomNotifications">Aangepaste meldingen</string>
     <string name="ProfilePopupNotification">Pop-up meldingen</string>
-    <string name="ProfilePopupNotificationInfo">Nieuwe berichten van deze persoon worden weergegeven als je Telegram niet gebruikt.</string>
+    <string name="ProfilePopupNotificationInfo">Nieuwe berichten van deze persoon worden weergegeven als je Novagram niet gebruikt.</string>
     <string name="NotificationsLed">Licht</string>
     <string name="NotificationsLedColor">Kleur</string>
     <string name="ColorBlue">Blauw</string>
@@ -666,7 +666,7 @@
     <string name="MessagesSettings">Berichten</string>
     <string name="SendByEnter">Verzenden met enter</string>
     <string name="Events">Gebeurtenissen</string>
-    <string name="ContactJoined">Nieuw contact op Telegram</string>
+    <string name="ContactJoined">Nieuw contact op Novagram</string>
     <string name="PinnedMessages">Vastgezette berichten</string>
     <string name="TranslateMessages">Berichten vertalen</string>
     <string name="ShowTranslateButton">Vertaalknop tonen</string>
@@ -691,7 +691,7 @@
     <string name="TelegramFAQ">Veelgestelde vragen</string>
     <string name="TelegramFaq">Veelgestelde vragen</string>
     <string name="TelegramFeatures">Telegram-functies</string>
-    <string name="TelegramFeaturesUrl">https://t.me/TelegramTips</string>
+    <string name="TelegramFeaturesUrl">https://t.me/novagram_updates</string>
     <string name="AddAccount">Account toevoegen</string>
     <string name="SelectAccount">Account kiezen</string>
     <string name="TelegramFaqUrl">https://telegram.org/faq</string>
@@ -837,7 +837,7 @@
     <string name="DirectShareInfo">Recente chats in snel delen weergeven</string>
     <string name="Emoji">Emoji</string>
     <string name="LargeEmoji">Grote emoji</string>
-    <string name="TelegramVersion">Telegram voor Android %1$s</string>
+    <string name="TelegramVersion">Novagram based on Telegram voor Android %1$s</string>
     <string name="ChangeLanguageLater">Via instellingen kun je je taal altijd aanpassen.</string>
     <string name="ChooseYourLanguage">Kies je taal</string>
     <string name="ChooseYourLanguageOther">Overige</string>
@@ -892,7 +892,7 @@
     <string name="AutodownloadSizeLimitUpTo">tot %1$s</string>
     <string name="Streaming">Streamen</string>
     <string name="EnableStreaming">Muziek en audio streamen</string>
-    <string name="EnableAllStreamingInfo">Waar mogelijk zal Telegram video\'s en muziek meteen afspelen, zelfs voordat ze volledig zijn gedownload.</string>
+    <string name="EnableAllStreamingInfo">Waar mogelijk zal Novagram video\'s en muziek meteen afspelen, zelfs voordat ze volledig zijn gedownload.</string>
     <string name="TapToChangePhone">Tik hier om je nummer te wijzigen</string>
     <string name="ShowNotificationsFor">Meldingen weergeven voor</string>
     <string name="AllAccounts">Alle accounts</string>
@@ -909,14 +909,14 @@
     <string name="TapToChange">Tik om te wijzigen</string>
     <string name="AlternativeOptions">Andere opties</string>
     <string name="AddAnotherAccount">Nog een account toevoegen</string>
-    <string name="AddAnotherAccountInfo">Je kunt andere Telegram-accounts koppelen en makkelijk tussen ze schakelen.</string>
+    <string name="AddAnotherAccountInfo">Je kunt andere Novagram-accounts koppelen en makkelijk tussen ze schakelen.</string>
     <string name="SetPasscode">Een toegangscode instellen</string>
     <string name="SetPasscodeInfo">Je kunt de app met een toegangscode vergrendelen, zodat anderen het niet kunnen openen.</string>
     <string name="ClearCache">Cache wissen</string>
     <string name="ClearSelectedCache">Selectie wissen</string>
     <string name="ClearCacheInfo">Maak opslagruimte vrij op je apparaat; je media blijft in de cloud.</string>
     <string name="ClearingCache">Cache wordt gewist...</string>
-    <string name="ClearingCacheDescription">Houd dit venster open terwijl Telegram je cache aan het wissen is.</string>
+    <string name="ClearingCacheDescription">Houd dit venster open terwijl Novagram je cache aan het wissen is.</string>
     <string name="ChangePhoneNumber">Telefoonnummer wijzigen</string>
     <string name="ChangePhoneNumberInfo">Verplaats je account, chats en media naar een nieuw nummer.</string>
     <string name="ChangePhoneNumberSuccessWithPhone">Je telefoonnummer is met succes gewijzigd naar %1$s.</string>
@@ -1120,8 +1120,8 @@
     <string name="DeleteAll">Alles verwijderen</string>
     <string name="StopLoadingTitle">Stoppen met laden?</string>
     <string name="StopLoading">Stoppen met laden?</string>
-    <string name="UpdateTelegram">Telegram bijwerken</string>
-    <string name="UpdateAppAlert">Je gebruikt een verouderde versie van Telegram, deze kan dit verzoek niet verwerken. Werk Telegram bij.</string>
+    <string name="UpdateTelegram">Novagram bijwerken</string>
+    <string name="UpdateAppAlert">Je gebruikt een verouderde versie van Novagram, deze kan dit verzoek niet verwerken. Werk Novagram bij.</string>
     <string name="InvalidPhoneNumber">Ongeldig telefoonnummer, controleer het nummer en probeer opnieuw.</string>
     <string name="PleaseLoginPassport">Log in op Telegram om Telegram Passport te gebruiken.</string>
     <string name="BannedPhoneNumber">Dit nummer is geblokkeerd.</string>
@@ -1133,7 +1133,7 @@
     <string name="EmailTokenInvalid">Ongeldige e-mailtoken.</string>
     <string name="EmailAddressInvalid">Ongeldig e-mailadres.</string>
     <string name="EmailLogin">Inloggen via e-mail</string>
-    <string name="EmailLoginChangeMessage">Dit e-mailadres wordt gebruikt wanneer je vanaf een nieuw apparaat op je Telegram-account inlogt.</string>
+    <string name="EmailLoginChangeMessage">Dit e-mailadres wordt gebruikt wanneer je vanaf een nieuw apparaat op je Novagram-account inlogt.</string>
     <string name="ChangeEmail">E-mailadres wijzigen</string>
     <string name="FloodWait">Teveel pogingen, probeer het later opnieuw.</string>
     <string name="FloodWaitTime">Te veel pogingen, probeer het over %1$s opnieuw</string>
@@ -1145,7 +1145,7 @@
     <string name="NoPlayerInstalled">Je hebt geen mediaspeler. Installeer een mediaspeler om door te gaan.</string>
     <string name="NoMailInstalled">Je kunt een e-mail met een beschrijving van het probleem sturen naar reports@stel.com</string>
     <string name="NoHandleAppInstalled">Je hebt geen apps die bestandstype \'%1$s\' kunnen verwerken, gelieve een compatibele app te installeren</string>
-    <string name="InviteUser">Deze gebruiker heeft nog geen Telegram. Wil je een uitnodiging sturen?</string>
+    <string name="InviteUser">Deze gebruiker heeft nog geen Novagram. Wil je een uitnodiging sturen?</string>
     <string name="AreYouSure">Weet je het zeker?</string>
     <string name="AddToTheGroupAlertTitle">Bot toevoegen</string>
     <string name="AddToTheGroupAlertText">**%1$s** toevoegen aan de groep **%2$s**?</string>
@@ -1161,7 +1161,7 @@
     <string name="SendMessagesToText">Bericht naar **%1$s** sturen?</string>
     <string name="SendGameToText">Spel met **%1$s** delen?</string>
     <string name="SendContactToText">Contact naar **%1$s** sturen?</string>
-    <string name="AreYouSureLogout">Weet je zeker dat je wilt uitloggen?\n\nDoor deze handeling worden al je geheime chats verwijderd.\n\nVergeet niet dat je Telegram naadloos op al je apparaten tegelijk kunt gebruiken en dat je meerdere accounts aan dezelfde app kunt toevoegen.</string>
+    <string name="AreYouSureLogout">Weet je zeker dat je wilt uitloggen?\n\nDoor deze handeling worden al je geheime chats verwijderd.\n\nVergeet niet dat je Novagram naadloos op al je apparaten tegelijk kunt gebruiken en dat je meerdere accounts aan dezelfde app kunt toevoegen.</string>
     <string name="DeleteFewChatsTitle">Verwijder %1$s</string>
     <string name="ClearFewChatsTitle">Wis %1$s</string>
     <string name="ClearCacheFewChatsTitle">Cache wissen voor %1$s</string>
@@ -1232,8 +1232,8 @@
     <string name="SecretChatContextBotAlert">Houd er rekening mee dat inline bots door externe partijen zijn ontwikkeld. Om de bot te laten werken, worden de symbolen die je na de gebruikersnaam van de bot typt, naar de ontwikkelaar verstuurd.</string>
     <string name="EditMessageError">Je mag dit bericht niet wijzigen.</string>
     <string name="AllowReadCall">Sta het ontvangen van oproepen toe zodat we automatisch je inlogcode kunnen invoeren.</string>
-    <string name="AllowReadCallAndLog">Sta Telegram toe om oproepen te ontvangen en de oproepenlijst te lezen zodat we automatisch de code voor je kunnen ingeven.</string>
-    <string name="AllowReadCallLog">Sta Telegram toe om de oproepenlijst te lezen zodat we automatisch de code voor je in kunnen voeren.</string>
+    <string name="AllowReadCallAndLog">Sta Novagram toe om oproepen te ontvangen en de oproepenlijst te lezen zodat we automatisch de code voor je kunnen ingeven.</string>
+    <string name="AllowReadCallLog">Sta Novagram toe om de oproepenlijst te lezen zodat we automatisch de code voor je in kunnen voeren.</string>
     <string name="AllowFillNumber">Sta het ontvangen van oproepen toe zodat we automatisch je telefoonnummer kunnen bevestigen.</string>
     <string name="UserRestricted">Je mag deze actie niet uitvoeren.</string>
     <string name="YouBlockedUser">Je hebt deze gebruiker of bot geblokkeerd, toevoegen aan een groep kan pas na deblokkeren.</string>
@@ -1269,23 +1269,23 @@
     <string name="TosUpdateDecline">Er zijn helaas geen andere mogelijkheden. In tegenstelling tot veel andere apps, gebruik Telegram de gegevens van onze gebruikers niet voor het tonen van gerichte advertenties of andere commerciële doeleinden. Telegram slaat alleen de informatie op die het nodig heeft om te functioneren als een veelzijdige clouddienst. Je kunt zelf aanpassen hoe je gegevens worden gebruikt in de Privacy- en Beveiligingsinstellingen.\n\nAls je niet akkoord gaat met de beperkte vereisten van Telegram, zullen we niet in staat zijn om je deze dienst aan te bieden.</string>
     <string name="TosDeclineDeleteAccount">Waarschuwing: dit zal ervoor zorgen dat je Telegram-account permanent wordt verwijderd, samen met alle data die je in de Telegram-cloud hebt opgeslagen.\n\nBelangrijk: je kunt het proces nu annuleren en je gegevens exporteren voordat je jouw account verwijdert, zodat je niet alles kwijtraakt. (Om dit te doen, kun je de nieuwste versie van Telegram Desktop openen en naar Instellingen &gt; Geavanceerd &gt; Telegram-gegevens Exporteren gaan.)</string>
     <!--permissions-->
-    <string name="PermissionStorageWithHint">**Telegram** heeft toegang tot je opslag nodig, zodat je foto\'s, video\'s, muziek en andere bestanden kunt verzenden en opslaan. Tik op Instellingen &gt; Machtigingen en schakel **Bestanden en media** aan.</string>
-    <string name="PermissionNoAudioWithHint">**Telegram** heeft toegang tot je microfoon nodig zodat je spraakberichten kunt versturen. Tik op Instellingen &gt; Machtigingen en schakel **Microfoon** aan.</string>
-    <string name="PermissionNoAudioVideoWithHint">**Telegram** heeft toegang tot je microfoon nodig zodat je spraakberichten kunt versturen. Tik op Instellingen &gt; Machtigingen en schakel **Microfoon** aan.</string>
-    <string name="PermissionNoCameraWithHint">**Telegram** heeft toegang tot je camera nodig zodat je foto\'s en video\'s kunt maken. Tik op Instellingen &gt; Machtigingen en schakel **Camera** aan.</string>
-    <string name="PermissionNoCameraMicVideo">**Telegram** heeft toegang tot je camera en microfoon nodig zodat je videoberichten kunt versturen. Tik op Instellingen &gt; Machtigingen en schakel **Microfoon** en **Camera** aan.</string>
-    <string name="PermissionNoLocation">Telegram heeft toegang tot je locatie nodig om deze te kunnen delen met je vrienden.</string>
-    <string name="PermissionNoLocationStory">Telegram heeft toegang nodig tot je locatie zodat je het weerbericht in je verhalen kunt plaatsen.</string>
-    <string name="PermissionNoLocationFriends">**Telegram** heeft toegang tot je locatie nodig zodat je het met vrienden kunt delen. Tik op Instellingen &gt; Machtigingen en schakel **Locatie** aan.</string>
-    <string name="PermissionNoLocationNavigation">**Telegram** heeft toegang tot je locatie nodig zodat je aanwijzingen kunt krijgen. Tik op Instellingen &gt; Machtigingen en schakel **Locatie** aan.</string>
-    <string name="PermissionNoContactsSharing">**Telegram** heeft toegang tot je contacten nodig zodat je die met vrienden kunt delen. Tik op Instellingen &gt; Machtigingen en schakel **Contacten** aan.</string>
-    <string name="PermissionNoStorageAvatar">**Telegram** heeft toegang tot je opslag nodig zodat je profielfoto\'s s kunt uploaden. Tik op Instellingen &gt; Machtigingen en schakel **Bestanden en media** in.</string>
-    <string name="PermissionNoAudioStorageStory">**Telegram** heeft toegang tot je muziekbestanden nodig om ze aan je verhaal toe te voegen. Tik op Instellingen &gt; Machtigingen en schakel **Muziek en geluid** in.</string>
-    <string name="PermissionDrawAboveOtherApps">Telegram heeft de toestemming \'over andere apps tekenen\' nodig om video\'s af te spelen in beeld-in-beeld-modus.</string>
-    <string name="PermissionDrawAboveOtherAppsGroupCall">Met overlay-modus  kun je Push-To-Talk gebruiken en zien wie er aan het praten is zelfs als je Telegram niet in de voorgrond hebt.</string>
+    <string name="PermissionStorageWithHint">**Novagram** heeft toegang tot je opslag nodig, zodat je foto\'s, video\'s, muziek en andere bestanden kunt verzenden en opslaan. Tik op Instellingen &gt; Machtigingen en schakel **Bestanden en media** aan.</string>
+    <string name="PermissionNoAudioWithHint">**Novagram** heeft toegang tot je microfoon nodig zodat je spraakberichten kunt versturen. Tik op Instellingen &gt; Machtigingen en schakel **Microfoon** aan.</string>
+    <string name="PermissionNoAudioVideoWithHint">**Novagram** heeft toegang tot je microfoon nodig zodat je spraakberichten kunt versturen. Tik op Instellingen &gt; Machtigingen en schakel **Microfoon** aan.</string>
+    <string name="PermissionNoCameraWithHint">**Novagram** heeft toegang tot je camera nodig zodat je foto\'s en video\'s kunt maken. Tik op Instellingen &gt; Machtigingen en schakel **Camera** aan.</string>
+    <string name="PermissionNoCameraMicVideo">**Novagram** heeft toegang tot je camera en microfoon nodig zodat je videoberichten kunt versturen. Tik op Instellingen &gt; Machtigingen en schakel **Microfoon** en **Camera** aan.</string>
+    <string name="PermissionNoLocation">Novagram heeft toegang tot je locatie nodig om deze te kunnen delen met je vrienden.</string>
+    <string name="PermissionNoLocationStory">Novagram heeft toegang nodig tot je locatie zodat je het weerbericht in je verhalen kunt plaatsen.</string>
+    <string name="PermissionNoLocationFriends">**Novagram** heeft toegang tot je locatie nodig zodat je het met vrienden kunt delen. Tik op Instellingen &gt; Machtigingen en schakel **Locatie** aan.</string>
+    <string name="PermissionNoLocationNavigation">**Novagram** heeft toegang tot je locatie nodig zodat je aanwijzingen kunt krijgen. Tik op Instellingen &gt; Machtigingen en schakel **Locatie** aan.</string>
+    <string name="PermissionNoContactsSharing">**Novagram** heeft toegang tot je contacten nodig zodat je die met vrienden kunt delen. Tik op Instellingen &gt; Machtigingen en schakel **Contacten** aan.</string>
+    <string name="PermissionNoStorageAvatar">**Novagram** heeft toegang tot je opslag nodig zodat je profielfoto\'s s kunt uploaden. Tik op Instellingen &gt; Machtigingen en schakel **Bestanden en media** in.</string>
+    <string name="PermissionNoAudioStorageStory">**Novagram** heeft toegang tot je muziekbestanden nodig om ze aan je verhaal toe te voegen. Tik op Instellingen &gt; Machtigingen en schakel **Muziek en geluid** in.</string>
+    <string name="PermissionDrawAboveOtherApps">Novagram heeft de toestemming \'over andere apps tekenen\' nodig om video\'s af te spelen in beeld-in-beeld-modus.</string>
+    <string name="PermissionDrawAboveOtherAppsGroupCall">Met overlay-modus  kun je Push-To-Talk gebruiken en zien wie er aan het praten is zelfs als je Novagram niet in de voorgrond hebt.</string>
     <string name="PermissionOpenSettings">Instellingen</string>
-    <string name="PermissionXiaomiLockscreen">Sta Telegram toe om weer te kunnen geven op het vergrendelscherm om ervoor te zorgen dat oproepen goed werken.</string>
-    <string name="PermissionBackgroundLocation">Om je Live-locatie in deze chat te kunnen delen heeft Telegram constante toegang tot je locatie nodig, ook als deze op de achtergrond draait.\n\nWe gebruiken je locatie alleen voor de periode die jij instelt en je kunt het delen op ieder moment stoppen. We maken alleen gebruik van je locatiegegevens voor het delen ervan in deze chat.</string>
+    <string name="PermissionXiaomiLockscreen">Sta Novagram toe om weer te kunnen geven op het vergrendelscherm om ervoor te zorgen dat oproepen goed werken.</string>
+    <string name="PermissionBackgroundLocation">Om je Live-locatie in deze chat te kunnen delen heeft Novagram constante toegang tot je locatie nodig, ook als deze op de achtergrond draait.\n\nWe gebruiken je locatie alleen voor de periode die jij instelt en je kunt het delen op ieder moment stoppen. We maken alleen gebruik van je locatiegegevens voor het delen ervan in deze chat.</string>
     <string name="PermissionDrawAboveOtherAppsTitle">Beeld-in-beeld</string>
     <string name="PermissionDrawAboveOtherAppsGroupCallTitle">Videochatoverlay</string>
     <!--contacts shortcuts-->

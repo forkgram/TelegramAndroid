@@ -33,6 +33,10 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.view.ViewGroup;
+import com.google.android.gms.ads.MobileAds;
+
+import android.text.TextUtils;
+import android.util.Log;
 
 import android.text.TextUtils;
 import android.util.Log;

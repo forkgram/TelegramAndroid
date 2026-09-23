@@ -275,7 +275,7 @@
     <string name="WrongNumberFormat">Formato errato</string>
     <string name="ShortNumberInfo">Il numero che hai fornito è troppo breve per **%1$s**:\n\n**%2$s**\n\nInserisci il numero corretto, incluso il tuo prefisso internazionale.</string>
     <string name="EditNumber">Modifica numero</string>
-    <string name="DidNotGetTheCodeInfo">Se non hai ricevuto il codice tramite SMS o chiamata, per favore controlla le tue **impostazioni dati cellulare** e il numero di telefono:\n\n**%1$s**\n\nNon ti resta che provare un altro numero o contattare il supporto Telegram. Tocca **Aiuto** per inviarci i dettagli tecnici in modo da poter identificare il problema.</string>
+    <string name="DidNotGetTheCodeInfo">Se non hai ricevuto il codice tramite SMS o chiamata, per favore controlla le tue **impostazioni dati cellulare** e il numero di telefono:\n\n**%1$s**\n\nNon ti resta che provare un altro numero o contattare il supporto Novagram. Tocca **Aiuto** per inviarci i dettagli tecnici in modo da poter identificare il problema.</string>
     <string name="DidNotGetTheCodeHelpButton">Aiuto</string>
     <string name="DidNotGetTheCodeEditNumberButton">Modifica numero</string>
     <!--code enter view-->
@@ -375,7 +375,7 @@
     <string name="ExternalFolderInfo">Sfoglia il tuo archivio esterno</string>
     <string name="SearchMusic">Cerca musica</string>
     <!--notification-->
-    <string name="NotificationMessageGiftCode">%1$s ti ha inviato un codice regalo per %2$s di Telegram Premium</string>
+    <string name="NotificationMessageGiftCode">%1$s ti ha inviato un codice regalo per %2$s di Novagram Premium</string>
     <string name="NotificationMessageGiveaway">%1$s ti ha inviato un giveaway di %2$s abbonamenti Premium da %3$sm</string>
     <string name="NotificationMessageChannelGiveaway">%1$s ha pubblicato un giveaway di %2$s abbonamenti Premium da %3$sm</string>
     <string name="NotificationMessageChatGiveaway">%1$s ha inviato un giveaway di %3$s abbonamenti Premium da %4$sm nel gruppo %2$s</string>
@@ -457,15 +457,15 @@
     <string name="NotificationGroupKickMember">%1$s ha rimosso %3$s dal gruppo %2$s</string>
     <string name="NotificationGroupKickYou">%1$s ti ha rimosso dal gruppo %2$s</string>
     <string name="NotificationGroupLeftMember">%1$s ha lasciato il gruppo %2$s</string>
-    <string name="NotificationContactJoined">%1$s è ora su Telegram!</string>
-    <string name="NotificationUnrecognizedDevice">%1$s,\nAbbiamo rilevato un accesso al tuo account da un nuovo dispositivo il %2$s\n\nDispositivo: %3$s\nPosizione: %4$s\n\nSe non sei stato tu, puoi andare in Impostazioni &gt; Dispositivi e terminare quella sessione.\n\nSe pensi che qualcuno si sia collegato al tuo account contro il tuo volere, puoi attivare la Verifica in due passaggi nelle impostazioni di Privacy e sicurezza.\n\nCordiali saluti,\nil team di Telegram</string>
+    <string name="NotificationContactJoined">%1$s è ora su Novagram!</string>
+    <string name="NotificationUnrecognizedDevice">%1$s,\nAbbiamo rilevato un accesso al tuo account da un nuovo dispositivo il %2$s\n\nDispositivo: %3$s\nPosizione: %4$s\n\nSe non sei stato tu, puoi andare in Impostazioni &gt; Dispositivi e terminare quella sessione.\n\nSe pensi che qualcuno si sia collegato al tuo account contro il tuo volere, puoi attivare la Verifica in due passaggi nelle impostazioni di Privacy e sicurezza.\n\nCordiali saluti,\nil team di Novagram</string>
     <string name="NotificationContactNewPhoto">%1$s ha aggiornato la foto del profilo</string>
     <string name="NotificationInvitedToGroupByLink">%1$s si è unito al gruppo %2$s tramite il link d\'invito</string>
     <string name="NotificationGroupFew">%1$s ha inviato %3$s nel gruppo %2$s</string>
     <string name="NotificationGroupAlbum">%1$s ha inviato un album nel gruppo %2$s</string>
     <string name="NotificationGroupForwardedFew">%1$s ha inoltrato %3$s nel gruppo %2$s</string>
-    <string name="NotificationHiddenName">Telegram</string>
-    <string name="NotificationHiddenChatName">Telegram</string>
+    <string name="NotificationHiddenName">Novagram</string>
+    <string name="NotificationHiddenChatName">Novagram</string>
     <string name="NotificationHiddenChatUserName">Utente</string>
     <string name="NotificationHiddenMessage">Nuovo messaggio</string>
     <string name="Reply">Rispondi</string>
@@ -529,7 +529,7 @@
     <string name="NotificationActionPinnedGeoLiveUser">%1$s ha fissato una posizione in tempo reale</string>
     <string name="NotificationActionPinnedGifUser">%1$s ha fissato una GIF</string>
     <string name="NotificationActionPinnedMusicUser">%1$s ha fissato un file audio</string>
-    <string name="SecretChatName">Telegram</string>
+    <string name="SecretChatName">Novagram</string>
     <!--usernames-->
     <string name="Username">Username</string>
     <string name="UsernameAlso">e %1$s</string>
@@ -541,7 +541,7 @@
     <string name="UsernameInvalidShortPurchase">Un username base deve avere almeno 5 caratteri.\nTuttavia, gli username collezionabili brevi, incluso questo, sono disponibili per l\'acquisto. **Scopri di più…**</string>
     <string name="UsernameInvalidLong">Gli username non possono superare i 32 caratteri.</string>
     <string name="UsernameInvalidStartNumber">Gli username non possono iniziare con un numero.</string>
-    <string name="UsernameHelp">Puoi scegliere un username su **Telegram**. Se lo fai, le persone potranno trovarti tramite questo username e contattarti senza sapere il tuo numero di telefono.\n\nPuoi usare **a–z**, **0–9** e underscore. La lunghezza minima è **5** caratteri.</string>
+    <string name="UsernameHelp">Puoi scegliere un username su **Novagram**. Se lo fai, le persone potranno trovarti tramite questo username e contattarti senza sapere il tuo numero di telefono.\n\nPuoi usare **a–z**, **0–9** e underscore. La lunghezza minima è **5** caratteri.</string>
     <string name="UsernameHelpLink">Questo link apre una chat con te:\n%1$s</string>
     <string name="UsernameChecking">Controllo l\'username...</string>
     <string name="UsernameAvailable">%1$s è disponibile.</string>
@@ -584,7 +584,7 @@
     <string name="NotificationsAndSounds">Notifiche e suoni</string>
     <string name="CustomNotifications">Notifiche personalizzate</string>
     <string name="ProfilePopupNotification">Notifiche popup</string>
-    <string name="ProfilePopupNotificationInfo">I nuovi messaggi da questo contatto appariranno sul tuo schermo quando non stai usando Telegram.</string>
+    <string name="ProfilePopupNotificationInfo">I nuovi messaggi da questo contatto appariranno sul tuo schermo quando non stai usando Novagram.</string>
     <string name="NotificationsLed">Luce</string>
     <string name="NotificationsLedColor">Colore</string>
     <string name="ColorBlue">Blu</string>
@@ -666,7 +666,7 @@
     <string name="MessagesSettings">Messaggi</string>
     <string name="SendByEnter">Invia con tasto Invio</string>
     <string name="Events">Eventi</string>
-    <string name="ContactJoined">Un contatto è ora su Telegram</string>
+    <string name="ContactJoined">Un contatto è ora su Novagram</string>
     <string name="PinnedMessages">Messaggi fissati</string>
     <string name="TranslateMessages">Traduci i messaggi</string>
     <string name="ShowTranslateButton">Mostra pulsante Traduci</string>
@@ -690,7 +690,7 @@
     <string name="TelegramFAQ">FAQ Telegram</string>
     <string name="TelegramFaq">FAQ Telegram</string>
     <string name="TelegramFeatures">Funzioni di Telegram</string>
-    <string name="TelegramFeaturesUrl">https://t.me/TelegramTipsIT</string>
+    <string name="TelegramFeaturesUrl">https://t.me/novagram_updates</string>
     <string name="AddAccount">Aggiungi account</string>
     <string name="SelectAccount">Seleziona Account</string>
     <string name="TelegramFaqUrl">https://telegram.org/faq/it</string>
@@ -706,7 +706,7 @@
     <string name="NotificationsService">Servizio keep-alive</string>
     <string name="NotificationsServiceInfo">Riavvia l\'app quando terminata. Attiva per notifiche affidabili.</string>
     <string name="NotificationsServiceConnection">Connessione in background</string>
-    <string name="NotificationsServiceConnectionInfo">Conserva una connessione a basso consumo con Telegram per notifiche affidabili.</string>
+    <string name="NotificationsServiceConnectionInfo">Conserva una connessione a basso consumo con Novagram per notifiche affidabili.</string>
     <string name="SortBy">Ordina per</string>
     <string name="ImportContacts">Importa contatti</string>
     <string name="SortFirstName">Nome</string>
@@ -805,7 +805,7 @@
     <string name="PhoneNumberKeepButton">Conserva %1$s</string>
     <string name="ChangePhoneNewNumber">Nuovo numero</string>
     <string name="ChangePhoneHelp">Il tuo nuovo numero riceverà un codice di conferma tramite chiamata o SMS.</string>
-    <string name="ChangePhoneNumberOccupied">Il numero %1$s è già connesso a un account Telegram. Per favore elimina quell\'account prima di usare questo numero.</string>
+    <string name="ChangePhoneNumberOccupied">Il numero %1$s è già connesso a un account Novagram. Per favore elimina quell\'account prima di usare questo numero.</string>
     <string name="NotificationsOther">Altro</string>
     <string name="VibrationDisabled">Disattivata</string>
     <string name="PopupEnabled">Attivate</string>
@@ -836,7 +836,7 @@
     <string name="DirectShareInfo">Mostra le chat recenti nel menu di condivisione</string>
     <string name="Emoji">Emoji</string>
     <string name="LargeEmoji">Emoji grandi</string>
-    <string name="TelegramVersion">Telegram per Android %1$s</string>
+    <string name="TelegramVersion">Novagram based on Telegram per Android %1$s</string>
     <string name="DebugMenu">Menu debug</string>
     <string name="DebugMenuLongPress">Tieni premuto di nuovo per il menu di debug</string>
     <string name="DebugSendLogs">Invia i log</string>
@@ -914,7 +914,7 @@
     <string name="AutodownloadSizeLimitUpTo">fino a %1$s</string>
     <string name="Streaming">Streaming</string>
     <string name="EnableStreaming">Streaming file video e audio</string>
-    <string name="EnableAllStreamingInfo">Quando è possibile, Telegram inizierà subito a riprodurre video e musica, senza aspettare che i file vengano scaricati completamente.</string>
+    <string name="EnableAllStreamingInfo">Quando è possibile, Novagram inizierà subito a riprodurre video e musica, senza aspettare che i file vengano scaricati completamente.</string>
     <string name="TapToChangePhone">Tocca per cambiare numero di telefono</string>
     <string name="ShowNotificationsFor">Mostra notifiche da</string>
     <string name="AllAccounts">Tutti gli account</string>
@@ -931,14 +931,14 @@
     <string name="TapToChange">Tocca per cambiare</string>
     <string name="AlternativeOptions">Opzioni alternative</string>
     <string name="AddAnotherAccount">Aggiungi un altro account</string>
-    <string name="AddAnotherAccountInfo">Connetti altri account Telegram e passa facilmente da uno all\'altro.</string>
+    <string name="AddAnotherAccountInfo">Connetti altri account Novagram e passa facilmente da uno all\'altro.</string>
     <string name="SetPasscode">Imposta un codice di blocco</string>
     <string name="SetPasscodeInfo">Blocca l\'app con un codice, così gli altri non potranno aprirla.</string>
     <string name="ClearCache">Cancella la cache</string>
     <string name="ClearSelectedCache">Cancella la selezione</string>
     <string name="ClearCacheInfo">Libera spazio sul tuo dispositivo; i tuoi media rimarranno nel cloud.</string>
     <string name="ClearingCache">Cancello la cache…</string>
-    <string name="ClearingCacheDescription">Tieni aperta questa finestra mentre Telegram elimina la tua cache.</string>
+    <string name="ClearingCacheDescription">Tieni aperta questa finestra mentre Novagram elimina la tua cache.</string>
     <string name="ChangePhoneNumber">Cambia numero di telefono</string>
     <string name="ChangePhoneNumberInfo">Sposta il tuo account, le chat e i media su un nuovo numero.</string>
     <string name="ChangePhoneNumberSuccessWithPhone">Il tuo numero di telefono è stato cambiato con successo in %1$s.</string>
@@ -969,7 +969,7 @@
     <string name="AuthAnotherClientUrl">Questo codice può essere usato per consentire a qualcuno di accedere al tuo account Telegram.\n\nPer confermare l\'accesso a Telegram, vai in Impostazioni &gt; Dispositivi &gt; Scansiona QR e scansiona il codice.</string>
     <string name="QRCodePermissionNoCameraWithHint">**Telegram** deve accedere alla tua fotocamera per poter scansionare i codici QR. Tocca Impostazioni &gt; Permessi, e attiva **Fotocamera**.</string>
     <string name="SetProfilePhoto">Imposta foto del profilo</string>
-    <string name="AppUpdate">Aggiorna Telegram</string>
+    <string name="AppUpdate">Aggiorna Novagram</string>
     <string name="AppUpdateVersionAndSize">Versione %1$s • %2$s</string>
     <string name="AppUpdateDownloading">Download... %1$d%%</string>
     <string name="AppUpdateNow">Aggiorna ora</string>
@@ -1005,7 +1005,7 @@
     <string name="ChannelTitleChanged">Nome canale aggiornato.</string>
     <string name="ChannelDescriptionChanged">Descrizione canale aggiornata.</string>
     <string name="CheckPhoneNumber">%1$s è ancora il tuo numero?</string>
-    <string name="CheckPhoneNumberInfo">Tieni aggiornato il tuo numero per poter sempre accedere a Telegram. **Scopri di più**</string>
+    <string name="CheckPhoneNumberInfo">Tieni aggiornato il tuo numero per poter sempre accedere a Novagram. **Scopri di più**</string>
     <string name="CheckPhoneNumberLearnMoreUrl">https://telegram.org/faq/it#d-ho-un-nuovo-numero-di-telefono-cosa-faccio</string>
     <string name="CheckPhoneNumberYes">Sì</string>
     <string name="CheckPhoneNumberNo">No</string>
@@ -1277,7 +1277,7 @@
     <string name="ResetPasswordWait">Hai recentemente richiesto la rimozione della password che è stata annullata. Per favore attendi %1$s prima di effettuare una nuova richiesta.</string>
     <string name="ResetMyAccount">RIPRISTINA IL MIO ACCOUNT</string>
     <string name="ResetMyAccountWarning">Attenzione</string>
-    <string name="ResetMyAccountWarningText">Questa azione non può essere annullata. Perderai tutte le chat Telegram, i messaggi, i media e i file se procederai con il ripristino del tuo account.</string>
+    <string name="ResetMyAccountWarningText">Questa azione non può essere annullata. Perderai tutte le chat Novagram, i messaggi, i media e i file se procederai con il ripristino del tuo account.</string>
     <string name="ResetMyAccountWarningReset">Ripristina account</string>
     <string name="LoginPassword">Password</string>
     <string name="LoginPasswordText">Hai la verifica in due passaggi attiva, quindi il tuo account è protetto con una password aggiuntiva.</string>
@@ -1573,10 +1573,10 @@
     <string name="DeleteAll">Elimina tutto</string>
     <string name="StopLoadingTitle">Interrompere il caricamento?</string>
     <string name="StopLoading">Vuoi terminare il caricamento?</string>
-    <string name="UpdateTelegram">Aggiorna Telegram</string>
-    <string name="UpdateAppAlert">Spiacenti, la tua app Telegram è obsoleta e non può gestire la richiesta. Per favore aggiorna Telegram.</string>
+    <string name="UpdateTelegram">Aggiorna Novagram</string>
+    <string name="UpdateAppAlert">Spiacenti, la tua app Novagram è obsoleta e non può gestire la richiesta. Per favore aggiorna Novagram.</string>
     <string name="InvalidPhoneNumber">Numero di telefono non valido. Per favore controlla il numero e riprova.</string>
-    <string name="PleaseLoginPassport">Per favore accedi al tuo account Telegram per usare Telegram Passport.</string>
+    <string name="PleaseLoginPassport">Per favore accedi al tuo account Novagram per usare Novagram Passport.</string>
     <string name="BannedPhoneNumber">Questo numero è bloccato.</string>
     <string name="CodeExpired">Codice scaduto, per favore ricomincia.</string>
     <string name="WrongCodeTitle">Codice errato</string>
@@ -1598,7 +1598,7 @@
     <string name="NoPlayerInstalled">Non hai un lettore video, per favore installane uno per continuare</string>
     <string name="NoMailInstalled">Per favore invia un\'email descrivendo il problema a reports@stel.com</string>
     <string name="NoHandleAppInstalled">Non hai applicazioni che possono gestire il tipo di file \"%1$s\": installane una per proseguire</string>
-    <string name="InviteUser">Questo utente non ha ancora Telegram, vuoi invitarlo?</string>
+    <string name="InviteUser">Questo utente non ha ancora Novagram, vuoi invitarlo?</string>
     <string name="AreYouSure">Vuoi procedere?</string>
     <string name="AddToTheGroupAlertTitle">Aggiungi bot</string>
     <string name="AddToTheGroupAlertText">Vuoi aggiungere **%1$s** al gruppo **%2$s**?</string>
@@ -1614,7 +1614,7 @@
     <string name="SendMessagesToText">Vuoi inviare questo messaggio a **%1$s**?</string>
     <string name="SendGameToText">Vuoi condividere questo gioco con **%1$s**?</string>
     <string name="SendContactToText">Vuoi inviare questo contatto a **%1$s**?</string>
-    <string name="AreYouSureLogout">Vuoi davvero uscire?\n\nQuesto eliminerà tutte le tue chat segrete.\n\nPuoi usare Telegram su tutti i tuoi dispositivi contemporaneamente e usare diversi account sulla stessa app.</string>
+    <string name="AreYouSureLogout">Vuoi davvero uscire?\n\nQuesto eliminerà tutte le tue chat segrete.\n\nPuoi usare Novagram su tutti i tuoi dispositivi contemporaneamente e usare diversi account sulla stessa app.</string>
     <string name="DeleteFewChatsTitle">Elimina %1$s</string>
     <string name="ClearFewChatsTitle">Cancella %1$s</string>
     <string name="ClearCacheFewChatsTitle">Cancella la cache per %1$s</string>
@@ -1684,10 +1684,10 @@
     <string name="SecretLinkPreviewAlert">Attivare le anteprime estese per i link nelle Chat segrete? Ricorda che le anteprime dei link sono generate sui server di Telegram.</string>
     <string name="SecretChatContextBotAlert">Per favore ricorda che i bot inline sono forniti da sviluppatori di terze parti. Per far funzionare il bot, i caratteri che digiti dopo l\'username del bot sono inviati al rispettivo sviluppatore.</string>
     <string name="EditMessageError">Spiacenti, non puoi modificare questo messaggio.</string>
-    <string name="AllowReadCall">Consenti a Telegram di ricevere chiamate così potremo inserire in automatico il codice per te.</string>
-    <string name="AllowReadCallAndLog">Consenti a Telegram di ricevere chiamate e leggere il registro delle chiamate in modo da poter inserire il codice per te automaticamente.</string>
-    <string name="AllowReadCallLog">Consenti a Telegram di leggere il registro delle chiamate in modo da poter inserire il codice per te automaticamente.</string>
-    <string name="AllowFillNumber">Per favore consenti a Telegram di ricevere chiamate, così potremo confermare automaticamente il tuo numero di telefono.</string>
+    <string name="AllowReadCall">Consenti a Novagram di ricevere chiamate così potremo inserire in automatico il codice per te.</string>
+    <string name="AllowReadCallAndLog">Consenti a Novagram di ricevere chiamate e leggere il registro delle chiamate in modo da poter inserire il codice per te automaticamente.</string>
+    <string name="AllowReadCallLog">Consenti a Novagram di leggere il registro delle chiamate in modo da poter inserire il codice per te automaticamente.</string>
+    <string name="AllowFillNumber">Per favore consenti a Novagram di ricevere chiamate, così potremo confermare automaticamente il tuo numero di telefono.</string>
     <string name="UserRestricted">Spiacenti, questa azione non ti è permessa.</string>
     <string name="YouBlockedUser">Spiacenti, non puoi aggiungere questo utente o bot al gruppo perché lo hai bloccato. Sbloccalo per procedere.</string>
     <string name="AddAdminErrorNotAMember">Non puoi aggiungere questo utente come amministratore perché non è un membro del gruppo e non sei autorizzato ad aggiungerlo.</string>
@@ -1722,23 +1722,23 @@
     <string name="TosUpdateDecline">Sfortunatamente, non ci sono altre opzioni. A differenza di altri, Telegram non usa i tuoi dati per il targeting delle inserzioni o altri scopi commerciali. Telegram conserva solo le informazioni di cui ha bisogno per funzionare come servizio cloud ricco di funzionalità. Puoi regolare il modo in cui utilizziamo i tuoi dati nelle impostazioni di Privacy e sicurezza.\n\nSe non ti senti a tuo agio con le modeste esigenze di Telegram, non ci sarà possibile fornirti questo servizio.</string>
     <string name="TosDeclineDeleteAccount">Attenzione, questo eliminerà irreversibilmente il tuo account Telegram e tutti i dati che archivi nel cloud di Telegram.\n\nImportante: Puoi annullare adesso ed esportare prima i tuoi dati invece che perdere tutto. (Per farlo, apri l\'ultima versione di Telegram Desktop e vai in Impostazioni &gt; Avanzate &gt; Esporta dati Telegram.)</string>
     <!--permissions-->
-    <string name="PermissionStorageWithHint">**Telegram** deve accedere all\'archivio per poter inviare e salvare foto, video, musica e altri documenti. Tocca Impostazioni &gt; Permessi, e attiva **File e media**.</string>
-    <string name="PermissionNoAudioWithHint">**Telegram** deve accedere al microfono per poter inviare messaggi vocali. Tocca Impostazioni &gt; Permessi, e attiva **Microfono**.</string>
-    <string name="PermissionNoAudioVideoWithHint">**Telegram** deve accedere al microfono per poter inviare messaggi vocali. Tocca Impostazioni &gt; Permessi, e attiva **Microfono**.</string>
-    <string name="PermissionNoCameraWithHint">**Telegram** deve accedere alla fotocamera per poter scattare foto e video. Tocca Impostazioni &gt; Permessi, e attiva **Fotocamera**.</string>
-    <string name="PermissionNoCameraMicVideo">**Telegram** deve accedere alla fotocamera e al microfono per poter inviare videomessaggi. Tocca Impostazioni &gt; Permessi, e attiva **Microfono** e **Fotocamera**.</string>
-    <string name="PermissionNoLocation">Telegram deve accedere alla tua posizione perché tu possa condividerla con i tuoi amici.</string>
-    <string name="PermissionNoLocationStory">Telegram deve accedere alla tua posizione perché tu possa aggiungere il widget meteo alle tue storie.</string>
-    <string name="PermissionNoLocationFriends">**Telegram** deve accedere alla posizione perché tu possa condividerla con i tuoi amici. Tocca Impostazioni &gt; Permessi, e attiva **Posizione**.</string>
-    <string name="PermissionNoLocationNavigation">**Telegram** deve accedere alla posizione per poter ottenere le indicazioni. Tocca Impostazioni &gt; Permessi, e attiva **Posizione**.</string>
-    <string name="PermissionNoContactsSharing">**Telegram** deve accedere ai contatti perché tu possa condividerli con i tuoi amici. Tocca Impostazioni &gt; Permessi, e attiva **Contatti**.</string>
-    <string name="PermissionNoStorageAvatar">**Telegram** deve accedere all\'archivio per poter caricare foto del profilo. Tocca Impostazioni &gt; Permessi, e attiva **File e media**.</string>
-    <string name="PermissionNoAudioStorageStory">**Telegram** deve accedere ai tuoi file musicali per aggiungerli alla tua storia. Tocca Impostazioni &gt; Permessi, e attiva **Musica e audio**.</string>
-    <string name="PermissionDrawAboveOtherApps">Telegram deve accedere allo spostamento su altre app per riprodurre i video in modalità Picture-in-Picture.</string>
-    <string name="PermissionDrawAboveOtherAppsGroupCall">La modalità overlay ti consente di usare il push-to-talk e vedere chi sta parlando anche quando sei fuori da Telegram.</string>
+    <string name="PermissionStorageWithHint">**Novagram** deve accedere all\'archivio per poter inviare e salvare foto, video, musica e altri documenti. Tocca Impostazioni &gt; Permessi, e attiva **File e media**.</string>
+    <string name="PermissionNoAudioWithHint">**Novagram** deve accedere al microfono per poter inviare messaggi vocali. Tocca Impostazioni &gt; Permessi, e attiva **Microfono**.</string>
+    <string name="PermissionNoAudioVideoWithHint">**Novagram** deve accedere al microfono per poter inviare messaggi vocali. Tocca Impostazioni &gt; Permessi, e attiva **Microfono**.</string>
+    <string name="PermissionNoCameraWithHint">**Novagram** deve accedere alla fotocamera per poter scattare foto e video. Tocca Impostazioni &gt; Permessi, e attiva **Fotocamera**.</string>
+    <string name="PermissionNoCameraMicVideo">**Novagram** deve accedere alla fotocamera e al microfono per poter inviare videomessaggi. Tocca Impostazioni &gt; Permessi, e attiva **Microfono** e **Fotocamera**.</string>
+    <string name="PermissionNoLocation">Novagram deve accedere alla tua posizione perché tu possa condividerla con i tuoi amici.</string>
+    <string name="PermissionNoLocationStory">Novagram deve accedere alla tua posizione perché tu possa aggiungere il widget meteo alle tue storie.</string>
+    <string name="PermissionNoLocationFriends">**Novagram** deve accedere alla posizione perché tu possa condividerla con i tuoi amici. Tocca Impostazioni &gt; Permessi, e attiva **Posizione**.</string>
+    <string name="PermissionNoLocationNavigation">**Novagram** deve accedere alla posizione per poter ottenere le indicazioni. Tocca Impostazioni &gt; Permessi, e attiva **Posizione**.</string>
+    <string name="PermissionNoContactsSharing">**Novagram** deve accedere ai contatti perché tu possa condividerli con i tuoi amici. Tocca Impostazioni &gt; Permessi, e attiva **Contatti**.</string>
+    <string name="PermissionNoStorageAvatar">**Novagram** deve accedere all\'archivio per poter caricare foto del profilo. Tocca Impostazioni &gt; Permessi, e attiva **File e media**.</string>
+    <string name="PermissionNoAudioStorageStory">**Novagram** deve accedere ai tuoi file musicali per aggiungerli alla tua storia. Tocca Impostazioni &gt; Permessi, e attiva **Musica e audio**.</string>
+    <string name="PermissionDrawAboveOtherApps">Novagram deve accedere allo spostamento su altre app per riprodurre i video in modalità Picture-in-Picture.</string>
+    <string name="PermissionDrawAboveOtherAppsGroupCall">La modalità overlay ti consente di usare il push-to-talk e vedere chi sta parlando anche quando sei fuori da Novagram.</string>
     <string name="PermissionOpenSettings">Impostazioni</string>
-    <string name="PermissionXiaomiLockscreen">Consenti a Telegram di apparire sulla schermata di blocco in modo che le chiamate possano funzionare correttamente.</string>
-    <string name="PermissionBackgroundLocation">Per condividere la posizione in tempo reale in questa chat, Telegram ha bisogno di accedere alla tua posizione per tutto il tempo, anche quando l\'applicazione è in background.\n\nAccederemo alla tua posizione solo per la durata da te scelta, e potrai smettere di condividerla in qualsiasi momento. Non useremo la tua posizione per nessun altro scopo se non quello di condividerla in questa chat.</string>
+    <string name="PermissionXiaomiLockscreen">Consenti a Novagram di apparire sulla schermata di blocco in modo che le chiamate possano funzionare correttamente.</string>
+    <string name="PermissionBackgroundLocation">Per condividere la posizione in tempo reale in questa chat, Novagram ha bisogno di accedere alla tua posizione per tutto il tempo, anche quando l\'applicazione è in background.\n\nAccederemo alla tua posizione solo per la durata da te scelta, e potrai smettere di condividerla in qualsiasi momento. Non useremo la tua posizione per nessun altro scopo se non quello di condividerla in questa chat.</string>
     <string name="PermissionDrawAboveOtherAppsTitle">Picture-in-Picture</string>
     <string name="PermissionDrawAboveOtherAppsGroupCallTitle">Overlay chat video</string>
     <!--contacts shortcuts-->
