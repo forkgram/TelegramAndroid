@@ -76,3 +76,7 @@
 	path = TMessagesProj/jni/openh264
 	url = https://github.com/cisco/openh264.git
 	ignore = all
+[submodule "TMessagesProj/jni/tde2e_source"]
+	path = TMessagesProj/jni/tde2e_source
+	url = https://github.com/tdlib/td.git
+	ignore = all
