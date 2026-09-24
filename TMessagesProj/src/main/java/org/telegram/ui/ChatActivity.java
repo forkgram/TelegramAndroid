@@ -10646,9 +10646,6 @@ public class ChatActivity extends BaseFragment implements
 
         boolean replaceForward = MessagesController.getGlobalMainSettings().getBoolean("replaceForward", true);
 
-
-        boolean replaceForward = MessagesController.getGlobalMainSettings().getBoolean("replaceForward", true);
-
         if (currentEncryptedChat == null) {
             final boolean isSavedMessages = getDialogId() == getUserConfig().getClientUserId() && (chatMode == 0 || chatMode == MODE_SAVED);
             actionModeViews.add(actionMode.addItemWithWidth(save_to, R.drawable.msg_download, dp(48), LocaleController.getString(R.string.SaveToMusic)));
