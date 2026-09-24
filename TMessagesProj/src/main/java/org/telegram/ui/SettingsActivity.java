@@ -933,6 +933,9 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
     @Override
     public void onResume() {
         super.onResume();
+        if (listView != null) {
+            listView.adapter.update(true);
+        }
         if (subSettingOpened) {
             subSettingOpened = false;
             long now = System.currentTimeMillis();
