@@ -508,15 +508,6 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        if (listView != null) {
-            listView.adapter.update(true);
-        }
-    }
-
-    @Override
     public void onFragmentDestroy() {
         super.onFragmentDestroy();
 
