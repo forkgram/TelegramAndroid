@@ -69,7 +69,7 @@ public class BuildVars {
         DEBUG_VERSION = false;
         CHECK_UPDATES = (BuildConfig.CHECK_UPDATES != 0);
     }
-    public static int USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
+    public static long USER_ID_OWNER = BuildConfig.USER_ID_OWNER;
     public static String USER_REPO = BuildConfig.USER_REPO;
 
     public static boolean useInvoiceBilling() {
