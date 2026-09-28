@@ -57,6 +57,15 @@
     <string name="GoToTags">Чаты GoTo: %1$s</string>
     <string name="GoToNotFound">Чат GoTo не найден для #%1$s (%2$s)</string>
     <string name="GoToAmbiguous">Тег #%1$s подходит нескольким чатам: %2$s</string>
+    <string name="WebPublish">Публикация в веб</string>
+    <string name="WebPublishAdvanced">Дополнительно</string>
+    <string name="WebPublishBase">Базовый URL сервиса</string>
+    <string name="WebPublishBaseHint">https://example.com</string>
+    <string name="WebPublishInfo">Собирает текст из выбранных сообщений, загружает его вместе с медиа на веб-сервис одним запросом и копирует ссылку на страницу в буфер обмена. Локальные файлы не сохраняются: медиа живут только во временном кэше, пока загрузка не завершится.</string>
+    <string name="WebPublishSaved">Настройки публикации сохранены</string>
+    <string name="WebPublishSection">Публикация в веб</string>
+    <string name="WebPublishTemplate">Шаблон буфера обмена (%q = ссылка)</string>
+    <string name="WebPublishToken">Токен загрузки</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Внешний вид</string>
     <string name="ForkSectionMedia">Фото и видео</string>

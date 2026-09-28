@@ -5,6 +5,15 @@
     <string name="GoToTags">چت‌های GoTo: %1$s</string>
     <string name="GoToNotFound">هیچ چت GoTo برای #%1$s (%2$s) یافت نشد</string>
     <string name="GoToAmbiguous">تگ #%1$s با چندین چت مطابقت دارد: %2$s</string>
+    <string name="WebPublish">انتشار در وب</string>
+    <string name="WebPublishAdvanced">پیشرفته</string>
+    <string name="WebPublishBase">نشانی پایه سرویس</string>
+    <string name="WebPublishBaseHint">https://example.com</string>
+    <string name="WebPublishInfo">از پیام‌های انتخاب‌شده متن می‌سازد، آن را همراه رسانه‌ها در یک درخواست به سرویس وب آپلود می‌کند و سپس لینک صفحه را در کلیپ‌بورد کپی می‌کند. هیچ فایل محلی نگه داشته نمی‌شود: رسانه‌ها فقط در یک حافظه موقت تا پایان آپلود می‌مانند.</string>
+    <string name="WebPublishSaved">تنظیمات انتشار ذخیره شد</string>
+    <string name="WebPublishSection">انتشار وب</string>
+    <string name="WebPublishTemplate">قالب کلیپ‌بورد (%q = لینک)</string>
+    <string name="WebPublishToken">توکن آپلود</string>
     <string name="ForkSectionAppearance">ظاهر</string>
     <string name="ForkSectionMedia">عکس و ویدیو</string>
     <string name="ForkSectionVoice">صدا و ترجمه</string>

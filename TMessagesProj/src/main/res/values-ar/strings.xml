@@ -70,6 +70,15 @@
     <string name="GoToTags">دردشات GoTo: %1$s</string>
     <string name="GoToNotFound">لم يتم العثور على دردشة GoTo لـ #%1$s (%2$s)</string>
     <string name="GoToAmbiguous">الوسم #%1$s يطابق عدة دردشات: %2$s</string>
+    <string name="WebPublish">النشر على الويب</string>
+    <string name="WebPublishAdvanced">خيارات متقدمة</string>
+    <string name="WebPublishBase">عنوان URL الأساسي للخدمة</string>
+    <string name="WebPublishBaseHint">https://example.com</string>
+    <string name="WebPublishInfo">يبني نصا من الرسائل المحددة، ويرفعه مع الوسائط إلى خدمة الويب في طلب واحد، ثم ينسخ رابط الصفحة إلى الحافظة. لا تُحفظ ملفات محلية: تعيش الوسائط فقط في ذاكرة مؤقتة حتى انتهاء الرفع.</string>
+    <string name="WebPublishSaved">تم حفظ إعدادات النشر</string>
+    <string name="WebPublishSection">النشر على الويب</string>
+    <string name="WebPublishTemplate">قالب الحافظة (%q = الرابط)</string>
+    <string name="WebPublishToken">رمز الرفع</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">المظهر</string>
     <string name="ForkSectionMedia">الصور والفيديو</string>
