@@ -70,6 +70,15 @@
     <string name="GoToTags">GoTo 채팅: %1$s</string>
     <string name="GoToNotFound">#%1$s (%2$s)에 대한 GoTo 채팅을 찾을 수 없습니다</string>
     <string name="GoToAmbiguous">태그 #%1$s이(가) 여러 채팅과 일치합니다: %2$s</string>
+    <string name="WebPublish">웹에 게시</string>
+    <string name="WebPublishAdvanced">고급</string>
+    <string name="WebPublishBase">서비스 기본 URL</string>
+    <string name="WebPublishBaseHint">https://example.com</string>
+    <string name="WebPublishInfo">선택한 메시지로 텍스트를 만들고, 미디어와 함께 웹 서비스에 한 번의 요청으로 업로드한 뒤 페이지 링크를 클립보드에 복사합니다. 로컬 파일은 보관하지 않습니다. 미디어는 업로드가 끝날 때까지 임시 캐시에만 존재합니다.</string>
+    <string name="WebPublishSaved">게시 설정 저장됨</string>
+    <string name="WebPublishSection">웹 게시</string>
+    <string name="WebPublishTemplate">클립보드 템플릿(%q = 링크)</string>
+    <string name="WebPublishToken">업로드 토큰</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">모양</string>
     <string name="ForkSectionMedia">사진 및 동영상</string>
