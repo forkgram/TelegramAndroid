@@ -191,6 +191,8 @@ import org.telegram.messenger.forkgram.ForkUtils;
 import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.messenger.forkgram.FormattingMenu;
 import org.telegram.messenger.forkgram.MediaSpoiler;
+import org.telegram.messenger.forkgram.WebPublishConfig;
+import org.telegram.messenger.forkgram.WebPublishFlow;
 import org.telegram.messenger.support.LongSparseIntArray;
 import org.telegram.messenger.utils.FBool;
 import org.telegram.messenger.utils.OnPostDrawView;
@@ -1794,6 +1796,7 @@ public class ChatActivity extends BaseFragment implements
     private final static int forward = 11;
     private final static int forward_anonym = 111;
     private final static int select_between = 112;
+    private final static int publish_web = 113;
     private final static int delete = 12;
     private final static int chat_enc_timer = 13;
     private final static int chat_menu_attach = 14;
@@ -3961,6 +3964,8 @@ public class ChatActivity extends BaseFragment implements
                     showAnonymShareAlert(false);
                 } else if (id == share) {
                     share();
+                } else if (id == publish_web) {
+                    publishSelectedToWeb();
                 } else if (id == open_direct) {
                     if (currentChat == null) return;
                     presentFragment(ChatActivity.of(-currentChat.linked_monoforum_id));
@@ -10658,6 +10663,9 @@ public class ChatActivity extends BaseFragment implements
                 actionModeViews.add(actionMode.addItemWithWidth(forward_anonym, R.drawable.ic_ab_forward_anonym, dp(48), LocaleController.getString(R.string.Forward)));
             }
             actionModeViews.add(actionMode.addItemWithWidth(share, R.drawable.msg_shareout, dp(48), LocaleController.getString(R.string.ShareFile)));
+            if (WebPublishConfig.isConfigured()) {
+                actionModeViews.add(actionMode.addItemWithWidth(publish_web, R.drawable.msg_publish, dp(48), LocaleController.getString(R.string.WebPublish)));
+            }
             actionModeViews.add(actionMode.addItemWithWidth(delete, R.drawable.msg_delete, dp(48), LocaleController.getString(R.string.Delete)));
         } else {
             actionModeViews.add(actionMode.addItemWithWidth(edit, R.drawable.msg_edit, dp(48), LocaleController.getString(R.string.Edit)));
@@ -12677,6 +12685,21 @@ public class ChatActivity extends BaseFragment implements
         updatePinnedMessageView(true);
         updateVisibleRows();
         updateSelectedMessageReactions();
+    }
+
+    private void publishSelectedToWeb() {
+        ArrayList<MessageObject> messageObjects = new ArrayList<>();
+        for (int a = 1; a >= 0; a--) {
+            for (int b = 0; b < selectedMessagesIds[a].size(); b++) {
+                MessageObject messageObject = selectedMessagesIds[a].valueAt(b);
+                if (messageObject != null) {
+                    messageObjects.add(messageObject);
+                }
+            }
+        }
+        Collections.sort(messageObjects, (m1, m2) -> Integer.compare(m1.getId(), m2.getId()));
+        // Selection stays visible during the upload; cleared only on success.
+        WebPublishFlow.publish(currentAccount, messageObjects, this, this::clearSelectionMode);
     }
 
     private void openForward(boolean fromActionBar) {
