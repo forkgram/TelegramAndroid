@@ -70,6 +70,15 @@
     <string name="GoToTags">Chats de GoTo: %1$s</string>
     <string name="GoToNotFound">No se encontró un chat de GoTo para #%1$s (%2$s)</string>
     <string name="GoToAmbiguous">La etiqueta #%1$s coincide con varios chats: %2$s</string>
+    <string name="WebPublish">Publicar en la web</string>
+    <string name="WebPublishAdvanced">Avanzado</string>
+    <string name="WebPublishBase">URL base del servicio</string>
+    <string name="WebPublishBaseHint">https://example.com</string>
+    <string name="WebPublishInfo">Construye texto de los mensajes seleccionados, lo sube con los medios al servicio web en una sola petición y copia el enlace de la página al portapapeles. No se guardan archivos locales: los medios viven solo en una caché temporal hasta que termina la subida.</string>
+    <string name="WebPublishSaved">Ajustes de publicación guardados</string>
+    <string name="WebPublishSection">Publicación web</string>
+    <string name="WebPublishTemplate">Plantilla del portapapeles (%q = enlace)</string>
+    <string name="WebPublishToken">Token de subida</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Apariencia</string>
     <string name="ForkSectionMedia">Fotos y vídeos</string>
