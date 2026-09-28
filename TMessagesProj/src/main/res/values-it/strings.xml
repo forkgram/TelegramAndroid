@@ -70,6 +70,15 @@
     <string name="GoToTags">Chat GoTo: %1$s</string>
     <string name="GoToNotFound">Nessuna chat GoTo trovata per #%1$s (%2$s)</string>
     <string name="GoToAmbiguous">Il tag #%1$s corrisponde a più chat: %2$s</string>
+    <string name="WebPublish">Pubblica sul web</string>
+    <string name="WebPublishAdvanced">Avanzate</string>
+    <string name="WebPublishBase">URL base del servizio</string>
+    <string name="WebPublishBaseHint">https://example.com</string>
+    <string name="WebPublishInfo">Crea testo dai messaggi selezionati, lo carica con i media al servizio web in una sola richiesta, poi copia il link della pagina negli appunti. Nessun file locale viene conservato: i media vivono solo in una cache temporanea finché l\'upload non finisce.</string>
+    <string name="WebPublishSaved">Impostazioni di pubblicazione salvate</string>
+    <string name="WebPublishSection">Pubblicazione web</string>
+    <string name="WebPublishTemplate">Modello degli appunti (%q = link)</string>
+    <string name="WebPublishToken">Token di upload</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Aspetto</string>
     <string name="ForkSectionMedia">Foto e video</string>

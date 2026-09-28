@@ -46,6 +46,7 @@ import org.telegram.messenger.forkgram.ForkSettingsLock;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.forkgram.LinkReplacements;
 import org.telegram.messenger.forkgram.SettingsBackup;
+import org.telegram.messenger.forkgram.WebPublishConfig;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.ActionBar.ActionBarMenuItem;
@@ -151,6 +152,8 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_SATELLITE_DATA_SAVING = 86;
 
     public static final int ID_LASTFM_LOGIN = 90;
+
+    public static final int ID_WEB_PUBLISH = 101;
 
     public static final int ID_EXPORT_SETTINGS = 95;
     public static final int ID_IMPORT_SETTINGS = 96;
@@ -329,6 +332,14 @@ public class ForkSettingsActivity extends BaseFragment {
     private String getHiddenAccountsText() {
         int hiddenCount = HiddenAccountHelper.getHiddenAccountsCount();
         return hiddenCount > 0 ? Integer.toString(hiddenCount) : LocaleController.getString(R.string.PasswordOff);
+    }
+
+    private String getWebPublishText() {
+        String base = WebPublishConfig.base().trim();
+        if (base.isEmpty()) {
+            return LocaleController.getString(R.string.PasswordOff);
+        }
+        return base;
     }
 
     @Override
@@ -717,6 +728,10 @@ public class ForkSettingsActivity extends BaseFragment {
             items.add(UItem.asShadow(null));
         }
 
+        items.add(UItem.asHeader(LocaleController.getString(R.string.WebPublishSection)));
+        items.add(UItem.asSettingsCell(ID_WEB_PUBLISH, LocaleController.getString(R.string.WebPublish), getWebPublishText()));
+        items.add(UItem.asShadow(LocaleController.getString(R.string.WebPublishInfo)));
+
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionBackup)));
         items.add(UItem.asSettingsCell(ID_EXPORT_SETTINGS, LocaleController.getString(R.string.ExportSettings), ""));
         items.add(UItem.asSettingsCell(ID_IMPORT_SETTINGS, LocaleController.getString(R.string.ImportSettings), ""));
@@ -914,6 +929,9 @@ public class ForkSettingsActivity extends BaseFragment {
 
         } else if (id == ID_LASTFM_LOGIN) {
             presentFragment(new LastFmLoginActivity());
+
+        } else if (id == ID_WEB_PUBLISH) {
+            presentFragment(new WebPublishSettingsActivity());
 
         } else if (id == ID_EXPORT_SETTINGS) {
             exportSettings();
