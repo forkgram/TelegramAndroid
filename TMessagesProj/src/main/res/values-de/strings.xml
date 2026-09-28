@@ -70,6 +70,15 @@
     <string name="GoToTags">GoTo-Chats: %1$s</string>
     <string name="GoToNotFound">Kein GoTo-Chat für #%1$s (%2$s) gefunden</string>
     <string name="GoToAmbiguous">Tag #%1$s passt zu mehreren Chats: %2$s</string>
+    <string name="WebPublish">Im Web veröffentlichen</string>
+    <string name="WebPublishAdvanced">Erweitert</string>
+    <string name="WebPublishBase">Basis-URL des Dienstes</string>
+    <string name="WebPublishBaseHint">https://example.com</string>
+    <string name="WebPublishInfo">Erstellt Text aus ausgewählten Nachrichten, lädt ihn mit Medien in einer Anfrage zum Webdienst hoch und kopiert den Seitenlink in die Zwischenablage. Keine lokalen Dateien: Medien liegen nur in einem temporären Cache, bis der Upload fertig ist.</string>
+    <string name="WebPublishSaved">Veröffentlichungseinstellungen gespeichert</string>
+    <string name="WebPublishSection">Web-Veröffentlichung</string>
+    <string name="WebPublishTemplate">Zwischenablage-Vorlage (%q = Link)</string>
+    <string name="WebPublishToken">Upload-Token</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Erscheinungsbild</string>
     <string name="ForkSectionMedia">Fotos und Videos</string>
