@@ -98,6 +98,9 @@
     <string name="OfflineTranscriptionInfo">Transcriptie draait op je apparaat via een aparte engine-app, zoals **Scrib** in F-Droid.</string>
     <string name="OfflineTranscriptionMissing">App niet geïnstalleerd</string>
     <string name="OfflineTranscriptionNoModel">Nog geen model gedownload. Open %1$s om een taalmodel te downloaden.</string>
+    <string name="VideoSubtitles">Ondertitels</string>
+    <string name="VideoSubtitlesGenerating">Ondertitels genereren…</string>
+    <string name="VideoSubtitlesUnavailable">Download de video om ondertitels te genereren</string>
     <string name="DropScreenshotCaptionInfo">Bijschrift verwijderen wanneer een schermafbeelding vanuit een andere app wordt gedeeld.</string>
     <string name="HideInAppHintsInfo">Promobanners in de chatlijst en de verjaardagshint in chats verbergen.</string>
     <string name="HideBottomButtonInfo">De knop in de onderste balk (Dempen, Deelnemen) leegmaken en tikken negeren.</string>
