@@ -98,6 +98,9 @@
     <string name="OfflineTranscriptionInfo">Розшифрування виконується на пристрої через окремий застосунок-рушій, наприклад **Scrib** із F-Droid.</string>
     <string name="OfflineTranscriptionMissing">Застосунок не встановлено</string>
     <string name="OfflineTranscriptionNoModel">Модель ще не завантажено. Відкрийте %1$s, щоб завантажити мовну модель.</string>
+    <string name="VideoSubtitles">Субтитри</string>
+    <string name="VideoSubtitlesGenerating">Створення субтитрів…</string>
+    <string name="VideoSubtitlesUnavailable">Завантажте відео, щоб створити субтитри</string>
     <string name="DropScreenshotCaptionInfo">Прибирати підпис, коли знімок екрана надсилається з іншого застосунку.</string>
     <string name="HideInAppHintsInfo">Приховувати промо-банери у списку чатів і підказку про день народження в чатах.</string>
     <string name="HideBottomButtonInfo">Очищати нижню кнопку (Вимкнути звук, Приєднатися) та ігнорувати натискання на неї.</string>

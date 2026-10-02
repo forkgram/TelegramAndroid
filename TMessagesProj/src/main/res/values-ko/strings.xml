@@ -98,6 +98,9 @@
     <string name="OfflineTranscriptionInfo">변환은 별도의 엔진 앱을 통해 기기에서 실행됩니다. 예를 들어 F-Droid의 **Scrib**이 있습니다.</string>
     <string name="OfflineTranscriptionMissing">앱이 설치되지 않음</string>
     <string name="OfflineTranscriptionNoModel">아직 모델을 내려받지 않았습니다. %1$s을(를) 열어 언어 모델을 내려받으세요.</string>
+    <string name="VideoSubtitles">자막</string>
+    <string name="VideoSubtitlesGenerating">자막 생성 중…</string>
+    <string name="VideoSubtitlesUnavailable">자막을 생성하려면 동영상을 다운로드하세요</string>
     <string name="DropScreenshotCaptionInfo">다른 앱에서 스크린샷을 공유할 때 캡션을 제거합니다.</string>
     <string name="HideInAppHintsInfo">채팅 목록의 프로모션 배너와 채팅의 생일 알림을 숨깁니다.</string>
     <string name="HideBottomButtonInfo">하단 막대 버튼(음소거, 참여)을 비우고 탭을 무시합니다.</string>

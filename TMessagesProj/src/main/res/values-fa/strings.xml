@@ -184,6 +184,9 @@
     <string name="OfflineTranscriptionInfo">رونویسی روی دستگاه شما و از طریق یک برنامهٔ جداگانه مانند **Scrib** در F-Droid انجام می‌شود.</string>
     <string name="OfflineTranscriptionMissing">برنامه نصب نیست</string>
     <string name="OfflineTranscriptionNoModel">هنوز مدلی دانلود نشده است. برای دانلود مدل زبانی %1$s را باز کنید.</string>
+    <string name="VideoSubtitles">زیرنویس</string>
+    <string name="VideoSubtitlesGenerating">در حال ساخت زیرنویس…</string>
+    <string name="VideoSubtitlesUnavailable">برای ساخت زیرنویس، ویدیو را دانلود کنید</string>
     <string name="CloudflareCredentialsNotSet">اطلاعات ورود Cloudflare تنظیم نشده است.</string>
     <string name="CloudflareAccountID">شناسهٔ حساب</string>
     <string name="CloudflareAPIToken">توکن API</string>

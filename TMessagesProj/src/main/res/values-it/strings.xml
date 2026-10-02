@@ -98,6 +98,9 @@
     <string name="OfflineTranscriptionInfo">La trascrizione avviene sul tuo dispositivo tramite un\'app motore separata, ad esempio **Scrib** su F-Droid.</string>
     <string name="OfflineTranscriptionMissing">App non installata</string>
     <string name="OfflineTranscriptionNoModel">Nessun modello ancora scaricato. Apri %1$s per scaricare un modello linguistico.</string>
+    <string name="VideoSubtitles">Sottotitoli</string>
+    <string name="VideoSubtitlesGenerating">Generazione dei sottotitoli…</string>
+    <string name="VideoSubtitlesUnavailable">Scarica il video per generare i sottotitoli</string>
     <string name="DropScreenshotCaptionInfo">Rimuovere la didascalia quando uno screenshot viene condiviso da un\'altra app.</string>
     <string name="HideInAppHintsInfo">Nascondere i banner promozionali nella lista chat e il suggerimento di compleanno nelle chat.</string>
     <string name="HideBottomButtonInfo">Svuotare il pulsante della barra inferiore (Silenzia, Unisciti) e ignorare i tocchi.</string>

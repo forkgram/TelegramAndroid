@@ -98,6 +98,9 @@
     <string name="OfflineTranscriptionInfo">يتم التفريغ على جهازك عبر تطبيق محرّك منفصل، مثل **Scrib** على F-Droid.</string>
     <string name="OfflineTranscriptionMissing">التطبيق غير مثبت</string>
     <string name="OfflineTranscriptionNoModel">لم يتم تنزيل أي نموذج بعد. افتح %1$s لتنزيل نموذج لغوي.</string>
+    <string name="VideoSubtitles">ترجمات</string>
+    <string name="VideoSubtitlesGenerating">جارٍ إنشاء الترجمات…</string>
+    <string name="VideoSubtitlesUnavailable">نزّل الفيديو لإنشاء الترجمات</string>
     <string name="DropScreenshotCaptionInfo">إزالة التسمية التوضيحية عند مشاركة لقطة شاشة من تطبيق آخر.</string>
     <string name="HideInAppHintsInfo">إخفاء لافتات العروض في قائمة الدردشات وتلميح عيد الميلاد داخل الدردشات.</string>
     <string name="HideBottomButtonInfo">تفريغ زر الشريط السفلي (كتم، انضمام) وتجاهل النقر عليه.</string>
