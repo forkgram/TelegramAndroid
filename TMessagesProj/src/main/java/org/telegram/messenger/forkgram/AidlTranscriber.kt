@@ -52,12 +52,13 @@ class AidlTranscriber(private val servicePackage: String) : OfflineTranscriber {
         audioFilePath: String,
         languageHint: String?,
         onProgress: Consumer<String>,
+        onSegment: Consumer<SubtitleSegment>,
         onFinal: BiConsumer<String?, Exception?>
     ): TranscriptionCancellable {
         val session = Session()
         executor.execute {
             try {
-                val text = transcribe(audioFilePath, languageHint, onProgress, session)
+                val text = transcribe(audioFilePath, languageHint, onProgress, onSegment, session)
                 if (session.cancelled) {
                     onFinal.accept(null, TranscriptionCancelledException())
                 } else {
@@ -74,6 +75,7 @@ class AidlTranscriber(private val servicePackage: String) : OfflineTranscriber {
         audioFilePath: String,
         languageHint: String?,
         onProgress: Consumer<String>,
+        onSegment: Consumer<SubtitleSegment>,
         session: Session
     ): String? {
         val file = File(audioFilePath)
@@ -85,6 +87,13 @@ class AidlTranscriber(private val servicePackage: String) : OfflineTranscriber {
                 lastActivity.set(SystemClock.elapsedRealtime())
                 if (text != null) {
                     onProgress.accept(text)
+                }
+            }
+
+            override fun onTranscriptionSegment(startMs: Long, endMs: Long, text: String?) {
+                lastActivity.set(SystemClock.elapsedRealtime())
+                if (text != null) {
+                    onSegment.accept(SubtitleSegment(startMs, endMs, text))
                 }
             }
 

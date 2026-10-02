@@ -118,11 +118,12 @@ object ForkOfflineTranscribe {
         audioFilePath: String,
         languageHint: String?,
         onProgress: Consumer<String>,
+        onSegment: Consumer<SubtitleSegment>,
         onFinal: BiConsumer<String?, Exception?>
     ): TranscriptionCancellable? {
         val provider = selectedProvider() ?: return null
         val transcriber = transcriberFor(provider) ?: return null
-        return transcriber.requestTranscription(audioFilePath, languageHint, onProgress, onFinal)
+        return transcriber.requestTranscription(audioFilePath, languageHint, onProgress, onSegment, onFinal)
     }
 
     private fun transcriberFor(provider: TranscriberProvider): OfflineTranscriber? {

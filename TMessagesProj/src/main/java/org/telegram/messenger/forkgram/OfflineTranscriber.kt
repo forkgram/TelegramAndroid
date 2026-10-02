@@ -25,6 +25,7 @@ interface OfflineTranscriber {
         audioFilePath: String,
         languageHint: String?,
         onProgress: Consumer<String>,
+        onSegment: Consumer<SubtitleSegment>,
         onFinal: BiConsumer<String?, Exception?>
     ): TranscriptionCancellable
 }
