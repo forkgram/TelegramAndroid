@@ -732,7 +732,8 @@ public class TranscribeButton {
                     transcribeOperationsByDialogPosition.put(reqInfoHash(messageObject), messageObject);
                     org.telegram.messenger.forkgram.TranscriptionCancellable cancellable = org.telegram.messenger.forkgram.ForkOfflineTranscribe.requestTranscription(path.getAbsolutePath(), "", (partial) -> AndroidUtilities.runOnUIThread(() -> {
                         NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject, (Long) id, (String) partial, (Boolean) true, (Boolean) false);
-                    }), (text, exception) -> {
+                    }), (segment) -> {
+                    }, (text, exception) -> {
                         if (offlineTranscribeOperations != null) {
                             offlineTranscribeOperations.remove(reqInfoHash(messageObject));
                         }
