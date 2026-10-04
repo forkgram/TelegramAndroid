@@ -959,11 +959,11 @@ JNIEXPORT jlong JNICALL Java_org_telegram_messenger_voip_NativeInstance_makeNati
             descriptor.rtcServers.push_back(std::move(rtcServer));
         };
         if (isRtc) {
-            const bool isTurn = endpointObject.getBooleanField("turn");
+            const auto isTurn = endpointObject.getBooleanField("turn");
             pushServer(ipv4, isTurn, false);
             pushServer(ipv6, isTurn, false);
         } else {
-            const bool isTcp = endpointObject.getBooleanField("tcp");
+            const auto isTcp = endpointObject.getBooleanField("tcp");
             pushServer(ipv4, true, isTcp);
             pushServer(ipv6, true, isTcp);
 
