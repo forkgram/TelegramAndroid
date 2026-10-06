@@ -940,29 +940,36 @@ JNIEXPORT jlong JNICALL Java_org_telegram_messenger_voip_NativeInstance_makeNati
     for (int i = 0, size = env->GetArrayLength(endpoints); i < size; i++) {
         JavaObject endpointObject(env, env->GetObjectArrayElement(endpoints, i));
         bool isRtc = endpointObject.getBooleanField("isRtc");
+        const auto ipv4 = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("ipv4"));
+        const auto ipv6 = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("ipv6"));
+        // Push each server for both address families (same id), like tdesktop does,
+        // so relays stay reachable on IPv6-only networks where IPv4 sockets fail.
+        const auto pushServer = [&](const std::string &host, bool isTurn, bool isTcp) {
+            if (host.empty()) {
+                return;
+            }
+            RtcServer rtcServer;
+            rtcServer.id = static_cast<uint8_t>(endpointObject.getIntField("reflectorId"));
+            rtcServer.host = host;
+            rtcServer.port = static_cast<uint16_t>(endpointObject.getIntField("port"));
+            rtcServer.login = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("username"));
+            rtcServer.password = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("password"));
+            rtcServer.isTurn = isTurn;
+            rtcServer.isTcp = isTcp;
+            descriptor.rtcServers.push_back(std::move(rtcServer));
+        };
         if (isRtc) {
-            RtcServer rtcServer;
-            rtcServer.id = static_cast<uint8_t>(endpointObject.getIntField("reflectorId"));
-            rtcServer.host = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("ipv4"));
-            rtcServer.port = static_cast<uint16_t>(endpointObject.getIntField("port"));
-            rtcServer.login = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("username"));
-            rtcServer.password = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("password"));
-            rtcServer.isTurn = endpointObject.getBooleanField("turn");
-            descriptor.rtcServers.push_back(std::move(rtcServer));
+            const auto isTurn = endpointObject.getBooleanField("turn");
+            pushServer(ipv4, isTurn, false);
+            pushServer(ipv6, isTurn, false);
         } else {
-            RtcServer rtcServer;
-            rtcServer.id = static_cast<uint8_t>(endpointObject.getIntField("reflectorId"));
-            rtcServer.host = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("ipv4"));
-            rtcServer.port = static_cast<uint16_t>(endpointObject.getIntField("port"));
-            rtcServer.login = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("username"));
-            rtcServer.password = tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("password"));
-            rtcServer.isTurn = true;
-            rtcServer.isTcp = endpointObject.getBooleanField("tcp");
-            descriptor.rtcServers.push_back(std::move(rtcServer));
+            const auto isTcp = endpointObject.getBooleanField("tcp");
+            pushServer(ipv4, true, isTcp);
+            pushServer(ipv6, true, isTcp);
 
             Endpoint endpoint;
             endpoint.endpointId = endpointObject.getLongField("id");
-            endpoint.host = EndpointHost{tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("ipv4")), tgvoip::jni::JavaStringToStdString(env, endpointObject.getStringField("ipv6"))};
+            endpoint.host = EndpointHost{ipv4, ipv6};
             endpoint.port = static_cast<uint16_t>(endpointObject.getIntField("port"));
             endpoint.type = parseEndpointType(env, endpointObject.getIntField("type"));
             jbyteArray peerTag = endpointObject.getByteArrayField("peerTag");
