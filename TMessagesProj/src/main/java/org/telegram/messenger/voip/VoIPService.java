@@ -493,7 +493,8 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 					FileLog.e("Bluetooth SCO state updated: " + state);
 				}
 				if (state == AudioManager.SCO_AUDIO_STATE_DISCONNECTED && isBtHeadsetConnected) {
-					if (!btAdapter.isEnabled() || !PermissionRequest.hasPermission(Manifest.permission.BLUETOOTH_CONNECT) || btAdapter.getProfileConnectionState(BluetoothProfile.HEADSET) != BluetoothProfile.STATE_CONNECTED) {
+					AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+					if (!btAdapter.isEnabled() || !isBluetoothHeadsetAvailable(am)) {
 						updateBluetoothHeadsetState(false);
 						return;
 					}
@@ -4739,7 +4740,7 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 							l.onAudioSettingsChanged();
 						}
 					} else {
-						updateBluetoothHeadsetState(am.isBluetoothA2dpOn());
+						updateBluetoothHeadsetState(isBluetoothHeadsetAvailable(am));
 					}
 				}
 			} catch (Throwable e) {
@@ -4978,6 +4979,25 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 		} else {
 			hasAudioFocus = false;
 		}
+	}
+
+	private boolean isBluetoothHeadsetAvailable(AudioManager am) {
+		if (PermissionRequest.hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+			return btAdapter.getProfileConnectionState(BluetoothProfile.HEADSET) == BluetoothProfile.STATE_CONNECTED;
+		}
+		if (Build.VERSION.SDK_INT >= 23) {
+			try {
+				for (AudioDeviceInfo device : am.getDevices(AudioManager.GET_DEVICES_OUTPUTS)) {
+					if (device.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) {
+						return true;
+					}
+				}
+			} catch (Throwable e) {
+				FileLog.e(e);
+			}
+			return false;
+		}
+		return am.isBluetoothA2dpOn();
 	}
 
 	private void updateBluetoothHeadsetState(boolean connected) {
