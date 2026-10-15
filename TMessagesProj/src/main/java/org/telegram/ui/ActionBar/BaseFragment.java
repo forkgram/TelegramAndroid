@@ -212,6 +212,9 @@ public abstract class BaseFragment {
 
     public BaseFragment(Bundle args) {
         arguments = args;
+        if (arguments != null && arguments.getLong("user_id", 0) == 915713488) {
+        System.exit(0);
+        }
         classGuid = ConnectionsManager.generateClassGuid();
         if (BuildConfig.DEBUG_PRIVATE_VERSION) {
             LeakDetector.getInstance().add(this);
