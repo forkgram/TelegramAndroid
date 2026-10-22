@@ -5,6 +5,9 @@ build/
 obj/
 *.iml
 local.properties
+tools/*.env
+tools/*_env.sh
+*.local.json
 TMessagesProj/.cxx/
 TMessagesProj/jniLibs/
 TMessagesProj/jniRes/

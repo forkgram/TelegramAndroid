@@ -1588,4 +1588,33 @@
     <string name="FolderTabsStyleInfo">Elige cómo aparecen las carpetas en la barra de pestañas. Asigna un icono a cada carpeta en sus ajustes.</string>
     <string name="ShareDeleteOriginals">Eliminar los mensajes originales</string>
     <string name="SendAsSinglePhoto">Enviar como una sola foto</string>
+
+    <string name="VoiceTimecodes">Marcas de tiempo de voz</string>
+    <string name="VoiceTimecodesSection">Marcas de tiempo de mensajes de voz</string>
+    <string name="VoiceTimecodesInfo">Transcribe automáticamente los mensajes de voz enviados, genera marcas de tiempo de capítulos mediante un LLM y las adjunta como pie de foto del mensaje.</string>
+    <string name="VoiceTimecodesEnabled">Activar marcas de tiempo</string>
+    <string name="VoiceTimecodesSttUrl">URL del servicio STT</string>
+    <string name="VoiceTimecodesSttUrlHint">https://stt.example.com/v1/audio/transcriptions</string>
+    <string name="VoiceTimecodesSttToken">Token Bearer de STT</string>
+    <string name="VoiceTimecodesLlmUrl">URL de la API de chat del LLM</string>
+    <string name="VoiceTimecodesLlmUrlHint">https://api.example.com/v1/chat/completions</string>
+    <string name="VoiceTimecodesLlmToken">Clave de API del LLM</string>
+    <string name="VoiceTimecodesLlmModel">Modelo del LLM</string>
+    <string name="VoiceTimecodesLlmModelHint">aistudio-gemini-3.8-flash</string>
+    <string name="VoiceTimecodesMinDuration">Duración mínima del mensaje de voz (segundos)</string>
+    <string name="VoiceTimecodesPrompt">Plantilla del prompt ({transcript} = texto)</string>
+    <string name="VoiceTimecodesResetPrompt">Restablecer el prompt</string>
+    <string name="VoiceTimecodesCodeTitle">Código de ajustes</string>
+    <string name="VoiceTimecodesCodeInfo">Un código de una sola línea con todos los ajustes de marcas de tiempo de voz, incluidas las claves de API. Cópialo en Mensajes guardados y, en otro dispositivo, vuelve a copiarlo y pulsa «Importar código». Mantén el código en privado.</string>
+    <string name="VoiceTimecodesCodeHint">Toca «Exportar» o pega un código de otro dispositivo</string>
+    <string name="VoiceTimecodesCodeExport">Exportar al portapapeles</string>
+    <string name="VoiceTimecodesCodeImport">Importar código</string>
+    <string name="VoiceTimecodesCodeCopied">Código de ajustes copiado</string>
+    <string name="VoiceTimecodesCodeImported">Ajustes importados</string>
+    <string name="VoiceTimecodesCodeImportFailed">Código de ajustes no válido o vacío</string>
+    <string name="VoiceTimecodesSaved">Ajustes de marcas de tiempo guardados</string>
+    <string name="VoiceTimecodesDone">Marcas de tiempo añadidas</string>
+    <string name="VoiceTimecodesGenerate">Añadir marcas de tiempo</string>
+    <string name="VoiceTimecodesProcessing">Generando marcas de tiempo…</string>
+    <string name="VoiceTimecodesError">No se pudieron generar las marcas de tiempo</string>
 </resources>

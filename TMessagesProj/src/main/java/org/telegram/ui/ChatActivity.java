@@ -202,6 +202,8 @@ import org.telegram.messenger.forkgram.ForkUtils;
 import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.messenger.forkgram.FormattingMenu;
 import org.telegram.messenger.forkgram.MediaSpoiler;
+import org.telegram.messenger.forkgram.VoiceTimecodes;
+import org.telegram.messenger.forkgram.VoiceTimecodesConfig;
 import org.telegram.messenger.forkgram.WebPublishConfig;
 import org.telegram.messenger.forkgram.WebPublishFlow;
 import org.telegram.messenger.support.LongSparseIntArray;
@@ -1317,6 +1319,7 @@ public class ChatActivity extends BaseFragment implements
     public final static int OPTION_WELCOME_REVERT = 116;
     public final static int OPTION_SEND_MONEY = 117;
     public final static int OPTION_STOP_LIVE_LOCATION = 118;
+    public final static int OPTION_VOICE_TIMECODES = 119;
 
     private final static int[] allowedNotificationsDuringChatListAnimations = new int[]{
             NotificationCenter.messagesRead,
@@ -35616,6 +35619,15 @@ public class ChatActivity extends BaseFragment implements
                 selectedObjectToEditCaption = null;
                 break;
             }
+            case OPTION_VOICE_TIMECODES: {
+                if (selectedObject != null && selectedObject.messageOwner != null) {
+                    VoiceTimecodes.processManual(currentAccount, selectedObject.messageOwner);
+                }
+                selectedObject = null;
+                selectedObjectGroup = null;
+                selectedObjectToEditCaption = null;
+                break;
+            }
             case OPTION_EDIT_PRICE: {
                 final MessageObject msg = selectedObject;
                 TLRPC.TL_messageMediaPaidMedia paidMedia = (TLRPC.TL_messageMediaPaidMedia) selectedObject.messageOwner.media;
@@ -47390,6 +47402,11 @@ public class ChatActivity extends BaseFragment implements
                     options.add(OPTION_EDIT);
                     icons.add(R.drawable.msg_edit);
                 }
+                if (selectedObject != null && selectedObject.isVoice() && (allowEdit || message.canEditMessage(currentChat)) && VoiceTimecodesConfig.sttUrl().length() > 0 && VoiceTimecodesConfig.llmUrl().length() > 0) {
+                    items.add(LocaleController.getString(R.string.VoiceTimecodesGenerate));
+                    options.add(OPTION_VOICE_TIMECODES);
+                    icons.add(R.drawable.msg_premium_voice);
+                }
                 if (ChatObject.isMonoForum(currentChat) && selectedObject.getGroupId() == 0 && selectedObjectGroup == null && message != null && message.messageOwner != null && message.messageOwner.suggested_post == null && message.messageOwner.action == null) {
                     items.add(LocaleController.getString(R.string.EditOfferAdd));
                     options.add(OPTION_SUGGESTION_ADD_OFFER);
@@ -47748,6 +47765,11 @@ public class ChatActivity extends BaseFragment implements
                     items.add(LocaleController.getString(R.string.Edit));
                     options.add(OPTION_EDIT);
                     icons.add(R.drawable.msg_edit);
+                }
+                if (selectedObject != null && selectedObject.isVoice() && (allowEdit || (selectedObject != null && selectedObject.canEditMessage(currentChat))) && VoiceTimecodesConfig.sttUrl().length() > 0 && VoiceTimecodesConfig.llmUrl().length() > 0) {
+                    items.add(LocaleController.getString(R.string.VoiceTimecodesGenerate));
+                    options.add(OPTION_VOICE_TIMECODES);
+                    icons.add(R.drawable.msg_premium_voice);
                 }
                 if (ChatObject.isMonoForum(currentChat) && selectedObject.getGroupId() == 0 && selectedObjectGroup == null && message != null && message.messageOwner != null && message.messageOwner.suggested_post == null && message.messageOwner.action == null) {
                     items.add(LocaleController.getString(R.string.EditOfferAdd));
