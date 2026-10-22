@@ -277,4 +277,33 @@
     <string name="FolderTabsStyleInfo">انتخاب کنید که پوشه‌ها چگونه در نوار زبانه‌ها نمایش داده شوند. آیکون هر پوشه را در تنظیمات همان پوشه تعیین کنید.</string>
     <string name="ShareDeleteOriginals">حذف پیام‌های اصلی</string>
     <string name="SendAsSinglePhoto">ارسال به‌صورت یک عکس</string>
+
+    <string name="VoiceTimecodes">کدهای زمانی صدا</string>
+    <string name="VoiceTimecodesSection">کدهای زمانی پیام‌های صوتی</string>
+    <string name="VoiceTimecodesInfo">پیام‌های صوتی ارسال‌شده را به‌طور خودکار رونویسی می‌کند، کدهای زمانی فصل‌ها را با یک LLM می‌سازد و آن‌ها را به‌عنوان توضیح پیام پیوست می‌کند.</string>
+    <string name="VoiceTimecodesEnabled">فعال‌کردن کدهای زمانی صدا</string>
+    <string name="VoiceTimecodesSttUrl">نشانی سرویس STT</string>
+    <string name="VoiceTimecodesSttUrlHint">https://stt.example.com/v1/audio/transcriptions</string>
+    <string name="VoiceTimecodesSttToken">توکن Bearer سرویس STT</string>
+    <string name="VoiceTimecodesLlmUrl">نشانی API گفتگوی LLM</string>
+    <string name="VoiceTimecodesLlmUrlHint">https://api.example.com/v1/chat/completions</string>
+    <string name="VoiceTimecodesLlmToken">کلید API مدل LLM</string>
+    <string name="VoiceTimecodesLlmModel">مدل LLM</string>
+    <string name="VoiceTimecodesLlmModelHint">aistudio-gemini-3.8-flash</string>
+    <string name="VoiceTimecodesMinDuration">حداقل مدت پیام صوتی (ثانیه)</string>
+    <string name="VoiceTimecodesPrompt">قالب دستور ({transcript} = متن)</string>
+    <string name="VoiceTimecodesResetPrompt">بازنشانی دستور به حالت پیش‌فرض</string>
+    <string name="VoiceTimecodesCodeTitle">کد تنظیمات</string>
+    <string name="VoiceTimecodesCodeInfo">کدی تک‌خطی با همهٔ تنظیمات مهرهای زمانی صدا، شامل کلیدهای API. آن را در پیام‌های ذخیره‌شده کپی کنید، سپس در دستگاه دیگر دوباره کپی کنید و «درون‌ریزی کد» را بزنید. کد را خصوصی نگه دارید.</string>
+    <string name="VoiceTimecodesCodeHint">روی «برون‌ریزی» بزنید یا کدی از دستگاه دیگر بچسبانید</string>
+    <string name="VoiceTimecodesCodeExport">برون‌ریزی به کلیپ‌بورد</string>
+    <string name="VoiceTimecodesCodeImport">درون‌ریزی کد</string>
+    <string name="VoiceTimecodesCodeCopied">کد تنظیمات کپی شد</string>
+    <string name="VoiceTimecodesCodeImported">تنظیمات درون‌ریزی شد</string>
+    <string name="VoiceTimecodesCodeImportFailed">کد تنظیمات خالی یا نامعتبر است</string>
+    <string name="VoiceTimecodesSaved">تنظیمات کدهای زمانی صدا ذخیره شد</string>
+    <string name="VoiceTimecodesDone">کدهای زمانی افزوده شد</string>
+    <string name="VoiceTimecodesGenerate">افزودن کدهای زمانی</string>
+    <string name="VoiceTimecodesProcessing">در حال ساخت کدهای زمانی…</string>
+    <string name="VoiceTimecodesError">ساخت کدهای زمانی ناموفق بود</string>
 </resources>

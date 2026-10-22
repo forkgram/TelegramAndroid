@@ -548,4 +548,33 @@
     <string name="FolderTabsStyleInfo">Выберите, как папки отображаются на панели вкладок. Значок можно задать в настройках каждой папки.</string>
     <string name="ShareDeleteOriginals">Удалить исходные сообщения</string>
     <string name="SendAsSinglePhoto">Отправить одним фото</string>
+
+    <string name="VoiceTimecodes">Автотаймкоды голосовых</string>
+    <string name="VoiceTimecodesSection">Автотаймкоды для голосовых</string>
+    <string name="VoiceTimecodesInfo">После отправки голосового сообщения клиент отправляет его на сервер транскрибации, генерирует список тем с таймкодами через языковую модель и автоматически добавляет их в подпись к сообщению.</string>
+    <string name="VoiceTimecodesEnabled">Включить автотаймкоды</string>
+    <string name="VoiceTimecodesSttUrl">URL сервиса транскрибации (STT)</string>
+    <string name="VoiceTimecodesSttUrlHint">https://stt.example.com/v1/audio/transcriptions</string>
+    <string name="VoiceTimecodesSttToken">Токен STT (Bearer)</string>
+    <string name="VoiceTimecodesLlmUrl">URL эндпоинта LLM (Chat completions)</string>
+    <string name="VoiceTimecodesLlmUrlHint">https://api.example.com/v1/chat/completions</string>
+    <string name="VoiceTimecodesLlmToken">API-ключ LLM</string>
+    <string name="VoiceTimecodesLlmModel">Модель LLM</string>
+    <string name="VoiceTimecodesLlmModelHint">aistudio-gemini-3.8-flash</string>
+    <string name="VoiceTimecodesMinDuration">Мин. длительность голосового (сек)</string>
+    <string name="VoiceTimecodesPrompt">Шаблон промпта ({transcript} = текст)</string>
+    <string name="VoiceTimecodesResetPrompt">Сбросить промпт по умолчанию</string>
+    <string name="VoiceTimecodesCodeTitle">Код настроек</string>
+    <string name="VoiceTimecodesCodeInfo">Однострочный код со всеми настройками автотаймкодов, включая API-ключи. Скопируйте его в «Избранное», а на другом устройстве скопируйте оттуда и нажмите «Импортировать код». Никому не показывайте этот код.</string>
+    <string name="VoiceTimecodesCodeHint">Нажмите «Экспорт» или вставьте код с другого устройства</string>
+    <string name="VoiceTimecodesCodeExport">Экспортировать в буфер</string>
+    <string name="VoiceTimecodesCodeImport">Импортировать код</string>
+    <string name="VoiceTimecodesCodeCopied">Код настроек скопирован</string>
+    <string name="VoiceTimecodesCodeImported">Настройки импортированы</string>
+    <string name="VoiceTimecodesCodeImportFailed">Код настроек пуст или повреждён</string>
+    <string name="VoiceTimecodesSaved">Настройки таймкодов сохранены</string>
+    <string name="VoiceTimecodesDone">Таймкоды добавлены</string>
+    <string name="VoiceTimecodesGenerate">Добавить таймкоды</string>
+    <string name="VoiceTimecodesProcessing">Генерация таймкодов…</string>
+    <string name="VoiceTimecodesError">Не удалось сгенерировать таймкоды</string>
 </resources>

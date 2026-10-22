@@ -1648,4 +1648,33 @@
     <string name="FolderTabsStyleInfo">Lege fest, wie Ordner in der Tab-Leiste erscheinen. Ein Symbol kannst du in den Einstellungen jedes Ordners festlegen.</string>
     <string name="ShareDeleteOriginals">Originalnachrichten löschen</string>
     <string name="SendAsSinglePhoto">Als ein Foto senden</string>
+
+    <string name="VoiceTimecodes">Sprach-Zeitmarken</string>
+    <string name="VoiceTimecodesSection">Zeitmarken für Sprachnachrichten</string>
+    <string name="VoiceTimecodesInfo">Transkribiert gesendete Sprachnachrichten automatisch, erzeugt per LLM Kapitel-Zeitmarken und hängt sie als Bildunterschrift an die Nachricht.</string>
+    <string name="VoiceTimecodesEnabled">Zeitmarken aktivieren</string>
+    <string name="VoiceTimecodesSttUrl">STT-Dienst-URL</string>
+    <string name="VoiceTimecodesSttUrlHint">https://stt.example.com/v1/audio/transcriptions</string>
+    <string name="VoiceTimecodesSttToken">STT-Bearer-Token</string>
+    <string name="VoiceTimecodesLlmUrl">LLM-Chat-API-URL</string>
+    <string name="VoiceTimecodesLlmUrlHint">https://api.example.com/v1/chat/completions</string>
+    <string name="VoiceTimecodesLlmToken">LLM-API-Schlüssel</string>
+    <string name="VoiceTimecodesLlmModel">LLM-Modell</string>
+    <string name="VoiceTimecodesLlmModelHint">aistudio-gemini-3.8-flash</string>
+    <string name="VoiceTimecodesMinDuration">Mindestdauer der Sprachnachricht (Sekunden)</string>
+    <string name="VoiceTimecodesPrompt">Prompt-Vorlage ({transcript} = Text)</string>
+    <string name="VoiceTimecodesResetPrompt">Prompt zurücksetzen</string>
+    <string name="VoiceTimecodesCodeTitle">Einstellungscode</string>
+    <string name="VoiceTimecodesCodeInfo">Ein einzeiliger Code mit allen Einstellungen für Sprach-Zeitstempel, einschließlich API-Schlüsseln. Kopieren Sie ihn in die Gespeicherten Nachrichten und kopieren Sie ihn auf einem anderen Gerät erneut und tippen Sie auf „Code importieren“. Halten Sie den Code geheim.</string>
+    <string name="VoiceTimecodesCodeHint">Tippen Sie auf „Exportieren“ oder fügen Sie einen Code von einem anderen Gerät ein</string>
+    <string name="VoiceTimecodesCodeExport">In Zwischenablage exportieren</string>
+    <string name="VoiceTimecodesCodeImport">Code importieren</string>
+    <string name="VoiceTimecodesCodeCopied">Einstellungscode kopiert</string>
+    <string name="VoiceTimecodesCodeImported">Einstellungen importiert</string>
+    <string name="VoiceTimecodesCodeImportFailed">Ungültiger oder leerer Einstellungscode</string>
+    <string name="VoiceTimecodesSaved">Zeitmarken-Einstellungen gespeichert</string>
+    <string name="VoiceTimecodesDone">Zeitmarken hinzugefügt</string>
+    <string name="VoiceTimecodesGenerate">Zeitmarken hinzufügen</string>
+    <string name="VoiceTimecodesProcessing">Zeitmarken werden erstellt…</string>
+    <string name="VoiceTimecodesError">Zeitmarken konnten nicht erstellt werden</string>
 </resources>

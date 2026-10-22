@@ -1357,4 +1357,33 @@
     <string name="FolderTabsStyleInfo">Kies hoe mappen in de tabbalk verschijnen. Wijs in de instellingen van elke map een pictogram toe.</string>
     <string name="ShareDeleteOriginals">Oorspronkelijke berichten verwijderen</string>
     <string name="SendAsSinglePhoto">Als één foto versturen</string>
+
+    <string name="VoiceTimecodes">Spraaktijdmarkeringen</string>
+    <string name="VoiceTimecodesSection">Tijdmarkeringen voor spraakberichten</string>
+    <string name="VoiceTimecodesInfo">Schrijft verzonden spraakberichten automatisch uit, maakt hoofdstuktijdmarkeringen via een LLM en voegt ze toe als onderschrift bij het bericht.</string>
+    <string name="VoiceTimecodesEnabled">Tijdmarkeringen inschakelen</string>
+    <string name="VoiceTimecodesSttUrl">URL van STT-dienst</string>
+    <string name="VoiceTimecodesSttUrlHint">https://stt.example.com/v1/audio/transcriptions</string>
+    <string name="VoiceTimecodesSttToken">STT-bearertoken</string>
+    <string name="VoiceTimecodesLlmUrl">URL van LLM-chat-API</string>
+    <string name="VoiceTimecodesLlmUrlHint">https://api.example.com/v1/chat/completions</string>
+    <string name="VoiceTimecodesLlmToken">LLM-API-sleutel</string>
+    <string name="VoiceTimecodesLlmModel">LLM-model</string>
+    <string name="VoiceTimecodesLlmModelHint">aistudio-gemini-3.8-flash</string>
+    <string name="VoiceTimecodesMinDuration">Minimale duur van spraakbericht (seconden)</string>
+    <string name="VoiceTimecodesPrompt">Promptsjabloon ({transcript} = tekst)</string>
+    <string name="VoiceTimecodesResetPrompt">Prompt terugzetten naar standaard</string>
+    <string name="VoiceTimecodesCodeTitle">Instellingencode</string>
+    <string name="VoiceTimecodesCodeInfo">Een code van één regel met alle instellingen voor spraaktijdstempels, inclusief API-sleutels. Kopieer hem naar Opgeslagen berichten en kopieer hem op een ander apparaat opnieuw en tik op ‘Code importeren’. Houd de code privé.</string>
+    <string name="VoiceTimecodesCodeHint">Tik op ‘Exporteren’ of plak een code van een ander apparaat</string>
+    <string name="VoiceTimecodesCodeExport">Naar klembord exporteren</string>
+    <string name="VoiceTimecodesCodeImport">Code importeren</string>
+    <string name="VoiceTimecodesCodeCopied">Instellingencode gekopieerd</string>
+    <string name="VoiceTimecodesCodeImported">Instellingen geïmporteerd</string>
+    <string name="VoiceTimecodesCodeImportFailed">Ongeldige of lege instellingencode</string>
+    <string name="VoiceTimecodesSaved">Instellingen voor tijdmarkeringen opgeslagen</string>
+    <string name="VoiceTimecodesDone">Tijdmarkeringen toegevoegd</string>
+    <string name="VoiceTimecodesGenerate">Tijdmarkeringen toevoegen</string>
+    <string name="VoiceTimecodesProcessing">Tijdmarkeringen genereren…</string>
+    <string name="VoiceTimecodesError">Tijdmarkeringen genereren mislukt</string>
 </resources>
