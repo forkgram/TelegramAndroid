@@ -54,6 +54,7 @@ import androidx.core.view.inputmethod.InputContentInfoCompat;
 import org.json.JSONObject;
 import org.telegram.messenger.audioinfo.AudioInfo;
 import org.telegram.messenger.forkgram.MediaSpoiler;
+import org.telegram.messenger.forkgram.VoiceTimecodes;
 import org.telegram.messenger.support.SparseLongArray;
 import org.telegram.messenger.utils.EphemeralMessagesHelper;
 import org.telegram.messenger.utils.tlutils.AmountUtils;
@@ -2062,6 +2063,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                         visibleId, sentMessage.id, sentMessage, dialogId, 0L, 0, false);
                 getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer2,
                         visibleId, sentMessage.id, sentMessage, dialogId, 0L, 0, false);
+                VoiceTimecodes.onMessageSent(currentAccount, sentMessage, false);
                 processSentMessage(oldId);
                 removeFromSendingMessages(oldId, false);
             });
@@ -2961,6 +2963,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                                                         getMediaDataController().increasePeerRaiting(peer);
                                                         getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer, oldId, message.id, message, peer, 0L, existFlags, scheduleDate != 0);
                                                         getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer2, oldId, message.id, message, peer, 0L, existFlags, scheduleDate != 0);
+                                                        VoiceTimecodes.onMessageSent(currentAccount, message, scheduleDate != 0);
                                                         processSentMessage(oldId);
                                                         removeFromSendingMessages(oldId, scheduleDate != 0);
                                                     });
@@ -8069,6 +8072,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                                     getMediaDataController().increasePeerRaiting(newMsgObj.dialog_id);
                                     getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer, oldId, newMsgObj.id, newMsgObj, newMsgObj.dialog_id, grouped_id, existFlags, finalCurrentSchedule);
                                     getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer2, oldId, newMsgObj.id, newMsgObj, newMsgObj.dialog_id, grouped_id, existFlags, finalCurrentSchedule);
+                                    VoiceTimecodes.onMessageSent(currentAccount, newMsgObj, finalCurrentSchedule);
                                     processSentMessage(oldId);
                                     removeFromSendingMessages(oldId, scheduled);
                                 });
@@ -8612,6 +8616,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                                         getMediaDataController().increasePeerRaiting(newMsgObj.dialog_id);
                                         getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer, oldId, newMsgObj.id, newMsgObj, newMsgObj.dialog_id, 0L, existFlags, scheduled);
                                         getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer2, oldId, newMsgObj.id, newMsgObj, newMsgObj.dialog_id, 0L, existFlags, scheduled);
+                                        VoiceTimecodes.onMessageSent(currentAccount, newMsgObj, scheduled);
                                         processSentMessage(oldId);
                                         removeFromSendingMessages(oldId, scheduled);
                                     });
