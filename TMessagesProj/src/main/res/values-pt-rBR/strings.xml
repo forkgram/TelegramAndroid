@@ -1539,4 +1539,33 @@
     <string name="FolderTabsStyleInfo">Escolha como as pastas aparecem na barra de abas. Defina um ícone para cada pasta nas configurações dela.</string>
     <string name="ShareDeleteOriginals">Excluir as mensagens originais</string>
     <string name="SendAsSinglePhoto">Enviar como uma única foto</string>
+
+    <string name="VoiceTimecodes">Timecodes de voz</string>
+    <string name="VoiceTimecodesSection">Timecodes das mensagens de voz</string>
+    <string name="VoiceTimecodesInfo">Transcreve automaticamente as mensagens de voz enviadas, gera timecodes de capítulos via um LLM e os anexa como legenda da mensagem.</string>
+    <string name="VoiceTimecodesEnabled">Ativar timecodes de voz</string>
+    <string name="VoiceTimecodesSttUrl">URL do serviço de STT</string>
+    <string name="VoiceTimecodesSttUrlHint">https://stt.example.com/v1/audio/transcriptions</string>
+    <string name="VoiceTimecodesSttToken">Token Bearer do STT</string>
+    <string name="VoiceTimecodesLlmUrl">URL da API de chat do LLM</string>
+    <string name="VoiceTimecodesLlmUrlHint">https://api.example.com/v1/chat/completions</string>
+    <string name="VoiceTimecodesLlmToken">Chave de API do LLM</string>
+    <string name="VoiceTimecodesLlmModel">Modelo do LLM</string>
+    <string name="VoiceTimecodesLlmModelHint">aistudio-gemini-3.8-flash</string>
+    <string name="VoiceTimecodesMinDuration">Duração mínima do áudio (segundos)</string>
+    <string name="VoiceTimecodesPrompt">Modelo de prompt ({transcript} = texto)</string>
+    <string name="VoiceTimecodesResetPrompt">Restaurar prompt padrão</string>
+    <string name="VoiceTimecodesCodeTitle">Código de configurações</string>
+    <string name="VoiceTimecodesCodeInfo">Um código de uma linha com todas as configurações de marcações de tempo de voz, incluindo chaves de API. Copie-o para Mensagens salvas e, em outro dispositivo, copie-o novamente e toque em «Importar código». Mantenha o código privado.</string>
+    <string name="VoiceTimecodesCodeHint">Toque em «Exportar» ou cole um código de outro dispositivo</string>
+    <string name="VoiceTimecodesCodeExport">Exportar para a área de transferência</string>
+    <string name="VoiceTimecodesCodeImport">Importar código</string>
+    <string name="VoiceTimecodesCodeCopied">Código de configurações copiado</string>
+    <string name="VoiceTimecodesCodeImported">Configurações importadas</string>
+    <string name="VoiceTimecodesCodeImportFailed">Código de configurações inválido ou vazio</string>
+    <string name="VoiceTimecodesSaved">Configurações de timecodes salvas</string>
+    <string name="VoiceTimecodesDone">Timecodes adicionados</string>
+    <string name="VoiceTimecodesGenerate">Adicionar timecodes</string>
+    <string name="VoiceTimecodesProcessing">Gerando timecodes…</string>
+    <string name="VoiceTimecodesError">Falha ao gerar os timecodes</string>
 </resources>
