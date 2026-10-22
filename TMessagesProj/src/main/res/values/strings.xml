@@ -11822,4 +11822,33 @@
     <string name="WebPublishTemplate">Clipboard template (%q = link)</string>
     <string name="WebPublishAdvanced">Advanced</string>
     <string name="WebPublishSaved">Publish settings saved</string>
+
+    <string name="VoiceTimecodes">Voice Timecodes</string>
+    <string name="VoiceTimecodesSection">Voice Message Timecodes</string>
+    <string name="VoiceTimecodesInfo">Automatically transcribes sent voice messages, generates chapter timecodes via an LLM, and attaches them as the message caption.</string>
+    <string name="VoiceTimecodesEnabled">Enable voice timecodes</string>
+    <string name="VoiceTimecodesSttUrl">STT Service URL</string>
+    <string name="VoiceTimecodesSttUrlHint">https://stt.example.com/v1/audio/transcriptions</string>
+    <string name="VoiceTimecodesSttToken">STT Bearer Token</string>
+    <string name="VoiceTimecodesLlmUrl">LLM Chat API URL</string>
+    <string name="VoiceTimecodesLlmUrlHint">https://api.example.com/v1/chat/completions</string>
+    <string name="VoiceTimecodesLlmToken">LLM API Key</string>
+    <string name="VoiceTimecodesLlmModel">LLM Model</string>
+    <string name="VoiceTimecodesLlmModelHint">aistudio-gemini-3.8-flash</string>
+    <string name="VoiceTimecodesMinDuration">Minimum voice duration (seconds)</string>
+    <string name="VoiceTimecodesPrompt">Prompt template ({transcript} = text)</string>
+    <string name="VoiceTimecodesResetPrompt">Reset prompt to default</string>
+    <string name="VoiceTimecodesCodeTitle">Settings code</string>
+    <string name="VoiceTimecodesCodeInfo">A single-line code with all voice timecode settings, including API keys. Copy it to Saved Messages, then on another device copy it again and tap Import code. Keep the code private.</string>
+    <string name="VoiceTimecodesCodeHint">Tap Export or paste a code from another device</string>
+    <string name="VoiceTimecodesCodeExport">Export to clipboard</string>
+    <string name="VoiceTimecodesCodeImport">Import code</string>
+    <string name="VoiceTimecodesCodeCopied">Settings code copied</string>
+    <string name="VoiceTimecodesCodeImported">Settings imported</string>
+    <string name="VoiceTimecodesCodeImportFailed">Invalid or empty settings code</string>
+    <string name="VoiceTimecodesSaved">Voice timecodes settings saved</string>
+    <string name="VoiceTimecodesDone">Timecodes added</string>
+    <string name="VoiceTimecodesGenerate">Add timecodes</string>
+    <string name="VoiceTimecodesProcessing">Generating timecodes…</string>
+    <string name="VoiceTimecodesError">Failed to generate timecodes</string>
 </resources>
