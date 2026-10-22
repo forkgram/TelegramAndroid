@@ -1516,4 +1516,33 @@
     <string name="FolderTabsStyleInfo">اختر كيفية ظهور المجلدات في شريط علامات التبويب. عيّن أيقونة لكل مجلد من إعداداته.</string>
     <string name="ShareDeleteOriginals">حذف الرسائل الأصلية</string>
     <string name="SendAsSinglePhoto">إرسال كصورة واحدة</string>
+
+    <string name="VoiceTimecodes">أكواد توقيت الصوت</string>
+    <string name="VoiceTimecodesSection">أكواد توقيت الرسائل الصوتية</string>
+    <string name="VoiceTimecodesInfo">يفرّغ الرسائل الصوتية المُرسَلة تلقائيًا، ويُنشئ أكواد توقيت للفصول عبر نموذج لغوي كبير (LLM)، ويُرفقها كتعليق على الرسالة.</string>
+    <string name="VoiceTimecodesEnabled">تفعيل أكواد توقيت الصوت</string>
+    <string name="VoiceTimecodesSttUrl">عنوان URL لخدمة STT</string>
+    <string name="VoiceTimecodesSttUrlHint">https://stt.example.com/v1/audio/transcriptions</string>
+    <string name="VoiceTimecodesSttToken">رمز Bearer لخدمة STT</string>
+    <string name="VoiceTimecodesLlmUrl">عنوان URL لواجهة محادثة LLM</string>
+    <string name="VoiceTimecodesLlmUrlHint">https://api.example.com/v1/chat/completions</string>
+    <string name="VoiceTimecodesLlmToken">مفتاح API لنموذج LLM</string>
+    <string name="VoiceTimecodesLlmModel">نموذج LLM</string>
+    <string name="VoiceTimecodesLlmModelHint">aistudio-gemini-3.8-flash</string>
+    <string name="VoiceTimecodesMinDuration">الحد الأدنى لمدة الرسالة الصوتية (بالثواني)</string>
+    <string name="VoiceTimecodesPrompt">قالب التوجيه ({transcript} = النص)</string>
+    <string name="VoiceTimecodesResetPrompt">إعادة التوجيه إلى الوضع الافتراضي</string>
+    <string name="VoiceTimecodesCodeTitle">رمز الإعدادات</string>
+    <string name="VoiceTimecodesCodeInfo">رمز من سطر واحد يحتوي على جميع إعدادات الطوابع الزمنية للصوت، بما في ذلك مفاتيح API. انسخه إلى الرسائل المحفوظة، ثم على جهاز آخر انسخه مرة أخرى واضغط على «استيراد الرمز». احتفظ بالرمز خاصًا.</string>
+    <string name="VoiceTimecodesCodeHint">اضغط على «تصدير» أو الصق رمزًا من جهاز آخر</string>
+    <string name="VoiceTimecodesCodeExport">تصدير إلى الحافظة</string>
+    <string name="VoiceTimecodesCodeImport">استيراد الرمز</string>
+    <string name="VoiceTimecodesCodeCopied">تم نسخ رمز الإعدادات</string>
+    <string name="VoiceTimecodesCodeImported">تم استيراد الإعدادات</string>
+    <string name="VoiceTimecodesCodeImportFailed">رمز الإعدادات فارغ أو غير صالح</string>
+    <string name="VoiceTimecodesSaved">تم حفظ إعدادات أكواد توقيت الصوت</string>
+    <string name="VoiceTimecodesDone">تمت إضافة أكواد التوقيت</string>
+    <string name="VoiceTimecodesGenerate">إضافة أكواد التوقيت</string>
+    <string name="VoiceTimecodesProcessing">جارٍ إنشاء أكواد التوقيت…</string>
+    <string name="VoiceTimecodesError">تعذّر إنشاء أكواد التوقيت</string>
 </resources>

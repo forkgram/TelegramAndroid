@@ -6449,6 +6449,9 @@ public class MessagesController extends BaseController implements NotificationCe
                     getMessagesStorage().updateChatInfo(chatFull, false);
                 }
             }
+            if (args.length > 2 && args[2] instanceof TLRPC.Message) {
+                org.telegram.messenger.forkgram.VoiceTimecodes.onMessageSent(currentAccount, (TLRPC.Message) args[2]);
+            }
         } else if (id == NotificationCenter.updateMessageMedia) {
             TLRPC.Message message = (TLRPC.Message) args[0];
             if (message.peer_id.channel_id == 0) {
