@@ -306,4 +306,12 @@
     <string name="VoiceTimecodesGenerate">افزودن کدهای زمانی</string>
     <string name="VoiceTimecodesProcessing">در حال ساخت کدهای زمانی…</string>
     <string name="VoiceTimecodesError">ساخت کدهای زمانی ناموفق بود</string>
+
+    <string name="QuickAttach">پیوست سریع</string>
+    <string name="QuickAttachInfo">برای بازشدن عکس‌های اخیر و دوربین به‌صورت بادبزنی، دکمهٔ پیوست را نگه دارید.</string>
+    <string name="QuickAttachSendImmediately">ارسال فوری</string>
+    <string name="QuickAttachSendImmediatelyInfo">عکس انتخاب‌شده را بی‌درنگ ارسال می‌کند. اگر خاموش باشد، ابتدا در ویرایشگر باز می‌شود تا بتوانید آن را تنظیم کنید یا توضیحی بیفزایید.</string>
+    <string name="QuickAttachNewestFirst">جدیدترین عکس‌ها در سمت چپ</string>
+    <string name="QuickAttachNewestFirstInfo">اگر خاموش باشد، عکس‌های اخیر از قدیمی به جدید، از چپ به راست مرتب می‌شوند.</string>
+    <string name="PhotoSent">عکس ارسال شد</string>
 </resources>

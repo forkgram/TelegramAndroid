@@ -1438,4 +1438,12 @@
     <string name="VoiceTimecodesGenerate">타임코드 추가</string>
     <string name="VoiceTimecodesProcessing">타임코드 생성 중…</string>
     <string name="VoiceTimecodesError">타임코드를 생성하지 못했습니다</string>
+
+    <string name="QuickAttach">빠른 첨부</string>
+    <string name="QuickAttachInfo">첨부 버튼을 길게 눌러 최근 사진과 카메라를 펼쳐 보세요.</string>
+    <string name="QuickAttachSendImmediately">바로 보내기</string>
+    <string name="QuickAttachSendImmediatelyInfo">선택한 사진을 즉시 보냅니다. 끄면 편집기에서 먼저 열리며, 여기서 사진을 조정하거나 캡션을 추가할 수 있습니다.</string>
+    <string name="QuickAttachNewestFirst">최신 사진을 왼쪽에</string>
+    <string name="QuickAttachNewestFirstInfo">끄면 최근 사진이 오래된 것부터 최신 순으로 왼쪽에서 오른쪽으로 정렬됩니다.</string>
+    <string name="PhotoSent">사진을 보냈습니다</string>
 </resources>

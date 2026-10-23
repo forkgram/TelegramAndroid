@@ -1839,4 +1839,12 @@
     <string name="VoiceTimecodesGenerate">Aggiungi timecode</string>
     <string name="VoiceTimecodesProcessing">Generazione dei timecode…</string>
     <string name="VoiceTimecodesError">Impossibile generare i timecode</string>
+
+    <string name="QuickAttach">Allegato rapido</string>
+    <string name="QuickAttachInfo">Tieni premuto il pulsante di allegato per aprire a ventaglio le foto recenti e la fotocamera.</string>
+    <string name="QuickAttachSendImmediately">Invia subito</string>
+    <string name="QuickAttachSendImmediatelyInfo">Invia subito la foto selezionata. Se disattivato, si apre prima nell\'editor, dove puoi ritoccarla o aggiungere una didascalia.</string>
+    <string name="QuickAttachNewestFirst">Foto più recenti a sinistra</string>
+    <string name="QuickAttachNewestFirstInfo">Se disattivato, le foto recenti sono ordinate dalla più vecchia alla più recente, da sinistra a destra.</string>
+    <string name="PhotoSent">Foto inviata</string>
 </resources>

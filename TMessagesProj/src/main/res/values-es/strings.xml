@@ -1617,4 +1617,12 @@
     <string name="VoiceTimecodesGenerate">Añadir marcas de tiempo</string>
     <string name="VoiceTimecodesProcessing">Generando marcas de tiempo…</string>
     <string name="VoiceTimecodesError">No se pudieron generar las marcas de tiempo</string>
+
+    <string name="QuickAttach">Adjuntar rápido</string>
+    <string name="QuickAttachInfo">Mantén pulsado el botón de adjuntar para desplegar las fotos recientes y la cámara.</string>
+    <string name="QuickAttachSendImmediately">Enviar al instante</string>
+    <string name="QuickAttachSendImmediatelyInfo">Envía la foto seleccionada al instante. Si está desactivado, se abre primero en el editor, donde puedes ajustarla o añadir un pie de foto.</string>
+    <string name="QuickAttachNewestFirst">Fotos más recientes a la izquierda</string>
+    <string name="QuickAttachNewestFirstInfo">Si está desactivado, las fotos recientes se ordenan de más antigua a más reciente, de izquierda a derecha.</string>
+    <string name="PhotoSent">Foto enviada</string>
 </resources>

@@ -577,4 +577,12 @@
     <string name="VoiceTimecodesGenerate">Добавить таймкоды</string>
     <string name="VoiceTimecodesProcessing">Генерация таймкодов…</string>
     <string name="VoiceTimecodesError">Не удалось сгенерировать таймкоды</string>
+
+    <string name="QuickAttach">Быстрое прикрепление</string>
+    <string name="QuickAttachInfo">Удержание кнопки скрепки открывает веер из последних фото и камеры.</string>
+    <string name="QuickAttachSendImmediately">Отправлять сразу</string>
+    <string name="QuickAttachSendImmediatelyInfo">Отправлять выбранное фото сразу. Если выключено, оно сначала откроется в редакторе, где можно его подправить или добавить подпись.</string>
+    <string name="QuickAttachNewestFirst">Новые фото слева</string>
+    <string name="QuickAttachNewestFirstInfo">Если выключено, последние фото идут от старых к новым слева направо.</string>
+    <string name="PhotoSent">Фото отправлено</string>
 </resources>
