@@ -11851,4 +11851,12 @@
     <string name="VoiceTimecodesGenerate">Add timecodes</string>
     <string name="VoiceTimecodesProcessing">Generating timecodes…</string>
     <string name="VoiceTimecodesError">Failed to generate timecodes</string>
+
+    <string name="QuickAttach">Quick Attach</string>
+    <string name="QuickAttachInfo">Long-press the attachment button to fan out recent photos and camera.</string>
+    <string name="QuickAttachSendImmediately">Send immediately</string>
+    <string name="QuickAttachSendImmediatelyInfo">Send the selected photo right away. When off, it opens in the editor first, where you can adjust it or add a caption.</string>
+    <string name="QuickAttachNewestFirst">Newest photos on the left</string>
+    <string name="QuickAttachNewestFirstInfo">When off, recent photos are ordered from oldest to newest, left to right.</string>
+    <string name="PhotoSent">Photo sent</string>
 </resources>

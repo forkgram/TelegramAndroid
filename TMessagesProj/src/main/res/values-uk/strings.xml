@@ -578,4 +578,12 @@
     <string name="VoiceTimecodesGenerate">Додати таймкоди</string>
     <string name="VoiceTimecodesProcessing">Створення таймкодів…</string>
     <string name="VoiceTimecodesError">Не вдалося створити таймкоди</string>
+
+    <string name="QuickAttach">Швидке прикріплення</string>
+    <string name="QuickAttachInfo">Утримуйте кнопку скріпки, щоб розгорнути останні фото та камеру.</string>
+    <string name="QuickAttachSendImmediately">Надсилати одразу</string>
+    <string name="QuickAttachSendImmediatelyInfo">Надсилає вибране фото відразу. Якщо вимкнено, воно спершу відкривається в редакторі, де можна його скоригувати або додати підпис.</string>
+    <string name="QuickAttachNewestFirst">Нові фото ліворуч</string>
+    <string name="QuickAttachNewestFirstInfo">Якщо вимкнено, останні фото впорядковано від найстаріших до найновіших, зліва направо.</string>
+    <string name="PhotoSent">Фото надіслано</string>
 </resources>

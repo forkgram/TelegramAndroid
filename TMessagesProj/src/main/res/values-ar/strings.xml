@@ -1545,4 +1545,12 @@
     <string name="VoiceTimecodesGenerate">إضافة أكواد التوقيت</string>
     <string name="VoiceTimecodesProcessing">جارٍ إنشاء أكواد التوقيت…</string>
     <string name="VoiceTimecodesError">تعذّر إنشاء أكواد التوقيت</string>
+
+    <string name="QuickAttach">إرفاق سريع</string>
+    <string name="QuickAttachInfo">اضغط مطوّلًا على زر الإرفاق لعرض الصور الأخيرة والكاميرا على شكل مروحة.</string>
+    <string name="QuickAttachSendImmediately">الإرسال فورًا</string>
+    <string name="QuickAttachSendImmediatelyInfo">يرسل الصورة المحددة على الفور. عند الإيقاف، تُفتح أولًا في المحرر حيث يمكنك تعديلها أو إضافة تعليق.</string>
+    <string name="QuickAttachNewestFirst">أحدث الصور على اليسار</string>
+    <string name="QuickAttachNewestFirstInfo">عند الإيقاف، تُرتَّب الصور الأخيرة من الأقدم إلى الأحدث، من اليسار إلى اليمين.</string>
+    <string name="PhotoSent">تم إرسال الصورة</string>
 </resources>
