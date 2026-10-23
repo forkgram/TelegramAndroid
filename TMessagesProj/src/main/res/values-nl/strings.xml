@@ -1386,4 +1386,12 @@
     <string name="VoiceTimecodesGenerate">Tijdmarkeringen toevoegen</string>
     <string name="VoiceTimecodesProcessing">Tijdmarkeringen genereren…</string>
     <string name="VoiceTimecodesError">Tijdmarkeringen genereren mislukt</string>
+
+    <string name="QuickAttach">Snel bijvoegen</string>
+    <string name="QuickAttachInfo">Houd de bijvoegknop ingedrukt om recente foto\'s en de camera uit te klappen.</string>
+    <string name="QuickAttachSendImmediately">Direct versturen</string>
+    <string name="QuickAttachSendImmediatelyInfo">Verstuurt de gekozen foto meteen. Staat dit uit, dan opent de foto eerst in de editor, waar je hem kunt aanpassen of een onderschrift kunt toevoegen.</string>
+    <string name="QuickAttachNewestFirst">Nieuwste foto\'s links</string>
+    <string name="QuickAttachNewestFirstInfo">Staat dit uit, dan staan recente foto\'s van oud naar nieuw, van links naar rechts.</string>
+    <string name="PhotoSent">Foto verstuurd</string>
 </resources>
