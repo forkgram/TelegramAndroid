@@ -46,6 +46,7 @@ import org.telegram.messenger.forkgram.ForkSettingsLock;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.forkgram.LinkReplacements;
 import org.telegram.messenger.forkgram.UrlTracking;
+import org.telegram.messenger.forkgram.QuickAttachConfig;
 import org.telegram.messenger.forkgram.SettingsBackup;
 import org.telegram.messenger.forkgram.WebPublishConfig;
 import org.telegram.messenger.forkgram.VoiceTimecodesConfig;
@@ -157,6 +158,7 @@ public class ForkSettingsActivity extends BaseFragment {
 
     public static final int ID_WEB_PUBLISH = 101;
     public static final int ID_VOICE_TIMECODES = 102;
+    public static final int ID_QUICK_ATTACH = 103;
 
     public static final int ID_EXPORT_SETTINGS = 95;
     public static final int ID_IMPORT_SETTINGS = 96;
@@ -687,6 +689,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("disablePlayVisibleVideoOnVolume", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_RECENT_FILES_ATTACHMENT, LocaleController.getString(R.string.DisableRecentFilesAttachment), LocaleController.getString(R.string.DisableRecentFilesAttachmentInfo))
             .setChecked(pref("disableRecentFilesAttachment", false)).setMultiline(true));
+        items.add(UItem.asSettingsCell(ID_QUICK_ATTACH, LocaleController.getString(R.string.QuickAttach),
+            QuickAttachConfig.isEnabled() ? LocaleController.getString(R.string.PasswordOn) : LocaleController.getString(R.string.PasswordOff)));
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionVoice)));
@@ -887,6 +891,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("disablePlayVisibleVideoOnVolume", item, view);
         } else if (id == ID_DISABLE_RECENT_FILES_ATTACHMENT) {
             toggle("disableRecentFilesAttachment", item, view);
+        } else if (id == ID_QUICK_ATTACH) {
+            presentFragment(new QuickAttachSettingsActivity());
 
         } else if (id == ID_VOICE_QUALITY) {
             showVoiceQualityDialog();
