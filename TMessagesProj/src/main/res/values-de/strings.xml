@@ -1677,4 +1677,12 @@
     <string name="VoiceTimecodesGenerate">Zeitmarken hinzufügen</string>
     <string name="VoiceTimecodesProcessing">Zeitmarken werden erstellt…</string>
     <string name="VoiceTimecodesError">Zeitmarken konnten nicht erstellt werden</string>
+
+    <string name="QuickAttach">Schnell-Anhang</string>
+    <string name="QuickAttachInfo">Halte die Anhang-Schaltfläche gedrückt, um letzte Fotos und die Kamera aufzufächern.</string>
+    <string name="QuickAttachSendImmediately">Sofort senden</string>
+    <string name="QuickAttachSendImmediatelyInfo">Sendet das ausgewählte Foto sofort. Wenn aus, öffnet es sich zuerst im Editor, wo du es anpassen oder eine Bildunterschrift hinzufügen kannst.</string>
+    <string name="QuickAttachNewestFirst">Neueste Fotos links</string>
+    <string name="QuickAttachNewestFirstInfo">Wenn aus, werden die letzten Fotos von alt zu neu von links nach rechts angeordnet.</string>
+    <string name="PhotoSent">Foto gesendet</string>
 </resources>

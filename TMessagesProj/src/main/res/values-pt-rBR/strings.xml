@@ -1568,4 +1568,12 @@
     <string name="VoiceTimecodesGenerate">Adicionar timecodes</string>
     <string name="VoiceTimecodesProcessing">Gerando timecodes…</string>
     <string name="VoiceTimecodesError">Falha ao gerar os timecodes</string>
+
+    <string name="QuickAttach">Anexo rápido</string>
+    <string name="QuickAttachInfo">Mantenha o botão de anexo pressionado para abrir em leque as fotos recentes e a câmera.</string>
+    <string name="QuickAttachSendImmediately">Enviar imediatamente</string>
+    <string name="QuickAttachSendImmediatelyInfo">Envia a foto selecionada na hora. Se desativado, ela abre primeiro no editor, onde você pode ajustá-la ou adicionar uma legenda.</string>
+    <string name="QuickAttachNewestFirst">Fotos mais recentes à esquerda</string>
+    <string name="QuickAttachNewestFirstInfo">Se desativado, as fotos recentes são ordenadas da mais antiga para a mais recente, da esquerda para a direita.</string>
+    <string name="PhotoSent">Foto enviada</string>
 </resources>

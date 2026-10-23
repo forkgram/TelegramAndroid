@@ -322,6 +322,18 @@ public class ChatActivityEnterView extends FrameLayout implements
 
         void didPressAttachButton();
 
+        default boolean canQuickAttach() {
+            return true;
+        }
+
+        default void onStartQuickAttach(View attachButton, float touchX, float touchY) {}
+
+        default void onQuickAttachTracking(float touchX, float touchY) {}
+
+        default void onQuickAttachFinish(float touchX, float touchY) {}
+
+        default void onQuickAttachCancel() {}
+
         default void didPressStreamingStop() {}
 
         default void didPressSuggestionButton() {}
@@ -2832,9 +2844,98 @@ public class ChatActivityEnterView extends FrameLayout implements
             }
 
             attachButton = new ImageView(context) {
+                private float downX;
+                private float downY;
+                private boolean quickAttachStarted;
+                private final Runnable quickAttachRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean can = delegate != null && delegate.canQuickAttach();
+                        FileLog.d("QuickAttach: quickAttachRunnable firing, canQuickAttach=" + can);
+                        if (can) {
+                            quickAttachStarted = true;
+                            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                            if (getParent() != null) {
+                                getParent().requestDisallowInterceptTouchEvent(true);
+                            }
+                            delegate.onStartQuickAttach(attachButton, downX, downY);
+                        }
+                    }
+                };
+
                 @Override
                 public boolean dispatchTouchEvent(MotionEvent event) {
                     if (getAlpha() < 0.5f) return false;
+                    int action = event.getActionMasked();
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN:
+                            downX = event.getRawX();
+                            downY = event.getRawY();
+                            quickAttachStarted = false;
+                            if (getParent() != null) {
+                                getParent().requestDisallowInterceptTouchEvent(true);
+                            }
+                            MediaController.loadGalleryPhotosAlbums(0);
+                            AndroidUtilities.runOnUIThread(quickAttachRunnable, 180);
+                            setPressed(true);
+                            FileLog.d("QuickAttach: attachButton DOWN at " + downX + ", " + downY);
+                            return true;
+                        case MotionEvent.ACTION_MOVE:
+                            if (quickAttachStarted) {
+                                if (getParent() != null) {
+                                    getParent().requestDisallowInterceptTouchEvent(true);
+                                }
+                                if (delegate != null) {
+                                    delegate.onQuickAttachTracking(event.getRawX(), event.getRawY());
+                                }
+                                return true;
+                            } else {
+                                float dx = Math.abs(event.getRawX() - downX);
+                                float dy = Math.abs(event.getRawY() - downY);
+                                if (dx > AndroidUtilities.dp(24) || dy > AndroidUtilities.dp(24)) {
+                                    FileLog.d("QuickAttach: attachButton MOVE exceeded slop dx=" + dx + ", dy=" + dy);
+                                    AndroidUtilities.cancelRunOnUIThread(quickAttachRunnable);
+                                    setPressed(false);
+                                }
+                            }
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            AndroidUtilities.cancelRunOnUIThread(quickAttachRunnable);
+                            setPressed(false);
+                            if (quickAttachStarted) {
+                                quickAttachStarted = false;
+                                FileLog.d("QuickAttach: attachButton UP finished tracking at " + event.getRawX() + ", " + event.getRawY());
+                                if (delegate != null) {
+                                    delegate.onQuickAttachFinish(event.getRawX(), event.getRawY());
+                                }
+                                return true;
+                            } else {
+                                float dx = Math.abs(event.getRawX() - downX);
+                                float dy = Math.abs(event.getRawY() - downY);
+                                if (dx <= AndroidUtilities.dp(24) && dy <= AndroidUtilities.dp(24)) {
+                                    if (adjustPanLayoutHelper != null && adjustPanLayoutHelper.animationInProgress() || attachLayoutPaddingAlpha == 0f) {
+                                        return true;
+                                    }
+                                    if (delegate != null) {
+                                        FileLog.d("QuickAttach: attachButton regular tap");
+                                        delegate.didPressAttachButton();
+                                    }
+                                }
+                                return true;
+                            }
+                        case MotionEvent.ACTION_CANCEL:
+                            AndroidUtilities.cancelRunOnUIThread(quickAttachRunnable);
+                            setPressed(false);
+                            FileLog.d("QuickAttach: attachButton CANCEL");
+                            if (quickAttachStarted) {
+                                quickAttachStarted = false;
+                                if (delegate != null) {
+                                    delegate.onQuickAttachCancel();
+                                }
+                                return true;
+                            }
+                            break;
+                    }
                     return super.dispatchTouchEvent(event);
                 }
             };
@@ -2843,12 +2944,6 @@ public class ChatActivityEnterView extends FrameLayout implements
             attachButton.setImageResource(R.drawable.msg_input_attach2);
             attachButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector)));
             messageEditTextContainer.addView(attachButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, Gravity.BOTTOM | Gravity.RIGHT));
-            attachButton.setOnClickListener(v -> {
-                if (adjustPanLayoutHelper != null && adjustPanLayoutHelper.animationInProgress() || attachLayoutPaddingAlpha == 0f) {
-                    return;
-                }
-                delegate.didPressAttachButton();
-            });
             attachButton.setContentDescription(getString(R.string.AccDescrAttachButton));
             updateFieldRight(1);
         }
