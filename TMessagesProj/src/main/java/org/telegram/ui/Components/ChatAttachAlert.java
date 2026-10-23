@@ -1107,6 +1107,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
     private boolean menuShowed;
     public SizeNotifierFrameLayout sizeNotifierFrameLayout;
     private boolean openTransitionFinished;
+    private boolean openCameraOnOpenEnd;
 
     private Object viewChangeAnimator;
 
@@ -6316,6 +6317,12 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
         currentAttachLayout.onOpenAnimationEnd();
         AndroidUtilities.makeAccessibilityAnnouncement(getString("AccDescrAttachButton", R.string.AccDescrAttachButton));
         openTransitionFinished = true;
+        if (openCameraOnOpenEnd) {
+            openCameraOnOpenEnd = false;
+            if (photoLayout != null) {
+                photoLayout.openCameraWithPermissionCheck();
+            }
+        }
         if (!videosEnabled && !photosEnabled) {
             checkCanRemoveRestrictionsByBoosts();
         }
@@ -6528,6 +6535,17 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
 
     public ChatAttachAlertPhotoLayout getPhotoLayout() {
         return photoLayout;
+    }
+
+    public void openCameraWhenOpened() {
+        if (photoLayout == null) {
+            return;
+        }
+        if (openTransitionFinished && isShowing()) {
+            photoLayout.openCameraWithPermissionCheck();
+        } else {
+            openCameraOnOpenEnd = true;
+        }
     }
 
     public ChatAttachAlertLocationLayout getLocationLayout() {
@@ -6954,6 +6972,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
 
     @Override
     public void dismissInternal() {
+        openCameraOnOpenEnd = false;
         if (delegate != null) {
             delegate.doOnIdle(this::removeFromRoot);
         } else {
