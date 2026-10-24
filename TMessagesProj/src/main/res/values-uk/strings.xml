@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="AppNameFdroid">Forkgram</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Зовнішній вигляд</string>
     <string name="ForkSectionMedia">Фото та відео</string>
@@ -375,5 +376,4 @@
     <string name="RemindDayAt">\'Нагадати\' d MMM\',\' HH:mm</string>
     <string name="RemindDayYearAt">\'Нагадати\' d MMM yyyy\',\' HH:mm</string>
     <string name="AppIconAdaptive">Адаптивна</string>
-    <string name="AppNameFdroid">Forkgram</string>
 </resources>
