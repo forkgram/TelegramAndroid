@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FORK CLIENT-->
+    <string name="AppNameFdroid">Forkgram</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Aspetto</string>
     <string name="ForkSectionMedia">Foto e video</string>
@@ -1635,5 +1636,4 @@
     <string name="RemindDayYearAt">\'Ricorda il\' d MMM yyyy \'alle\' HH:mm</string>
     <string name="BotsMenuTitle">Menu</string>
     <string name="AppIconAdaptive">Adattiva</string>
-    <string name="AppNameFdroid">Forkgram</string>
 </resources>
