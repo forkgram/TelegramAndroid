@@ -147,6 +147,7 @@ import org.telegram.messenger.voip.VoIPPendingCall;
 import org.telegram.messenger.voip.VoIPPreNotificationService;
 import org.telegram.messenger.voip.VoIPService;
 import org.telegram.messenger.forkgram.AppUpdater;
+import org.telegram.messenger.forkgram.GoTo;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLObject;
@@ -2623,6 +2624,13 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                                 }
                                             } catch (NumberFormatException ignore) {}
                                         }
+                                    } else if (url.startsWith("tg:goto") || url.startsWith("tg://goto")) {
+                                        if (progress != null) {
+                                            progress.end();
+                                        }
+                                        Uri goToUri = Uri.parse(url);
+                                        GoTo.openByTag(intentAccount[0], goToUri.getQueryParameter("tag"), goToUri.getQueryParameter("type"));
+                                        return pushOpened;
                                     } else if (url.startsWith("tg:passport") || url.startsWith("tg://passport") || url.startsWith("tg:secureid")) {
                                         url = url.replace("tg:passport", "tg://telegram.org").replace("tg://passport", "tg://telegram.org").replace("tg:secureid", "tg://telegram.org");
                                         data = Uri.parse(url);

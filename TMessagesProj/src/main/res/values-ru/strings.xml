@@ -48,6 +48,9 @@
     <string name="QRLoginSubtitle">Откройте Telegram на другом устройстве и отсканируйте этот QR-код, чтобы войти в аккаунт.</string>
     <string name="QRLoginTitle">Вход по QR-коду</string>
     <string name="AppNameFdroid">Forkgram</string>
+    <string name="GoToTags">Чаты GoTo: %1$s</string>
+    <string name="GoToNotFound">Чат GoTo не найден для #%1$s (%2$s)</string>
+    <string name="GoToAmbiguous">Тег #%1$s подходит нескольким чатам: %2$s</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Внешний вид</string>
     <string name="ForkSectionMedia">Фото и видео</string>

@@ -48,6 +48,9 @@
     <string name="QRLoginSubtitle">Öffne Telegram auf einem anderen Gerät und scanne diesen QR-Code, um dich bei deinem Konto anzumelden.</string>
     <string name="QRLoginTitle">Per QR-Code anmelden</string>
     <string name="AppNameFdroid">Forkgram</string>
+    <string name="GoToTags">GoTo-Chats: %1$s</string>
+    <string name="GoToNotFound">Kein GoTo-Chat für #%1$s (%2$s) gefunden</string>
+    <string name="GoToAmbiguous">Tag #%1$s passt zu mehreren Chats: %2$s</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Erscheinungsbild</string>
     <string name="ForkSectionMedia">Fotos und Videos</string>
