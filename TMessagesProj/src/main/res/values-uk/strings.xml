@@ -320,7 +320,6 @@
     <string name="ResetAccountInfo">"Акаунт **%1$s** активний та захищений паролем, тому з міркувань безпеки ми видалимо його лише через тиждень.\n\nВи можете скасувати цей процес будь-коли. "</string>
     <string name="ResetAccountStatus">Ви зможете скинути акаунт через:</string>
     <string name="ResetAccountCancelledAlert">Ваші недавні спроби скинути акаунт скасовано активним користувачем. Спробуйте через 7 днів.</string>
-    <string name="ResetAccountButton">СКИНУТИ АКАУНТ</string>
     <string name="CancelLinkExpired">Посилання недійсне або застаріле.</string>
     <string name="CancelLinkSuccessTitle">Успіх!</string>
     <string name="CancelLinkSuccess">Процес видалення вашого акаунта %1$s було скасовано. Зараз ви можете закрити це вікно.</string>
@@ -347,7 +346,6 @@
     <string name="EditWidgetContactsInfo">Цей віджет показує ярлики для швидкого доступу до вибраних чатів.\n\nЯкщо нічого не вибрано, відображаються останні активні контакти.</string>
     <string name="EditWidgetChatsInfo">Цей віджет показує останні повідомлення з вибраних чатів.\n\nЯкщо нічого не вибрано, відображаються останні активні чати.</string>
     <string name="WidgetPasscode2">Увага: код блокування застосунку **не впливає** на віджети.</string>
-    <string name="WidgetPasscodeEnable2">Код блокування застосунку **не впливає** на віджети, додані на головний екран.</string>
     <string name="SearchForChats">Пошук чатів...</string>
     <string name="WidgetPreview">Попередній перегляд</string>
     <string name="TapToEditWidget">редагувати віджет</string>
@@ -383,9 +381,7 @@
     <string name="CheckPasswordBackToSettings">Назад до Налаштувань</string>
     <string name="PleaseEnterCurrentPasswordTransfer">Введіть свій пароль, щоб завершити передачу прав власності.</string>
     <string name="PleaseEnterCurrentPasswordWithdraw">Для отримання необхідно ввести пароль.</string>
-    <string name="PleaseEnterFirstPassword">Введіть пароль</string>
     <string name="PleaseEnterNewFirstPassword">Введіть новий пароль</string>
-    <string name="PleaseEnterPassword">Введіть новий пароль</string>
     <string name="PleaseReEnterPassword">Введіть свій пароль ще раз</string>
     <string name="NewPassword">Новий пароль</string>
     <string name="PleaseEnterNewFirstPasswordLogin">Тепер ви можете встановити новий пароль для входу в акаунт.</string>
@@ -397,8 +393,6 @@
     <string name="YourEmail">Ваша е-пошта</string>
     <string name="YourNewEmail">Ваша нова е-пошта</string>
     <string name="YourLoginEmailChangedSuccess">Вашу адресу е-пошти змінено.</string>
-    <string name="YourEmailCode">Код з листа</string>
-    <string name="YourEmailCodeInfo">Щоб підтвердити свою е-пошту %1$s, введіть код, який ми щойно на неї надіслали.</string>
     <string name="YourEmailInfo">Додайте свою дійсну адресу е-пошти. Це єдиний спосіб відновити забутий пароль.</string>
     <string name="YourEmailSkip">Пропустити</string>
     <string name="YourEmailSkipWarning">Попередження</string>
@@ -406,7 +400,6 @@
     <string name="YourEmailAlmostThere">Майже готово!</string>
     <string name="YourEmailAlmostThereText">Щоб активувати двоетапну перевірку, введіть код з листа, який ми вам надіслали. Не забудьте перевірити теку зі спамом.</string>
     <string name="YourPasswordSuccess">Успіх!</string>
-    <string name="YourPasswordSuccessText">Ваш пароль для двоетапної перевірки тепер активовано.</string>
     <string name="YourPasswordChangedSuccessText">Пароль двоетапної перевірки змінено.</string>
     <string name="YourEmailSuccessText">Адреса е-пошти для скидання пароля двоетапної перевірки тепер активна.</string>
     <string name="YourEmailSuccessChangedText">Е-пошту для відновлення пароля двоетапної перевірки змінено.</string>
@@ -437,7 +430,6 @@
     <string name="Abort">Перервати</string>
     <string name="Disable">Вимкнути</string>
     <string name="EmailPasswordConfirmText2">Щоб активувати двоетапну перевірку, введіть код з листа, який ми вам надіслали. Не забудьте перевірити теку зі спамом.</string>
-    <string name="EmailPasswordConfirmText3">Щоб завершити встановлення е-пошти для відновлення, перевірте %1$s і введіть код, який ми вам надіслали. Не забудьте перевірити теку зі спамом.</string>
     <string name="PasswordAsHintError">Підказка має відрізнятися від вашого пароля</string>
     <string name="PasswordEmailInvalid">Недопустима адреса е-пошти, спробуйте ще раз.</string>
     <string name="RestorePasswordNoEmailTitle">На жаль</string>
@@ -459,7 +451,6 @@
     <string name="RestoreEmailNoAccess">Не маєте доступу до %1$s?</string>
     <string name="ResetPasswordWait">Ви нещодавно запитували скидання пароля, але запит був скасований. Будь ласка, зачекайте %1$s, перш ніж зробити новий запит.</string>
     <string name="ResetMyAccount">СКИНУТИ МІЙ АКАУНТ</string>
-    <string name="ResetMyAccountText">Ви втратите всі чати, повідомлення, фото, відео й файли в Telegram, якщо ви продовжите скидання акаунта.</string>
     <string name="ResetMyAccountWarning">Попередження</string>
     <string name="ResetMyAccountWarningText">Це незворотна дія. Ви втратите всі чати, повідомлення, фото, відео й файли в Telegram, якщо продовжите скидання акаунта.</string>
     <string name="ResetMyAccountWarningReset">Скинути акаунт</string>
@@ -510,8 +501,6 @@
     <string name="formatterBannedUntil24H">dd MMM yyyy, HH:mm</string>
     <string name="formatterBannedUntilThisYear12H">dd MMM, h:mm a</string>
     <string name="formatterBannedUntilThisYear24H">dd MMM, HH:mm</string>
-    <string name="formatterMonthYear2">LLLL yyyy</string>
-    <string name="formatterMonthName">LLLL</string>
     <string name="formatterMonth">dd MMM</string>
     <string name="formatterYear">dd.MM.yy</string>
     <string name="formatterYearMax">dd.MM.yyyy</string>
