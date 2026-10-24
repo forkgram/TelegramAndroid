@@ -914,8 +914,6 @@
     <string name="UseProxyInfo">Impostazioni proxy SOCKS5</string>
     <string name="UseProxyTelegramInfo">Impostazioni proxy MTProto.</string>
     <string name="UseProxyTelegramInfo2">Questo proxy potrebbe mostrare un canale sponsorizzato nella tua lista chat. Questo non rivela nulla del tuo traffico Telegram.</string>
-    <string name="UseProxyForCalls">Usa il proxy per le chiamate</string>
-    <string name="UseProxyForCallsInfo">I server proxy potrebbero ridurre la qualità delle tue chiamate.</string>
     <string name="ConnectingToProxyEnable">Attiva</string>
     <string name="LowDiskSpaceTitle">Attenzione</string>
     <string name="LowDiskSpaceMessage">Hai quasi esaurito lo spazio sul dispositivo. Per liberarlo, imposta Telegram per salvare nella cache solo i media recenti.</string>

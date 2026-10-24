@@ -550,17 +550,12 @@
     <string name="NewMessageTitle">메시지 보내기</string>
     <string name="InviteFriendsHelp">텔레그램 초대장을 보낼 연락처를 선택하세요</string>
     <string name="InviteToTelegram">텔레그램으로 초대</string>
-    <string name="ShareTelegram">텔레그램 공유하기...</string>
     <string name="UpdateContactsTitle">연락처를 업데이트할까요?</string>
     <string name="UpdateContactsMessage">텔레그램이 아직 동기화되지 않은 여러 연락처를 찾아냈습니다. 연락처를 동기화하시겠습니까? 본인의 기기, SIM 카드와 Google 계정을 사용하는 중이라면 \'확인\'을 누르십시오.</string>
     <string name="SortedByName">이름순으로 정렬</string>
     <string name="SortedByLastSeen">마지막 접속순으로 정렬</string>
     <string name="AddContactByPhone">%1$s 추가</string>
     <string name="PhoneNumberSearch">전화번호</string>
-    <string name="NoContactsYet">아직 텔레그램에 연락처가 없습니다</string>
-    <string name="NoContactsYetLine1">친구를 텔레그램으로 초대해보세요</string>
-    <string name="NoContactsYetLine2">주위에 대화할 사람들을 찾아보세요</string>
-    <string name="NoContactsYetLine3">아이디를 통해 사람들을 찾아보세요</string>
     <string name="NewContactAlertTitle">새로운 연락처</string>
     <string name="NewContactAlertMessage">연락처에 **%1$s** 전화번호가 없습니다. 추가하시겠습니까?</string>
     <string name="NewContactAlertButton">연락처 추가</string>
@@ -915,8 +910,6 @@
     <string name="UseProxyInfo">SOCKS5 프록시 설정입니다.</string>
     <string name="UseProxyTelegramInfo">MTProto 프록시 설정입니다.</string>
     <string name="UseProxyTelegramInfo2">이 프록시를 사용하시면 후원 채널이 대화방 목록에 표시될 수 있습니다. 회원님의 텔레그램 트래픽은 전혀 공개되지 않습니다.</string>
-    <string name="UseProxyForCalls">전화에 프록시 사용</string>
-    <string name="UseProxyForCallsInfo">프록시 서버는 통화 품질을 저하시킬 수 있습니다.</string>
     <string name="ConnectingToProxyEnable">사용</string>
     <string name="LowDiskSpaceTitle">주의</string>
     <string name="LowDiskSpaceMessage">기기에 남은 공간이 거의 없습니다. 텔레그램이 최근 미디어의 캐시만 저장하도록 설정해 여유 공간을 확보하실 수 있습니다.</string>

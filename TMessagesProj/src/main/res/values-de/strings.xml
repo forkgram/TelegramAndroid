@@ -837,8 +837,6 @@
     <string name="UseProxyInfo">SOCKS5 Proxy-Einstellungen</string>
     <string name="UseProxyTelegramInfo">MTProto Proxy-Einstellungen.</string>
     <string name="UseProxyTelegramInfo2">Dieser Proxy könnte einen gesponserten Kanal in deiner Chatliste anzeigen. Das wird jedoch nicht deinen Telegram-Datenverkehr enthüllen.</string>
-    <string name="UseProxyForCalls">Proxy für Anrufe benutzen</string>
-    <string name="UseProxyForCallsInfo">Proxyserver können die Qualität von Anrufen beinflussen.</string>
     <string name="ConnectingToProxyEnable">Aktivieren</string>
     <string name="LowDiskSpaceTitle">Warnung</string>
     <string name="LowDiskSpaceMessage">Du hast kaum noch freien Speicher. Lege fest, ob du nur kürzlich erhaltene Medien im Cache behalten willst.</string>
