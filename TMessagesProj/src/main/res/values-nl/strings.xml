@@ -892,8 +892,6 @@
     <string name="UseProxyInfo">SOCKS5 proxy-instellingen</string>
     <string name="UseProxyTelegramInfo">MTProto-proxy-instellingen.</string>
     <string name="UseProxyTelegramInfo2">De proxy die je gebruikt kan een gesponsord kanaal weergeven in je chatoverzicht, maar heeft geen inzage in je Telegram-verkeer.</string>
-    <string name="UseProxyForCalls">Gebruik proxy voor oproepen</string>
-    <string name="UseProxyForCallsInfo">Het gebruik van proxyservers kan de kwaliteit van je telefoongesprekken verminderen.</string>
     <string name="ConnectingToProxyEnable">Inschakelen</string>
     <string name="LowDiskSpaceTitle">Let op</string>
     <string name="LowDiskSpaceMessage">Je opslagruimte begint vol te raken. Om ruimte te maken kun je Telegram instellen om alleen recente media te cachen.</string>
