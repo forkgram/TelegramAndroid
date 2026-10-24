@@ -115,6 +115,9 @@
     <string name="AppName">Fork Client</string>
     <string name="AppNameBeta">Fork Client</string>
     <string name="AppNameFdroid">Forkgram</string>
+    <string name="GoToTags">GoTo chats: %1$s</string>
+    <string name="GoToNotFound">No GoTo chat found for #%1$s (%2$s)</string>
+    <string name="GoToAmbiguous">Tag #%1$s matches several chats: %2$s</string>
     <string name="LanguageName">English</string>
     <string name="English">English</string>
     <string name="LanguageNameInEnglish">English</string>

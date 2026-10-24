@@ -2,6 +2,9 @@
 <resources>
     <!--FORK CLIENT-->
     <string name="AppNameFdroid">Forkgram</string>
+    <string name="GoToTags">چت‌های GoTo: %1$s</string>
+    <string name="GoToNotFound">هیچ چت GoTo برای #%1$s (%2$s) یافت نشد</string>
+    <string name="GoToAmbiguous">تگ #%1$s با چندین چت مطابقت دارد: %2$s</string>
     <string name="ForkSectionAppearance">ظاهر</string>
     <string name="ForkSectionMedia">عکس و ویدیو</string>
     <string name="ForkSectionVoice">صدا و ترجمه</string>
