@@ -48,6 +48,9 @@
     <string name="QRLoginSubtitle">افتح تيليجرام على جهاز آخر وامسح رمز QR هذا لتسجيل الدخول إلى حسابك.</string>
     <string name="QRLoginTitle">تسجيل الدخول عبر رمز QR</string>
     <string name="AppNameFdroid">Forkgram</string>
+    <string name="GoToTags">دردشات GoTo: %1$s</string>
+    <string name="GoToNotFound">لم يتم العثور على دردشة GoTo لـ #%1$s (%2$s)</string>
+    <string name="GoToAmbiguous">الوسم #%1$s يطابق عدة دردشات: %2$s</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">المظهر</string>
     <string name="ForkSectionMedia">الصور والفيديو</string>
