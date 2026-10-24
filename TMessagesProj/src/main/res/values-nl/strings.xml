@@ -48,6 +48,9 @@
     <string name="QRLoginSubtitle">Open Telegram op een ander apparaat en scan deze QR-code om in te loggen op je account.</string>
     <string name="QRLoginTitle">Inloggen met QR-code</string>
     <string name="AppNameFdroid">Forkgram</string>
+    <string name="GoToTags">GoTo-chats: %1$s</string>
+    <string name="GoToNotFound">Geen GoTo-chat gevonden voor #%1$s (%2$s)</string>
+    <string name="GoToAmbiguous">Tag #%1$s komt overeen met meerdere chats: %2$s</string>
     <string name="UnifiedPush">UnifiedPush</string>
     <string name="ForkSectionAppearance">Weergave</string>
     <string name="ForkSectionMedia">Foto\'s en video</string>
@@ -1252,4 +1255,3 @@
     <string name="PasskeyGoogleManagerInfo">Google Wachtwoordmanager accepteert geen passkeys uit deze app. Kies een andere wachtwoordmanager, zoals Bitwarden of KeePassDX.</string>
     <string name="BotsMenuTitle">Menu</string>
     <string name="AppIconAdaptive">Adaptief</string>
-</resources>
