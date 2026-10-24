@@ -859,8 +859,6 @@
     <string name="UseProxyInfo">إعدادات بروكسي SOCKS5</string>
     <string name="UseProxyTelegramInfo">إعدادات بروكسي MTProto.</string>
     <string name="UseProxyTelegramInfo2">قد يعرض هذا البروكسي قناة إعلانية في قائمة محادثاتك.\nلن يكشف هذا عن نشاطك في تيليجرام.</string>
-    <string name="UseProxyForCalls">استخدام البروكسي للمكالمات</string>
-    <string name="UseProxyForCallsInfo">قد تقلل خوادم البروكسي من جودة مكالماتك.</string>
     <string name="ConnectingToProxyEnable">تفعيل</string>
     <string name="LowDiskSpaceTitle">ملحوظة</string>
     <string name="LowDiskSpaceMessage">مساحة جهازك ممتلئة تقريبًا، لتحرير مساحة إضافية يمكنك جعل تيليجرام يقوم بالتخزين المؤقت للوسائط الحديثة فقط.</string>

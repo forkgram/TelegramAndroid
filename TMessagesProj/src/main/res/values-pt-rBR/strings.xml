@@ -536,17 +536,12 @@
     <string name="NewMessageTitle">Nova Mensagem</string>
     <string name="InviteFriendsHelp">Selecione os contatos para convidar ao Telegram</string>
     <string name="InviteToTelegram">CONVIDAR PARA O TELEGRAM</string>
-    <string name="ShareTelegram">Compartilhar o Telegram...</string>
     <string name="UpdateContactsTitle">Atualizar contatos?</string>
     <string name="UpdateContactsMessage">O Telegram detectou muitos contatos não sincronizados, deseja sincronizá-los agora? Escolha \'OK\' se você está usando seu próprio celular, cartão SIM e conta do Google.</string>
     <string name="SortedByName">Listado por Nome</string>
     <string name="SortedByLastSeen">Listado por Visto por Último</string>
     <string name="AddContactByPhone">Adicionar %1$s</string>
     <string name="PhoneNumberSearch">Número de telefone</string>
-    <string name="NoContactsYet">Você ainda não tem contatos no Telegram</string>
-    <string name="NoContactsYetLine1">Convide amigos para testar o Telegram</string>
-    <string name="NoContactsYetLine2">Encontre pessoas próximas</string>
-    <string name="NoContactsYetLine3">Busque pessoas por nome de usuário</string>
     <string name="NewContactAlertTitle">Novo contato</string>
     <string name="NewContactAlertMessage">O número de telefone **%1$s** não está nos seus contatos. Deseja adicionar?</string>
     <string name="NewContactAlertButton">Adicionar contato</string>
@@ -901,8 +896,6 @@
     <string name="UseProxyInfo">Configurações de proxy SOCKS5.</string>
     <string name="UseProxyTelegramInfo">Configurações de proxy MTProto.</string>
     <string name="UseProxyTelegramInfo2">Este proxy pode mostrar um canal patrocinado em sua lista de conversas. Isso não revela nada do seu tráfego no Telegram.</string>
-    <string name="UseProxyForCalls">Usar Proxy Para Chamadas</string>
-    <string name="UseProxyForCallsInfo">Servidores proxy podem diminuir a qualidade de suas chamadas.</string>
     <string name="ConnectingToProxyEnable">Ativar</string>
     <string name="LowDiskSpaceTitle">Atenção</string>
     <string name="LowDiskSpaceMessage">Seu dispositivo está quase sem espaço. Para esvaziar um pouco, você pode configurar o Telegram para manter apenas mídias recentes.</string>
