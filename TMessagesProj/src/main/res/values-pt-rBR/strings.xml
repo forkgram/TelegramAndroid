@@ -143,6 +143,7 @@
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Não ativar o som do vídeo visível ao pressionar as teclas de volume.</string>
     <string name="DisableRecentFilesAttachmentInfo">Ocultar a lista de arquivos recentes no menu de anexos.</string>
     <string name="DisableAutoplayNextVoiceInfo">Não continuar para a próxima mensagem de voz ao terminar uma.</string>
+    <string name="VoiceFileSizeInfo">Exibe o tamanho do arquivo ao lado da duração nas mensagens de voz, como no Telegram Desktop.</string>
     <string name="BotSkipShareInfo">Descartar silenciosamente os pedidos de compartilhar mensagem dos mini apps.</string>
     <string name="BotSkipFullscreenInfo">Não permitir que os mini apps entrem em tela cheia.</string>
     <string name="DisableParametersFromBotLinksInfo">Remover os parâmetros de início dos links de bots antes de abri-los.</string>
@@ -246,6 +247,7 @@
     <string name="DisableDefaultInAppBrowser">Abrir links no browser padrão do sistema</string>
     <string name="TranslationEngine">Mecanismo de tradução</string>
     <string name="DisableAutoplayNextVoice">Desativar reprodução automática da próxima mensagem de voz/vídeo</string>
+    <string name="VoiceFileSize">Mostrar tamanho do arquivo das mensagens de voz</string>
     <string name="AudioPlayerAutoplayNext">Reproduzir próximo automaticamente</string>
     <string name="SmsOnlyOfficialWarning">Observação: A verificação por SMS está disponível APENAS para aplicativos oficiais</string>
     <string name="ThirdParty">Terceiros</string>
