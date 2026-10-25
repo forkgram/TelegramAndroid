@@ -131,6 +131,7 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.RichMessageLayout;
 import org.telegram.messenger.RichQuote;
 import org.telegram.messenger.SendMessagesHelper;
+import org.telegram.messenger.forkgram.VoiceFileSize;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.SvgHelper;
 import org.telegram.messenger.TranslateController;
@@ -5737,7 +5738,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
 
                 if (lastTime != duration) {
                     lastTime = duration;
-                    String timeString = AndroidUtilities.formatLongDuration((int) duration);
+                    String timeString = AndroidUtilities.formatLongDuration((int) duration) + VoiceFileSize.label(documentAttach.size);
                     timeWidthAudio = (int) Math.ceil(Theme.chat_audioTimePaint.measureText(timeString));
                     durationLayout = new StaticLayout(timeString, Theme.chat_audioTimePaint, timeWidthAudio, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
                 }
@@ -12788,7 +12789,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             measureTime(messageObject);
             int minSize = dp(40 + 14 + 20 + 90 + 10) + timeWidth;
             if (!hasLinkPreview) {
-                String timeString = AndroidUtilities.formatLongDuration((int) duration);
+                String timeString = AndroidUtilities.formatLongDuration((int) duration) + VoiceFileSize.label(documentAttach.size);
                 int w = (int) Math.ceil(Theme.chat_audioTimePaint.measureText(timeString));
                 backgroundWidth = Math.min(maxWidth, minSize + w);
             }
