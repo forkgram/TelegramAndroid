@@ -57,6 +57,7 @@
     <string name="DisablePlayVisibleVideoOnVolumeInfo">با فشردن کلیدهای صدا، ویدیوی در حال نمایش از حالت بی‌صدا خارج نشود.</string>
     <string name="DisableRecentFilesAttachmentInfo">فهرست فایل‌های اخیر در منوی پیوست پنهان شود.</string>
     <string name="DisableAutoplayNextVoiceInfo">پس از پایان یک پیام صوتی، پیام بعدی پخش نشود.</string>
+    <string name="VoiceFileSizeInfo">نمایش حجم فایل کنار مدت زمان در پیام‌های صوتی، مانند تلگرام دسکتاپ.</string>
     <string name="BotSkipShareInfo">درخواست اشتراک‌گذاری پیام از سوی مینی‌اپ‌ها بی‌صدا رد شود.</string>
     <string name="BotSkipFullscreenInfo">به مینی‌اپ‌ها اجازهٔ رفتن به حالت تمام‌صفحه داده نشود.</string>
     <string name="DisableParametersFromBotLinksInfo">پیش از باز کردن پیوندهای ربات، پارامترهای start از آن‌ها حذف شوند.</string>
@@ -160,6 +161,7 @@
     <string name="DisableDefaultInAppBrowser">باز کردن پیوندها در مرورگر سیستم</string>
     <string name="TranslationEngine">موتور ترجمه</string>
     <string name="DisableAutoplayNextVoice">غیرفعال کردن پخش خودکار پیام صوتی/ویدیویی بعدی</string>
+    <string name="VoiceFileSize">نمایش حجم فایل پیام صوتی</string>
     <string name="AudioPlayerAutoplayNext">پخش خودکار بعدی</string>
     <string name="SmsOnlyOfficialWarning">توجه: تأیید با پیامک فقط برای برنامه‌های موبایل رسمی در دسترس است</string>
     <string name="ThirdParty">شخص ثالث</string>

@@ -48,6 +48,7 @@ import org.telegram.messenger.forkgram.LinkReplacements;
 import org.telegram.messenger.forkgram.QuickAttachConfig;
 import org.telegram.messenger.forkgram.SettingsBackup;
 import org.telegram.messenger.forkgram.WebPublishConfig;
+import org.telegram.messenger.forkgram.VoiceFileSize;
 import org.telegram.messenger.forkgram.VoiceTimecodesConfig;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
@@ -139,6 +140,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_CLOUDFLARE_ENABLE_STT = 63;
     public static final int ID_CLOUDFLARE_CREDENTIALS = 64;
     public static final int ID_TRANSLATION_PROVIDER = 65;
+    public static final int ID_VOICE_FILE_SIZE = 66;
 
     public static final int ID_BOT_SKIP_SHARE = 70;
     public static final int ID_BOT_SKIP_FULLSCREEN = 71;
@@ -696,6 +698,8 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asSettingsCell(ID_VOICE_QUALITY, LocaleController.getString(R.string.VoiceMessageQuality), getVoiceQualityText()));
         items.add(UItem.asButtonCheck(ID_DISABLE_AUTOPLAY_NEXT_VOICE, LocaleController.getString(R.string.DisableAutoplayNextVoice), LocaleController.getString(R.string.DisableAutoplayNextVoiceInfo))
             .setChecked(pref("disableAutoplayNextVoice", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_VOICE_FILE_SIZE, LocaleController.getString(R.string.VoiceFileSize), LocaleController.getString(R.string.VoiceFileSizeInfo))
+            .setChecked(pref(VoiceFileSize.PREF_ENABLED, false)).setMultiline(true));
         items.add(UItem.asSettingsCell(ID_OFFLINE_STT, LocaleController.getString(R.string.OfflineTranscription), getOfflineTranscriberText()));
         items.add(UItem.asCheck(ID_CLOUDFLARE_ENABLE_STT, LocaleController.getString(R.string.CloudflareEnableSTT))
             .setChecked(SharedConfig.cfEnableStt));
@@ -897,6 +901,8 @@ public class ForkSettingsActivity extends BaseFragment {
             showVoiceQualityDialog();
         } else if (id == ID_DISABLE_AUTOPLAY_NEXT_VOICE) {
             toggle("disableAutoplayNextVoice", item, view);
+        } else if (id == ID_VOICE_FILE_SIZE) {
+            toggle(VoiceFileSize.PREF_ENABLED, item, view);
         } else if (id == ID_OFFLINE_STT) {
             showOfflineTranscriberDialog();
         } else if (id == ID_CLOUDFLARE_ENABLE_STT) {

@@ -143,6 +143,7 @@
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Не вмикати звук видимого відео під час натискання клавіш гучності.</string>
     <string name="DisableRecentFilesAttachmentInfo">Приховувати список нещодавніх файлів у меню вкладень.</string>
     <string name="DisableAutoplayNextVoiceInfo">Не переходити до наступного голосового повідомлення після завершення поточного.</string>
+    <string name="VoiceFileSizeInfo">Показувати розмір файлу поруч із тривалістю голосового повідомлення, як у Telegram Desktop.</string>
     <string name="BotSkipShareInfo">Мовчки відхиляти запити міні-застосунків на надсилання повідомлення.</string>
     <string name="BotSkipFullscreenInfo">Не дозволяти міні-застосункам переходити в повноекранний режим.</string>
     <string name="DisableParametersFromBotLinksInfo">Прибирати start-параметри з посилань на ботів перед відкриттям.</string>
@@ -246,6 +247,7 @@
     <string name="DisableDefaultInAppBrowser">Відкривати посилання в системному браузері</string>
     <string name="TranslationEngine">Рушій перекладу</string>
     <string name="DisableAutoplayNextVoice">Вимкнути автовідтворення наступного голосового/відеоповідомлення</string>
+    <string name="VoiceFileSize">Розмір файлу голосових повідомлень</string>
     <string name="AudioPlayerAutoplayNext">Автовідтворення наступного</string>
     <string name="SmsOnlyOfficialWarning">Примітка: SMS-підтвердження доступне ЛИШЕ у офіційних мобільних додатках</string>
     <string name="ThirdParty">Сторонні</string>
