@@ -1720,6 +1720,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         private int lastTop;
         private int lastListPadding;
         private float rightFragmentOpenedProgress;
+        private float folderPullToArchiveStartY = Float.MIN_VALUE;
+        private long folderPullToArchiveStartTime;
+        private float folderPullReveal;
+        private boolean folderPullReached;
+        private ValueAnimator folderPullHideAnimator;
+        private PullForegroundDrawable folderPullDrawable;
+        private FrameLayout folderPullArchiveContainer;
+        private DialogCell folderPullArchiveCell;
 
         Paint paint = new Paint();
         RectF rectF = new RectF();
@@ -1769,6 +1777,121 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
         public float getViewOffset() {
             return viewOffset;
+        }
+
+        private boolean canFolderPullToArchive() {
+            return (parentPage.dialogsType == 7 || parentPage.dialogsType == 8)
+                && folderId == 0
+                && !searchIsShowed
+                && storiesOverscroll == 0
+                && MessagesController.getGlobalMainSettings().getBoolean("openArchiveOnPull", true)
+                && isDefaultLandingFolder(parentPage)
+                && getMessagesController().dialogs_dict.get(DialogObject.makeFolderDialogId(1)) != null;
+        }
+
+        private int folderPullRowHeight() {
+            return dp(SharedConfig.useThreeLinesLayout ? 76 : 70);
+        }
+
+        private void ensureFolderPullArchiveViews() {
+            if (folderPullArchiveCell != null) {
+                return;
+            }
+            TLRPC.Dialog dialog = getMessagesController().dialogs_dict.get(DialogObject.makeFolderDialogId(1));
+            if (dialog == null) {
+                return;
+            }
+            folderPullDrawable = new PullForegroundDrawable(getString(R.string.AccSwipeForArchive), getString(R.string.AccReleaseForArchive));
+            folderPullDrawable.setWillDraw(true);
+            folderPullDrawable.setListView(this);
+            folderPullArchiveCell = new DialogCell(DialogsActivity.this, getContext(), true, false, currentAccount, null);
+            folderPullArchiveCell.setArchivedPullAnimation(folderPullDrawable);
+            folderPullArchiveCell.setDialog(dialog, parentPage.dialogsType, folderId);
+            int rowHeight = folderPullRowHeight();
+            folderPullArchiveCell.measure(
+                View.MeasureSpec.makeMeasureSpec(getMeasuredWidth(), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(rowHeight, View.MeasureSpec.EXACTLY));
+            folderPullArchiveCell.layout(0, 0, getMeasuredWidth(), rowHeight);
+            folderPullArchiveContainer = new FrameLayout(getContext());
+            folderPullArchiveContainer.setVisibility(View.GONE);
+            folderPullArchiveContainer.addView(folderPullArchiveCell, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, rowHeight, Gravity.TOP));
+            parentPage.addView(folderPullArchiveContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, rowHeight, Gravity.TOP));
+        }
+
+        private void updateFolderPullReveal(float pullDy) {
+            ensureFolderPullArchiveViews();
+            if (folderPullArchiveCell == null) {
+                return;
+            }
+            if (folderPullHideAnimator != null) {
+                folderPullHideAnimator.cancel();
+                folderPullHideAnimator = null;
+            }
+            int rowHeight = folderPullRowHeight();
+            float reveal = Utilities.clamp(pullDy, rowHeight, 0f);
+            if (folderPullReveal == 0f && reveal > 0f) {
+                folderPullDrawable.showHidden();
+            }
+            folderPullReveal = reveal;
+            float pullProgress = Utilities.clamp(reveal / rowHeight, 1f, 0f);
+            folderPullDrawable.setPullProgress(pullProgress);
+            folderPullArchiveContainer.setTranslationY(getPaddingTop());
+            folderPullArchiveCell.setTranslationY(-rowHeight + reveal);
+            folderPullArchiveContainer.setVisibility(View.VISIBLE);
+            if (getViewOffset() != reveal) {
+                setViewsOffset(reveal);
+            }
+            setOverScrollMode(reveal > 0 ? View.OVER_SCROLL_NEVER : View.OVER_SCROLL_ALWAYS);
+            boolean canShow = pullProgress > PullForegroundDrawable.SNAP_HEIGHT && System.currentTimeMillis() - folderPullToArchiveStartTime > PullForegroundDrawable.minPullingTime + 20;
+            if (canShow != folderPullReached) {
+                folderPullReached = canShow;
+                if (canShow) {
+                    try {
+                        performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                    } catch (Exception ignored) {}
+                }
+                folderPullDrawable.colorize(canShow);
+            }
+            invalidate();
+        }
+
+        private void hideFolderPullReveal() {
+            folderPullReached = false;
+            if (folderPullDrawable != null) {
+                folderPullDrawable.colorize(false);
+            }
+            if (folderPullReveal <= 0f || folderPullArchiveContainer == null) {
+                return;
+            }
+            if (folderPullHideAnimator != null) {
+                folderPullHideAnimator.cancel();
+            }
+            final int rowHeight = folderPullRowHeight();
+            folderPullHideAnimator = ValueAnimator.ofFloat(folderPullReveal, 0f);
+            folderPullHideAnimator.addUpdateListener(animation -> {
+                folderPullReveal = (float) animation.getAnimatedValue();
+                if (folderPullDrawable != null) {
+                    folderPullDrawable.setPullProgress(Utilities.clamp(folderPullReveal / rowHeight, 1f, 0f));
+                }
+                folderPullArchiveCell.setTranslationY(-rowHeight + folderPullReveal);
+                setViewsOffset(folderPullReveal);
+                invalidate();
+            });
+            folderPullHideAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    folderPullReveal = 0f;
+                    folderPullArchiveContainer.setVisibility(View.GONE);
+                    folderPullDrawable.resetText();
+                    folderPullDrawable.setPullProgress(0f);
+                    setViewsOffset(0f);
+                    setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+                    invalidate();
+                }
+            });
+            folderPullHideAnimator.setDuration(180);
+            folderPullHideAnimator.setInterpolator(CubicBezierInterpolator.EASE_OUT_QUINT);
+            folderPullHideAnimator.start();
         }
 
         @Override
@@ -2194,6 +2317,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             int action = e.getAction();
             if (action == MotionEvent.ACTION_DOWN) {
                 setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+                if ((parentPage.dialogsType == 7 || parentPage.dialogsType == 8) && !canScrollVertically(-1)) {
+                    folderPullToArchiveStartY = e.getY();
+                    folderPullToArchiveStartTime = System.currentTimeMillis();
+                } else {
+                    folderPullToArchiveStartY = Float.MIN_VALUE;
+                }
             }
             if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 if (!parentPage.itemTouchhelper.isIdle() && parentPage.swipeController.swipingFolder) {
@@ -2218,7 +2347,49 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     }
                 }
             }
+            if (action == MotionEvent.ACTION_MOVE && folderPullToArchiveStartY != Float.MIN_VALUE) {
+                float pullDy = e.getY() - folderPullToArchiveStartY;
+                if (pullDy > 0 && canFolderPullToArchive()) {
+                    updateFolderPullReveal(pullDy);
+                } else if (folderPullReveal > 0) {
+                    hideFolderPullReveal();
+                }
+            }
             boolean result = super.onTouchEvent(e);
+            if ((action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) && folderPullToArchiveStartY != Float.MIN_VALUE) {
+                float pullDy = e.getY() - folderPullToArchiveStartY;
+                long pullTime = System.currentTimeMillis() - folderPullToArchiveStartTime;
+                folderPullToArchiveStartY = Float.MIN_VALUE;
+                if (action == MotionEvent.ACTION_UP && pullDy > 0 && canFolderPullToArchive()) {
+                    int rowHeight = folderPullRowHeight();
+                    int snapHeight = (int) (rowHeight * PullForegroundDrawable.SNAP_HEIGHT);
+                    if (pullDy < snapHeight || pullTime < PullForegroundDrawable.minPullingTime) {
+                        hideFolderPullReveal();
+                    } else {
+                        folderPullReached = true;
+                        folderPullDrawable.colorize(true);
+                        folderPullReveal = rowHeight;
+                        folderPullDrawable.setPullProgress(1f);
+                        folderPullArchiveCell.setTranslationY(0);
+                        setViewsOffset(rowHeight);
+                        invalidate();
+                        AndroidUtilities.runOnUIThread(() -> {
+                            setViewsOffset(0f);
+                            folderPullArchiveContainer.setVisibility(View.GONE);
+                            folderPullDrawable.resetText();
+                            folderPullDrawable.setPullProgress(0f);
+                            folderPullReveal = 0f;
+                            folderPullReached = false;
+                            setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+                            Bundle args = new Bundle();
+                            args.putInt("folderId", 1);
+                            presentFragment(new DialogsActivity(args));
+                        }, 200);
+                    }
+                } else {
+                    hideFolderPullReveal();
+                }
+            }
             if (parentPage.dialogsType == DIALOGS_TYPE_DEFAULT && (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) && parentPage.archivePullViewState == ARCHIVE_ITEM_STATE_HIDDEN && hasHiddenArchive()) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
                 int currentPosition = layoutManager.findFirstVisibleItemPosition();
@@ -2260,7 +2431,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                                         // Open the folder.
                                         // Delay was taken from PullForegroundDrawable::startOutAnimation().
                                         Bundle args = new Bundle();
-                                        args.putInt("folderId", 1); // 1 is the ID of the archive folder.
+                                        args.putInt("folderId", 1);
                                         presentFragment(new DialogsActivity(args));
                                     }, 200);
                                 }
@@ -6998,31 +7169,40 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         }
     }
 
+    private int defaultLandingFilterIndex(ArrayList<MessagesController.DialogFilter> filters) {
+        final SharedPreferences prefs = MessagesController.getGlobalMainSettings();
+        final int defaultFolderId = prefs.getInt("defaultFolderId", -1);
+        if (defaultFolderId != -1) {
+            for (int a = 0; a < filters.size(); a++) {
+                if (!filters.get(a).isDefault() && filters.get(a).localId == defaultFolderId) {
+                    return a;
+                }
+            }
+        }
+        if (prefs.getBoolean("hideAllChatsTab", false)) {
+            for (int a = 0; a < filters.size(); a++) {
+                if (!filters.get(a).isDefault()) {
+                    return a;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private boolean isDefaultLandingFolder(ViewPage page) {
+        ArrayList<MessagesController.DialogFilter> filters = getMessagesController().getDialogFilters();
+        int landingIndex = defaultLandingFilterIndex(filters);
+        return landingIndex >= 0 && page.selectedType == landingIndex;
+    }
+
     private boolean applyDefaultFolderLanding(ArrayList<MessagesController.DialogFilter> filters, boolean freshBuild) {
         if (filterTabsView == null || viewPages == null || viewPages.length == 0 || filters == null || filters.size() <= 1) {
             return false;
         }
         final SharedPreferences prefs = MessagesController.getGlobalMainSettings();
         final boolean hideAllChatsTab = prefs.getBoolean("hideAllChatsTab", false);
-        final int defaultFolderId = prefs.getInt("defaultFolderId", -1);
 
-        int landingIndex = -1;
-        if (defaultFolderId != -1) {
-            for (int a = 0; a < filters.size(); a++) {
-                if (!filters.get(a).isDefault() && filters.get(a).localId == defaultFolderId) {
-                    landingIndex = a;
-                    break;
-                }
-            }
-        }
-        if (landingIndex < 0 && hideAllChatsTab) {
-            for (int a = 0; a < filters.size(); a++) {
-                if (!filters.get(a).isDefault()) {
-                    landingIndex = a;
-                    break;
-                }
-            }
-        }
+        int landingIndex = defaultLandingFilterIndex(filters);
         if (landingIndex < 0) {
             return false;
         }
