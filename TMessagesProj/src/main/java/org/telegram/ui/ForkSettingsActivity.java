@@ -33,15 +33,14 @@ import org.telegram.messenger.BotWebViewVibrationEffect;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
-import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessagesController;
-import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.browser.Browser;
 import org.telegram.messenger.forkgram.ForkOfflineTranscribe;
 import org.telegram.messenger.forkgram.ForkOfflineTranslate;
+import org.telegram.messenger.forkgram.ForkSettings;
 import org.telegram.messenger.forkgram.ForkSettingsLock;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.forkgram.LinkReplacements;
@@ -179,6 +178,11 @@ public class ForkSettingsActivity extends BaseFragment {
     public ForkSettingsActivity highlight(int itemId) {
         highlightItemId = itemId;
         return this;
+    }
+
+    public void rehighlight(int itemId) {
+        highlight(itemId);
+        applyHighlight();
     }
 
     @Override
@@ -621,7 +625,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 SharedPreferences.Editor editor = prefs().edit();
                 editor.putInt("folderTabsStyle", index);
                 editor.commit();
-                getNotificationCenter().postNotificationName(NotificationCenter.dialogFiltersUpdated);
+                ForkSettings.applyEffect(currentAccount, "folderTabsStyle", index);
             }).setId(ID_FOLDER_TABS_STYLE), R.string.FolderTabsStyle));
         items.add(UItem.asShadow(LocaleController.getString(R.string.FolderTabsStyleInfo)));
 
@@ -794,7 +798,7 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideSensitiveId", item, view);
         } else if (id == ID_FORCE_BLOCK_SCREENSHOTS) {
             toggle("forceBlockScreenshots", item, view);
-            NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.didSetPasscode, false);
+            ForkSettings.applyEffect(currentAccount, "forceBlockScreenshots", item.checked);
         } else if (id == ID_SHOW_NOTIFICATION_CONTENT) {
             toggle("showNotificationContent", item, view);
         } else if (id == ID_DROP_SCREENSHOT_CAPTION) {
@@ -819,7 +823,7 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("syncPins", item, view);
         } else if (id == ID_UNMUTED_ON_TOP) {
             toggle("unmutedOnTop", item, view);
-            MessagesController.getInstance(currentAccount).sortDialogs(null);
+            ForkSettings.applyEffect(currentAccount, "unmutedOnTop", item.checked);
         } else if (id == ID_OPEN_ARCHIVE_ON_PULL) {
             toggle("openArchiveOnPull", item, view);
         } else if (id == ID_HIDE_STORIES_IN_ARCHIVE) {
@@ -834,7 +838,7 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("enableLastSeenDots", item, view);
         } else if (id == ID_HIDE_ALL_CHATS_TAB) {
             toggle("hideAllChatsTab", item, view);
-            getNotificationCenter().postNotificationName(NotificationCenter.dialogFiltersUpdated);
+            ForkSettings.applyEffect(currentAccount, "hideAllChatsTab", item.checked);
         } else if (id == ID_DEFAULT_FOLDER) {
             showDefaultFolderDialog();
 
@@ -870,9 +874,7 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_FULL_RECENT_STICKERS) {
             toggle("fullRecentStickers", item, view);
         } else if (id == ID_SHOW_ARCHIVED_STICKERS) {
-            if (toggle("showArchivedStickers", item, view)) {
-                MediaDataController.getInstance(currentAccount).loadArchivedStickerSets();
-            }
+            ForkSettings.applyEffect(currentAccount, "showArchivedStickers", toggle("showArchivedStickers", item, view));
 
         } else if (id == ID_INAPP_CAMERA) {
             SharedConfig.toggleInappCamera();
@@ -929,14 +931,14 @@ public class ForkSettingsActivity extends BaseFragment {
 
         } else if (id == ID_WEBSOCKET_TRANSPORT) {
             boolean value = toggle("webSocketTransport", item, view);
-            org.telegram.tgnet.ConnectionsManager.setWebSocketEnabled(value, prefs().getString("webSocketDomain", ""));
+            ForkSettings.applyEffect(currentAccount, "webSocketTransport", value);
             listView.adapter.update(true);
         } else if (id == ID_WEBSOCKET_DOMAIN) {
             showWebSocketDomainDialog();
         } else if (id == ID_UNIFIED_PUSH) {
             presentFragment(new NotificationsSettingsActivity().highlightUnifiedPush());
         } else if (id == ID_SATELLITE_DATA_SAVING) {
-            ApplicationLoader.setSatelliteDataSavingEnabled(toggle("satelliteDataSaving", item, view));
+            ForkSettings.applyEffect(currentAccount, "satelliteDataSaving", toggle("satelliteDataSaving", item, view));
         } else if (id == ID_UPDATE_CHECK_INTERVAL) {
             showUpdateIntervalDialog();
         } else if (id == ID_DISABLE_TABLET_MODE) {
@@ -1242,9 +1244,7 @@ public class ForkSettingsActivity extends BaseFragment {
                 editor.putString("webSocketDomain", domain);
                 editor.commit();
                 listView.adapter.update(false);
-                if (prefs().getBoolean("webSocketTransport", false)) {
-                    org.telegram.tgnet.ConnectionsManager.setWebSocketEnabled(true, domain);
-                }
+                ForkSettings.applyEffect(currentAccount, "webSocketDomain", domain);
                 return null;
             });
     }
