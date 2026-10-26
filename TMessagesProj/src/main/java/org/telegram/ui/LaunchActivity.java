@@ -44,6 +44,7 @@ import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
@@ -64,6 +65,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -8528,7 +8530,32 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         }
     }
 
+    /**
+     * On devices with an exposed hardware keyboard, BACK should behave like
+     * the backspace key while the user is editing a non-empty text field,
+     * instead of leaving the current screen. Returns true when a character
+     * was deleted and the back event must be consumed.
+     */
+    private boolean deleteInFocusedTextField() {
+        if (getResources().getConfiguration().hardKeyboardHidden != Configuration.HARDKEYBOARDHIDDEN_NO) {
+            return false;
+        }
+        View focusedView = getCurrentFocus();
+        if (!(focusedView instanceof EditText)) {
+            return false;
+        }
+        Editable text = ((EditText) focusedView).getText();
+        if (text == null || text.length() == 0) {
+            return false;
+        }
+        text.delete(text.length() - 1, text.length());
+        return true;
+    }
+
     public boolean onBackPressed(boolean invoked) {
+        if (invoked && deleteInFocusedTextField()) {
+            return false;
+        }
         if (FloatingDebugController.onBackPressed(invoked)) {
             return false;
         }
