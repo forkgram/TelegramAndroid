@@ -257,6 +257,7 @@ object ForkSettings {
         "lastfm" to ForkSettingsActivity.ID_LASTFM_LOGIN,
         "exportSettings" to ForkSettingsActivity.ID_EXPORT_SETTINGS,
         "importSettings" to ForkSettingsActivity.ID_IMPORT_SETTINGS,
+        "resetLauncherShortcuts" to ForkSettingsActivity.ID_RESET_LAUNCHER_SHORTCUTS,
     )
 
     @JvmStatic

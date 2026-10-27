@@ -20,6 +20,9 @@
     <string name="ImportSettings">Einstellungen importieren</string>
     <string name="ImportSettingsError">Die Einstellungen konnten aus dieser Datei nicht importiert werden.</string>
     <string name="ImportSettingsRestart">Einstellungen importiert. Starte die App neu, um sie zu übernehmen.</string>
+    <string name="ResetLauncherShortcuts">Startbildschirm-Verknüpfungen zurücksetzen</string>
+    <string name="ResetLauncherShortcutsConfirm">Alle Launcher-Verknüpfungen entfernen? Sie werden sofort aus den aktuellen Konten und Chats neu aufgebaut.</string>
+    <string name="ResetLauncherShortcutsInfo">Entfernt veraltete Konto- und Chat-Verknüpfungen, die der Launcher beim langen Tippen auf das App-Symbol zeigt, und baut sie aus der aktuellen Kontoliste neu auf.</string>
     <string name="CloudflareAPIToken">API-Token</string>
     <string name="CloudflareAccountID">Konto-ID</string>
     <string name="CloudflareCredentials">Cloudflare-Zugangsdaten</string>

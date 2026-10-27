@@ -20,6 +20,9 @@
     <string name="ImportSettings">Instellingen importeren</string>
     <string name="ImportSettingsError">Kan de instellingen niet uit dit bestand importeren.</string>
     <string name="ImportSettingsRestart">Instellingen geïmporteerd. Herstart de app om ze toe te passen.</string>
+    <string name="ResetLauncherShortcuts">Snelkoppelingen van het startscherm herstellen</string>
+    <string name="ResetLauncherShortcutsConfirm">Alle snelkoppelingen van de launcher verwijderen? Ze worden meteen opnieuw opgebouwd uit de huidige accounts en chats.</string>
+    <string name="ResetLauncherShortcutsInfo">Verwijdert verouderde account- en chatsnelkoppelingen die de launcher toont bij lang indrukken van het app-pictogram en bouwt ze opnieuw op uit de huidige accountlijst.</string>
     <string name="CloudflareAPIToken">API-token</string>
     <string name="CloudflareAccountID">Account-ID</string>
     <string name="CloudflareCredentials">Cloudflare-inloggegevens</string>

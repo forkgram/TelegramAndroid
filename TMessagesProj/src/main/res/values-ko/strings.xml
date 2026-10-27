@@ -20,6 +20,9 @@
     <string name="ImportSettings">설정 가져오기</string>
     <string name="ImportSettingsError">이 파일에서 설정을 가져올 수 없습니다.</string>
     <string name="ImportSettingsRestart">설정을 가져왔습니다. 적용하려면 앱을 다시 시작하세요.</string>
+    <string name="ResetLauncherShortcuts">홈 화면 바로가기 초기화</string>
+    <string name="ResetLauncherShortcutsConfirm">모든 런처 바로가기를 삭제할까요? 현재 계정과 채팅에서 즉시 다시 만들어집니다.</string>
+    <string name="ResetLauncherShortcutsInfo">앱 아이콘을 길게 누를 때 런처가 표시하는 오래된 계정 및 채팅 바로가기를 제거하고 현재 계정 목록에서 다시 만듭니다.</string>
     <string name="CloudflareAPIToken">API 토큰</string>
     <string name="CloudflareAccountID">계정 ID</string>
     <string name="CloudflareCredentials">Cloudflare 인증 정보</string>

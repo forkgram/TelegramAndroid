@@ -2992,6 +2992,9 @@
     <string name="ExportSettingsDone">Settings exported.</string>
     <string name="ImportSettingsError">Couldn\'t import settings from this file.</string>
     <string name="ImportSettingsRestart">Settings imported. Restart the app to apply them.</string>
+    <string name="ResetLauncherShortcuts">Reset home screen shortcuts</string>
+    <string name="ResetLauncherShortcutsConfirm">Remove all launcher shortcuts? They will be rebuilt right away from the current accounts and chats.</string>
+    <string name="ResetLauncherShortcutsInfo">Removes the stale account and chat shortcuts shown by the launcher on app icon long press and rebuilds them from the current account list.</string>
     <string name="AppUpdateChangelogEmpty">**What\'s new?**\n\n• Bug fixes and improvements.</string>
     <string name="Permanent">Permanent</string>
     <string name="LinkHashExpired">Link is no longer active</string>
