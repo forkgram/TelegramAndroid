@@ -19048,15 +19048,8 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
     }
 
     private void computeRepeatButtonRect() {
-        float left, bottom;
-        if (currentBackgroundDrawable != null) {
-            Rect bounds = currentBackgroundDrawable.getBounds();
-            left = bounds.left;
-            bottom = bounds.bottom;
-        } else {
-            left = getBackgroundDrawableLeft();
-            bottom = getBackgroundDrawableTop() + layoutHeight;
-        }
+        float left = getBackgroundDrawableLeft();
+        float bottom = layoutHeight + transitionParams.deltaBottom - dp(9);
         repeatButtonRect.set(left - dp(40), bottom - dp(32), left - dp(8), bottom);
     }
 
