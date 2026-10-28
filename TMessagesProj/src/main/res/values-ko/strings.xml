@@ -20,6 +20,9 @@
     <string name="ImportSettings">설정 가져오기</string>
     <string name="ImportSettingsError">이 파일에서 설정을 가져올 수 없습니다.</string>
     <string name="ImportSettingsRestart">설정을 가져왔습니다. 적용하려면 앱을 다시 시작하세요.</string>
+    <string name="ResetLauncherShortcuts">홈 화면 바로가기 초기화</string>
+    <string name="ResetLauncherShortcutsConfirm">모든 런처 바로가기를 삭제할까요? 현재 계정과 채팅에서 즉시 다시 만들어집니다.</string>
+    <string name="ResetLauncherShortcutsInfo">앱 아이콘을 길게 누를 때 런처가 표시하는 오래된 계정 및 채팅 바로가기를 제거하고 현재 계정 목록에서 다시 만듭니다.</string>
     <string name="CloudflareAPIToken">API 토큰</string>
     <string name="CloudflareAccountID">계정 ID</string>
     <string name="CloudflareCredentials">Cloudflare 인증 정보</string>
@@ -244,6 +247,10 @@
     <string name="BotSetPlatformTitle">봇 플랫폼 변경</string>
     <string name="BotSetPlatformAbout">변경 후 현재 봇에 새 플랫폼을 적용하려면 다시 시작하세요.</string>
     <string name="BotCopyUrl">클릭한 모든 링크 복사</string>
+    <string name="QuickRepeatButton">빠른 반복 버튼</string>
+    <string name="QuickRepeatButtonInfo">봇 채팅에서 내 메시지 옆에 원형 버튼을 추가하여, 탭하면 메시지 텍스트가 입력 필드로 돌아갑니다. 채팅 메뉴(⋮)에서 채팅별로 켜거나 끌 수 있습니다.</string>
+    <string name="QuickRepeatEnable">빠른 반복 켜기</string>
+    <string name="QuickRepeatDisable">빠른 반복 끄기</string>
     <string name="DisableDefaultInAppBrowser">시스템 브라우저에서 링크 열기</string>
     <string name="TranslationEngine">번역 엔진</string>
     <string name="DisableAutoplayNextVoice">다음 음성/영상 메시지 자동 재생 비활성화</string>

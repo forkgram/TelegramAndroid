@@ -20,6 +20,9 @@
     <string name="ImportSettings">Instellingen importeren</string>
     <string name="ImportSettingsError">Kan de instellingen niet uit dit bestand importeren.</string>
     <string name="ImportSettingsRestart">Instellingen geïmporteerd. Herstart de app om ze toe te passen.</string>
+    <string name="ResetLauncherShortcuts">Snelkoppelingen van het startscherm herstellen</string>
+    <string name="ResetLauncherShortcutsConfirm">Alle snelkoppelingen van de launcher verwijderen? Ze worden meteen opnieuw opgebouwd uit de huidige accounts en chats.</string>
+    <string name="ResetLauncherShortcutsInfo">Verwijdert verouderde account- en chatsnelkoppelingen die de launcher toont bij lang indrukken van het app-pictogram en bouwt ze opnieuw op uit de huidige accountlijst.</string>
     <string name="CloudflareAPIToken">API-token</string>
     <string name="CloudflareAccountID">Account-ID</string>
     <string name="CloudflareCredentials">Cloudflare-inloggegevens</string>
@@ -244,6 +247,10 @@
     <string name="BotSetPlatformTitle">Botplatform wijzigen</string>
     <string name="BotSetPlatformAbout">Start opnieuw op na de wijziging om het nieuwe platform voor de huidige bot toe te passen.</string>
     <string name="BotCopyUrl">Elke aangeklikte link kopiëren</string>
+    <string name="QuickRepeatButton">Snelle herhaalbutton</string>
+    <string name="QuickRepeatButtonInfo">Voegt een ronde knop naast je berichten in botchats toe die de berichttekst terug in het invoerveld zet. Het chatmenu (⋮) schakelt de knop per chat in of uit.</string>
+    <string name="QuickRepeatEnable">Snelle herhalen inschakelen</string>
+    <string name="QuickRepeatDisable">Snelle herhalen uitschakelen</string>
     <string name="DisableDefaultInAppBrowser">Links openen in de systeembrowser</string>
     <string name="TranslationEngine">Vertaalengine</string>
     <string name="DisableAutoplayNextVoice">Automatisch afspelen van volgend spraak-/videobericht uitschakelen</string>

@@ -225,6 +225,7 @@ object ForkSettings {
         BoolOption("botSkipFullscreen", ForkSettingsActivity.ID_BOT_SKIP_FULLSCREEN, false),
         BoolOption("disableParametersFromBotLinks", ForkSettingsActivity.ID_DISABLE_PARAMETERS_FROM_BOT_LINKS, false),
         BoolOption("disableDefaultInAppBrowser", ForkSettingsActivity.ID_DISABLE_DEFAULT_IN_APP_BROWSER, BuildConfig.SKIP_INTERNAL_BROWSER_BY_DEFAULT),
+        BoolOption("quickRepeatButton", ForkSettingsActivity.ID_QUICK_REPEAT, false),
 
         BoolOption("webSocketTransport", ForkSettingsActivity.ID_WEBSOCKET_TRANSPORT, false),
         StringOption(
@@ -405,6 +406,8 @@ object ForkSettings {
                     prefs().getString("webSocketDomain", ""))
             "satelliteDataSaving" ->
                 ApplicationLoader.setSatelliteDataSavingEnabled(value == true)
+            "quickRepeatButton" ->
+                QuickRepeat.invalidate()
         }
     }
 

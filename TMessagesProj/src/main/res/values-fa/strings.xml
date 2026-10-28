@@ -158,6 +158,10 @@
     <string name="BotSetPlatformTitle">تغییر پلتفرم ربات</string>
     <string name="BotSetPlatformAbout">پس از تغییر، برنامه را دوباره اجرا کنید تا پلتفرم جدید برای ربات فعلی اعمال شود.</string>
     <string name="BotCopyUrl">کپی کردن هر پیوند کلیک‌شده</string>
+    <string name="QuickRepeatButton">دکمه تکرار سریع</string>
+    <string name="QuickRepeatButtonInfo">دکمه‌ای گرد کنار پیام‌های شما در چت‌های ربات می‌گذارد که با لمس آن، متن پیام در فیلد ورودی قرار می‌گیرد. منوی چت (⋮) آن را برای هر چت جداگانه تغییر می‌دهد.</string>
+    <string name="QuickRepeatEnable">فعال‌سازی تکرار سریع</string>
+    <string name="QuickRepeatDisable">غیرفعال‌سازی تکرار سریع</string>
     <string name="DisableDefaultInAppBrowser">باز کردن پیوندها در مرورگر سیستم</string>
     <string name="TranslationEngine">موتور ترجمه</string>
     <string name="DisableAutoplayNextVoice">غیرفعال کردن پخش خودکار پیام صوتی/ویدیویی بعدی</string>
@@ -226,6 +230,9 @@
     <string name="ExportSettingsDone">از تنظیمات خروجی گرفته شد.</string>
     <string name="ImportSettingsError">وارد کردن تنظیمات از این فایل ممکن نشد.</string>
     <string name="ImportSettingsRestart">تنظیمات وارد شد. برای اعمال، برنامه را دوباره اجرا کنید.</string>
+    <string name="ResetLauncherShortcuts">بازنشانی میان‌برهای صفحه اصلی</string>
+    <string name="ResetLauncherShortcutsConfirm">همه میان‌برهای لانچر حذف شوند؟ بلافاصله از حساب‌ها و چت‌های فعلی دوباره ساخته می‌شوند.</string>
+    <string name="ResetLauncherShortcutsInfo">میان‌برهای قدیمی حساب‌ها و چت‌هایی که لانچر با نگه‌داشتن آیکون برنامه نشان می‌دهد را حذف می‌کند و آن‌ها را از فهرست حساب‌های فعلی دوباره می‌سازد.</string>
     <!--passcode view-->
     <string name="HiddenAccounts">حساب‌های مخفی</string>
     <string name="HiddenAccountsOptions">گزینه‌ها</string>
