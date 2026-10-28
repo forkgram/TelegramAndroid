@@ -238,6 +238,10 @@
     <string name="BotSetPlatformTitle">Alterar plataforma do bot</string>
     <string name="BotSetPlatformAbout">Reinicie após a alteração para aplicar a nova plataforma ao bot atual.</string>
     <string name="BotCopyUrl">Copiar cada link clicado</string>
+    <string name="QuickRepeatButton">Botão de repetição rápida</string>
+    <string name="QuickRepeatButtonInfo">Adiciona um botão redondo ao lado das suas mensagens em chats com bots que coloca o texto da mensagem de volta no campo de entrada. O menu do chat (⋮) alterna para aquele chat.</string>
+    <string name="QuickRepeatEnable">Ativar repetição rápida</string>
+    <string name="QuickRepeatDisable">Desativar repetição rápida</string>
     <string name="DeleteAllUnpinnedMessages">Apagar todas as mensagens não fixadas</string>
     <string name="DeleteAllUnpinnedMessagesInfo">Você tem certeza de que deseja **apagar todas as mensagens não fixadas** deste chat?</string>
     <string name="AddDeleteAllUnpinnedMessages">Opção no menu para apagar mensagens não fixadas</string>

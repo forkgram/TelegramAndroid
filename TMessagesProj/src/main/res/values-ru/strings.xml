@@ -237,6 +237,10 @@
     <string name="BotSetPlatformTitle">Изменить платформу бота</string>
     <string name="BotSetPlatformAbout">После изменения перезапустите приложение, чтобы применить новую платформу для текущего бота.</string>
     <string name="BotCopyUrl">Копировать каждую нажатую ссылку</string>
+    <string name="QuickRepeatButton">Быстрый повтор сообщений</string>
+    <string name="QuickRepeatButtonInfo">Округлая кнопка рядом с вашими сообщениями в чатах с ботами: касание возвращает текст сообщения в поле ввода. Меню чата (⋮) переопределяет её для отдельного чата.</string>
+    <string name="QuickRepeatEnable">Включить быстрый повтор</string>
+    <string name="QuickRepeatDisable">Отключить быстрый повтор</string>
     <string name="DisableDefaultInAppBrowser">Открывать ссылки в системном браузере</string>
     <string name="TranslationEngine">Движок перевода</string>
     <string name="DisableAutoplayNextVoice">Отключить автовоспроизведение следующего голосового/видеосообщения</string>

@@ -201,6 +201,7 @@ import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.messenger.forkgram.FormattingMenu;
 import org.telegram.messenger.forkgram.MediaSpoiler;
 import org.telegram.messenger.forkgram.QuickAttachConfig;
+import org.telegram.messenger.forkgram.QuickRepeat;
 import org.telegram.messenger.forkgram.VoiceTimecodes;
 import org.telegram.messenger.forkgram.VoiceTimecodesConfig;
 import org.telegram.messenger.forkgram.WebPublishConfig;
@@ -486,6 +487,7 @@ public class ChatActivity extends BaseFragment implements
     private RadialProgressView progressBar;
     private ActionBarMenuItem.Item addContactItem;
     private ActionBarMenuItem.Item clearHistoryItem;
+    private ActionBarMenuItem.Item quickRepeatItem;
     private ActionBarMenuItem.Item viewAsTopics;
     private ActionBarMenuItem.Item closeTopicItem;
     private ActionBarMenuItem.Item openForumItem;
@@ -1877,6 +1879,7 @@ public class ChatActivity extends BaseFragment implements
     private final static int deleteAllYourMessages = 36;
     private final static int deleteAllUnpinnedMessages = 37;
     private final static int deleteAllYourMessagesInAllTopics = 38;
+    private final static int quick_repeat = 39;
 
     private final static int attach_photo = 0;
     private final static int attach_gallery = 1;
@@ -4352,6 +4355,25 @@ public class ChatActivity extends BaseFragment implements
                         currentAccount,
                         dialog_id,
                         getParentActivity());
+                } else if (id == quick_repeat) {
+                    boolean quickRepeatEnabled = QuickRepeat.toggle(currentAccount, dialog_id);
+                    if (quickRepeatItem != null) {
+                        quickRepeatItem.setText(LocaleController.getString(quickRepeatEnabled ? R.string.QuickRepeatDisable : R.string.QuickRepeatEnable));
+                    }
+                    if (chatListView != null) {
+                        for (int i = 0; i < chatListView.getChildCount(); ++i) {
+                            View child = chatListView.getChildAt(i);
+                            if (child instanceof ChatMessageCell) {
+                                ((ChatMessageCell) child).invalidateOutbounds();
+                            }
+                            child.invalidate();
+                        }
+                        chatListView.invalidate();
+                    }
+                    View rootView = fragmentView;
+                    if (rootView != null) {
+                        rootView.invalidate();
+                    }
                 }
             }
         });
@@ -4728,6 +4750,7 @@ public class ChatActivity extends BaseFragment implements
                         headerItem.lazilyAddSubItem(bot_settings, R.drawable.msg_settings_old, LocaleController.getString(R.string.BotSettings));
                         addedSettings = true;
                         headerItem.lazilyAddSubItem(bot_help, R.drawable.msg_help, LocaleController.getString(R.string.BotHelp));
+                        quickRepeatItem = headerItem.lazilyAddSubItem(quick_repeat, R.drawable.msg_fork_repeat, LocaleController.getString(QuickRepeat.isEnabled(currentAccount, dialog_id) ? R.string.QuickRepeatDisable : R.string.QuickRepeatEnable));
                         if (!MessagesController.isSupportUser(currentUser)) {
                             trackRedHeaderItem(headerItem.lazilyAddSubItem(report, R.drawable.msg_report, LocaleController.getString(R.string.ReportBot)), false).setColors(getThemedColor(Theme.key_text_RedRegular), getThemedColor(Theme.key_text_RedRegular));
                         }
@@ -41282,6 +41305,22 @@ public class ChatActivity extends BaseFragment implements
             );
 
             return bulletin.allowBlur().show(bulletin.getLayout() instanceof Bulletin.LottieLayoutWithReactions);
+        }
+
+        @Override
+        public void didPressRepeatButton(ChatMessageCell cell) {
+            MessageObject messageObject = cell.getMessageObject();
+            if (messageObject == null || chatActivityEnterView == null) {
+                return;
+            }
+            CharSequence text = messageObject.messageText;
+            if (TextUtils.isEmpty(text)) {
+                return;
+            }
+            chatActivityEnterView.setFieldText(text);
+            if (chatActivityEnterView.getEditField() != null) {
+                chatActivityEnterView.getEditField().requestFocus();
+            }
         }
 
         @Override

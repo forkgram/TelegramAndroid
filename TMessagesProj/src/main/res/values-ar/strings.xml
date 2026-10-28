@@ -247,6 +247,10 @@
     <string name="BotSetPlatformTitle">تغيير منصة الروبوت</string>
     <string name="BotSetPlatformAbout">يُرجى إعادة التشغيل بعد التغيير لتطبيق المنصة الجديدة على الروبوت الحالي.</string>
     <string name="BotCopyUrl">نسخ كل رابط يتم النقر عليه</string>
+    <string name="QuickRepeatButton">زر التكرار السريع</string>
+    <string name="QuickRepeatButtonInfo">يضيف زرًا دائريًا بجوار رسائلك في محادثات البوتات يعيد نص الرسالة إلى حقل الإدخال عند لمسه. قائمة المحادثة (⋮) تتحكم به لكل محادثة على حدة.</string>
+    <string name="QuickRepeatEnable">تفعيل التكرار السريع</string>
+    <string name="QuickRepeatDisable">تعطيل التكرار السريع</string>
     <string name="DisableDefaultInAppBrowser">فتح الروابط في متصفح النظام</string>
     <string name="TranslationEngine">محرك الترجمة</string>
     <string name="DisableAutoplayNextVoice">تعطيل التشغيل التلقائي لرسالة الصوت/الفيديو التالية</string>

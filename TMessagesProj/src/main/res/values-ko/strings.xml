@@ -247,6 +247,10 @@
     <string name="BotSetPlatformTitle">봇 플랫폼 변경</string>
     <string name="BotSetPlatformAbout">변경 후 현재 봇에 새 플랫폼을 적용하려면 다시 시작하세요.</string>
     <string name="BotCopyUrl">클릭한 모든 링크 복사</string>
+    <string name="QuickRepeatButton">빠른 반복 버튼</string>
+    <string name="QuickRepeatButtonInfo">봇 채팅에서 내 메시지 옆에 원형 버튼을 추가하여, 탭하면 메시지 텍스트가 입력 필드로 돌아갑니다. 채팅 메뉴(⋮)에서 채팅별로 켜거나 끌 수 있습니다.</string>
+    <string name="QuickRepeatEnable">빠른 반복 켜기</string>
+    <string name="QuickRepeatDisable">빠른 반복 끄기</string>
     <string name="DisableDefaultInAppBrowser">시스템 브라우저에서 링크 열기</string>
     <string name="TranslationEngine">번역 엔진</string>
     <string name="DisableAutoplayNextVoice">다음 음성/영상 메시지 자동 재생 비활성화</string>

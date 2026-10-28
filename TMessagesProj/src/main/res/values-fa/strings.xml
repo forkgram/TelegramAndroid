@@ -158,6 +158,10 @@
     <string name="BotSetPlatformTitle">تغییر پلتفرم ربات</string>
     <string name="BotSetPlatformAbout">پس از تغییر، برنامه را دوباره اجرا کنید تا پلتفرم جدید برای ربات فعلی اعمال شود.</string>
     <string name="BotCopyUrl">کپی کردن هر پیوند کلیک‌شده</string>
+    <string name="QuickRepeatButton">دکمه تکرار سریع</string>
+    <string name="QuickRepeatButtonInfo">دکمه‌ای گرد کنار پیام‌های شما در چت‌های ربات می‌گذارد که با لمس آن، متن پیام در فیلد ورودی قرار می‌گیرد. منوی چت (⋮) آن را برای هر چت جداگانه تغییر می‌دهد.</string>
+    <string name="QuickRepeatEnable">فعال‌سازی تکرار سریع</string>
+    <string name="QuickRepeatDisable">غیرفعال‌سازی تکرار سریع</string>
     <string name="DisableDefaultInAppBrowser">باز کردن پیوندها در مرورگر سیستم</string>
     <string name="TranslationEngine">موتور ترجمه</string>
     <string name="DisableAutoplayNextVoice">غیرفعال کردن پخش خودکار پیام صوتی/ویدیویی بعدی</string>

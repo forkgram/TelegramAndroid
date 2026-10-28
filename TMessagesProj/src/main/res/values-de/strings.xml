@@ -247,6 +247,10 @@
     <string name="BotSetPlatformTitle">Bot-Plattform ändern</string>
     <string name="BotSetPlatformAbout">Bitte starten Sie die App nach der Änderung neu, um die neue Plattform für den aktuellen Bot anzuwenden.</string>
     <string name="BotCopyUrl">Jeden angeklickten Link kopieren</string>
+    <string name="QuickRepeatButton">Schnell-Wiederholen-Button</string>
+    <string name="QuickRepeatButtonInfo">Runder Button neben deinen Nachrichten in Bot-Chats, der den Nachrichtentext zurück ins Eingabefeld setzt. Das Chatmenü (⋮) schaltet ihn für einen einzelnen Chat um.</string>
+    <string name="QuickRepeatEnable">Schnellwiederholen aktivieren</string>
+    <string name="QuickRepeatDisable">Schnellwiederholen deaktivieren</string>
     <string name="DisableDefaultInAppBrowser">Links im System-Browser öffnen</string>
     <string name="TranslationEngine">Übersetzungsdienst</string>
     <string name="DisableAutoplayNextVoice">Automatische Wiedergabe der nächsten Sprach-/Videonachricht deaktivieren</string>

@@ -146,6 +146,10 @@
     <string name="BotSetPlatformTitle">Change bot platform</string>
     <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
     <string name="BotCopyUrl">Copy every clicked link</string>
+    <string name="QuickRepeatButton">Quick repeat button</string>
+    <string name="QuickRepeatButtonInfo">Adds a round repeat button next to your messages in bot chats. Tapping it puts the message text back into the input field. The ⋮ menu in a bot chat overrides it for that chat.</string>
+    <string name="QuickRepeatEnable">Enable quick repeat</string>
+    <string name="QuickRepeatDisable">Disable quick repeat</string>
     <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
     <string name="TranslationEngine">Translation Engine</string>
     <string name="DisableAutoplayNextVoice">Disable auto-play of next voice/video message</string>

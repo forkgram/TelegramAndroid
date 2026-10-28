@@ -247,6 +247,10 @@
     <string name="BotSetPlatformTitle">Cambiar plataforma del bot</string>
     <string name="BotSetPlatformAbout">Reinicia después del cambio para aplicar la nueva plataforma al bot actual.</string>
     <string name="BotCopyUrl">Copiar cada enlace pulsado</string>
+    <string name="QuickRepeatButton">Botón de repetición rápida</string>
+    <string name="QuickRepeatButtonInfo">Añade un botón redondo junto a tus mensajes en chats con bots que vuelve a poner el texto del mensaje en el campo de entrada. El menú del chat (⋮) lo cambia para ese chat.</string>
+    <string name="QuickRepeatEnable">Activar repetición rápida</string>
+    <string name="QuickRepeatDisable">Desactivar repetición rápida</string>
     <string name="DisableDefaultInAppBrowser">Abrir enlaces en el navegador del sistema</string>
     <string name="TranslationEngine">Motor de traducción</string>
     <string name="DisableAutoplayNextVoice">Desactivar reproducción automática del siguiente mensaje de voz/video</string>
