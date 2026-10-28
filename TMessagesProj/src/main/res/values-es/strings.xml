@@ -20,6 +20,9 @@
     <string name="ImportSettings">Importar ajustes</string>
     <string name="ImportSettingsError">No se pudieron importar los ajustes de este archivo.</string>
     <string name="ImportSettingsRestart">Ajustes importados. Reinicia la app para aplicarlos.</string>
+    <string name="ResetLauncherShortcuts">Restablecer accesos directos de la pantalla de inicio</string>
+    <string name="ResetLauncherShortcutsConfirm">¿Eliminar todos los accesos directos del lanzador? Se reconstruirán de inmediato con las cuentas y chats actuales.</string>
+    <string name="ResetLauncherShortcutsInfo">Elimina los accesos directos obsoletos de cuentas y chats que el lanzador muestra al mantener pulsado el icono de la app y los reconstruye a partir de la lista de cuentas actual.</string>
     <string name="CloudflareAPIToken">Token de API</string>
     <string name="CloudflareAccountID">ID de la cuenta</string>
     <string name="CloudflareCredentials">Credenciales de Cloudflare</string>
@@ -244,6 +247,10 @@
     <string name="BotSetPlatformTitle">Cambiar plataforma del bot</string>
     <string name="BotSetPlatformAbout">Reinicia después del cambio para aplicar la nueva plataforma al bot actual.</string>
     <string name="BotCopyUrl">Copiar cada enlace pulsado</string>
+    <string name="QuickRepeatButton">Botón de repetición rápida</string>
+    <string name="QuickRepeatButtonInfo">Añade un botón redondo junto a tus mensajes en chats con bots que vuelve a poner el texto del mensaje en el campo de entrada. El menú del chat (⋮) lo cambia para ese chat.</string>
+    <string name="QuickRepeatEnable">Activar repetición rápida</string>
+    <string name="QuickRepeatDisable">Desactivar repetición rápida</string>
     <string name="DisableDefaultInAppBrowser">Abrir enlaces en el navegador del sistema</string>
     <string name="TranslationEngine">Motor de traducción</string>
     <string name="DisableAutoplayNextVoice">Desactivar reproducción automática del siguiente mensaje de voz/video</string>

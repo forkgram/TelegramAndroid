@@ -20,6 +20,9 @@
     <string name="ImportSettings">Importa impostazioni</string>
     <string name="ImportSettingsError">Impossibile importare le impostazioni da questo file.</string>
     <string name="ImportSettingsRestart">Impostazioni importate. Riavvia l\'app per applicarle.</string>
+    <string name="ResetLauncherShortcuts">Ripristina le scorciatoie della schermata home</string>
+    <string name="ResetLauncherShortcutsConfirm">Rimuovere tutte le scorciatoie del launcher? Verranno ricreate subito dagli account e dalle chat attuali.</string>
+    <string name="ResetLauncherShortcutsInfo">Rimuove le scorciatoie obsolete di account e chat mostrate dal launcher alla pressione prolungata sull\'icona dell\'app e le ricostruisce dall\'elenco degli account attuali.</string>
     <string name="CloudflareAPIToken">Token API</string>
     <string name="CloudflareAccountID">ID account</string>
     <string name="CloudflareCredentials">Credenziali Cloudflare</string>
@@ -244,6 +247,10 @@
     <string name="BotSetPlatformTitle">Cambia la piattaforma del bot</string>
     <string name="BotSetPlatformAbout">Riavvia dopo la modifica per applicare la nuova piattaforma al bot corrente.</string>
     <string name="BotCopyUrl">Copia ogni link cliccato</string>
+    <string name="QuickRepeatButton">Pulsante di ripetizione rapida</string>
+    <string name="QuickRepeatButtonInfo">Aggiunge un pulsante tondo accanto ai tuoi messaggi nelle chat con i bot che riporta il testo del messaggio nel campo di input. Il menu della chat (⋮) lo cambia per singola chat.</string>
+    <string name="QuickRepeatEnable">Attiva ripetizione rapida</string>
+    <string name="QuickRepeatDisable">Disattiva ripetizione rapida</string>
     <string name="DisableDefaultInAppBrowser">Apri i link nel browser di sistema</string>
     <string name="TranslationEngine">Motore di traduzione</string>
     <string name="DisableAutoplayNextVoice">Disabilita la riproduzione automatica del successivo messaggio vocale/video</string>

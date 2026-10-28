@@ -20,6 +20,9 @@
     <string name="ImportSettings">استيراد الإعدادات</string>
     <string name="ImportSettingsError">تعذّر استيراد الإعدادات من هذا الملف.</string>
     <string name="ImportSettingsRestart">تم استيراد الإعدادات. أعد تشغيل التطبيق لتطبيقها.</string>
+    <string name="ResetLauncherShortcuts">إعادة تعيين اختصارات الشاشة الرئيسية</string>
+    <string name="ResetLauncherShortcutsConfirm">حذف جميع اختصارات المشغّل؟ ستُعاد بناؤها فورًا من الحسابات والمحادثات الحالية.</string>
+    <string name="ResetLauncherShortcutsInfo">يزيل اختصارات الحسابات والمحادثات القديمة التي يعرضها المشغّل عند الضغط المطوّل على أيقونة التطبيق ويعيد بناءها من قائمة الحسابات الحالية.</string>
     <string name="CloudflareAPIToken">رمز API</string>
     <string name="CloudflareAccountID">معرف الحساب</string>
     <string name="CloudflareCredentials">بيانات اعتماد Cloudflare</string>
@@ -244,6 +247,10 @@
     <string name="BotSetPlatformTitle">تغيير منصة الروبوت</string>
     <string name="BotSetPlatformAbout">يُرجى إعادة التشغيل بعد التغيير لتطبيق المنصة الجديدة على الروبوت الحالي.</string>
     <string name="BotCopyUrl">نسخ كل رابط يتم النقر عليه</string>
+    <string name="QuickRepeatButton">زر التكرار السريع</string>
+    <string name="QuickRepeatButtonInfo">يضيف زرًا دائريًا بجوار رسائلك في محادثات البوتات يعيد نص الرسالة إلى حقل الإدخال عند لمسه. قائمة المحادثة (⋮) تتحكم به لكل محادثة على حدة.</string>
+    <string name="QuickRepeatEnable">تفعيل التكرار السريع</string>
+    <string name="QuickRepeatDisable">تعطيل التكرار السريع</string>
     <string name="DisableDefaultInAppBrowser">فتح الروابط في متصفح النظام</string>
     <string name="TranslationEngine">محرك الترجمة</string>
     <string name="DisableAutoplayNextVoice">تعطيل التشغيل التلقائي لرسالة الصوت/الفيديو التالية</string>

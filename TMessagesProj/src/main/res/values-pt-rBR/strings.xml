@@ -20,6 +20,9 @@
     <string name="ImportSettings">Importar configurações</string>
     <string name="ImportSettingsError">Não foi possível importar as configurações deste arquivo.</string>
     <string name="ImportSettingsRestart">Configurações importadas. Reinicie o aplicativo para aplicá-las.</string>
+    <string name="ResetLauncherShortcuts">Redefinir atalhos da tela inicial</string>
+    <string name="ResetLauncherShortcutsConfirm">Remover todos os atalhos do launcher? Eles serão reconstruídos imediatamente a partir das contas e conversas atuais.</string>
+    <string name="ResetLauncherShortcutsInfo">Remove os atalhos desatualizados de contas e conversas exibidos pelo launcher ao pressionar longamente o ícone do aplicativo e os reconstrói a partir da lista de contas atual.</string>
     <string name="CloudflareAPIToken">Token da API</string>
     <string name="CloudflareAccountID">ID da conta</string>
     <string name="CloudflareCredentials">Credenciais da Cloudflare</string>
@@ -235,6 +238,10 @@
     <string name="BotSetPlatformTitle">Alterar plataforma do bot</string>
     <string name="BotSetPlatformAbout">Reinicie após a alteração para aplicar a nova plataforma ao bot atual.</string>
     <string name="BotCopyUrl">Copiar cada link clicado</string>
+    <string name="QuickRepeatButton">Botão de repetição rápida</string>
+    <string name="QuickRepeatButtonInfo">Adiciona um botão redondo ao lado das suas mensagens em chats com bots que coloca o texto da mensagem de volta no campo de entrada. O menu do chat (⋮) alterna para aquele chat.</string>
+    <string name="QuickRepeatEnable">Ativar repetição rápida</string>
+    <string name="QuickRepeatDisable">Desativar repetição rápida</string>
     <string name="DeleteAllUnpinnedMessages">Apagar todas as mensagens não fixadas</string>
     <string name="DeleteAllUnpinnedMessagesInfo">Você tem certeza de que deseja **apagar todas as mensagens não fixadas** deste chat?</string>
     <string name="AddDeleteAllUnpinnedMessages">Opção no menu para apagar mensagens não fixadas</string>

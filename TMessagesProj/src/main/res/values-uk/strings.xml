@@ -20,6 +20,9 @@
     <string name="ImportSettings">Імпортувати налаштування</string>
     <string name="ImportSettingsError">Не вдалося імпортувати налаштування з цього файлу.</string>
     <string name="ImportSettingsRestart">Налаштування імпортовано. Перезапустіть застосунок, щоб застосувати їх.</string>
+    <string name="ResetLauncherShortcuts">Скинути ярлики на головному екрані</string>
+    <string name="ResetLauncherShortcutsConfirm">Видалити всі ярлики лаунчера? Вони будуть одразу перебудовані з поточних акаунтів і чатів.</string>
+    <string name="ResetLauncherShortcutsInfo">Видаляє застарілі ярлики акаунтів і чатів, які лаунчер показує за довгим натисканням на іконку застосунку, та перебудовує їх із поточного списку акаунтів.</string>
     <string name="CloudflareAPIToken">Токен API</string>
     <string name="CloudflareAccountID">ID акаунта</string>
     <string name="CloudflareCredentials">Облікові дані Cloudflare</string>
@@ -244,6 +247,10 @@
     <string name="BotSetPlatformTitle">Змінити платформу бота</string>
     <string name="BotSetPlatformAbout">Після зміни перезапустіть додаток, щоб застосувати нову платформу для поточного бота.</string>
     <string name="BotCopyUrl">Копіювати кожне натиснуте посилання</string>
+    <string name="QuickRepeatButton">Швидке повторення повідомлень</string>
+    <string name="QuickRepeatButtonInfo">Округла кнопка біля ваших повідомлень у чатах з ботами: дотик повертає текст повідомлення в поле введення. Меню чата (⋮) перемикає її для окремого чата.</string>
+    <string name="QuickRepeatEnable">Увімкнути швидке повторення</string>
+    <string name="QuickRepeatDisable">Вимкнути швидке повторення</string>
     <string name="DisableDefaultInAppBrowser">Відкривати посилання в системному браузері</string>
     <string name="TranslationEngine">Рушій перекладу</string>
     <string name="DisableAutoplayNextVoice">Вимкнути автовідтворення наступного голосового/відеоповідомлення</string>

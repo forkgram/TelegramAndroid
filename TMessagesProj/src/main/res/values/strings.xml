@@ -146,6 +146,10 @@
     <string name="BotSetPlatformTitle">Change bot platform</string>
     <string name="BotSetPlatformAbout">Please restart after change to apply a new platform for the current bot.</string>
     <string name="BotCopyUrl">Copy every clicked link</string>
+    <string name="QuickRepeatButton">Quick repeat button</string>
+    <string name="QuickRepeatButtonInfo">Adds a round repeat button next to your messages in bot chats. Tapping it puts the message text back into the input field. The ⋮ menu in a bot chat overrides it for that chat.</string>
+    <string name="QuickRepeatEnable">Enable quick repeat</string>
+    <string name="QuickRepeatDisable">Disable quick repeat</string>
     <string name="DisableDefaultInAppBrowser">Open links in system browser</string>
     <string name="TranslationEngine">Translation Engine</string>
     <string name="DisableAutoplayNextVoice">Disable auto-play of next voice/video message</string>
@@ -2993,6 +2997,9 @@
     <string name="ExportSettingsDone">Settings exported.</string>
     <string name="ImportSettingsError">Couldn\'t import settings from this file.</string>
     <string name="ImportSettingsRestart">Settings imported. Restart the app to apply them.</string>
+    <string name="ResetLauncherShortcuts">Reset home screen shortcuts</string>
+    <string name="ResetLauncherShortcutsConfirm">Remove all launcher shortcuts? They will be rebuilt right away from the current accounts and chats.</string>
+    <string name="ResetLauncherShortcutsInfo">Removes the stale account and chat shortcuts shown by the launcher on app icon long press and rebuilds them from the current account list.</string>
     <string name="AppUpdateChangelogEmpty">**What\'s new?**\n\n• Bug fixes and improvements.</string>
     <string name="Permanent">Permanent</string>
     <string name="LinkHashExpired">Link is no longer active</string>
