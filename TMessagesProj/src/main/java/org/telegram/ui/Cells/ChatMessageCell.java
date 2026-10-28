@@ -19049,8 +19049,15 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
 
     private void computeRepeatButtonRect() {
         float left = getBackgroundDrawableLeft();
-        float bottom = layoutHeight + transitionParams.deltaBottom - dp(9);
-        repeatButtonRect.set(left - dp(40), bottom - dp(32), left - dp(8), bottom);
+        float top = getBackgroundDrawableTop();
+        float buttonTop;
+        if (layoutHeight <= dp(50)) {
+            buttonTop = top + (layoutHeight - dp(32)) / 2f;
+        } else {
+            buttonTop = top + layoutHeight - dp(9) - dp(32);
+        }
+        buttonTop += transitionParams.deltaBottom;
+        repeatButtonRect.set(left - dp(40), buttonTop, left - dp(8), buttonTop + dp(32));
     }
 
     private void drawRepeatButton(Canvas canvas) {
