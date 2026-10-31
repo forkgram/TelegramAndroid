@@ -555,6 +555,11 @@ public class ChatActivity extends BaseFragment implements
     private boolean pagedownButtonShowedByScroll;
     private ActionBarMenuSubItem hideTitleItem;
     private int reactionsMentionCount;
+    // Reactions already taken off the badge by a tap on it, so the cell doesn't count them again.
+    private final HashSet<Integer> reactionsCountedByTap = new HashSet<>();
+    // Bumped whenever the reactions count is replaced, so a lookup started before that is ignored.
+    private int reactionsTapGeneration;
+    private boolean reactionsTapPending;
     private int pollVotesMentionCount;
     public Bulletin messageSeenPrivacyBulletin;
     TextView webBotTitle;
@@ -10966,6 +10971,7 @@ public class ChatActivity extends BaseFragment implements
             }
 
             reactionsMentionCount = topic != null ? topic.unread_reactions_count : 0;
+            resetReactionsTapState();
             pollVotesMentionCount = topic != null ? topic.unread_poll_votes_count : 0;
             updateReactionsMentionButton(false);
             updatePollVotesMentionButton(false);
@@ -11070,6 +11076,7 @@ public class ChatActivity extends BaseFragment implements
             applyDraftMaybe(true, true);
 
             reactionsMentionCount = topic != null ? topic.unread_reactions_count : 0;
+            resetReactionsTapState();
             pollVotesMentionCount = topic != null ? topic.unread_poll_votes_count : 0;
             updateReactionsMentionButton(false);
             updatePollVotesMentionButton(false);
@@ -17458,7 +17465,9 @@ public class ChatActivity extends BaseFragment implements
                     updatePollVotesMentionButton(true);
                 }
                 if (messageObject != null && fragmentOpened && openAnimationEnded && (chatListItemAnimator == null || !chatListItemAnimator.isRunning()) && messageCell.checkUnreadReactions(clipTop, chatListView.getMeasuredHeight() - blurredViewBottomOffset)) {
-                    reactionsMentionCount--;
+                    if (!reactionsCountedByTap.remove(messageObject.getId())) {
+                        reactionsMentionCount--;
+                    }
                     getMessagesStorage().markMessageReactionsAsRead(getDialogId(), getTopicId(), messageObject.getId());
                     if (reactionsMentionCount <= 0) {
                         getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
@@ -17492,7 +17501,9 @@ public class ChatActivity extends BaseFragment implements
                 }
                 hasTopicSeparator = cell.topicSeparator != null;
                 if (messageObject != null && fragmentOpened && openAnimationEnded && (chatListItemAnimator == null || !chatListItemAnimator.isRunning()) && cell.checkUnreadReactions(clipTop, chatListView.getMeasuredHeight() - blurredViewBottomOffset)) {
-                    reactionsMentionCount--;
+                    if (!reactionsCountedByTap.remove(messageObject.getId())) {
+                        reactionsMentionCount--;
+                    }
                     getMessagesStorage().markMessageReactionsAsRead(getDialogId(), getTopicId(), messageObject.getId());
                     if (reactionsMentionCount <= 0) {
                         getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
@@ -26055,6 +26066,7 @@ public class ChatActivity extends BaseFragment implements
             long topicId = (long) args[1];
             if (dialogId == dialog_id && ((!isTopic && (!ChatObject.isMonoForum(currentChat) || getTopicId() == 0)) || topicId == getTopicId())) {
                 reactionsMentionCount = (int) args[2];
+                resetReactionsTapState();
                 ArrayList<Integer> messages = null;
                 if (args[2] != null) {
                     messages = (ArrayList<Integer>) args[3];
@@ -48604,6 +48616,12 @@ public class ChatActivity extends BaseFragment implements
         }
     }
 
+    private void resetReactionsTapState() {
+        reactionsTapGeneration++;
+        reactionsTapPending = false;
+        reactionsCountedByTap.clear();
+    }
+
     private void onSideControlButtonOnClick(int buttonId, View v) {
         if (buttonId == ChatActivitySideControlsButtonsLayout.BUTTON_PAGE_DOWN) {
             onPageDownClicked();
@@ -48611,12 +48629,32 @@ public class ChatActivity extends BaseFragment implements
             loadLastUnreadMention();
         } else if (buttonId == ChatActivitySideControlsButtonsLayout.BUTTON_REACTIONS) {
             wasManualScroll = true;
+            // One lookup at a time: a second tap before the first returns would get the same
+            // message from the server and count it twice.
+            if (reactionsTapPending) {
+                return;
+            }
+            reactionsTapPending = true;
+            final int generation = reactionsTapGeneration;
             getMessagesController().getNextReactionMention(dialog_id, getTopicId(), reactionsMentionCount, (messageId) -> {
+                if (generation != reactionsTapGeneration) {
+                    // The topic changed or the count was replaced meanwhile.
+                    return;
+                }
+                reactionsTapPending = false;
                 if (messageId == 0) {
                     reactionsMentionCount = 0;
                     updateReactionsMentionButton(true);
                     getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
                 } else {
+                    // getNextReactionMention cleared the unread flag in the stored message,
+                    // so the cell may never report it. Count it here instead.
+                    reactionsMentionCount--;
+                    reactionsCountedByTap.add(messageId);
+                    if (reactionsMentionCount <= 0) {
+                        reactionsMentionCount = 0;
+                        getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
+                    }
                     updateReactionsMentionButton(true);
                     scrollToMessageId(messageId, 0, false, 0, true, 0);
                 }
@@ -48736,6 +48774,7 @@ public class ChatActivity extends BaseFragment implements
                     messages.get(i).markReactionsAsRead();
                 }
                 reactionsMentionCount = 0;
+                resetReactionsTapState();
                 updateReactionsMentionButton(true);
                 getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
                 if (scrimPopupWindow != null) {
