@@ -2,20 +2,26 @@
     versionCode: V_CODE
     commit: V_NAME
     timeout: 18000
-    subdir: TMessagesProj_AppFork
+    subdir: TMessagesProj_App
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y ninja-build golang-go yasm cmake meson gperf pkg-config libuv1 make
+      - apt-get install -y ninja-build golang-go yasm cmake libuv1 make meson gperf
+        ninja-build g++ pkg-config rustup
     gradle:
       - V_AFAT
     rm:
       - TMessagesProj_AppHuawei
       - TMessagesProj_Modules/media/gradle/wrapper/gradle-wrapper.jar
-    prebuild: ./prebuild_fdroid.sh V_NUM 14577864 54d3ae230fd8f985ce9adccf08fbd9d6
+    prebuild:
+      - rustup default 1.98.0
+      - rustup toolchain install 1.96.1
+      - rustup target add --toolchain 1.96.1 aarch64-linux-android
+      - rustup target add --toolchain 1.96.1 armv7-linux-androideabi
+      - ../prebuild_fdroid.sh V_NUM 14577864 54d3ae230fd8f985ce9adccf08fbd9d6
     scanignore:
-      - TMessagesProj/emoji/metadata.bin
+      - TMessagesProj/src/main/assets/models/diamond_ios
+      - TMessagesProj_Modules/media/publish.gradle
       - TMessagesProj_Modules/media/libraries/test_data
     scandelete:
       - TMessagesProj/jni
-    ndk: r21e

@@ -23,6 +23,9 @@ vars=../gradle.properties
 sed -i -e '/JavaVersion/s/17/21/' {../TMessagesProj,.}/build.gradle
 sed -i -e '/com\.google\.android\.play/d' -e '/play-services/d' ../TMessagesProj/build.gradle
 sed -i -e '/gms/d' ../TMessagesProj/src/main/java/org/telegram/messenger/CaptchaController.java
+sed -i -e '/play-services-cast-framework/d' ../TMessagesProj_Modules/media/libraries/cast/build.gradle
+sed -i -e '/play-services-cronet/d' ../TMessagesProj_Modules/media/libraries/datasource_cronet/build.gradle
+sed -i -e '/ads.interactivemedia.v3/,+2d' ../TMessagesProj_Modules/media/libraries/exoplayer_ima/build.gradle
 
 # Build flags the recipe passes in.
 echo "DUMMY_CONST=0" >> $vars

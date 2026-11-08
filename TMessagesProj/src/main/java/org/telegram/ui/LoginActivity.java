@@ -119,9 +119,6 @@ import org.telegram.messenger.CallReceiver;
 import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLog;
-import com.google.android.gms.tasks.CancellationTokenSource;
-import com.google.firebase.pnv.VerificationSupportResult;
-import org.telegram.messenger.FirebasePhoneNumberVerificationHelper;
 import org.telegram.messenger.ImageLoader;
 import org.telegram.messenger.ImageLocation;
 import org.telegram.messenger.LocaleController;
@@ -141,7 +138,6 @@ import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.RequestDelegate;
 import org.telegram.tgnet.SerializedData;
-import org.telegram.tgnet.TLMethod;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_account;
@@ -169,7 +165,6 @@ import org.telegram.ui.Components.FragmentFloatingButton;
 import org.telegram.ui.Components.ImageUpdater;
 import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.TableView;
 import org.telegram.ui.Components.LinkPath;
 import org.telegram.ui.Components.LinkSpanDrawable;
 import org.telegram.ui.Components.LoadingDrawable;
@@ -215,8 +210,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
 
 @SuppressLint("HardwareIds")
@@ -3444,9 +3437,6 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                         }
                     }
                 }
-                if (activityMode == MODE_LOGIN) {
-                    requestFpnv();
-                }
             }, SHOW_DELAY);
         }
 
@@ -3457,177 +3447,9 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 cancelRequestingPasskey.run();
                 cancelRequestingPasskey = null;
             }
-            fpnvDestroyed = true;
-            if (waitingConfigForFpnv) {
-                waitingConfigForFpnv = false;
-                NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.configLoaded);
-            }
-            if (fpnvCancellationTokenSource != null) {
-                fpnvCancellationTokenSource.cancel();
-                fpnvCancellationTokenSource = null;
-            }
-            if (fpnvProgressDialog != null) {
-                fpnvProgressDialog.dismiss();
-                fpnvProgressDialog = null;
-            }
-            if (fpnvConsentDialog != null) {
-                fpnvConsentDialog.dismiss();
-                fpnvConsentDialog = null;
-            }
         }
 
-        private boolean requestedFpnv;
-        private boolean waitingConfigForFpnv;
-        private boolean fpnvDestroyed;
-        private CancellationTokenSource fpnvCancellationTokenSource;
-        private AlertDialog fpnvProgressDialog;
-        private AlertDialog fpnvConsentDialog;
 
-        // Automatic sign-in on the phone page: Firebase PNV when the server allows it,
-        // the SIM supports it and the user agrees; otherwise (or when it fails) a passkey.
-        private void requestFpnv() {
-            if (activityMode != MODE_LOGIN || requestedFpnv || fpnvDestroyed) {
-                return;
-            }
-            final MessagesController messagesController = MessagesController.getInstance(currentAccount);
-            if (!messagesController.remoteConfigLoaded) {
-                if (!waitingConfigForFpnv) {
-                    waitingConfigForFpnv = true;
-                    NotificationCenter.getInstance(currentAccount).addObserver(this, NotificationCenter.configLoaded);
-                    ConnectionsManager.getInstance(currentAccount).updateDcSettings();
-                }
-                return;
-            }
-
-            requestedFpnv = true;
-            if (!BuildVars.SUPPORTS_FPNV || !messagesController.fpnvAllowed) {
-                requestPasskey(false);
-                return;
-            }
-            FirebasePhoneNumberVerificationHelper.getVerificationSupportInfo(results -> {
-                if (!canStartAutoLogin()) {
-                    return;
-                }
-                if (results != null && !results.isEmpty()) {
-                    showFpnvConsent(results.get(0));
-                } else {
-                    requestPasskey(false);
-                }
-            });
-        }
-
-        // The system sheet opens only after the user agrees here; declining falls back to a passkey.
-        private void showFpnvConsent(VerificationSupportResult verificationSupportResult) {
-            final Context context = getContext();
-            final FirebasePhoneNumberVerificationHelper.SimInfo sim = FirebasePhoneNumberVerificationHelper.getSimInfo(context, verificationSupportResult);
-
-            final TableView tableView = new TableView(context, resourceProvider);
-            if (sim.carrierName != null) {
-                tableView.addRow(getString(R.string.FpnvConsentCarrier), sim.carrierName);
-            }
-            if (sim.slot >= 0) {
-                tableView.addRow(getString(R.string.FpnvConsentSimSlot), formatString(R.string.FpnvConsentSimSlotValue, sim.slot + 1));
-            }
-            if (sim.phoneNumber != null) {
-                tableView.addRow(getString(R.string.FpnvConsentPhoneNumber), sim.phoneNumber.startsWith("+") ? PhoneFormat.getInstance().format(sim.phoneNumber) : sim.phoneNumber);
-            }
-            final FrameLayout tableContainer = new FrameLayout(context);
-            tableContainer.addView(tableView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.FILL_HORIZONTAL, 24, 4, 24, 4));
-
-            final boolean[] confirmed = new boolean[1];
-            final AlertDialog.Builder builder = new AlertDialog.Builder(context, resourceProvider);
-            builder.setTitle(getString(R.string.FpnvConsentTitle));
-            builder.setMessage(getString(R.string.FpnvConsentText));
-            builder.setView(tableContainer);
-            builder.setPositiveButton(getString(R.string.FpnvConsentContinue), (d, which) -> {
-                confirmed[0] = true;
-                if (canStartAutoLogin()) {
-                    requestLoginViaFirebasePhoneNumberVerification();
-                }
-            });
-            builder.setNegativeButton(getString(R.string.Cancel), null);
-            final AlertDialog dialog = builder.create();
-            dialog.setOnDismissListener(d -> {
-                if (fpnvConsentDialog == dialog) {
-                    fpnvConsentDialog = null;
-                }
-                if (!confirmed[0] && canStartAutoLogin()) {
-                    requestPasskey(false);
-                }
-            });
-            fpnvConsentDialog = dialog;
-            dialog.show();
-        }
-
-        private boolean canStartAutoLogin() {
-            final Activity activity = getParentActivity();
-            return !fpnvDestroyed && !nextPressed && currentViewNum == VIEW_PHONE_INPUT && activity != null && !activity.isFinishing();
-        }
-
-        private void requestLoginViaFirebasePhoneNumberVerification() {
-            final Executor executor = AndroidUtilities::runOnUIThread;
-            final CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            fpnvCancellationTokenSource = cancellationTokenSource;
-
-            FirebasePhoneNumberVerificationHelper.loginViaFirebasePhoneNumberVerification(
-                getContext(), currentAccount, cancellationTokenSource.getToken(), () -> {
-                    if (!canStartAutoLogin()) {
-                        return;
-                    }
-                    final AlertDialog progressDialog = new AlertDialog(getContext(), AlertDialog.ALERT_TYPE_SPINNER);
-                    progressDialog.setOnCancelListener(d -> cancellationTokenSource.cancel());
-                    progressDialog.show();
-                    fpnvProgressDialog = progressDialog;
-                })
-                    .addOnCompleteListener(executor, r -> {
-                        if (fpnvProgressDialog != null) {
-                            fpnvProgressDialog.dismiss();
-                            fpnvProgressDialog = null;
-                        }
-                        if (fpnvCancellationTokenSource == cancellationTokenSource) {
-                            fpnvCancellationTokenSource = null;
-                        }
-                    })
-                    .addOnSuccessListener(executor, authAuthorization -> {
-                        if (fpnvDestroyed) {
-                            return;
-                        }
-                        if (authAuthorization instanceof TLRPC.TL_auth_authorizationSignUpRequired) {
-                            final TLRPC.TL_auth_authorizationSignUpRequired authorization =
-                                (TLRPC.TL_auth_authorizationSignUpRequired) authAuthorization;
-                            if (authorization.terms_of_service != null) {
-                                currentTermsOfService = authorization.terms_of_service;
-                            }
-                            Bundle params = new Bundle();
-                            params.putBoolean("fromFirebasePhoneNumberVerification", true);
-                            setPage(VIEW_REGISTER, true, params, false);
-                        } else if (authAuthorization instanceof TLRPC.TL_auth_authorization) {
-                            onAuthSuccess((TLRPC.TL_auth_authorization) authAuthorization);
-                        } else {
-                            requestPasskey(false);
-                        }
-                    })
-                    .addOnFailureListener(executor, exception -> {
-                        if (fpnvDestroyed) {
-                            return;
-                        }
-                        if (exception instanceof ConnectionsManager.RequestException) {
-                            final String err = exception.getMessage();
-                            if (err != null && err.contains("SESSION_PASSWORD_NEEDED")) {
-                                requestPassword();
-                                return;
-                            }
-                            if (err != null && BuildVars.DEBUG_VERSION) {
-                                BulletinFactory.of(slideViewsContainer, null).showForError(err);
-                            }
-                        } else if (!(exception instanceof CancellationException)) {
-                            FileLog.e(exception);
-                        }
-                        if (canStartAutoLogin()) {
-                            requestPasskey(false);
-                        }
-                    });
-        }
 
         private boolean requestedPasskey = false;
         private boolean requestingPasskey = false;
@@ -3735,14 +3557,6 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         public void didReceivedNotification(int id, int account, Object... args) {
             if (id == NotificationCenter.emojiLoaded) {
                 countryButton.getCurrentView().invalidate();
-            } else if (id == NotificationCenter.configLoaded && account == currentAccount) {
-                if (waitingConfigForFpnv) {
-                    waitingConfigForFpnv = false;
-                    NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.configLoaded);
-                    if (canStartAutoLogin()) {
-                        requestFpnv();
-                    }
-                }
             }
         }
     }
@@ -8015,7 +7829,6 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private FrameLayout editTextContainer;
         private String requestPhone;
         private String phoneHash;
-        private boolean fromFirebasePhoneNumberVerification;
         private Bundle currentParams;
         private boolean nextPressed = false;
 
@@ -8521,7 +8334,6 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             lastNameField.setText("");
             requestPhone = params.getString("phoneFormated");
             phoneHash = params.getString("phoneHash");
-            fromFirebasePhoneNumberVerification = params.getBoolean("fromFirebasePhoneNumberVerification");
             currentParams = params;
         }
 
@@ -8539,23 +8351,13 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 return;
             }
             nextPressed = true;
-
-            final TLMethod<TLRPC.auth_Authorization> request;
-            if (fromFirebasePhoneNumberVerification) {
-                TLRPC.TL_auth_firebasePnvSignUp req = new TLRPC.TL_auth_firebasePnvSignUp();
-                req.first_name = firstNameField.getText().toString();
-                req.last_name = lastNameField.getText().toString();
-                request = req;
-            } else {
-                TLRPC.TL_auth_signUp req = new TLRPC.TL_auth_signUp();
-                req.phone_code_hash = phoneHash;
-                req.phone_number = requestPhone;
-                req.first_name = firstNameField.getText().toString();
-                req.last_name = lastNameField.getText().toString();
-                request = req;
-            }
+            TLRPC.TL_auth_signUp req = new TLRPC.TL_auth_signUp();
+            req.phone_code_hash = phoneHash;
+            req.phone_number = requestPhone;
+            req.first_name = firstNameField.getText().toString();
+            req.last_name = lastNameField.getText().toString();
             needShowProgress(0);
-            ConnectionsManager.getInstance(currentAccount).sendRequestTyped(request, AndroidUtilities::runOnUIThread, (response, error) -> {
+            ConnectionsManager.getInstance(currentAccount).sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
                 nextPressed = false;
                 if (response instanceof TLRPC.TL_auth_authorization) {
                     hidePrivacyView();
@@ -8587,7 +8389,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                         needShowAlert(getString(R.string.RestorePasswordNoEmailTitle), error.text);
                     }
                 }
-            }, ConnectionsManager.RequestFlagWithoutLogin | ConnectionsManager.RequestFlagFailOnServerErrors);
+            }), ConnectionsManager.RequestFlagWithoutLogin | ConnectionsManager.RequestFlagFailOnServerErrors);
         }
 
         @Override
