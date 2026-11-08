@@ -79,15 +79,9 @@ dependencies {
 
     implementation 'co.nstant.in:cbor:0.8'
 
-    // Pinned: firebase-pnv alone would pull credentials 1.5.0 (passkeys were built on 1.6.0-alpha04).
+    // Pinned: passkeys were built on 1.6.0-alpha04.
     implementation "androidx.credentials:credentials:1.6.0-alpha04"
     implementation "androidx.credentials:credentials-play-services-auth:1.6.0-alpha04"
-
-    // 34.19.0 is the last BoM for minSdk 23: BoM 35.x requires minSdk 24 (33.16.0 was the last for Android 5).
-    api platform('com.google.firebase:firebase-bom:34.19.0')
-    implementation 'com.google.firebase:firebase-messaging'
-    implementation "com.google.firebase:firebase-pnv"
-    implementation 'com.google.firebase:firebase-appindexing:20.0.0'
 
     implementation "io.noties.markwon:core:4.6.2"
     implementation "io.noties.markwon:ext-strikethrough:4.6.2"
