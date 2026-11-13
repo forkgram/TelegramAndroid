@@ -150,6 +150,7 @@ import org.telegram.messenger.voip.VoIPPendingCall;
 import org.telegram.messenger.voip.VoIPPreNotificationService;
 import org.telegram.messenger.voip.VoIPService;
 import org.telegram.messenger.forkgram.AppUpdater;
+import org.telegram.messenger.forkgram.DeleteAfterSend;
 import org.telegram.messenger.forkgram.ForkSettings;
 import org.telegram.messenger.forkgram.GoTo;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
@@ -6910,6 +6911,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             }
         } else if (requestCode == ChatAttachAlertPhotoLayout.REQUEST_CODE_DELETE_FROM_DEVICE) {
             ChatAttachAlertPhotoLayout.onDeleteFromDeviceActivityResult(resultCode);
+        } else if (requestCode == DeleteAfterSend.REQUEST_CODE) {
+            DeleteAfterSend.onActivityResult(resultCode);
         } else {
             ThemeEditorView editorView = ThemeEditorView.getInstance();
             if (editorView != null) {

@@ -751,6 +751,11 @@ public class Bulletin {
             return false;
         }
 
+        /** Bottom inset the exit animation clips at, while [getBottomOffset] keeps the resting position. */
+        default int getClipBottomOffset(int tag) {
+            return getBottomOffset(tag);
+        }
+
         default void onBottomOffsetChange(float offset) {
         }
 
@@ -1241,7 +1246,7 @@ public class Bulletin {
             background.setBounds(getPaddingLeft(), getPaddingTop(), getMeasuredWidth() - getPaddingRight(), getMeasuredBackgroundHeight() - getPaddingBottom());
             if (isTransitionRunning() && delegate != null) {
                 final float top = delegate.getTopOffset(bulletin.tag) - getY();
-                final float bottom = ((View) getParent()).getMeasuredHeight() - getBottomOffset() - getY();
+                final float bottom = ((View) getParent()).getMeasuredHeight() - delegate.getClipBottomOffset(bulletin.tag) - getY();
                 final boolean clip = !fromBlurRender && delegate.clipWithGradient(bulletin.tag);
                 canvas.save();
                 if (!fromBlurRender) {

@@ -607,6 +607,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         public int invert;
         public boolean isMuted;
         public boolean canDeleteAfter;
+        public boolean deleteAfterSend;
         public boolean hasSpoiler;
         public long starsAmount;
         public String emoji;
@@ -797,6 +798,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
             photoEntry.invert = invert;
             photoEntry.isMuted = isMuted;
             photoEntry.canDeleteAfter = canDeleteAfter;
+            photoEntry.deleteAfterSend = deleteAfterSend;
             photoEntry.hasSpoiler = hasSpoiler;
             photoEntry.starsAmount = starsAmount;
             photoEntry.isChatPreviewSpoilerRevealed = isChatPreviewSpoilerRevealed;

@@ -13698,6 +13698,11 @@ public class ChatActivity extends BaseFragment implements
                                     info.ttl = photoEntry.ttl;
                                     info.videoEditedInfo = photoEntry.editedInfo;
                                     info.canDeleteAfter = photoEntry.canDeleteAfter;
+                                    if (photoEntry.deleteAfterSend) {
+                                        info.deleteAfterSend = true;
+                                        info.deleteSourcePath = photoEntry.path;
+                                        info.sourceImageId = photoEntry.imageId;
+                                    }
                                     info.updateStickersOrder = SendMessagesHelper.checkUpdateStickersOrder(photoEntry.caption);
                                     info.hasMediaSpoilers = photoEntry.hasSpoiler;
                                     info.stars = photoEntry.starsAmount;
@@ -21617,6 +21622,11 @@ public class ChatActivity extends BaseFragment implements
                 info.videoEditedInfo = entry.editedInfo;
                 info.canDeleteAfter = entry.canDeleteAfter;
                 info.highQuality = entry.isHighQuality();
+                if (entry.deleteAfterSend) {
+                    info.deleteAfterSend = true;
+                    info.deleteSourcePath = entry.path;
+                    info.sourceImageId = entry.imageId;
+                }
                 photos.add(info);
                 entry.reset();
             }

@@ -53,6 +53,7 @@ import androidx.core.view.inputmethod.InputContentInfoCompat;
 
 import org.json.JSONObject;
 import org.telegram.messenger.audioinfo.AudioInfo;
+import org.telegram.messenger.forkgram.DeleteAfterSend;
 import org.telegram.messenger.forkgram.MediaSpoiler;
 import org.telegram.messenger.support.SparseLongArray;
 import org.telegram.messenger.utils.EphemeralMessagesHelper;
@@ -650,6 +651,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         public boolean isLivePhoto;
         public boolean discardLivePhoto;
         public boolean canDeleteAfter;
+        public boolean deleteAfterSend;
+        public String deleteSourcePath;
+        public int sourceImageId;
         public boolean forceImage;
         public boolean updateStickersOrder;
         public boolean hasMediaSpoilers;
@@ -1590,6 +1594,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         int topicId = 0;
         for (int c = 0; c < objects.size(); c++) {
             MessageObject object = objects.get(c);
+            DeleteAfterSend.disarm(object.messageOwner.params);
             if (object.scheduled) {
                 scheduled = true;
             }
@@ -8039,6 +8044,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                             newMsgObj.send_state = MessageObject.MESSAGE_SEND_STATE_SENT;
                             newMsgObj.errorAllowedPriceStars = 0;
                             newMsgObj.errorNewPriceStars = 0;
+                            DeleteAfterSend.onMessageSent(originalPath);
                             getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer, oldId, newMsgObj.id, newMsgObj, newMsgObj.dialog_id, grouped_id, existFlags, currentSchedule);
                             getNotificationCenter().postNotificationName(NotificationCenter.messageReceivedByServer2, oldId, newMsgObj.id, newMsgObj, newMsgObj.dialog_id, grouped_id, existFlags, currentSchedule);
                             getMessagesStorage().getStorageQueue().postRunnable(() -> {
@@ -8570,6 +8576,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                             newMsgObj.send_state = MessageObject.MESSAGE_SEND_STATE_SENT;
                             newMsgObj.errorNewPriceStars = 0;
                             newMsgObj.errorAllowedPriceStars = 0;
+                            DeleteAfterSend.onMessageSent(originalPath);
                             if (scheduled != currentSchedule) {
                                 final boolean finalCurrentSchedule = currentSchedule;
                                 ArrayList<Integer> messageIds = new ArrayList<>();
@@ -11584,6 +11591,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                             final TLRPC.PhotoSize coverFinal = cover;
                             if (originalPath != null) {
                                 params.put("originalPath", originalPath);
+                                if (info.deleteAfterSend && !isEncrypted) {
+                                    DeleteAfterSend.arm(originalPath, info.deleteSourcePath, info.sourceImageId, info.isVideo);
+                                }
                             }
                             if (info.isLivePhoto && !TextUtils.isEmpty(info.coverPath)) {
                                 params.put("imagePath", info.coverPath);
@@ -11802,6 +11812,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                                 }
                                 if (originalPath != null) {
                                     params.put("originalPath", originalPath);
+                                    if (info.deleteAfterSend && !isEncrypted) {
+                                        DeleteAfterSend.arm(originalPath, info.deleteSourcePath, info.sourceImageId, info.isVideo);
+                                    }
                                 }
                                 if (parentFinal != null) {
                                     params.put("parentObject", parentFinal);
