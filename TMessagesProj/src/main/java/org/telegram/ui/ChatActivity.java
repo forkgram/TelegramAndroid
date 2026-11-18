@@ -36751,6 +36751,10 @@ public class ChatActivity extends BaseFragment implements
         } else if (scrimPopupWindow != null) {
             if (invoked) closeMenu();
             return false;
+        } else if (chatActivityEnterView != null && chatActivityEnterView.isRecordLocked() && chatActivityEnterView.isPopupShowing() && chatActivityEnterView.canHidePopupByBackButton()) {
+            // A panel left open during a locked recording is closed first; the next back asks to discard.
+            if (invoked) chatActivityEnterView.hidePopup(true);
+            return false;
         } else if (checkRecordLocked(invoked, false)) {
             return false;
         } else if (hasTextSelection()) {
