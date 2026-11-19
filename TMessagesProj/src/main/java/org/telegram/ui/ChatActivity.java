@@ -3212,6 +3212,11 @@ public class ChatActivity extends BaseFragment implements
 
         super.onFragmentCreate();
 
+        if (hidesBlockedMessages(chatMode, currentChat)) {
+            // shortcut: unknown senders stay visible until sync; use persistent block data for offline filtering.
+            getMessagesController().ensureBlockedPeersLoaded();
+        }
+
         if (chatMode == MODE_PINNED) {
             ArrayList<MessageObject> messageObjects = new ArrayList<>();
             for (int a = 0, N = pinnedMessageIds.size(); a < N; a++) {
@@ -6988,7 +6993,7 @@ public class ChatActivity extends BaseFragment implements
 
             @Override
             public boolean supportsPredictiveItemAnimations() {
-                return true;
+                return !hidesBlockedMessages(chatMode, currentChat);
             }
 
             @Override
@@ -7009,12 +7014,17 @@ public class ChatActivity extends BaseFragment implements
 
 
             @Override
+            protected boolean shouldSkipPosition(int position) {
+                return chatAdapter != null && chatAdapter.isHiddenMessagePosition(position);
+            }
+
+            @Override
             protected boolean hasSiblingChild(int position) {
                 if (position >= chatAdapter.messagesStartRow && position < chatAdapter.messagesEndRow) {
                     int index = position - chatAdapter.messagesStartRow;
                     if (index >= 0 && index < chatAdapter.getMessages().size()) {
                         MessageObject message = chatAdapter.getMessages().get(index);
-                        MessageObject.GroupedMessages group = getValidGroupedMessage(message);
+                        MessageObject.GroupedMessages group = getDisplayAlbum(message);
                         if (group != null) {
                             MessageObject.GroupedMessagePosition pos = group.getPosition(message);
                             if (pos.minX == pos.maxX || pos.minY != pos.maxY || pos.minY == 0) {
@@ -7034,6 +7044,14 @@ public class ChatActivity extends BaseFragment implements
                     }
                 }
                 return false;
+            }
+
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted(state);
+                if (state.getItemCount() > 0 && hidesBlockedMessages(chatMode, currentChat)) {
+                    chatListView.post(() -> checkScrollForLoad(false));
+                }
             }
 
             @Override
@@ -7138,7 +7156,7 @@ public class ChatActivity extends BaseFragment implements
                     int idx = position - chatAdapter.messagesStartRow;
                     if (idx >= 0 && idx < chatAdapter.getMessages().size()) {
                         MessageObject message = chatAdapter.getMessages().get(idx);
-                        MessageObject.GroupedMessages groupedMessages = getValidGroupedMessage(message);
+                        MessageObject.GroupedMessages groupedMessages = getDisplayAlbum(message);
                         if (groupedMessages != null) {
                             return groupedMessages.getPosition(message).spanSize;
                         }
@@ -7313,7 +7331,7 @@ public class ChatActivity extends BaseFragment implements
                 checkScrollForLoad(true);
                 if (firstVisibleItem != RecyclerView.NO_POSITION) {
                     int totalItemCount = chatAdapter.getItemCount();
-                    if (firstVisibleItem == 0 && forwardEndReached[0]) {
+                    if (chatAdapter.isNewestVisiblePosition(firstVisibleItem) && forwardEndReached[0]) {
                         if (dy >= 0) {
                             canShowPagedownButton = false;
                             updatePagedownButtonVisibility(true);
@@ -13474,6 +13492,18 @@ public class ChatActivity extends BaseFragment implements
         return groupedMessages;
     }
 
+    private MessageObject.GroupedMessages getDisplayAlbum(MessageObject message) {
+        MessageObject.GroupedMessages album = getValidGroupedMessage(message);
+        if (album != null && hidesBlockedMessages(chatMode, currentChat)) {
+            for (MessageObject member : album.messages) {
+                if (isHiddenGroupMessage(member)) {
+                    return null;
+                }
+            }
+        }
+        return album;
+    }
+
     public void jumpToDate(int date) {
         if (messages.isEmpty()) {
             return;
@@ -15034,9 +15064,10 @@ public class ChatActivity extends BaseFragment implements
         int firstVisibleItem = RecyclerListView.NO_POSITION;
         int lastVisibleItem = RecyclerListView.NO_POSITION;
         int visibleItemCount = 0;
+        final boolean skipHidden = hidesBlockedMessages(chatMode, currentChat) && !chatAdapter.isFiltered;
         for (int i = 0; i < chatListView.getChildCount(); i++) {
             int position = chatListView.getChildAdapterPosition(chatListView.getChildAt(i));
-            if (position != RecyclerListView.NO_POSITION) {
+            if (position != RecyclerListView.NO_POSITION && (!skipHidden || position != chatAdapter.loadingUpRow && position != chatAdapter.loadingDownRow)) {
                 if (firstVisibleItem == RecyclerListView.NO_POSITION || position < firstVisibleItem) {
                     firstVisibleItem = position;
                 }
@@ -15053,7 +15084,6 @@ public class ChatActivity extends BaseFragment implements
             return;
         }
         final int firstVisibleItemFinal = firstVisibleItem;
-        final int visibleItemCountFinal = visibleItemCount;
         int totalItemCount = chatAdapter.getItemCount();
         int checkLoadCount;
         if (scroll) {
@@ -15062,8 +15092,14 @@ public class ChatActivity extends BaseFragment implements
             checkLoadCount = 5;
         }
 
+        final boolean nearOlderEdge = skipHidden
+                ? chatAdapter.hasAtMostVisibleRows(lastVisibleItem + 1, totalItemCount, checkLoadCount)
+                : totalItemCount - firstVisibleItemFinal - visibleItemCount <= checkLoadCount;
+        final boolean nearNewerEdge = skipHidden
+                ? chatAdapter.hasAtMostVisibleRows(0, Math.max(firstVisibleItem, 0), 10)
+                : visibleItemCount > 0 && firstVisibleItem <= 10;
         if (chatMode == MODE_SEARCH) {
-            if (totalItemCount - firstVisibleItemFinal - visibleItemCountFinal <= checkLoadCount && !loading) {
+            if (nearOlderEdge && !loading) {
                 if (!endReached[0]) {
                     loading = true;
                     waitingForLoad.add(lastLoadIndex);
@@ -15075,7 +15111,7 @@ public class ChatActivity extends BaseFragment implements
         }
 
         AndroidUtilities.runOnUIThread(() -> {
-            if (totalItemCount - firstVisibleItemFinal - visibleItemCountFinal <= checkLoadCount && !loading) {
+            if (nearOlderEdge && !loading) {
                 if (!endReached[0]) {
                     loading = true;
                     waitingForLoad.add(lastLoadIndex);
@@ -15090,7 +15126,7 @@ public class ChatActivity extends BaseFragment implements
                     getMessagesController().loadMessages(mergeDialogId, 0, false, 50, maxMessageId[1], 0, !cacheEndReached[1], minDate[1], classGuid, 0, 0, chatMode, threadMessageId, replyMaxReadId, lastLoadIndex++, isTopic);
                 }
             }
-            if (visibleItemCountFinal > 0 && !loadingForward && firstVisibleItemFinal <= 10) {
+            if (nearNewerEdge && !loadingForward && !messages.isEmpty()) {
                 if (mergeDialogId != 0 && !forwardEndReached[1]) {
                     waitingForLoad.add(lastLoadIndex);
                     getMessagesController().loadMessages(mergeDialogId, 0, false, 50, minMessageId[1], 0, true, maxDate[1], classGuid, 1, 0, chatMode, threadMessageId, replyMaxReadId, lastLoadIndex++, isTopic);
@@ -17521,6 +17557,8 @@ public class ChatActivity extends BaseFragment implements
                             updateMessagesVisiblePart(false);
                         });
                 }
+            } else if (view instanceof HiddenMessageView) {
+                messageObject = ((HiddenMessageView) view).message;
             } else if (view instanceof BotHelpCell) {
                 view.invalidate();
             } else if (view instanceof ChatLoadingCell) {
@@ -17594,7 +17632,7 @@ public class ChatActivity extends BaseFragment implements
                         maxUnreadDate = Math.max(maxUnreadDate, messageObject.messageOwner.date);
                     }
                 }
-                if (messageObject.type == MessageObject.TYPE_POLL && messageObject.getId() > 0) {
+                if (!(view instanceof HiddenMessageView) && messageObject.type == MessageObject.TYPE_POLL && messageObject.getId() > 0) {
                     pollsToCheck.add(messageObject);
                 }
             }
@@ -17915,6 +17953,22 @@ public class ChatActivity extends BaseFragment implements
         invalidateChatListViewTopPadding();
         if (!firstLoading && !paused && !inPreviewMode && (chatMode == 0 || chatMode == MODE_SUGGESTIONS) && !getMessagesController().ignoreSetOnline) {
             int scheduledRead = 0;
+            if (hidesBlockedMessages(chatMode, currentChat) && !chatAdapter.isFiltered && forwardEndReached[0]
+                    && chatAdapter.isNewestVisiblePosition(chatLayoutManager.findFirstVisibleItemPosition())) {
+                // Only advance over hidden newest messages when the visible edge is reached.
+                for (MessageObject message : messages) {
+                    if (message.getId() == 0) {
+                        continue;
+                    }
+                    if (!isHiddenGroupMessage(message)) {
+                        break;
+                    }
+                    if (message.getDialogId() == dialog_id && message.getId() > 0 && message.isUnread() && !message.isOut()) {
+                        maxPositiveUnreadId = Math.max(maxPositiveUnreadId, message.getId());
+                        maxUnreadDate = Math.max(maxUnreadDate, message.messageOwner.date);
+                    }
+                }
+            }
             if ((maxPositiveUnreadId != Integer.MIN_VALUE || maxNegativeUnreadId != Integer.MAX_VALUE)) {
                 int counterDecrement = 0;
                 for (int a = 0; a < messages.size(); a++) {
@@ -17953,7 +18007,7 @@ public class ChatActivity extends BaseFragment implements
                 getMessagesController().markDialogAsRead(dialog_id, maxPositiveUnreadId, maxNegativeUnreadId, maxUnreadDate, false, threadId, counterDecrement, maxPositiveUnreadId == minMessageId[0] || maxNegativeUnreadId == minMessageId[0], scheduledRead);
                 firstUnreadSent = true;
             } else if (!firstUnreadSent && currentEncryptedChat == null) {
-                if (chatLayoutManager.findFirstVisibleItemPosition() == 0) {
+                if (chatAdapter.isNewestVisiblePosition(chatLayoutManager.findFirstVisibleItemPosition())) {
                     newUnreadMessageCount = 0;
                     if (inLayout) {
                         AndroidUtilities.runOnUIThread(this::inlineUpdate2);
@@ -18523,7 +18577,15 @@ public class ChatActivity extends BaseFragment implements
 
         chatScrollHelper.setScrollDirection(scrollDirection);
         if (!SCROLL_DEBUG_DELAY && object != null) {
-            MessageObject.GroupedMessages groupedMessages = groupedMessagesMap.get(object.getGroupId());
+            if (isHiddenGroupMessage(object)) {
+                object = nearestVisibleMessage(chatAdapter.getMessages(), object);
+                select = false;
+                removeSelectedMessageHighlight();
+                if (object == null) {
+                    return;
+                }
+            }
+            MessageObject.GroupedMessages groupedMessages = getDisplayAlbum(object);
             if (object.getGroupId() != 0 && groupedMessages != null) {
                 MessageObject primary = groupedMessages.findPrimaryMessageObject();
                 if (primary != null) {
@@ -23530,8 +23592,13 @@ public class ChatActivity extends BaseFragment implements
                 chatScrollHelper.scrollToPosition(chatScrollHelperCallback.position = 0, chatScrollHelperCallback.offset = 0, chatScrollHelperCallback.bottom = true, true);
             } else {
                 MessageObject object = messagesDict[loadIndex].get(postponedScrollMessageId);
+                final boolean hiddenTarget = object != null && isHiddenGroupMessage(object);
+                if (hiddenTarget) {
+                    object = nearestVisibleMessage(messages, object);
+                    removeSelectedMessageHighlight();
+                }
                 if (object != null) {
-                    MessageObject.GroupedMessages groupedMessages = groupedMessagesMap.get(object.getGroupId());
+                    MessageObject.GroupedMessages groupedMessages = getDisplayAlbum(object);
                     if (object.getGroupId() != 0 && groupedMessages != null) {
                         MessageObject primary = groupedMessages.findPrimaryMessageObject();
                         if (primary != null) {
@@ -23557,7 +23624,7 @@ public class ChatActivity extends BaseFragment implements
                         }
                         chatScrollHelper.setScrollDirection(direction);
 
-                        if (!needSelectFromMessageId) {
+                        if (hiddenTarget || !needSelectFromMessageId) {
                             removeSelectedMessageHighlight();
                         }
 
@@ -23734,6 +23801,9 @@ public class ChatActivity extends BaseFragment implements
             }
         } else if (id == NotificationCenter.didUpdateConnectionState) {
             int state = ConnectionsManager.getInstance(account).getConnectionState();
+            if (state == ConnectionsManager.ConnectionStateConnected && hidesBlockedMessages(chatMode, currentChat)) {
+                getMessagesController().ensureBlockedPeersLoaded();
+            }
         } else if (id == NotificationCenter.chatOnlineCountDidLoad) {
             Long chatId = (Long) args[0];
             if (chatInfo == null || currentChat == null || currentChat.id != chatId) {
@@ -24641,6 +24711,9 @@ public class ChatActivity extends BaseFragment implements
                 if (oldValue != userBlocked) {
                     updateBottomOverlay();
                 }
+            } else if (chatAdapter != null && hidesBlockedMessages(chatMode, currentChat)) {
+                chatAdapter.notifyDataSetChanged(false);
+                chatListView.post(() -> checkScrollForLoad(false));
             }
         } else if (id == NotificationCenter.fileNewChunkAvailable) {
             MessageObject messageObject = (MessageObject) args[0];
@@ -27883,13 +27956,13 @@ public class ChatActivity extends BaseFragment implements
                         changeBoundAnimator.start();
                     }
                 }
-                if (threadMessageId == 0 || isTopic) {
-                    if (!obj.isOut() && obj.messageOwner.mentioned && obj.isContentUnread()) {
+                if (!isHiddenGroupMessage(obj)) {
+                    if ((threadMessageId == 0 || isTopic) && !obj.isOut() && obj.messageOwner.mentioned && obj.isContentUnread()) {
                         newMentionsCount++;
                     }
-                }
-                if (!isAd) {
-                    newUnreadMessageCount++;
+                    if (!isAd) {
+                        newUnreadMessageCount++;
+                    }
                 }
                 if (obj.type == 10 || obj.type == MessageObject.TYPE_ACTION_PHOTO) {
                     updateChat = true;
@@ -27942,7 +28015,7 @@ public class ChatActivity extends BaseFragment implements
                     diff = 0;
                 }
                 if (!isAd) {
-                    if (lastVisible == 0 && diff <= AndroidUtilities.dp(5) && !hasDraftsReplaces || hasFromMe) {
+                    if (chatAdapter.isNewestVisiblePosition(lastVisible) && diff <= AndroidUtilities.dp(5) && !hasDraftsReplaces || hasFromMe) {
                         newUnreadMessageCount = 0;
                         if (!firstLoading && chatMode != MODE_SCHEDULED) {
                             if (paused) {
@@ -31697,6 +31770,10 @@ public class ChatActivity extends BaseFragment implements
         if (chatAdapter != null && lastWidgetPreference != org.telegram.messenger.forkgram.MessageWidgets.disabled()) {
             lastWidgetPreference = org.telegram.messenger.forkgram.MessageWidgets.disabled();
             updateVisibleRows(object -> object != null && WidgetMedia.isWidget(MessageObject.getMedia(object.messageOwner)));
+        }
+        if (hidesBlockedMessages(chatMode, currentChat)) {
+            getMessagesController().ensureBlockedPeersLoaded();
+        }
         }
         checkShowBlur(false);
         activityResumeTime = System.currentTimeMillis();
@@ -38944,6 +39021,51 @@ public class ChatActivity extends BaseFragment implements
 
     private boolean hasSendingMessagesInBotForum;
 
+    private static final int VIEW_TYPE_HIDDEN_MESSAGE = 11;
+
+    private static boolean hidesBlockedMessages(int mode, TLRPC.Chat chat) {
+        return mode == MODE_DEFAULT && chat != null && !ChatObject.isChannelAndNotMegaGroup(chat);
+    }
+
+    static boolean isBlockedGroupMessage(int mode, TLRPC.Chat chat, TLRPC.Message message, LongSparseIntArray blockedPeers) {
+        return hidesBlockedMessages(mode, chat) && message != null
+                && message.from_id instanceof TLRPC.TL_peerUser
+                && blockedPeers.indexOfKey(message.from_id.user_id) >= 0;
+    }
+
+    private boolean isHiddenGroupMessage(MessageObject message) {
+        return isBlockedGroupMessage(chatMode, currentChat, message.messageOwner, getMessagesController().blockePeers);
+    }
+
+    private MessageObject nearestVisibleMessage(ArrayList<MessageObject> history, MessageObject target) {
+        int index = history.indexOf(target);
+        if (index < 0) {
+            return null;
+        }
+        for (int distance = 1; index - distance >= 0 || index + distance < history.size(); distance++) {
+            for (int step = -1; step <= 1; step += 2) {
+                int position = index + distance * step;
+                if (position >= 0 && position < history.size()) {
+                    MessageObject candidate = history.get(position);
+                    if (candidate.getId() != 0 && !isHiddenGroupMessage(candidate)) {
+                        return candidate;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    // Keep row positions for history pagination, read markers, and message links.
+    private static class HiddenMessageView extends View {
+        MessageObject message;
+
+        HiddenMessageView(Context context) {
+            super(context);
+            setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
+        }
+    }
+
     public class ChatActivityAdapter extends RecyclerAnimationScrollHelper.AnimatableAdapter {
 
         private Context mContext;
@@ -39570,14 +39692,19 @@ public class ChatActivity extends BaseFragment implements
                 ChatMessageUnsupportedCell cell = new ChatMessageUnsupportedCell(mContext, themeDelegate);
                 cell.setDelegate(getChatMessageCellDelegate());
                 view = cell;
+            } else if (viewType == VIEW_TYPE_HIDDEN_MESSAGE) {
+                view = new HiddenMessageView(mContext);
             }
-            view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+            view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
+                    viewType == VIEW_TYPE_HIDDEN_MESSAGE ? 0 : RecyclerView.LayoutParams.WRAP_CONTENT));
             return new RecyclerListView.Holder(view);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (position == botInfoRow || position == botInfoEmptyRow) {
+            if (holder.itemView instanceof HiddenMessageView) {
+                ((HiddenMessageView) holder.itemView).message = getMessages().get(position - messagesStartRow);
+            } else if (position == botInfoRow || position == botInfoEmptyRow) {
                 BotHelpCell helpView = (BotHelpCell) holder.itemView;
                 if (UserObject.isReplyUser(currentUser)) {
                     helpView.setText(false, LocaleController.getString(R.string.RepliesChatInfo));
@@ -39651,7 +39778,7 @@ public class ChatActivity extends BaseFragment implements
 
                 if (view instanceof ChatMessageCell) {
                     final ChatMessageCell messageCell = (ChatMessageCell) view;
-                    MessageObject.GroupedMessages groupedMessages = getValidGroupedMessage(message);
+                    MessageObject.GroupedMessages groupedMessages = getDisplayAlbum(message);
                     messageCell.isChat = currentChat != null || UserObject.isUserSelf(currentUser) || UserObject.isReplyUser(currentUser) || (chatMode == MODE_SEARCH);
                     messageCell.setSponsoredMessageVisible(true, false);
                     messageCell.isBotForum = UserObject.isBotForum(currentUser);
@@ -40182,6 +40309,26 @@ public class ChatActivity extends BaseFragment implements
             }
         }
 
+        private boolean isHiddenMessagePosition(int position) {
+            int index = position - messagesStartRow;
+            return position >= messagesStartRow && position < messagesEndRow && index < getMessages().size()
+                    && isHiddenGroupMessage(getMessages().get(index));
+        }
+
+        private boolean isNewestVisiblePosition(int position) {
+            return position == 0 || position > 0 && !isFiltered && hidesBlockedMessages(chatMode, currentChat)
+                    && hasAtMostVisibleRows(0, position, 0);
+        }
+
+        private boolean hasAtMostVisibleRows(int start, int end, int remaining) {
+            for (int i = start; i < end; i++) {
+                if (!isHiddenMessagePosition(i) && --remaining < 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         @Override
         public int getItemViewType(int position) {
             if (isClearingHistory()) {
@@ -40193,15 +40340,11 @@ public class ChatActivity extends BaseFragment implements
                 return 1;
             }
             if (position >= messagesStartRow && position < messagesEndRow) {
-                final ArrayList<MessageObject> messages;
-                if (isFrozen) {
-                    messages = frozenMessages;
-                } else if (isFiltered) {
-                    messages = filteredMessages;
-                } else {
-                    messages = ChatActivity.this.messages;
+                MessageObject message = getMessages().get(position - messagesStartRow);
+                if (isHiddenGroupMessage(message)) {
+                    return VIEW_TYPE_HIDDEN_MESSAGE;
                 }
-                return messages.get(position - messagesStartRow).contentType;
+                return message.contentType;
             } else if (position == botInfoRow) {
                 return 3;
             } else if (position == userInfoRow) {

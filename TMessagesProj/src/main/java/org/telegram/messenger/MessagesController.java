@@ -122,6 +122,7 @@ import org.telegram.ui.community.CommunityChatType;
 import org.telegram.ui.community.CommunityUtils;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -270,6 +271,13 @@ public class MessagesController extends BaseController implements NotificationCe
     public LongSparseIntArray blockePeers = new LongSparseIntArray();
     public int totalBlockedCount = -1;
     public boolean blockedEndReached;
+    private int blockedPeersOffset;
+    private boolean loadAllBlockedPeers;
+    private LongSparseIntArray blockedPeersSnapshot;
+    private int blockedPeersGeneration;
+    private final LongSparseArray<ArrayDeque<Pair<TLObject, Runnable>>> blockedPeerChanges = new LongSparseArray<>();
+    private boolean blockedPeersSynced;
+    private boolean retryBlockedPeers;
 
     private LongSparseArray<ArrayList<Integer>> channelViewsToSend = new LongSparseArray<>();
     private LongSparseArray<SparseArray<MessageObject>> pollsToCheck = new LongSparseArray<>();
@@ -6663,6 +6671,13 @@ public class MessagesController extends BaseController implements NotificationCe
         loadingBlockedPeers = false;
         totalBlockedCount = -1;
         blockedEndReached = false;
+        blockedPeersOffset = 0;
+        loadAllBlockedPeers = false;
+        blockedPeersSnapshot = null;
+        blockedPeersGeneration++;
+        blockedPeerChanges.clear();
+        blockedPeersSynced = false;
+        retryBlockedPeers = false;
         firstGettingTask = false;
         updatingState = false;
         resetingDialogs = false;
@@ -7827,16 +7842,13 @@ public class MessagesController extends BaseController implements NotificationCe
                         getMediaDataController().putBotInfo(user.id, userFull.bot_info);
                     }
                     int index = blockePeers.indexOfKey(user.id);
-                    if (userFull.blocked) {
-                        if (index < 0) {
-                            blockePeers.put(user.id, 1);
-                            getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
-                        }
-                    } else {
-                        if (index >= 0) {
-                            blockePeers.removeAt(index);
-                            getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
-                        }
+                    if ((!loadAllBlockedPeers || !blockedPeersSynced && blockedPeerChanges.isEmpty())
+                            && userFull.blocked && index < 0) {
+                        blockePeers.put(user.id, 1);
+                        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+                    } else if (!loadAllBlockedPeers && !userFull.blocked && index >= 0) {
+                        blockePeers.removeAt(index);
+                        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
                     }
                     fullUsers.put(user.id, userFull);
                     final boolean contactBlockedChanged = syncUserContactBlocked(user.id, userFull);
@@ -8789,16 +8801,13 @@ public class MessagesController extends BaseController implements NotificationCe
         if (totalBlockedCount >= 0) {
             totalBlockedCount++;
         }
-        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
         TLRPC.TL_contacts_block req = new TLRPC.TL_contacts_block();
         if (user != null) {
             req.id = getInputPeer(user);
         } else {
             req.id = getInputPeer(chat);
         }
-        getConnectionsManager().sendRequest(req, (response, error) -> {
-
-        });
+        enqueueBlockedPeerChange(id, req, null);
     }
 
     public void setParticipantBannedRole(long chatId, TLRPC.User user, TLRPC.Chat chat, TLRPC.TL_chatBannedRights rights, boolean isChannel, BaseFragment parentFragment) {
@@ -8978,40 +8987,132 @@ public class MessagesController extends BaseController implements NotificationCe
         } else {
             req.id = getInputPeer(chat);
         }
+        enqueueBlockedPeerChange(id, req, callback);
+    }
+
+    private void enqueueBlockedPeerChange(long id, TLObject request, Runnable callback) {
+        ArrayDeque<Pair<TLObject, Runnable>> queue = blockedPeerChanges.get(id);
+        if (queue == null) {
+            queue = new ArrayDeque<>();
+            blockedPeerChanges.put(id, queue);
+        }
+        queue.addLast(Pair.create(request, callback));
+        invalidateBlockedPeersSnapshot();
+        if (queue.size() == 1) {
+            sendNextBlockedPeerChange(id, queue);
+        }
         getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
-        getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
-            if (callback != null) {
-                callback.run();
+    }
+
+    private void sendNextBlockedPeerChange(long id, ArrayDeque<Pair<TLObject, Runnable>> queue) {
+        final Pair<TLObject, Runnable> change = queue.getFirst();
+        getConnectionsManager().sendRequest(change.first, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
+            if (blockedPeerChanges.get(id) != queue) {
+                return;
+            }
+            queue.removeFirst();
+            if (!queue.isEmpty()) {
+                sendNextBlockedPeerChange(id, queue);
+            } else {
+                blockedPeerChanges.remove(id);
+                if (loadAllBlockedPeers) {
+                    blockedEndReached = false;
+                    ensureBlockedPeersLoaded();
+                }
+            }
+            if (change.second != null) {
+                change.second.run();
             }
         }));
     }
 
+    // Block changes can shift offsets between server pages.
+    private void invalidateBlockedPeersSnapshot() {
+        if (blockedPeersSnapshot != null) {
+            blockedPeersSnapshot = null;
+            blockedPeersGeneration++;
+            loadingBlockedPeers = false;
+            blockedEndReached = false;
+        }
+    }
+
+    public void ensureBlockedPeersLoaded() {
+        if (!loadAllBlockedPeers) {
+            loadAllBlockedPeers = true;
+            blockedPeersGeneration++;
+            loadingBlockedPeers = false;
+            blockedEndReached = false;
+        }
+        if (!blockedEndReached) {
+            getBlockedPeers(blockedPeersSnapshot == null);
+        }
+    }
+
     public void getBlockedPeers(boolean reset) {
-        if (!getUserConfig().isClientActivated() || loadingBlockedPeers) {
+        if (!getUserConfig().isClientActivated() || loadingBlockedPeers
+                || loadAllBlockedPeers && !blockedPeerChanges.isEmpty()) {
             return;
         }
+        final boolean full = loadAllBlockedPeers;
+        if (full) {
+            if (reset || blockedPeersSnapshot == null) {
+                blockedPeersSnapshot = new LongSparseIntArray();
+                blockedEndReached = false;
+                reset = true;
+            }
+        }
+        final int generation = blockedPeersGeneration;
         loadingBlockedPeers = true;
         TLRPC.TL_contacts_getBlocked req = new TLRPC.TL_contacts_getBlocked();
-        req.offset = reset ? 0 : blockePeers.size();
-        req.limit = reset ? 20 : 100;
+        req.offset = reset ? 0 : full ? blockedPeersOffset : blockePeers.size();
+        req.limit = reset && !full ? 20 : 100;
         getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
-            if (response != null) {
-                TLRPC.contacts_Blocked res = (TLRPC.contacts_Blocked) response;
-                putUsers(res.users, false);
-                putChats(res.chats, false);
-                getMessagesStorage().putUsersAndChats(res.users, res.chats, true, true);
-                if (reset) {
-                    blockePeers.clear();
-                }
-                totalBlockedCount = Math.max(res.count, res.blocked.size());
-                blockedEndReached = res.blocked.size() < req.limit;
-                for (int a = 0, N = res.blocked.size(); a < N; a++) {
-                    TLRPC.TL_peerBlocked blocked = res.blocked.get(a);
-                    blockePeers.put(MessageObject.getPeerId(blocked.peer_id), 1);
-                }
-                loadingBlockedPeers = false;
-                getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+            if (generation != blockedPeersGeneration) {
+                return;
             }
+            loadingBlockedPeers = false;
+            if (!(response instanceof TLRPC.contacts_Blocked)) {
+                blockedPeersSnapshot = null;
+                if (full && !retryBlockedPeers) {
+                    retryBlockedPeers = true;
+                    AndroidUtilities.runOnUIThread(() -> {
+                        if (generation == blockedPeersGeneration && !blockedEndReached) {
+                            ensureBlockedPeersLoaded();
+                        }
+                    }, 1500);
+                }
+                return;
+            }
+            TLRPC.contacts_Blocked res = (TLRPC.contacts_Blocked) response;
+            putUsers(res.users, false);
+            putChats(res.chats, false);
+            getMessagesStorage().putUsersAndChats(res.users, res.chats, true, true);
+            LongSparseIntArray peers = full ? blockedPeersSnapshot : blockePeers;
+            if (req.offset == 0) {
+                peers.clear();
+            }
+            blockedPeersOffset = req.offset + res.blocked.size();
+            blockedEndReached = !(res instanceof TLRPC.TL_contacts_blockedSlice)
+                    || blockedPeersOffset >= res.count;
+            for (TLRPC.TL_peerBlocked blocked : res.blocked) {
+                peers.put(MessageObject.getPeerId(blocked.peer_id), 1);
+            }
+            if (full && !blockedEndReached) {
+                if (res.blocked.isEmpty()) {
+                    blockedPeersSnapshot = null;
+                } else {
+                    getBlockedPeers(false);
+                }
+                return;
+            }
+            if (full) {
+                blockePeers = peers;
+                blockedPeersSynced = true;
+                retryBlockedPeers = false;
+                blockedPeersSnapshot = null;
+            }
+            totalBlockedCount = Math.max(res.count, res.blocked.size());
+            getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
         }));
     }
 
@@ -10572,16 +10673,13 @@ public class MessagesController extends BaseController implements NotificationCe
                     StarsController.getInstance(currentAccount).invalidateProfileGifts(info);
 
                     int index = blockePeers.indexOfKey(user.id);
-                    if (info.blocked) {
-                        if (index < 0) {
-                            blockePeers.put(user.id, 1);
-                            getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
-                        }
-                    } else {
-                        if (index >= 0) {
-                            blockePeers.removeAt(index);
-                            getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
-                        }
+                    if ((!loadAllBlockedPeers || !blockedPeersSynced && blockedPeerChanges.isEmpty())
+                            && info.blocked && index < 0) {
+                        blockePeers.put(user.id, 1);
+                        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+                    } else if (!loadAllBlockedPeers && !info.blocked && index >= 0) {
+                        blockePeers.removeAt(index);
+                        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
                     }
                 }
                 getNotificationCenter().postNotificationName(NotificationCenter.userInfoDidLoad, user.id, info);
@@ -16996,6 +17094,11 @@ public class MessagesController extends BaseController implements NotificationCe
                     AndroidUtilities.runOnUIThread(() -> {
                         loadedFullUsers.clear();
                         loadedFullChats.clear();
+                        if (loadAllBlockedPeers) {
+                            invalidateBlockedPeersSnapshot();
+                            blockedEndReached = false;
+                            ensureBlockedPeersLoaded();
+                        }
                         resetDialogs(true, getMessagesStorage().getLastSeqValue(), res.pts, date, qts);
                         getStoriesController().cleanup();
                     });
@@ -19317,6 +19420,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 TL_update.TL_updatePeerBlocked finalUpdate = (TL_update.TL_updatePeerBlocked) baseUpdate;
                 getMessagesStorage().getStorageQueue().postRunnable(() -> AndroidUtilities.runOnUIThread(() -> {
                     long id = MessageObject.getPeerId(finalUpdate.peer_id);
+                    invalidateBlockedPeersSnapshot();
                     if (finalUpdate.blocked) {
                         if (blockePeers.indexOfKey(id) < 0) {
                             blockePeers.put(id, 1);
@@ -19326,6 +19430,9 @@ public class MessagesController extends BaseController implements NotificationCe
                     }
                     getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
                     getStoriesController().updateBlockUser(id, finalUpdate.blocked_my_stories_from, false);
+                    if (loadAllBlockedPeers) {
+                        ensureBlockedPeersLoaded();
+                    }
                 }));
             } else if (baseUpdate instanceof TL_update.TL_updateServiceNotification) {
                 TL_update.TL_updateServiceNotification update = (TL_update.TL_updateServiceNotification) baseUpdate;
