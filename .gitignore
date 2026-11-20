@@ -5,6 +5,8 @@ build/
 obj/
 *.iml
 local.properties
+.env
+/TMessagesProj/config/release.keystore*
 tools/*.env
 tools/*_env.sh
 *.local.json

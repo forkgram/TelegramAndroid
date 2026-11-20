@@ -5,12 +5,6 @@ apply from: '../utils.gradle'
 repositories {
     mavenCentral()
     google()
-    maven {
-        url 'https://www.jitpack.io'
-        content {
-            includeModule 'com.github.UnifiedPush', 'android-connector'
-        }
-    }
 }
 
 configurations {
@@ -79,6 +73,7 @@ android {
     }
 
     def fdroid = Utils['isFdroid']()
+    def unsignedCiRelease = providers.gradleProperty('unsignedCiRelease').orNull == 'true'
     def appSuffix = fdroid ? "" : ".beta"
     def flavorsConfig = fdroid ? "release" : "debug"
     if (fdroid) {
@@ -162,7 +157,7 @@ android {
         release {
             debuggable false
             jniDebuggable false
-            signingConfig signingConfigs.release
+            signingConfig = unsignedCiRelease ? null : signingConfigs.release
             applicationIdSuffix appSuffix
             minifyEnabled true
             shrinkResources true
