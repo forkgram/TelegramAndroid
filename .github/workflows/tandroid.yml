@@ -4,146 +4,250 @@ on:
   push:
     branches:
       - '**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  linux:
+  build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    outputs:
+      mode: ${{ steps.mode.outputs.mode }}
+    steps:
+      - name: Select release mode
+        id: mode
+        env:
+          RELEASE: ${{ contains(github.event.head_commit.message, '[Release]') }}
+          OPTIONAL: ${{ contains(github.event.head_commit.message, '[Optional]') }}
+        run: |
+          mode=ci
+          if [[ "$GITHUB_REF" == refs/heads/dev ]]; then
+            if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+              mode=verify
+            elif [[ "$RELEASE" == true ]]; then
+              mode=release
+            elif [[ "$OPTIONAL" == true ]]; then
+              mode=optional
+            fi
+          fi
+          printf 'mode=%s\n' "$mode" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: false
+          android: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.9.1
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: nttld/setup-ndk@6a7e9c5494a25c4842ca1011f710300132eacd94 # v1.4.2
+        with:
+          ndk-version: r27c
+          link-to-sdk: true
+      - name: Install native build tools
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'ndk;27.2.12479018'
+          sudo apt update
+          sudo apt -y install ninja-build meson nasm gperf pkg-config unzip
+          rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+          rustup toolchain install 1.96.1 -t aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+      - name: Assemble unsigned APK
+        env:
+          ADDITIONAL_BUILD: ${{ secrets.ADDITIONAL_BUILD_NUMBER }}
+          APP_ID: ${{ secrets.APP_ID }}
+          APP_HASH: ${{ secrets.APP_HASH }}
+          USER_ID_OWNER: ${{ secrets.USER_ID_OWNER }}
+          UPDATE_CHANNEL_USERNAME: ${{ secrets.UPDATE_CHANNEL_USERNAME }}
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          LASTFM_API_SECRET: ${{ secrets.LASTFM_API_SECRET }}
+        run: |
+          {
+            printf '\nDUMMY_CONST=0\norg.gradle.workers.max=1\n'
+            printf 'ADDITIONAL_BUILD_NUMBER=%s\n' "$((ADDITIONAL_BUILD / 10000))"
+            printf 'USER_REPO=%s\nCHECK_UPDATES=1\n' "$GITHUB_REPOSITORY"
+            printf 'APP_ID=%s\nAPP_HASH=%s\n' "${APP_ID:-0}" "${APP_HASH:-0}"
+            printf 'USER_ID_OWNER=%s\nUPDATE_CHANNEL_USERNAME=%s\n' "$USER_ID_OWNER" "$UPDATE_CHANNEL_USERNAME"
+            printf 'LASTFM_API_KEY=%s\nLASTFM_API_SECRET=%s\n' "$LASTFM_API_KEY" "$LASTFM_API_SECRET"
+          } >> gradle.properties
+          ./gradlew :TMessagesProj_App:assembleAfatRelease -PunsignedCiRelease=true
+      - name: Upload unsigned APK
+        if: steps.mode.outputs.mode != 'ci'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: android-unsigned-apk
+          path: TMessagesProj_App/build/outputs/apk/afat/release/app.apk
+          if-no-files-found: error
+          retention-days: 1
+          overwrite: true
+
+  sign:
+    name: Sign APK
+    needs: build
+    if: github.ref == 'refs/heads/dev' && needs.build.outputs.mode != 'ci'
+    runs-on: ubuntu-24.04
+    environment: android-signing
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: android-unsigned-apk
+          path: unsigned
+      - name: Align APK and check release metadata
+        id: prepare
+        run: |
+          tools="$ANDROID_HOME/build-tools/36.0.0"
+          "$tools/zipalign" -f -P 16 4 unsigned/app.apk "$RUNNER_TEMP/aligned.apk"
+          package=$("$tools/aapt2" dump badging "$RUNNER_TEMP/aligned.apk" | sed -n '/^package: /p')
+          [[ "$package" == "package: name='org.forkclient.messenger.beta' "* ]]
+          version=$(sed -n "s/.* versionName='\([0-9.]*\)'.*/\1/p" <<< "$package")
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          printf 'version=%s\n' "$version" >> "$GITHUB_OUTPUT"
+      - name: Sign and verify APK
+        env:
+          VERSION: ${{ steps.prepare.outputs.version }}
+          MODE: ${{ needs.build.outputs.mode }}
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          ALIAS_NAME: ${{ secrets.ALIAS_NAME }}
+          ALIAS_PASS: ${{ secrets.ALIAS_PASS }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+        run: |
+          : "${RELEASE_KEYSTORE_BASE64:?Missing release keystore}" "${ALIAS_NAME:?Missing key alias}"
+          : "${ALIAS_PASS:?Missing key password}" "${KEYSTORE_PASS:?Missing keystore password}"
+          umask 077
+          keystore=$(mktemp "$RUNNER_TEMP/release.XXXXXX")
+          trap 'rm -f -- "$keystore"' EXIT
+          printf '%s' "$RELEASE_KEYSTORE_BASE64" | base64 --decode > "$keystore"
+          unset RELEASE_KEYSTORE_BASE64
+          tools="$ANDROID_HOME/build-tools/36.0.0"
+          output="$RUNNER_TEMP/verified.apk"
+          if [[ "$MODE" != verify ]]; then
+            mkdir signed
+            output="signed/ForkClient $VERSION.apk"
+          fi
+          "$tools/apksigner" sign --ks "$keystore" --ks-key-alias "$ALIAS_NAME" \
+            --ks-pass env:KEYSTORE_PASS --key-pass env:ALIAS_PASS \
+            --v1-signing-enabled true --v2-signing-enabled true \
+            --v3-signing-enabled false --v4-signing-enabled false \
+            --out "$output" "$RUNNER_TEMP/aligned.apk"
+          rm -f -- "$keystore"
+          unset ALIAS_PASS KEYSTORE_PASS ALIAS_NAME
+          "$tools/zipalign" -c -P 16 4 "$output"
+          certs=$("$tools/apksigner" verify --print-certs "$output")
+          fingerprint=$(awk '/^Signer #[0-9]+ certificate SHA-256 digest:/ {print $NF}' <<< "$certs")
+          [[ "$fingerprint" == 0880f186d777f3cb6d82a66d02bd58850e3a270a26b678175459a95511235ae5 ]]
+          printf 'Verified the existing release certificate for Android %s\n' "$VERSION"
+          if [[ "$MODE" != verify ]]; then
+            printf '%s\n' "$VERSION" > signed/version.txt
+          fi
+      - name: Upload signed APK
+        if: needs.build.outputs.mode != 'verify'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: android-signed-apk
+          path: signed/
+          if-no-files-found: error
+          overwrite: true
+
+  publish-telegram:
+    name: Publish to Telegram
+    needs: [build, sign]
+    if: contains(fromJSON('["release", "optional"]'), needs.build.outputs.mode)
+    runs-on: ubuntu-24.04
+    environment: android-telegram
+    concurrency:
+      group: fork-client-android-telegram
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: android-signed-apk
+          path: ${{ runner.temp }}/telegram-release
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install uploader dependencies
+        if: needs.build.outputs.mode == 'release'
+        run: |
+          python -m venv "$RUNNER_TEMP/telegram-venv"
+          python="$RUNNER_TEMP/telegram-venv/bin/python"
+          "$python" -m pip install --require-hashes --only-binary=:all: -r .github/requirements-python-build.txt
+          "$python" -m pip install --require-hashes --no-build-isolation -r .github/requirements-upload.txt
+      - name: Upload APK and update the feed
+        if: needs.build.outputs.mode == 'release'
+        env:
+          ANDROID_TELEGRAM_SESSION_GZIP_BASE64: ${{ secrets.ANDROID_TELEGRAM_SESSION_GZIP_BASE64 }}
+          ANDROID_TELEGRAM_API_ID: ${{ secrets.ANDROID_TELEGRAM_API_ID }}
+          ANDROID_TELEGRAM_API_HASH: ${{ secrets.ANDROID_TELEGRAM_API_HASH }}
+          FORK_UPLOAD_MODE: ${{ needs.build.outputs.mode }}
+        working-directory: ${{ runner.temp }}/telegram-release
+        run: |
+          VERSION=$(cat version.txt)
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          : "${ANDROID_TELEGRAM_SESSION_GZIP_BASE64:?Missing Telegram session}"
+          : "${ANDROID_TELEGRAM_API_ID:?Missing Telegram API ID}" "${ANDROID_TELEGRAM_API_HASH:?Missing Telegram API hash}"
+          umask 077
+          trap 'rm -f -- android-release.session android-release.session-journal android-release.session-shm android-release.session-wal' EXIT
+          printf '%s' "$ANDROID_TELEGRAM_SESSION_GZIP_BASE64" | base64 --decode | gzip -dc > android-release.session
+          unset ANDROID_TELEGRAM_SESSION_GZIP_BASE64
+          "$RUNNER_TEMP/telegram-venv/bin/python" "$GITHUB_WORKSPACE/.github/scripts/publish_android.py" "$FORK_UPLOAD_MODE" "$VERSION"
+      - name: Publish optional APK through Bot API
+        timeout-minutes: 30
+        if: needs.build.outputs.mode == 'optional'
+        env:
+          ANDROID_BOT_TOKEN: ${{ secrets.ANDROID_BOT_TOKEN }}
+          ANDROID_BOT_API_SSH_KEY: ${{ secrets.ANDROID_BOT_API_SSH_KEY }}
+          ANDROID_BOT_API_SSH_KNOWN_HOSTS: ${{ vars.ANDROID_BOT_API_SSH_KNOWN_HOSTS }}
+        working-directory: ${{ runner.temp }}/telegram-release
+        run: |
+          bash "$GITHUB_WORKSPACE/.github/scripts/publish_android_bot_api.sh" "$(cat version.txt)"
+
+  attest:
+    name: Attest release APK
+    needs: [build, sign]
+    if: needs.build.outputs.mode == 'release'
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       id-token: write
       attestations: write
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          submodules: recursive
-      - name: Free up some disk space.
-        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+          name: android-signed-apk
+          path: signed
+      - uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
         with:
-          tool-cache: false
-          android: false
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - uses: nttld/setup-ndk@v1.4.2
-        id: setup-ndk-r27c
-        with:
-          ndk-version: r27c
-          link-to-sdk: true
-      - name: Install NDK for the JNI build (ndkVersion).
-        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;27.2.12479018"
-      - name: Prepare additional build number.
-        env:
-          ADDITIONAL_BUILD: ${{ secrets.ADDITIONAL_BUILD_NUMBER }}
-        run: |
-          result=$((ADDITIONAL_BUILD / 10000))
-          echo "ADDITIONAL_BUILD_NUMBER = $result should be between 0 and 10!"
-          echo "ADDITIONAL_BUILD_NUMBER=$result" >> $GITHUB_ENV
-          echo "USER_REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
-          echo "CHECK_UPDATES=1" >> $GITHUB_ENV
-      - name: Build.
-        run: |
-          ###
-          vars=gradle.properties
-
-          echo "DUMMY_CONST=0" >> $vars
-          echo "org.gradle.workers.max=1" >> $vars
-          echo "APP_ID=${{ secrets.APP_ID }}" >> $vars
-          echo "APP_HASH=${{ secrets.APP_HASH }}" >> $vars
-          echo "RELEASE_KEY_PASSWORD=${{ secrets.ALIAS_PASS }}" >> $vars
-          echo "RELEASE_KEY_ALIAS=${{ secrets.ALIAS_NAME }}" >> $vars
-          echo "RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASS }}" >> $vars
-          echo "RELEASE_KEYSTORE_FILE=$PWD/TMessagesProj/config/release.keystore" >> $vars
-          echo "ADDITIONAL_BUILD_NUMBER=$ADDITIONAL_BUILD_NUMBER" >> $vars
-          echo "USER_REPO=$USER_REPO" >> $vars
-          echo "CHECK_UPDATES=1" >> $vars
-          echo "USER_ID_OWNER=${{ secrets.USER_ID_OWNER }}" >> $vars
-          echo "UPDATE_CHANNEL_USERNAME=${{ secrets.UPDATE_CHANNEL_USERNAME }}" >> $vars
-          echo "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}" >> $vars
-          echo "LASTFM_API_SECRET=${{ secrets.LASTFM_API_SECRET }}" >> $vars
-
-          ###
-          echo $ADDITIONAL_BUILD_NUMBER
-          sudo apt update
-          sudo apt -y install ninja-build meson nasm gperf pkg-config unzip pip
-          rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
-          rustup toolchain install 1.96.1 -t aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
-          ./gradlew :TMessagesProj_App:assembleAfatRelease
-
-          #grep BUILD_VERSION_STRING TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java | cut -d'"' -f 2 > ver.txt
-          grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/release/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt
-
-          mkdir -p artifact
-          mv TMessagesProj_App/build/outputs/apk/afat/release/app.apk app.apk
-          cp app.apk "artifact/ForkClient $(cat ver.txt).apk"
-          mkdir -p tag_asset
-          cp app.apk "tag_asset/ForkClient_$(cat ver.txt).apk"
-
-          # Upload to channel.
-          if [[ "${{ contains(github.event.head_commit.message, '[Release]') }}" == "true" ]]; then
-            FORK_UPLOAD_MODE=release
-          elif [[ "${{ contains(github.event.head_commit.message, '[Optional]') }}" == "true" ]]; then
-            FORK_UPLOAD_MODE=optional
-          else
-            FORK_UPLOAD_MODE=
-          fi
-          if [[ -n "$FORK_UPLOAD_MODE" ]]; then
-            set +x
-            pip install requests tgcrypto-pyrofork Kurigram
-            cp app.apk "ForkClient $(cat ver.txt).apk"
-            echo "${{ secrets.BASE64_ZIP }}" | base64 --decode > output.zip
-            unzip -j output.zip -d .
-            ls
-            FORK_UPLOAD_MODE=$FORK_UPLOAD_MODE python3 upload.py
-            set -x
-          else
-            echo "Skipping channel upload (no [Release] or [Optional] marker in commit message)."
-          fi
-          ###
-
-          echo "NEW_TAG_TEXT=$(cat ver.txt)" >> $GITHUB_ENV
-
-          tempVer=$(cat ver.txt)
-          tempVer=${tempVer::-2}
-          echo "NEW_OFFICIAL_TAG_TEXT=$tempVer" >> $GITHUB_ENV
-      - name: Attest build provenance
-        if: ${{ contains(github.event.head_commit.message, '[Release]') }}
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-path: 'artifact/*.apk'
-
-      - uses: actions/upload-artifact@master
-        name: Upload artifact
-        if: ${{ contains(github.event.head_commit.message, '[Release]') }}
-        with:
-          name: ForkClient
-          path: artifact/
+          subject-path: signed/*.apk
 
   release:
-    name: Create Release.
-    needs: linux
-    if: ${{ contains(github.event.head_commit.message, '[Release]') }}
-    runs-on: ubuntu-latest
+    name: Create GitHub release draft
+    needs: [sign, publish-telegram, attest]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3.1.0
-      - name: Download artifact
-        uses: actions/download-artifact@v4.3.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: ForkClient
-          path: asset
-      - name: Get version info
-        run: |
-          find asset -name "*.apk" | head -1 | sed 's/.*ForkClient //;s/\.apk//' > version.txt
-          echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
-          echo "OFFICIAL_VERSION=$(cat version.txt | sed 's/..$//')" >> $GITHUB_ENV
-      - name: Create Release
-        uses: softprops/action-gh-release@v0.1.15
+          name: android-signed-apk
+          path: signed
+      - name: Create release draft
         env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-        with:
-          draft: true
-          files: asset/*
-          tag_name: ${{ env.VERSION }}
-          name: "ForkClient ${{ env.VERSION }}"
-          body: "— Updated to ${{ env.OFFICIAL_VERSION }} build of the official Telegram."
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(cat signed/version.txt)
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          gh release create "$VERSION" "signed/ForkClient $VERSION.apk" \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft \
+            --title "ForkClient $VERSION" \
+            --notes "— Updated to ${VERSION%.*} build of the official Telegram."
