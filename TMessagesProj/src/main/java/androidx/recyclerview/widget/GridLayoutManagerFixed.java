@@ -41,6 +41,10 @@ public class GridLayoutManagerFixed extends GridLayoutManager {
         return false;
     }
 
+    protected boolean shouldSkipPosition(int position) {
+        return false;
+    }
+
     public void setCanScrollVertically(boolean value) {
         canScrollVertically = value;
     }
@@ -122,6 +126,16 @@ public class GridLayoutManagerFixed extends GridLayoutManager {
         final boolean layingOutInPrimaryDirection = layoutState.mItemDirection == LayoutState.ITEM_DIRECTION_TAIL;
         result.mConsumed = 0;
 
+        final boolean skipPositions = !state.isPreLayout() && layoutState.mScrapList == null;
+        while (skipPositions && additionalViews.isEmpty() && layoutState.hasMore(state)
+                && shouldSkipPosition(layoutState.mCurrentPosition)) {
+            layoutState.mCurrentPosition += layoutState.mItemDirection;
+        }
+        if (!layoutState.hasMore(state) && additionalViews.isEmpty()) {
+            result.mFinished = true;
+            return;
+        }
+
         int startPosition = layoutState.mCurrentPosition;
         if (
             mShouldReverseLayout &&
@@ -159,6 +173,9 @@ public class GridLayoutManagerFixed extends GridLayoutManager {
             working = !additionalViews.isEmpty();
             while (count < mSpanCount && layoutState.hasMore(state) && remainingSpan > 0) {
                 int pos = layoutState.mCurrentPosition;
+                if (skipPositions && additionalViews.isEmpty() && shouldSkipPosition(pos)) {
+                    break;
+                }
                 final int spanSize = getSpanSize(recycler, state, pos);
                 remainingSpan -= spanSize;
                 if (remainingSpan < 0) {
