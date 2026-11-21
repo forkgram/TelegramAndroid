@@ -194,6 +194,7 @@ object ForkSettings {
             }),
         BoolOption("photoHasSticker", ForkSettingsActivity.ID_PHOTO_HAS_STICKER, true),
         BoolOption("disableMotionPhoto", ForkSettingsActivity.ID_DISABLE_MOTION_PHOTO, false),
+        BoolOption(PhotoViewerHelper.PREF_SEEKBAR_FOR_GIFS, ForkSettingsActivity.ID_SEEKBAR_FOR_GIFS, false),
         BoolOption("disableFlipPhotos", ForkSettingsActivity.ID_DISABLE_FLIP_PHOTOS, false),
         BoolOption("rearVideoMessages", ForkSettingsActivity.ID_REAR_VIDEO_MESSAGES, false),
         BoolOption("disablePlayVisibleVideoOnVolume", ForkSettingsActivity.ID_DISABLE_PLAY_VISIBLE_VIDEO_ON_VOLUME, false),
