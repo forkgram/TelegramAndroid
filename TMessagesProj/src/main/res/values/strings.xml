@@ -84,6 +84,8 @@
     <string name="PhotoHasStickerInfo">When using Stickers on Photo</string>
     <string name="DisableMotionPhoto">Disable Motion Photos</string>
     <string name="DisableMotionPhotoInfo">Attach Google/Samsung motion photos as regular photos, not videos</string>
+    <string name="SeekbarForGifs">Seekbar for GIFs</string>
+    <string name="SeekbarForGifsInfo">Show video controls and seekbar when viewing GIFs in the media viewer</string>
     <string name="UnmutedOnTop">Unmuted Messages are Primary</string>
     <string name="UnmutedOnTopInfo">Unmuted Messages will be under pinned dialogs</string>
     <string name="SyncPins">Sync Pinned Dialogs</string>
