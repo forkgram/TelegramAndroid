@@ -46,6 +46,7 @@ import org.telegram.messenger.forkgram.ForkSettings;
 import org.telegram.messenger.forkgram.ForkSettingsLock;
 import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.forkgram.LinkReplacements;
+import org.telegram.messenger.forkgram.PhotoViewerHelper;
 import org.telegram.messenger.forkgram.QuickAttachConfig;
 import org.telegram.messenger.forkgram.SettingsBackup;
 import org.telegram.messenger.forkgram.WebPublishConfig;
@@ -134,6 +135,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_REAR_VIDEO_MESSAGES = 55;
     public static final int ID_DISABLE_PLAY_VISIBLE_VIDEO_ON_VOLUME = 56;
     public static final int ID_DISABLE_RECENT_FILES_ATTACHMENT = 57;
+    public static final int ID_SEEKBAR_FOR_GIFS = 58;
 
     public static final int ID_VOICE_QUALITY = 60;
     public static final int ID_DISABLE_AUTOPLAY_NEXT_VOICE = 61;
@@ -690,6 +692,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("photoHasSticker", true)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_MOTION_PHOTO, LocaleController.getString(R.string.DisableMotionPhoto), LocaleController.getString(R.string.DisableMotionPhotoInfo))
             .setChecked(pref("disableMotionPhoto", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_SEEKBAR_FOR_GIFS, LocaleController.getString(R.string.SeekbarForGifs), LocaleController.getString(R.string.SeekbarForGifsInfo))
+            .setChecked(pref(PhotoViewerHelper.PREF_SEEKBAR_FOR_GIFS, false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_FLIP_PHOTOS, LocaleController.getString(R.string.DisableFlipPhotos), LocaleController.getString(R.string.DisableFlipPhotosInfo))
             .setChecked(pref("disableFlipPhotos", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_REAR_VIDEO_MESSAGES, LocaleController.getString(R.string.RearVideoMessages), LocaleController.getString(R.string.RearVideoMessagesInfo))
@@ -895,6 +899,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("photoHasSticker", item, view);
         } else if (id == ID_DISABLE_MOTION_PHOTO) {
             toggle("disableMotionPhoto", item, view);
+        } else if (id == ID_SEEKBAR_FOR_GIFS) {
+            toggle(PhotoViewerHelper.PREF_SEEKBAR_FOR_GIFS, item, view);
         } else if (id == ID_DISABLE_FLIP_PHOTOS) {
             toggle("disableFlipPhotos", item, view);
         } else if (id == ID_REAR_VIDEO_MESSAGES) {
