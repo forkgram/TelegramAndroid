@@ -5448,7 +5448,7 @@ public class ChatActivity extends BaseFragment implements
                         if (Math.abs(dx) >= AndroidUtilities.dp(50)) {
                             if (!wasTrackingVibrate) {
                                 try {
-                                    performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                                    performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
                                 } catch (Exception ignore) {}
                                 wasTrackingVibrate = true;
                             }
