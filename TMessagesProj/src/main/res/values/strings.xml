@@ -12016,4 +12016,6 @@
     <string name="DisableMessageWidgets">Disable HTML widgets</string>
     <string name="DisableMessageWidgetsInfo">Stop embedded HTML widgets in messages from running. Their captions remain visible.</string>
     <string name="DisabledMessageWidget">Unsupported HTML widget</string>
+    <string name="ShowNewMessageButton">Show New Message button</string>
+    <string name="ShowNewMessageButtonInfo">Show the compose button in the main chat list.</string>
 </resources>

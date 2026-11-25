@@ -145,6 +145,7 @@ object ForkSettings {
         BoolOption("dropScreenshotCaption", ForkSettingsActivity.ID_DROP_SCREENSHOT_CAPTION, true),
 
         BoolOption("hideInAppHints", ForkSettingsActivity.ID_HIDE_IN_APP_HINTS, false),
+        BoolOption("showNewMessageButton", ForkSettingsActivity.ID_SHOW_NEW_MESSAGE_BUTTON, false),
         BoolOption("hideBottomButton", ForkSettingsActivity.ID_HIDE_BOTTOM_BUTTON, false),
         StringOption(
             "forkCustomTitle", ForkSettingsActivity.ID_CUSTOM_TITLE, "Fork Client",

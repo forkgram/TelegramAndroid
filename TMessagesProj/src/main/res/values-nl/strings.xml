@@ -1417,4 +1417,6 @@
     <string name="DisableMessageWidgets">HTML-widgets uitschakelen</string>
     <string name="DisableMessageWidgetsInfo">Voorkomt dat ingesloten HTML-widgets in berichten worden uitgevoerd. De bijschriften blijven zichtbaar.</string>
     <string name="DisabledMessageWidget">Niet-ondersteunde HTML-widget</string>
+    <string name="ShowNewMessageButton">Knop Nieuw bericht tonen</string>
+    <string name="ShowNewMessageButtonInfo">Toon de knop om een bericht te schrijven in de hoofdchatlijst.</string>
 </resources>

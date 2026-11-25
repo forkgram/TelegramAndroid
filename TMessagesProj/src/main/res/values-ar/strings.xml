@@ -1576,4 +1576,6 @@
     <string name="DisableMessageWidgets">تعطيل أدوات HTML المصغّرة</string>
     <string name="DisableMessageWidgetsInfo">يمنع تشغيل أدوات HTML المصغّرة المضمّنة في الرسائل. تظل تسمياتها التوضيحية مرئية.</string>
     <string name="DisabledMessageWidget">أداة HTML مصغّرة غير مدعومة</string>
+    <string name="ShowNewMessageButton">إظهار زر رسالة جديدة</string>
+    <string name="ShowNewMessageButtonInfo">إظهار زر كتابة رسالة في قائمة الدردشات الرئيسية.</string>
 </resources>

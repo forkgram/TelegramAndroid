@@ -1648,4 +1648,6 @@
     <string name="DisableMessageWidgets">Desactivar los widgets HTML</string>
     <string name="DisableMessageWidgetsInfo">Impide que se ejecuten los widgets HTML incrustados en los mensajes. Sus descripciones seguirán visibles.</string>
     <string name="DisabledMessageWidget">Widget HTML incompatible</string>
+    <string name="ShowNewMessageButton">Mostrar el botón de nuevo mensaje</string>
+    <string name="ShowNewMessageButtonInfo">Muestra el botón de redactar en la lista principal de chats.</string>
 </resources>

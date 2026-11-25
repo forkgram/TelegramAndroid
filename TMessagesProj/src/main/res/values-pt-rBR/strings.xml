@@ -1594,4 +1594,6 @@
     <string name="DisableMessageWidgets">Desativar widgets HTML</string>
     <string name="DisableMessageWidgetsInfo">Impede a execução de widgets HTML incorporados nas mensagens. As legendas continuam visíveis.</string>
     <string name="DisabledMessageWidget">Widget HTML incompatível</string>
+    <string name="ShowNewMessageButton">Mostrar botão Nova mensagem</string>
+    <string name="ShowNewMessageButtonInfo">Mostra o botão de escrever na lista principal de conversas.</string>
 </resources>

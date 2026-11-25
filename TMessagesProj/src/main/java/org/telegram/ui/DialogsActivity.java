@@ -4834,6 +4834,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         contentView.addView(floatingButtonStories, FragmentFloatingButton.createSubButtonLayoutParams());
 
         floatingButton3 = new FragmentFloatingButton(context, resourceProvider);
+        floatingButton3.setButtonVisible(shouldShowNewMessageButton(), false);
         contentView.addView(floatingButton3, FragmentFloatingButton.createDefaultLayoutParams());
         floatingButton3.setOnClickListener(v -> {
             if (parentLayout != null && parentLayout.isInPreviewMode()) {
@@ -7225,6 +7226,14 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     @Override
     public void onResume() {
         super.onResume();
+        if (floatingButton3 != null) {
+            updateFloatingButtonOffset();
+            if (shouldShowNewMessageButton()) {
+                hideFloatingButton(false);
+            } else {
+                updateFloatingButtonVisibility(false);
+            }
+        }
         if (dialogStoriesCell != null) {
             dialogStoriesCell.onResume();
         }
@@ -9067,11 +9076,16 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         return false;
     }
 
+    private boolean shouldShowNewMessageButton() {
+        return initialDialogsType == DIALOGS_TYPE_DEFAULT && !onlySelect && folderId == 0 && communityId == 0
+            && MessagesController.getGlobalMainSettings().getBoolean("showNewMessageButton", false);
+    }
+
     private void updateFloatingButtonVisibility(boolean animated) {
         final boolean isVisible = !(onlySelect && initialDialogsType != 10 || folderId != 0 || communityId != 0 || inPreviewMode || (searching && !onlySelect) || floatingButtonHidden);
 
         if (floatingButton3 != null) {
-            floatingButton3.setButtonVisible(isVisible, animated);
+            floatingButton3.setButtonVisible(isVisible && shouldShowNewMessageButton(), animated);
         }
         if (floatingButtonStories != null) {
             floatingButtonStories.setButtonVisible(isVisible, animated);
@@ -9079,16 +9093,17 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void updateFloatingButtonOffset() {
-        final float top = Integer.MAX_VALUE;
-        final float baseTranslationY = top;
-
+        final float offscreen = Integer.MAX_VALUE;
         if (floatingButton3 != null) {
-            floatingButton3.setTranslationY(baseTranslationY);
+            final float translation = shouldShowNewMessageButton()
+                ? -navigationBarHeight - additionFloatingButtonOffset - additionalFloatingTranslation - floatingButtonPanOffset
+                : offscreen;
+            floatingButton3.setTranslationY(translation);
         }
         if (floatingButtonStories != null) {
-            floatingButtonStories.setTranslationY(baseTranslationY);
+            floatingButtonStories.setTranslationY(offscreen);
             if (storyHint != null) {
-                storyHint.setTranslationY(baseTranslationY);
+                storyHint.setTranslationY(offscreen);
             }
         }
     }
@@ -11495,8 +11510,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     boolean floatingButtonHidden;
 
     private void hideFloatingButton(boolean hide) {
-        hide = true;
-        if (rightSlidingDialogContainer.hasFragment()) {
+        if (!shouldShowNewMessageButton() || rightSlidingDialogContainer.hasFragment()) {
             hide = true;
         }
         if (hide && floatingForceVisible) {

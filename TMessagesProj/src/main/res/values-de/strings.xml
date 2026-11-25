@@ -1708,4 +1708,6 @@
     <string name="DisableMessageWidgets">HTML-Widgets deaktivieren</string>
     <string name="DisableMessageWidgetsInfo">Eingebettete HTML-Widgets in Nachrichten werden nicht ausgeführt. Ihre Beschriftungen bleiben sichtbar.</string>
     <string name="DisabledMessageWidget">Nicht unterstütztes HTML-Widget</string>
+    <string name="ShowNewMessageButton">Schaltfläche „Neue Nachricht“ anzeigen</string>
+    <string name="ShowNewMessageButtonInfo">Zeigt die Schaltfläche zum Schreiben in der Haupt-Chatliste an.</string>
 </resources>

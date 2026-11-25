@@ -339,4 +339,6 @@
     <string name="DisableMessageWidgets">غیرفعال کردن ابزارک‌های HTML</string>
     <string name="DisableMessageWidgetsInfo">از اجرای ابزارک‌های HTML درون پیام‌ها جلوگیری می‌کند. توضیحات آن‌ها همچنان نمایش داده می‌شود.</string>
     <string name="DisabledMessageWidget">ابزارک HTML پشتیبانی نمی‌شود</string>
+    <string name="ShowNewMessageButton">نمایش دکمه پیام جدید</string>
+    <string name="ShowNewMessageButtonInfo">دکمهٔ نوشتن پیام را در فهرست اصلی گفتگوها نشان می‌دهد.</string>
 </resources>

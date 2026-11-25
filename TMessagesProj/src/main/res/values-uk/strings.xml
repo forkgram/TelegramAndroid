@@ -600,4 +600,6 @@
     <string name="DisableMessageWidgets">Вимкнути HTML-віджети</string>
     <string name="DisableMessageWidgetsInfo">Забороняє запуск вбудованих HTML-віджетів у повідомленнях. Підписи залишаються видимими.</string>
     <string name="DisabledMessageWidget">HTML-віджет не підтримується</string>
+    <string name="ShowNewMessageButton">Показувати кнопку «Нове повідомлення»</string>
+    <string name="ShowNewMessageButtonInfo">Показує кнопку створення повідомлення в основному списку чатів.</string>
 </resources>

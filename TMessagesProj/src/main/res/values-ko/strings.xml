@@ -1464,4 +1464,6 @@
     <string name="DisableMessageWidgets">HTML 위젯 사용 안 함</string>
     <string name="DisableMessageWidgetsInfo">메시지에 포함된 HTML 위젯이 실행되지 않습니다. 캡션은 계속 표시됩니다.</string>
     <string name="DisabledMessageWidget">지원되지 않는 HTML 위젯</string>
+    <string name="ShowNewMessageButton">새 메시지 버튼 표시</string>
+    <string name="ShowNewMessageButtonInfo">기본 채팅 목록에 메시지 작성 버튼을 표시합니다.</string>
 </resources>

@@ -1870,4 +1870,6 @@
     <string name="DisableMessageWidgets">Disattiva i widget HTML</string>
     <string name="DisableMessageWidgetsInfo">Impedisce l’esecuzione dei widget HTML incorporati nei messaggi. Le didascalie restano visibili.</string>
     <string name="DisabledMessageWidget">Widget HTML non supportato</string>
+    <string name="ShowNewMessageButton">Mostra il pulsante Nuovo messaggio</string>
+    <string name="ShowNewMessageButtonInfo">Mostra il pulsante per scrivere un messaggio nella lista principale delle chat.</string>
 </resources>
