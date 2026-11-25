@@ -133,6 +133,8 @@
     <string name="HideSendAsInfo">Ocultar el botón de enviar como en el campo de mensaje.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Enviar mensajes con enlaces sin vista previa.</string>
     <string name="DisableSlideToNextChannelInfo">No pasar al siguiente canal al desplazarse más allá del final.</string>
+    <string name="HideChannelMuteButton">Ocultar el botón de silenciar en canales</string>
+    <string name="HideChannelMuteButtonInfo">Oculta el botón para silenciar o activar el sonido al pie de los canales a los que te has unido. Puedes cambiar las notificaciones desde el menú del canal.</string>
     <string name="FormatWithSecondsInfo">Mostrar los segundos en la hora de los mensajes y otras horas.</string>
     <string name="HideAiEditorInfo">Ocultar el botón de reescritura con IA en los campos de mensaje y descripción.</string>
     <string name="FormattingMenuInfo">Mantén pulsada una opción y arrástrala para reordenarla. Las opciones sin marcar se ocultan del menú de selección de texto.</string>

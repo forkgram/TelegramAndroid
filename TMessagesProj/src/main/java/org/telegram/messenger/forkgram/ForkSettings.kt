@@ -168,6 +168,7 @@ object ForkSettings {
         BoolOption("disableLinkPreviewByDefault", ForkSettingsActivity.ID_DISABLE_LINK_PREVIEW_BY_DEFAULT, false),
         BoolOption("addItemToDeleteAllUnpinnedMessages", ForkSettingsActivity.ID_DELETE_ALL_UNPINNED, false),
         BoolOption("disableSlideToNextChannel", ForkSettingsActivity.ID_DISABLE_SLIDE_TO_NEXT_CHANNEL, false),
+        BoolOption("hideChannelMuteButton", ForkSettingsActivity.ID_HIDE_CHANNEL_MUTE_BUTTON, false),
         BoolOption("formatWithSeconds", ForkSettingsActivity.ID_FORMAT_WITH_SECONDS, false),
         BoolOption("hideAiEditor", ForkSettingsActivity.ID_HIDE_AI_EDITOR, false),
 

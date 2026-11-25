@@ -133,6 +133,8 @@
     <string name="HideSendAsInfo">De knop Verzenden als in het berichtveld verbergen.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Berichten met links versturen zonder voorbeeldweergave.</string>
     <string name="DisableSlideToNextChannelInfo">Niet naar het volgende kanaal gaan bij doorscrollen voorbij het einde.</string>
+    <string name="HideChannelMuteButton">Dempen-knop in kanalen verbergen</string>
+    <string name="HideChannelMuteButtonInfo">Verbergt de knop om meldingen onderaan gevolgde kanalen te dempen of weer in te schakelen. Je kunt meldingen nog steeds aanpassen via het kanaalmenu.</string>
     <string name="FormatWithSecondsInfo">Seconden tonen in berichttijden en andere tijden.</string>
     <string name="HideAiEditorInfo">De AI-herschrijfknop in bericht- en bijschriftvelden verbergen.</string>
     <string name="FormattingMenuInfo">Houd een optie ingedrukt en sleep deze om de volgorde te wijzigen. Niet-aangevinkte opties worden verborgen in het tekstselectiemenu.</string>

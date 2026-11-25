@@ -120,6 +120,8 @@
     <string name="HideSendAsInfo">Скрывать кнопку выбора отправителя в поле сообщения.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Отправлять сообщения со ссылками без превью.</string>
     <string name="DisableSlideToNextChannelInfo">Не переходить к следующему каналу при прокрутке за конец чата.</string>
+    <string name="HideChannelMuteButton">Скрыть кнопку звука в каналах</string>
+    <string name="HideChannelMuteButtonInfo">Скрывает кнопку включения и отключения уведомлений внизу каналов, на которые вы подписаны. Управлять уведомлениями по-прежнему можно из меню канала.</string>
     <string name="FormatWithSecondsInfo">Показывать секунды во времени сообщений и других отметках времени.</string>
     <string name="HideAiEditorInfo">Скрывать кнопку ИИ-редактора в полях сообщения и подписи.</string>
     <string name="FormattingMenuInfo">Удерживайте и перетащите пункт, чтобы изменить порядок. Пункты без галочки скрыты из меню выделения текста.</string>

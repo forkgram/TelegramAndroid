@@ -44,6 +44,8 @@
     <string name="HideSendAsInfo">دکمهٔ نمایهٔ «ارسال به‌عنوان» در کادر پیام پنهان شود.</string>
     <string name="DisableLinkPreviewByDefaultInfo">پیام‌های دارای پیوند بدون پیش‌نمایش ارسال شوند.</string>
     <string name="DisableSlideToNextChannelInfo">هنگام پیمایش تا انتهای کانال، به کانال بعدی لغزانده نشود.</string>
+    <string name="HideChannelMuteButton">پنهان کردن دکمه بی‌صدا کردن کانال</string>
+    <string name="HideChannelMuteButtonInfo">دکمه قطع و وصل صدا را در پایین کانال‌هایی که عضو آن‌ها هستید پنهان کنید. تنظیمات اعلان همچنان در منوی کانال در دسترس است.</string>
     <string name="FormatWithSecondsInfo">ثانیه‌ها در زمان پیام‌ها و دیگر زمان‌ها نمایش داده شوند.</string>
     <string name="HideAiEditorInfo">دکمهٔ بازنویسی هوش مصنوعی در کادر پیام و شرح پنهان شود.</string>
     <string name="FormattingMenuInfo">برای جابه‌جایی، گزینه را نگه دارید و بکشید. گزینه‌های تیک‌نخورده از منوی انتخاب متن پنهان می‌شوند.</string>

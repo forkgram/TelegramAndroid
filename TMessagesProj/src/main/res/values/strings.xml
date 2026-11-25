@@ -32,6 +32,8 @@
     <string name="HideSendAsInfo">Hide the send-as avatar button in the message field.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Send messages containing links without a preview attached.</string>
     <string name="DisableSlideToNextChannelInfo">Do not slide to the next channel when scrolling past the end.</string>
+    <string name="HideChannelMuteButton">Hide channel mute button</string>
+    <string name="HideChannelMuteButtonInfo">Hide the Mute and Unmute button at the bottom of subscribed channels. You can still change notifications from the channel menu.</string>
     <string name="FormatWithSecondsInfo">Show seconds in message timestamps and other times.</string>
     <string name="HideAiEditorInfo">Hide the AI rewrite button in message and caption fields.</string>
     <string name="FormattingMenuInfo">Hold and drag an option to reorder it. Unchecked options are hidden from the text selection menu.</string>

@@ -114,6 +114,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_LINK_PREVIEW_BY_DEFAULT = 33;
     public static final int ID_DELETE_ALL_UNPINNED = 34;
     public static final int ID_DISABLE_SLIDE_TO_NEXT_CHANNEL = 35;
+    public static final int ID_HIDE_CHANNEL_MUTE_BUTTON = 105;
     public static final int ID_FORMAT_WITH_SECONDS = 36;
     public static final int ID_HIDE_AI_EDITOR = 37;
     public static final int ID_FORMATTING_MENU = 38;
@@ -648,6 +649,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("addItemToDeleteAllUnpinnedMessages", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_SLIDE_TO_NEXT_CHANNEL, LocaleController.getString(R.string.DisableSlideToNextChannel), LocaleController.getString(R.string.DisableSlideToNextChannelInfo))
             .setChecked(pref("disableSlideToNextChannel", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_HIDE_CHANNEL_MUTE_BUTTON, LocaleController.getString(R.string.HideChannelMuteButton), LocaleController.getString(R.string.HideChannelMuteButtonInfo))
+            .setChecked(pref("hideChannelMuteButton", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_FORMAT_WITH_SECONDS, LocaleController.getString(R.string.FormatWithSeconds), LocaleController.getString(R.string.FormatWithSecondsInfo))
             .setChecked(pref("formatWithSeconds", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_HIDE_AI_EDITOR, LocaleController.getString(R.string.HideAiEditor), LocaleController.getString(R.string.HideAiEditorInfo))
@@ -865,6 +868,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("addItemToDeleteAllUnpinnedMessages", item, view);
         } else if (id == ID_DISABLE_SLIDE_TO_NEXT_CHANNEL) {
             toggle("disableSlideToNextChannel", item, view);
+        } else if (id == ID_HIDE_CHANNEL_MUTE_BUTTON) {
+            toggle("hideChannelMuteButton", item, view);
         } else if (id == ID_FORMAT_WITH_SECONDS) {
             toggle("formatWithSeconds", item, view);
         } else if (id == ID_HIDE_AI_EDITOR) {
