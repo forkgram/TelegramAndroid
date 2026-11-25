@@ -30,6 +30,8 @@ public class ChatsWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
             updateWidget(context, appWidgetManager, appWidgetId);
         }
+        // After updateWidget, which stores the widget's account.
+        MessagesStorage.invalidateUnsavedWidgetIds();
     }
 
     @Override
@@ -55,6 +57,7 @@ public class ChatsWidgetProvider extends AppWidgetProvider {
             editor.remove("deleted" + appWidgetIds[a]);
         }
         editor.commit();
+        MessagesStorage.invalidateUnsavedWidgetIds();
     }
 
     private static int getCellsForSize(int size) {

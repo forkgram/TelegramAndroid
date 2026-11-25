@@ -30,6 +30,8 @@ public class ContactsWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
             updateWidget(context, appWidgetManager, appWidgetId);
         }
+        // After updateWidget, which stores the widget's account.
+        MessagesStorage.invalidateUnsavedWidgetIds();
     }
 
     @Override
@@ -49,6 +51,7 @@ public class ContactsWidgetProvider extends AppWidgetProvider {
             editor.remove("deleted" + appWidgetIds[a]);
         }
         editor.commit();
+        MessagesStorage.invalidateUnsavedWidgetIds();
     }
 
     @Override
