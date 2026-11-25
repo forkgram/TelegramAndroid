@@ -141,6 +141,10 @@
     <string name="HideSavedMessagesTagsInfo">저장된 메시지의 태그 필터 막대를 숨깁니다.</string>
     <string name="DisableLockedAnimatedEmojiInfo">잠긴 프리미엄 이모지 팩을 숨깁니다. Premium이 아닌 계정에만 적용됩니다.</string>
     <string name="FullRecentStickersInfo">최근 스티커를 20개가 아니라 전부 표시합니다.</string>
+    <string name="ConfirmGifStickerSend">GIF와 스티커 전송 전 확인</string>
+    <string name="ConfirmGifStickerSendInfo">채팅 선택기에서 GIF나 스티커를 누르면 전송을 확인합니다.</string>
+    <string name="ConfirmSendGif">GIF를 보낼까요?</string>
+    <string name="ConfirmSendSticker">스티커를 보낼까요?</string>
     <string name="DisableFlipPhotosInfo">화면 가장자리를 탭해도 다음 사진으로 넘어가지 않습니다.</string>
     <string name="RearVideoMessagesInfo">동영상 메시지를 후면 카메라로 녹화합니다.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">볼륨 키를 눌러도 보이는 동영상의 음소거를 해제하지 않습니다.</string>

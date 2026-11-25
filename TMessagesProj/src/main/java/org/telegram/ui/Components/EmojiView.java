@@ -435,7 +435,34 @@ public class EmojiView extends FrameLayout implements
         }
     };
 
+    private void sendGifFromPicker(View view, Object gif, String query, Object parent, boolean refreshRecents) {
+        final EmojiViewDelegate current = delegate;
+        current.beforePickerMediaSend(false, () -> {
+            current.onGifSelected(view, gif, query, parent, true, 0, 0);
+            if (refreshRecents) {
+                updateRecentGifs();
+            }
+        });
+    }
+
+    private void sendStickerFromPicker(StickerEmojiCell cell, String query) {
+        final EmojiViewDelegate current = delegate;
+        final TLRPC.Document sticker = cell.getSticker();
+        final Object parent = cell.getParentObject();
+        current.beforePickerMediaSend(true, () -> {
+            final boolean sameSticker = cell.getSticker() == sticker;
+            if (sameSticker) {
+                cell.disable();
+            }
+            current.onStickerSelected(sameSticker ? cell : null, sticker, query, parent, sameSticker ? cell.getSendAnimationData() : null, true, 0, 0);
+        });
+    }
+
     public interface EmojiViewDelegate {
+        default void beforePickerMediaSend(boolean sticker, Runnable send) {
+            send.run();
+        }
+
         default boolean onBackspace() {
             return false;
         }
@@ -2088,7 +2115,7 @@ public class EmojiView extends FrameLayout implements
                             return;
                         }
                         if (position < gifAdapter.recentItemsCount) {
-                            delegate.onGifSelected(view, recentGifs.get(position), null, "gif", true, 0, 0);
+                            sendGifFromPicker(view, recentGifs.get(position), null, "gif", false);
                         } else {
                             int resultPos = position;
                             if (gifAdapter.recentItemsCount > 0) {
@@ -2096,15 +2123,14 @@ public class EmojiView extends FrameLayout implements
                                 resultPos--; // trending section item
                             }
                             if (resultPos >= 0 && resultPos < gifAdapter.results.size()) {
-                                delegate.onGifSelected(view, gifAdapter.results.get(resultPos), null, gifAdapter.bot, true, 0, 0);
+                                sendGifFromPicker(view, gifAdapter.results.get(resultPos), null, gifAdapter.bot, false);
                             }
                         }
                     } else if (gifGridView.getAdapter() == gifSearchAdapter) {
                         if (position < 0 || position >= gifSearchAdapter.results.size()) {
                             return;
                         }
-                        delegate.onGifSelected(view, gifSearchAdapter.results.get(position), gifSearchAdapter.lastSearchImageString, gifSearchAdapter.bot, true, 0, 0);
-                        updateRecentGifs();
+                        sendGifFromPicker(view, gifSearchAdapter.results.get(position), gifSearchAdapter.lastSearchImageString, gifSearchAdapter.bot, true);
                     }
                 };
 
@@ -2357,8 +2383,7 @@ public class EmojiView extends FrameLayout implements
                 if (cell.isDisabled()) {
                     return;
                 }
-                cell.disable();
-                delegate.onStickerSelected(cell, cell.getSticker(), query, cell.getParentObject(), cell.getSendAnimationData(), true, 0, 0);
+                sendStickerFromPicker(cell, query);
             };
             stickersGridView.setOnItemClickListener(stickersOnItemClickListener);
             ThemeBind.listGlowColor(stickersGridView, Theme.key_chat_emojiPanelBackground, resourcesProvider);

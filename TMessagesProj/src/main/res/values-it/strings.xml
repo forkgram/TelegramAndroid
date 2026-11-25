@@ -141,6 +141,10 @@
     <string name="HideSavedMessagesTagsInfo">Nascondere la barra dei filtri per tag nei Messaggi salvati.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Nascondere i pacchetti di emoji premium bloccati. Riguarda solo gli account senza Premium.</string>
     <string name="FullRecentStickersInfo">Mostrare tutti gli sticker recenti invece degli ultimi 20.</string>
+    <string name="ConfirmGifStickerSend">Conferma prima di inviare GIF e adesivi</string>
+    <string name="ConfirmGifStickerSendInfo">Chiede conferma quando tocchi una GIF o un adesivo nel selettore della chat.</string>
+    <string name="ConfirmSendGif">Inviare la GIF?</string>
+    <string name="ConfirmSendSticker">Inviare l’adesivo?</string>
     <string name="DisableFlipPhotosInfo">Non passare alla foto successiva toccando i bordi dello schermo.</string>
     <string name="RearVideoMessagesInfo">Registrare i messaggi video con la fotocamera posteriore.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Non attivare l\'audio del video visibile premendo i tasti del volume.</string>

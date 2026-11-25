@@ -52,6 +52,10 @@
     <string name="HideSavedMessagesTagsInfo">نوار فیلتر برچسب‌ها در پیام‌های ذخیره‌شده پنهان شود.</string>
     <string name="DisableLockedAnimatedEmojiInfo">بسته‌های ایموجی قفل‌شدهٔ پریمیوم پنهان شوند. فقط روی حساب‌های بدون پریمیوم اثر دارد.</string>
     <string name="FullRecentStickersInfo">به‌جای ۲۰ استیکر آخر، همهٔ استیکرهای اخیر نمایش داده شوند.</string>
+    <string name="ConfirmGifStickerSend">تأیید پیش از ارسال گیف و برچسب</string>
+    <string name="ConfirmGifStickerSendInfo">با زدن روی گیف یا برچسب در انتخابگر گفتگو، تأیید خواسته شود.</string>
+    <string name="ConfirmSendGif">گیف ارسال شود؟</string>
+    <string name="ConfirmSendSticker">برچسب ارسال شود؟</string>
     <string name="DisableFlipPhotosInfo">با ضربه روی لبه‌های صفحه، به عکس بعدی رفته نشود.</string>
     <string name="RearVideoMessagesInfo">ضبط پیام‌های ویدیویی با دوربین پشتی آغاز شود.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">با فشردن کلیدهای صدا، ویدیوی در حال نمایش از حالت بی‌صدا خارج نشود.</string>

@@ -177,6 +177,7 @@ object ForkSettings {
         BoolOption("disableLockedAnimatedEmoji", ForkSettingsActivity.ID_DISABLE_LOCKED_ANIMATED_EMOJI, false),
 
         BoolOption("fullRecentStickers", ForkSettingsActivity.ID_FULL_RECENT_STICKERS, true),
+        BoolOption("confirmGifStickerSend", ForkSettingsActivity.ID_CONFIRM_GIF_STICKER_SEND, false),
         BoolOption("showArchivedStickers", ForkSettingsActivity.ID_SHOW_ARCHIVED_STICKERS, false),
         FloatOption("stickerSize", ForkSettingsActivity.ID_STICKER_SIZE, ChatMessageCell.MAX_STICKER_SIZE),
 

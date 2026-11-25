@@ -141,6 +141,10 @@
     <string name="HideSavedMessagesTagsInfo">De tagfilterbalk in Opgeslagen berichten verbergen.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Vergrendelde premium-emojipakketten verbergen. Alleen voor accounts zonder Premium.</string>
     <string name="FullRecentStickersInfo">Alle recente stickers tonen in plaats van de laatste 20.</string>
+    <string name="ConfirmGifStickerSend">Bevestig het versturen van gifjes en stickers</string>
+    <string name="ConfirmGifStickerSendInfo">Vraagt om bevestiging als je in de chatkiezer op een gifje of sticker tikt.</string>
+    <string name="ConfirmSendGif">Gifje versturen?</string>
+    <string name="ConfirmSendSticker">Sticker versturen?</string>
     <string name="DisableFlipPhotosInfo">Niet naar de volgende foto gaan bij tikken op de schermranden.</string>
     <string name="RearVideoMessagesInfo">Videoberichten opnemen met de camera aan de achterkant.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">De demping van de zichtbare video niet opheffen met de volumetoetsen.</string>

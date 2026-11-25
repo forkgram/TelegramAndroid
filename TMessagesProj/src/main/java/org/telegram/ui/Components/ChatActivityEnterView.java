@@ -138,6 +138,7 @@ import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.forkgram.ExtractMediaFromPreview;
 import org.telegram.messenger.forkgram.LinkReplacements;
+import org.telegram.messenger.forkgram.MediaSendConfirmation;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.RichMessageLayout;
 import org.telegram.messenger.MessageSuggestionParams;
@@ -12448,6 +12449,11 @@ public class ChatActivityEnterView extends FrameLayout implements
                 } else {
                     alert.show();
                 }
+            }
+
+            @Override
+            public void beforePickerMediaSend(boolean sticker, Runnable send) {
+                MediaSendConfirmation.confirm(parentFragment, sticker, send);
             }
 
             @Override

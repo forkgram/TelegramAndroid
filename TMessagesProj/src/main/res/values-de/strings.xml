@@ -141,6 +141,10 @@
     <string name="HideSavedMessagesTagsInfo">Die Tag-Filterleiste in gespeicherten Nachrichten ausblenden.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Gesperrte Premium-Emoji-Pakete ausblenden. Betrifft nur Konten ohne Premium.</string>
     <string name="FullRecentStickersInfo">Alle zuletzt verwendeten Sticker anzeigen statt nur der letzten 20.</string>
+    <string name="ConfirmGifStickerSend">Senden von GIFs und Stickern bestätigen</string>
+    <string name="ConfirmGifStickerSendInfo">Beim Antippen eines GIFs oder Stickers in der Chat-Auswahl nach einer Bestätigung fragen.</string>
+    <string name="ConfirmSendGif">GIF senden?</string>
+    <string name="ConfirmSendSticker">Sticker senden?</string>
     <string name="DisableFlipPhotosInfo">Beim Tippen auf die Bildschirmränder nicht zum nächsten Foto wechseln.</string>
     <string name="RearVideoMessagesInfo">Videonachrichten mit der Rückkamera aufnehmen.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Das sichtbare Video beim Drücken der Lautstärketasten nicht lauter schalten.</string>

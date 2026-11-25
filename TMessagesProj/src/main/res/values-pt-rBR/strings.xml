@@ -141,6 +141,10 @@
     <string name="HideSavedMessagesTagsInfo">Ocultar a barra de filtro por marcadores nas Mensagens salvas.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Ocultar os pacotes de emoji premium bloqueados. Afeta apenas contas sem Premium.</string>
     <string name="FullRecentStickersInfo">Mostrar todas as figurinhas recentes em vez das últimas 20.</string>
+    <string name="ConfirmGifStickerSend">Confirmar antes de enviar GIFs e figurinhas</string>
+    <string name="ConfirmGifStickerSendInfo">Pede confirmação ao tocar em um GIF ou uma figurinha no seletor da conversa.</string>
+    <string name="ConfirmSendGif">Enviar GIF?</string>
+    <string name="ConfirmSendSticker">Enviar figurinha?</string>
     <string name="DisableFlipPhotosInfo">Não passar para a próxima foto ao tocar nas bordas da tela.</string>
     <string name="RearVideoMessagesInfo">Gravar as mensagens de vídeo com a câmera traseira.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Não ativar o som do vídeo visível ao pressionar as teclas de volume.</string>

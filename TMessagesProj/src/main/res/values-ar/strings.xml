@@ -141,6 +141,10 @@
     <string name="HideSavedMessagesTagsInfo">إخفاء شريط تصفية الوسوم في الرسائل المحفوظة.</string>
     <string name="DisableLockedAnimatedEmojiInfo">إخفاء حزم الإيموجي المميزة المقفلة. يؤثر على الحسابات غير المميزة فقط.</string>
     <string name="FullRecentStickersInfo">إظهار جميع الملصقات الأخيرة بدلاً من آخر 20 فقط.</string>
+    <string name="ConfirmGifStickerSend">تأكيد إرسال الصور المتحركة والملصقات</string>
+    <string name="ConfirmGifStickerSendInfo">طلب التأكيد عند النقر على صورة متحركة أو ملصق في منتقي الدردشة.</string>
+    <string name="ConfirmSendGif">إرسال الصورة المتحركة؟</string>
+    <string name="ConfirmSendSticker">إرسال الملصق؟</string>
     <string name="DisableFlipPhotosInfo">عدم الانتقال إلى الصورة التالية عند النقر على حواف الشاشة.</string>
     <string name="RearVideoMessagesInfo">تسجيل رسائل الفيديو بالكاميرا الخلفية.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">عدم إلغاء كتم الفيديو الظاهر عند الضغط على مفاتيح الصوت.</string>

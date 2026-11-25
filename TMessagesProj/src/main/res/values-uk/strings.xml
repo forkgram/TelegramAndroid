@@ -141,6 +141,10 @@
     <string name="HideSavedMessagesTagsInfo">Приховувати панель фільтра за тегами в «Збереженому».</string>
     <string name="DisableLockedAnimatedEmojiInfo">Приховувати заблоковані преміум-набори емодзі. Лише для акаунтів без Premium.</string>
     <string name="FullRecentStickersInfo">Показувати всі нещодавні стікери замість останніх 20.</string>
+    <string name="ConfirmGifStickerSend">Підтверджувати надсилання GIF і наліпок</string>
+    <string name="ConfirmGifStickerSendInfo">Запитує підтвердження під час натискання на GIF або наліпку на панелі чату.</string>
+    <string name="ConfirmSendGif">Надіслати GIF?</string>
+    <string name="ConfirmSendSticker">Надіслати наліпку?</string>
     <string name="DisableFlipPhotosInfo">Не перемикати фото під час натискання на краї екрана.</string>
     <string name="RearVideoMessagesInfo">Починати запис відеоповідомлень з основної камери.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Не вмикати звук видимого відео під час натискання клавіш гучності.</string>

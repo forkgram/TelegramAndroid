@@ -124,6 +124,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_HIDE_SAVED_MESSAGES_TAGS = 42;
     public static final int ID_DISABLE_LOCKED_ANIMATED_EMOJI = 43;
     public static final int ID_FULL_RECENT_STICKERS = 44;
+    public static final int ID_CONFIRM_GIF_STICKER_SEND = 104;
     public static final int ID_SHOW_ARCHIVED_STICKERS = 45;
     public static final int ID_STICKER_SIZE = 46;
 
@@ -669,6 +670,8 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asHeader(LocaleController.getString(R.string.StickersName)));
         items.add(UItem.asButtonCheck(ID_FULL_RECENT_STICKERS, LocaleController.getString(R.string.FullRecentStickers), LocaleController.getString(R.string.FullRecentStickersInfo))
             .setChecked(pref("fullRecentStickers", true)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_CONFIRM_GIF_STICKER_SEND, LocaleController.getString(R.string.ConfirmGifStickerSend), LocaleController.getString(R.string.ConfirmGifStickerSendInfo))
+            .setChecked(pref("confirmGifStickerSend", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_SHOW_ARCHIVED_STICKERS, LocaleController.getString(R.string.ShowArchivedStickers), LocaleController.getString(R.string.ShowArchivedStickersInfo))
             .setChecked(pref("showArchivedStickers", false)).setMultiline(true));
         items.add(UItem.asShadow(null));
@@ -881,6 +884,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("disableLockedAnimatedEmoji", item, view);
         } else if (id == ID_FULL_RECENT_STICKERS) {
             toggle("fullRecentStickers", item, view);
+        } else if (id == ID_CONFIRM_GIF_STICKER_SEND) {
+            toggle("confirmGifStickerSend", item, view);
         } else if (id == ID_SHOW_ARCHIVED_STICKERS) {
             ForkSettings.applyEffect(currentAccount, "showArchivedStickers", toggle("showArchivedStickers", item, view));
 

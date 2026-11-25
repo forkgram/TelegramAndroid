@@ -128,6 +128,10 @@
     <string name="HideSavedMessagesTagsInfo">Скрывать панель фильтра по тегам в «Избранном».</string>
     <string name="DisableLockedAnimatedEmojiInfo">Скрывать заблокированные премиум-наборы эмодзи. Только для аккаунтов без Premium.</string>
     <string name="FullRecentStickersInfo">Показывать все недавние стикеры вместо последних 20.</string>
+    <string name="ConfirmGifStickerSend">Подтверждать отправку GIF и стикеров</string>
+    <string name="ConfirmGifStickerSendInfo">Запрашивает подтверждение при нажатии на GIF или стикер в панели чата.</string>
+    <string name="ConfirmSendGif">Отправить GIF?</string>
+    <string name="ConfirmSendSticker">Отправить стикер?</string>
     <string name="DisableFlipPhotosInfo">Не переключать фото при нажатии на края экрана.</string>
     <string name="RearVideoMessagesInfo">Начинать запись видеосообщений с основной камеры.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Не включать звук видимого видео при нажатии клавиш громкости.</string>

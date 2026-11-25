@@ -40,6 +40,10 @@
     <string name="HideSavedMessagesTagsInfo">Hide the tag filter bar in Saved Messages.</string>
     <string name="DisableLockedAnimatedEmojiInfo">Hide locked premium emoji packs. Affects non-Premium accounts only.</string>
     <string name="FullRecentStickersInfo">Show all recent stickers instead of the last 20.</string>
+    <string name="ConfirmGifStickerSend">Confirm before sending GIFs and stickers</string>
+    <string name="ConfirmGifStickerSendInfo">Ask for confirmation when you tap a GIF or sticker in the chat picker.</string>
+    <string name="ConfirmSendGif">Send GIF?</string>
+    <string name="ConfirmSendSticker">Send sticker?</string>
     <string name="DisableFlipPhotosInfo">Do not switch to the next photo when the screen edges are tapped.</string>
     <string name="RearVideoMessagesInfo">Start recording video messages with the rear camera.</string>
     <string name="DisablePlayVisibleVideoOnVolumeInfo">Do not unmute the visible video when volume keys are pressed.</string>
