@@ -4376,12 +4376,9 @@ public class AndroidUtilities {
                     return true;
                 }
                 realMimeType = myMime.getMimeTypeFromExtension(ext.toLowerCase());
-                if (realMimeType == null) {
-                    realMimeType = mimeType;
-                    if (realMimeType == null || realMimeType.length() == 0) {
-                        realMimeType = null;
-                    }
-                }
+            }
+            if (realMimeType == null && !TextUtils.isEmpty(mimeType)) {
+                realMimeType = mimeType;
             }
             if (realMimeType != null && realMimeType.equals("application/vnd.android.package-archive")) {
                 if (restrict) return true;
