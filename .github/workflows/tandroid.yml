@@ -5,6 +5,30 @@ on:
     branches:
       - '**'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Verify normally, or preflight/publish the pinned optional APK
+        required: true
+        default: verify
+        type: choice
+        options:
+          - verify
+          - optional-preflight
+          - optional-publish
+          - optional-reconcile
+      source_run_id:
+        description: Failed optional push run that got a verified APK receipt before starting a feed write
+        type: string
+        required: false
+      expected_feed_id:
+        description: Latest Android feed post ID from the read-only check
+        type: string
+      expected_feed_sha256:
+        description: Exact whole Android feed digest from the read-only check
+        type: string
+      expected_files_id:
+        description: Latest files channel post ID from the read-only check
+        type: string
 
 permissions:
   contents: read
@@ -16,6 +40,7 @@ defaults:
 jobs:
   build:
     name: Build
+    if: github.event_name != 'workflow_dispatch' || inputs.mode == 'verify'
     runs-on: ubuntu-24.04
     outputs:
       mode: ${{ steps.mode.outputs.mode }}
@@ -211,6 +236,155 @@ jobs:
         working-directory: ${{ runner.temp }}/telegram-release
         run: |
           bash "$GITHUB_WORKSPACE/.github/scripts/publish_android_bot_api.sh" "$(cat version.txt)"
+
+  retry-optional:
+    name: Recover signed optional APK
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/dev' &&
+      (inputs.mode == 'optional-preflight' || inputs.mode == 'optional-publish')
+    runs-on: ubuntu-24.04
+    environment: android-telegram
+    permissions:
+      contents: read
+      actions: read
+    concurrency:
+      group: fork-client-android-telegram
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Validate pinned source artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$GITHUB_REPOSITORY" == forkgram/TelegramAndroid ]]
+          gh api repos/forkgram/TelegramAndroid/actions/artifacts/14998261075 |
+            jq -e '.id == 14998261075 and .name == "android-signed-apk" and .expired == false and
+              .workflow_run.id == 45557046133 and
+              .workflow_run.head_sha == "c056292776c29cac990adf6255e97d199423130a" and
+              .digest == "sha256:2a302d1f3a00c65e04ca3810878ffb6e5fc7ff94a29675fd012e0185f4ce7f91"' >/dev/null
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          artifact-ids: '14998261075'
+          merge-multiple: true
+          run-id: '45557046133'
+          github-token: ${{ github.token }}
+          repository: forkgram/TelegramAndroid
+          path: ${{ runner.temp }}/telegram-release
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Check or publish only the pinned 13.2.5.0 APK
+        working-directory: ${{ runner.temp }}/telegram-release
+        env:
+          MODE: ${{ inputs.mode }}
+          EXPECTED_FEED_ID: ${{ inputs.expected_feed_id }}
+          EXPECTED_FEED_SHA256: ${{ inputs.expected_feed_sha256 }}
+          EXPECTED_FILES_ID: ${{ inputs.expected_files_id }}
+          ANDROID_BOT_TOKEN: ${{ secrets.ANDROID_BOT_TOKEN }}
+          ANDROID_BOT_API_SSH_KEY: ${{ secrets.ANDROID_BOT_API_SSH_KEY }}
+          ANDROID_BOT_API_SSH_KNOWN_HOSTS: ${{ vars.ANDROID_BOT_API_SSH_KNOWN_HOSTS }}
+        run: |
+          [[ "$(cat version.txt)" == 13.2.5.0 ]]
+          printf '%s  %s\n' '0cd8bd8b6bfb8be46079894432a707713001c5aec3b8c845b0ec0151cc6b4efc' 'ForkClient 13.2.5.0.apk' | sha256sum -c -
+          args=()
+          if [[ "$MODE" == optional-preflight ]]; then
+            args+=(--preflight)
+          else
+            [[ "$MODE" == optional-publish ]]
+            [[ "$EXPECTED_FEED_ID" =~ ^[1-9][0-9]*$ && "$EXPECTED_FILES_ID" =~ ^[1-9][0-9]*$ && "$EXPECTED_FEED_SHA256" =~ ^[a-f0-9]{64}$ ]]
+          fi
+          if [[ -n "$EXPECTED_FEED_ID$EXPECTED_FEED_SHA256$EXPECTED_FILES_ID" ]]; then
+            args+=(--expected-feed-id "$EXPECTED_FEED_ID" --expected-feed-sha256 "$EXPECTED_FEED_SHA256" --expected-files-id "$EXPECTED_FILES_ID")
+          fi
+          bash "$GITHUB_WORKSPACE/.github/scripts/publish_android_bot_api.sh" 13.2.5.0 "${args[@]}"
+
+
+  reconcile-optional:
+    name: Reconcile existing optional APK
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/dev' &&
+      inputs.mode == 'optional-reconcile'
+    runs-on: ubuntu-24.04
+    environment: android-telegram
+    permissions:
+      contents: read
+      actions: read
+    concurrency:
+      group: fork-client-android-telegram
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Verify original optional run and extract its exact upload receipt
+        id: receipt
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          [[ "$GITHUB_REPOSITORY" == forkgram/TelegramAndroid && "$SOURCE_RUN_ID" =~ ^[1-9][0-9]*$ && "$GITHUB_RUN_ATTEMPT" == 1 ]]
+          api="repos/$GITHUB_REPOSITORY"
+          run=$(gh api "$api/actions/runs/$SOURCE_RUN_ID")
+          jq -e '.path == ".github/workflows/tandroid.yml" and .event == "push" and .head_branch == "dev" and
+            .status == "completed" and .conclusion == "failure" and .run_attempt == 1' <<< "$run" >/dev/null
+          source_sha=$(jq -er '.head_sha | select(test("^[a-f0-9]{40}$"))' <<< "$run")
+          gh api "$api/compare/$source_sha...$GITHUB_SHA" | jq -e '.status == "ahead" or .status == "identical"' >/dev/null
+          for file in .github/workflows/tandroid.yml .github/scripts/publish_android_optional.py .github/scripts/publish_android_bot_api.sh; do
+            remote_blob=$(gh api "$api/contents/$file?ref=$source_sha" --jq .sha)
+            [[ "$remote_blob" == "$(git hash-object -- "$file")" ]]
+          done
+          jobs=$(gh api "$api/actions/runs/$SOURCE_RUN_ID/jobs?filter=latest")
+          jq -e '[.jobs[] | select(.name == "Sign APK" and .conclusion == "success")] | length == 1' <<< "$jobs" >/dev/null
+          job=$(jq -er '[.jobs[] | select(.name == "Publish to Telegram" and .conclusion == "failure")] |
+            select(length == 1) | .[0].id | tostring | select(test("^[1-9][0-9]*$"))' <<< "$jobs")
+          artifact=$(gh api "$api/actions/runs/$SOURCE_RUN_ID/artifacts" | jq -er \
+            --arg sha "$source_sha" --argjson run "$SOURCE_RUN_ID" \
+            '[.artifacts[] | select(.name == "android-signed-apk" and .expired == false and
+              .workflow_run.id == $run and .workflow_run.head_sha == $sha and
+              (.digest | test("^sha256:[a-f0-9]{64}$")))] |
+              select(length == 1) | .[0].id | tostring | select(test("^[1-9][0-9]*$"))')
+          umask 077
+          logs=$(mktemp "$RUNNER_TEMP/android-receipt.XXXXXX")
+          trap 'rm -f -- "$logs"' EXIT
+          gh run view "$SOURCE_RUN_ID" --repo "$GITHUB_REPOSITORY" --job "$job" --log-failed > "$logs"
+          version=$(python .github/scripts/read_android_optional_receipt.py "$logs" "$RUNNER_TEMP/android-receipt.json")
+          expected_title="[Optional] ${version%.*}."
+          [[ "$(jq -er '.head_commit.message | split("\n")[0]' <<< "$run")" == "$expected_title" ]]
+          printf 'artifact=%s\nrun=%s\n' "$artifact" "$SOURCE_RUN_ID" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          artifact-ids: ${{ steps.receipt.outputs.artifact }}
+          merge-multiple: true
+          run-id: ${{ steps.receipt.outputs.run }}
+          github-token: ${{ github.token }}
+          repository: forkgram/TelegramAndroid
+          path: ${{ runner.temp }}/telegram-release
+      - name: Update only the Android feed for that exact existing APK
+        timeout-minutes: 10
+        working-directory: ${{ runner.temp }}/telegram-release
+        env:
+          ANDROID_BOT_TOKEN: ${{ secrets.ANDROID_BOT_TOKEN }}
+          ANDROID_BOT_API_SSH_KEY: ${{ secrets.ANDROID_BOT_API_SSH_KEY }}
+          ANDROID_BOT_API_SSH_KNOWN_HOSTS: ${{ vars.ANDROID_BOT_API_SSH_KNOWN_HOSTS }}
+        run: |
+          receipt="$RUNNER_TEMP/android-receipt.json"
+          version=$(jq -er .version "$receipt")
+          digest=$(jq -er .apk_sha256 "$receipt")
+          apk_id=$(jq -er .apk_id "$receipt")
+          [[ "$(cat version.txt)" == "$version" ]]
+          printf '%s  %s\n' "$digest" "ForkClient $version.apk" | sha256sum -c -
+          bash "$GITHUB_WORKSPACE/.github/scripts/publish_android_bot_api.sh" "$version" \
+            --expected-feed-id "$(jq -er .feed_id "$receipt")" \
+            --expected-feed-sha256 "$(jq -er .feed_sha256 "$receipt")" \
+            --expected-files-id "$apk_id" --reconcile-apk-id "$apk_id"
 
   attest:
     name: Attest release APK
