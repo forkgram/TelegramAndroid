@@ -1466,4 +1466,6 @@
     <string name="DisabledMessageWidget">지원되지 않는 HTML 위젯</string>
     <string name="ShowNewMessageButton">새 메시지 버튼 표시</string>
     <string name="ShowNewMessageButtonInfo">기본 채팅 목록에 메시지 작성 버튼을 표시합니다.</string>
+    <string name="HideGreetingStickers">인사 스티커 숨기기</string>
+    <string name="HideGreetingStickersInfo">비어 있는 개인 채팅에서 추천 스티커를 숨깁니다.</string>
 </resources>

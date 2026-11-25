@@ -121,6 +121,7 @@ public class ChatGreetingsView extends LinearLayout implements Theme.Colorable {
     private TextView premiumButtonView;
 
     private boolean premiumLock;
+    private boolean greetingStickerHidden;
     private boolean isSuggest;
 
     public void resetPremiumLock() {
@@ -239,6 +240,18 @@ public class ChatGreetingsView extends LinearLayout implements Theme.Colorable {
             addView(descriptionView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 20, 6, 20, 6));
             addView(stickerContainer, LayoutHelper.createLinear(112, 112, Gravity.CENTER_HORIZONTAL, 16, 10, 16, 16));
         }
+    }
+
+    public void setGreetingStickerHidden(boolean hidden) {
+        if (greetingStickerHidden == hidden) {
+            return;
+        }
+        greetingStickerHidden = hidden;
+        stickerContainer.setVisibility(hidden ? View.GONE : View.VISIBLE);
+        if (!hidden) {
+            descriptionView.setVisibility(View.VISIBLE);
+        }
+        requestLayout();
     }
 
     public void setSticker(TLRPC.Document sticker) {
@@ -428,7 +441,7 @@ public class ChatGreetingsView extends LinearLayout implements Theme.Colorable {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         ignoreLayot = true;
         if (!preview) {
-            descriptionView.setVisibility(View.VISIBLE);
+            descriptionView.setVisibility(greetingStickerHidden ? View.GONE : View.VISIBLE);
         }
         stickerToSendView.setVisibility(View.VISIBLE);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -437,7 +450,7 @@ public class ChatGreetingsView extends LinearLayout implements Theme.Colorable {
             stickerToSendView.setVisibility(View.GONE);
         } else {
             if (!preview) {
-                descriptionView.setVisibility(View.VISIBLE);
+                descriptionView.setVisibility(greetingStickerHidden ? View.GONE : View.VISIBLE);
             }
             stickerToSendView.setVisibility(View.VISIBLE);
         }

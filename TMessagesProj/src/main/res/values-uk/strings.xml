@@ -602,4 +602,6 @@
     <string name="DisabledMessageWidget">HTML-віджет не підтримується</string>
     <string name="ShowNewMessageButton">Показувати кнопку «Нове повідомлення»</string>
     <string name="ShowNewMessageButtonInfo">Показує кнопку створення повідомлення в основному списку чатів.</string>
+    <string name="HideGreetingStickers">Приховувати вітальні наліпки</string>
+    <string name="HideGreetingStickersInfo">Приховує запропоновану наліпку в порожньому особистому чаті.</string>
 </resources>

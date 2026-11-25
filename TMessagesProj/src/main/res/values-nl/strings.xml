@@ -1419,4 +1419,6 @@
     <string name="DisabledMessageWidget">Niet-ondersteunde HTML-widget</string>
     <string name="ShowNewMessageButton">Knop Nieuw bericht tonen</string>
     <string name="ShowNewMessageButtonInfo">Toon de knop om een bericht te schrijven in de hoofdchatlijst.</string>
+    <string name="HideGreetingStickers">Begroetingsstickers verbergen</string>
+    <string name="HideGreetingStickersInfo">Verberg de stickersuggestie in een lege privéchat.</string>
 </resources>

@@ -1710,4 +1710,6 @@
     <string name="DisabledMessageWidget">Nicht unterstütztes HTML-Widget</string>
     <string name="ShowNewMessageButton">Schaltfläche „Neue Nachricht“ anzeigen</string>
     <string name="ShowNewMessageButtonInfo">Zeigt die Schaltfläche zum Schreiben in der Haupt-Chatliste an.</string>
+    <string name="HideGreetingStickers">Begrüßungssticker ausblenden</string>
+    <string name="HideGreetingStickersInfo">Blendet den Stickervorschlag in einem leeren privaten Chat aus.</string>
 </resources>

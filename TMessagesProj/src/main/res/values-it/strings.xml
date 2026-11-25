@@ -1872,4 +1872,6 @@
     <string name="DisabledMessageWidget">Widget HTML non supportato</string>
     <string name="ShowNewMessageButton">Mostra il pulsante Nuovo messaggio</string>
     <string name="ShowNewMessageButtonInfo">Mostra il pulsante per scrivere un messaggio nella lista principale delle chat.</string>
+    <string name="HideGreetingStickers">Nascondi gli sticker di saluto</string>
+    <string name="HideGreetingStickersInfo">Nasconde lo sticker suggerito in una chat privata vuota.</string>
 </resources>

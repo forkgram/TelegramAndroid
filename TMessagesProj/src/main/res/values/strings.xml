@@ -12018,4 +12018,6 @@
     <string name="DisabledMessageWidget">Unsupported HTML widget</string>
     <string name="ShowNewMessageButton">Show New Message button</string>
     <string name="ShowNewMessageButtonInfo">Show the compose button in the main chat list.</string>
+    <string name="HideGreetingStickers">Hide greeting stickers</string>
+    <string name="HideGreetingStickersInfo">Hide the sticker suggestion in an empty private chat.</string>
 </resources>

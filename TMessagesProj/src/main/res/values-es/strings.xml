@@ -1650,4 +1650,6 @@
     <string name="DisabledMessageWidget">Widget HTML incompatible</string>
     <string name="ShowNewMessageButton">Mostrar el botón de nuevo mensaje</string>
     <string name="ShowNewMessageButtonInfo">Muestra el botón de redactar en la lista principal de chats.</string>
+    <string name="HideGreetingStickers">Ocultar stickers de saludo</string>
+    <string name="HideGreetingStickersInfo">Oculta la sugerencia de sticker en un chat privado vacío.</string>
 </resources>

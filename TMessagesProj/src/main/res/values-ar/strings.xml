@@ -1578,4 +1578,6 @@
     <string name="DisabledMessageWidget">أداة HTML مصغّرة غير مدعومة</string>
     <string name="ShowNewMessageButton">إظهار زر رسالة جديدة</string>
     <string name="ShowNewMessageButtonInfo">إظهار زر كتابة رسالة في قائمة الدردشات الرئيسية.</string>
+    <string name="HideGreetingStickers">إخفاء ملصقات الترحيب</string>
+    <string name="HideGreetingStickersInfo">إخفاء الملصق المقترح في الدردشة الخاصة الفارغة.</string>
 </resources>

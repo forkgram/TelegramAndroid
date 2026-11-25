@@ -31693,6 +31693,7 @@ public class ChatActivity extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        updateGreetingStickerVisibility();
         if (chatAdapter != null && lastWidgetPreference != org.telegram.messenger.forkgram.MessageWidgets.disabled()) {
             lastWidgetPreference = org.telegram.messenger.forkgram.MessageWidgets.disabled();
             updateVisibleRows(object -> object != null && WidgetMedia.isWidget(MessageObject.getMedia(object.messageOwner)));
@@ -34765,7 +34766,20 @@ public class ChatActivity extends BaseFragment implements
         item.setVisibility(t ? View.VISIBLE : View.GONE);
     }
 
+    private void updateGreetingStickerVisibility() {
+        if (greetingsViewContainer == null) {
+            return;
+        }
+        final boolean ordinaryPrivateChat = chatMode == 0 && !isThreadChat() && currentEncryptedChat == null
+            && currentUser != null && !currentUser.self && !userBlocked
+            && (userInfo == null || (userInfo.business_intro == null && !userInfo.contact_require_premium
+                && userInfo.send_paid_messages_stars <= 0));
+        greetingsViewContainer.setGreetingStickerHidden(ordinaryPrivateChat
+            && MessagesController.getGlobalMainSettings().getBoolean("hideGreetingStickers", false));
+    }
+
     private void updateGreetInfo() {
+        updateGreetingStickerVisibility();
         showGreetInfo(
             getDialogId() != getUserConfig().getClientUserId() &&
             userInfo != null && userInfo.business_intro != null &&

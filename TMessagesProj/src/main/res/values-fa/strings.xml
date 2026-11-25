@@ -341,4 +341,6 @@
     <string name="DisabledMessageWidget">ابزارک HTML پشتیبانی نمی‌شود</string>
     <string name="ShowNewMessageButton">نمایش دکمه پیام جدید</string>
     <string name="ShowNewMessageButtonInfo">دکمهٔ نوشتن پیام را در فهرست اصلی گفتگوها نشان می‌دهد.</string>
+    <string name="HideGreetingStickers">پنهان‌کردن استیکرهای خوشامدگویی</string>
+    <string name="HideGreetingStickersInfo">استیکر پیشنهادی را در گفت‌وگوی خصوصی خالی پنهان می‌کند.</string>
 </resources>

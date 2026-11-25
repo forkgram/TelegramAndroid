@@ -1596,4 +1596,6 @@
     <string name="DisabledMessageWidget">Widget HTML incompatível</string>
     <string name="ShowNewMessageButton">Mostrar botão Nova mensagem</string>
     <string name="ShowNewMessageButtonInfo">Mostra o botão de escrever na lista principal de conversas.</string>
+    <string name="HideGreetingStickers">Ocultar figurinhas de saudação</string>
+    <string name="HideGreetingStickersInfo">Oculta a sugestão de figurinha em uma conversa privada vazia.</string>
 </resources>
