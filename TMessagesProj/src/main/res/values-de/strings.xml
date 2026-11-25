@@ -132,6 +132,9 @@
     <string name="MentionByNameInfo">Autovervollständigung fügt den Namen der Person statt des Benutzernamens ein.</string>
     <string name="HideSendAsInfo">Die Senden-als-Schaltfläche im Nachrichtenfeld ausblenden.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Nachrichten mit Links ohne Vorschau senden.</string>
+    <string name="ExternalShareSilentByDefault">Standardmäßig lautlos teilen</string>
+    <string name="ExternalShareSilentByDefaultInfo">Aus anderen Apps geteilte Inhalte standardmäßig ohne Benachrichtigungston senden.</string>
+    <string name="ExternalShareSendWithSound">Mit Ton senden</string>
     <string name="DisableSlideToNextChannelInfo">Beim Scrollen über das Ende hinaus nicht zum nächsten Kanal wechseln.</string>
     <string name="HideChannelMuteButton">Stummschalttaste in Kanälen ausblenden</string>
     <string name="HideChannelMuteButtonInfo">Blendet die Taste zum Stumm- und Lautschalten unten in abonnierten Kanälen aus. Benachrichtigungen lassen sich weiterhin im Kanalmenü ändern.</string>

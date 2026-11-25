@@ -132,6 +132,9 @@
     <string name="MentionByNameInfo">O preenchimento automático insere o nome da pessoa em vez do nome de usuário.</string>
     <string name="HideSendAsInfo">Ocultar o botão de enviar como no campo de mensagem.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Enviar mensagens com links sem pré-visualização.</string>
+    <string name="ExternalShareSilentByDefault">Compartilhar sem som por padrão</string>
+    <string name="ExternalShareSilentByDefaultInfo">Envia conteúdo compartilhado de outros apps sem som de notificação por padrão.</string>
+    <string name="ExternalShareSendWithSound">Enviar com som</string>
     <string name="DisableSlideToNextChannelInfo">Não passar para o próximo canal ao rolar além do fim.</string>
     <string name="HideChannelMuteButton">Ocultar o botão de silenciar nos canais</string>
     <string name="HideChannelMuteButtonInfo">Oculta o botão de silenciar ou reativar as notificações na parte inferior dos canais que você segue. As notificações ainda podem ser alteradas no menu do canal.</string>

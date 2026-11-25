@@ -31,6 +31,9 @@
     <string name="MentionByNameInfo">Autocomplete inserts the person name instead of the username.</string>
     <string name="HideSendAsInfo">Hide the send-as avatar button in the message field.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Send messages containing links without a preview attached.</string>
+    <string name="ExternalShareSilentByDefault">Share without sound by default</string>
+    <string name="ExternalShareSilentByDefaultInfo">Send content shared from other apps without a notification sound by default.</string>
+    <string name="ExternalShareSendWithSound">Send with sound</string>
     <string name="DisableSlideToNextChannelInfo">Do not slide to the next channel when scrolling past the end.</string>
     <string name="HideChannelMuteButton">Hide channel mute button</string>
     <string name="HideChannelMuteButtonInfo">Hide the Mute and Unmute button at the bottom of subscribed channels. You can still change notifications from the channel menu.</string>

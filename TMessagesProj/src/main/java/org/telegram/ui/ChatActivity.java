@@ -21467,6 +21467,10 @@ public class ChatActivity extends BaseFragment implements
     }
 
     public void openVideoEditor(String videoPath, CharSequence caption) {
+        openVideoEditor(videoPath, caption, true);
+    }
+
+    public void openVideoEditor(String videoPath, CharSequence caption, boolean notifyByDefault) {
         if (getParentActivity() != null) {
             final Bitmap thumb = SendMessagesHelper.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MINI_KIND);
             PhotoViewer.getInstance().setParentActivity(this, themeDelegate);
@@ -21485,7 +21489,7 @@ public class ChatActivity extends BaseFragment implements
 
                 @Override
                 public void sendButtonPressed(int index, VideoEditedInfo videoEditedInfo, boolean notify, int scheduleDate, int scheduleRepeatPeriod, boolean forceDocument) {
-                    sendMedia((MediaController.PhotoEntry) cameraPhoto.get(0), videoEditedInfo, notify, scheduleDate, 0, forceDocument, 0);
+                    sendMedia((MediaController.PhotoEntry) cameraPhoto.get(0), videoEditedInfo, notifyByDefault && notify, scheduleDate, 0, forceDocument, 0);
                 }
 
                 @Override
@@ -21500,7 +21504,7 @@ public class ChatActivity extends BaseFragment implements
             }, this);
         } else {
             fillEditingMediaWithCaption(caption, null);
-            SendMessagesHelper.prepareSendingVideo(getAccountInstance(), videoPath, null, null, null, dialog_id, replyingMessageObject, getThreadMessage(), null, replyingQuote, null, 0, editingMessageObject, true, 0, 0, false, false, null, getMessageChatSendParams(), 0, 0, getSendMonoForumPeerId(), getSendMessageSuggestionParams());
+            SendMessagesHelper.prepareSendingVideo(getAccountInstance(), videoPath, null, null, null, dialog_id, replyingMessageObject, getThreadMessage(), null, replyingQuote, null, 0, editingMessageObject, notifyByDefault, 0, 0, false, false, null, getMessageChatSendParams(), 0, 0, getSendMonoForumPeerId(), getSendMessageSuggestionParams());
             afterMessageSend();
         }
     }
@@ -21548,7 +21552,7 @@ public class ChatActivity extends BaseFragment implements
         return entries;
     }
 
-    public boolean openPhotosEditor(ArrayList<SendMessagesHelper.SendingMediaInfo> photoPathes, CharSequence caption) {
+    public boolean openPhotosEditor(ArrayList<SendMessagesHelper.SendingMediaInfo> photoPathes, CharSequence caption, boolean notifyByDefault) {
         final ArrayList<MediaController.PhotoEntry> entries = createEntriesFromMedia(photoPathes,isSecretChat(), caption);
         if (entries.isEmpty()) {
             return false;
@@ -21570,7 +21574,7 @@ public class ChatActivity extends BaseFragment implements
                             entries.remove(i);
                         }
                     }
-                    sendPhotosGroup(entries, notify, scheduleDate, forceDocument);
+                    sendPhotosGroup(entries, notifyByDefault && notify, scheduleDate, forceDocument);
                 }
 
                 @Override

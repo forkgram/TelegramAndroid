@@ -132,6 +132,9 @@
     <string name="MentionByNameInfo">자동 완성이 사용자 이름 대신 사람 이름을 삽입합니다.</string>
     <string name="HideSendAsInfo">메시지 입력란의 보낸 사람 선택 버튼을 숨깁니다.</string>
     <string name="DisableLinkPreviewByDefaultInfo">링크가 포함된 메시지를 미리보기 없이 보냅니다.</string>
+    <string name="ExternalShareSilentByDefault">기본적으로 소리 없이 공유</string>
+    <string name="ExternalShareSilentByDefaultInfo">다른 앱에서 공유한 콘텐츠를 기본적으로 알림음 없이 보냅니다.</string>
+    <string name="ExternalShareSendWithSound">소리와 함께 보내기</string>
     <string name="DisableSlideToNextChannelInfo">끝을 넘겨 스크롤해도 다음 채널로 넘어가지 않습니다.</string>
     <string name="HideChannelMuteButton">채널 알림 끄기 버튼 숨기기</string>
     <string name="HideChannelMuteButtonInfo">구독한 채널 하단의 알림 켜기 및 끄기 버튼을 숨깁니다. 채널 메뉴에서 알림을 변경할 수 있습니다.</string>

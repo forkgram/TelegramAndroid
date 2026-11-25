@@ -43,6 +43,9 @@
     <string name="MentionByNameInfo">تکمیل خودکار به‌جای نام کاربری، نام شخص را درج می‌کند.</string>
     <string name="HideSendAsInfo">دکمهٔ نمایهٔ «ارسال به‌عنوان» در کادر پیام پنهان شود.</string>
     <string name="DisableLinkPreviewByDefaultInfo">پیام‌های دارای پیوند بدون پیش‌نمایش ارسال شوند.</string>
+    <string name="ExternalShareSilentByDefault">هم‌رسانی بی‌صدا به‌صورت پیش‌فرض</string>
+    <string name="ExternalShareSilentByDefaultInfo">محتوای هم‌رسانی‌شده از برنامه‌های دیگر به‌صورت پیش‌فرض بدون صدای اعلان فرستاده شود.</string>
+    <string name="ExternalShareSendWithSound">ارسال با صدا</string>
     <string name="DisableSlideToNextChannelInfo">هنگام پیمایش تا انتهای کانال، به کانال بعدی لغزانده نشود.</string>
     <string name="HideChannelMuteButton">پنهان کردن دکمه بی‌صدا کردن کانال</string>
     <string name="HideChannelMuteButtonInfo">دکمه قطع و وصل صدا را در پایین کانال‌هایی که عضو آن‌ها هستید پنهان کنید. تنظیمات اعلان همچنان در منوی کانال در دسترس است.</string>

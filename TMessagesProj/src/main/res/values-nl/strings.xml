@@ -132,6 +132,9 @@
     <string name="MentionByNameInfo">Automatisch aanvullen voegt de naam van de persoon in in plaats van de gebruikersnaam.</string>
     <string name="HideSendAsInfo">De knop Verzenden als in het berichtveld verbergen.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Berichten met links versturen zonder voorbeeldweergave.</string>
+    <string name="ExternalShareSilentByDefault">Standaard zonder geluid delen</string>
+    <string name="ExternalShareSilentByDefaultInfo">Verstuur inhoud die vanuit andere apps wordt gedeeld standaard zonder meldingsgeluid.</string>
+    <string name="ExternalShareSendWithSound">Versturen met geluid</string>
     <string name="DisableSlideToNextChannelInfo">Niet naar het volgende kanaal gaan bij doorscrollen voorbij het einde.</string>
     <string name="HideChannelMuteButton">Dempen-knop in kanalen verbergen</string>
     <string name="HideChannelMuteButtonInfo">Verbergt de knop om meldingen onderaan gevolgde kanalen te dempen of weer in te schakelen. Je kunt meldingen nog steeds aanpassen via het kanaalmenu.</string>

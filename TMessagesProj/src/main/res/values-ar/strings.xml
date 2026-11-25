@@ -132,6 +132,9 @@
     <string name="MentionByNameInfo">الإكمال التلقائي يُدرج اسم الشخص بدلاً من اسم المستخدم.</string>
     <string name="HideSendAsInfo">إخفاء زر الإرسال باسم في حقل الرسالة.</string>
     <string name="DisableLinkPreviewByDefaultInfo">إرسال الرسائل التي تحتوي على روابط بدون معاينة.</string>
+    <string name="ExternalShareSilentByDefault">المشاركة بدون صوت افتراضيًا</string>
+    <string name="ExternalShareSilentByDefaultInfo">إرسال المحتوى المشارَك من التطبيقات الأخرى بدون صوت إشعار افتراضيًا.</string>
+    <string name="ExternalShareSendWithSound">إرسال مع الصوت</string>
     <string name="DisableSlideToNextChannelInfo">عدم الانتقال إلى القناة التالية عند التمرير بعد النهاية.</string>
     <string name="HideChannelMuteButton">إخفاء زر كتم القنوات</string>
     <string name="HideChannelMuteButtonInfo">إخفاء زر كتم الإشعارات وإلغاء كتمها أسفل القنوات المشترك فيها. يمكنك تغيير الإشعارات من قائمة القناة.</string>

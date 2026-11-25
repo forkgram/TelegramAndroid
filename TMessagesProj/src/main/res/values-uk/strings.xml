@@ -132,6 +132,9 @@
     <string name="MentionByNameInfo">Автодоповнення вставляє ім\'я людини замість імені користувача.</string>
     <string name="HideSendAsInfo">Приховувати кнопку вибору відправника в полі повідомлення.</string>
     <string name="DisableLinkPreviewByDefaultInfo">Надсилати повідомлення з посиланнями без прев\'ю.</string>
+    <string name="ExternalShareSilentByDefault">Ділитися без звуку за замовчуванням</string>
+    <string name="ExternalShareSilentByDefaultInfo">За замовчуванням надсилає вміст з інших застосунків без звуку сповіщення.</string>
+    <string name="ExternalShareSendWithSound">Надіслати зі звуком</string>
     <string name="DisableSlideToNextChannelInfo">Не переходити до наступного каналу під час прокручування за кінець чату.</string>
     <string name="HideChannelMuteButton">Приховати кнопку звуку в каналах</string>
     <string name="HideChannelMuteButtonInfo">Приховує кнопку ввімкнення й вимкнення сповіщень унизу каналів, на які ви підписані. Сповіщення можна змінити в меню каналу.</string>
