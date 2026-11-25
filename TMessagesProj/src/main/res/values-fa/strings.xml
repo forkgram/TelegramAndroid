@@ -336,4 +336,7 @@
     <string name="QuickAttachNewestFirst">جدیدترین عکس‌ها در سمت چپ</string>
     <string name="QuickAttachNewestFirstInfo">اگر خاموش باشد، عکس‌های اخیر از قدیمی به جدید، از چپ به راست مرتب می‌شوند.</string>
     <string name="PhotoSent">عکس ارسال شد</string>
+    <string name="DisableMessageWidgets">غیرفعال کردن ابزارک‌های HTML</string>
+    <string name="DisableMessageWidgetsInfo">از اجرای ابزارک‌های HTML درون پیام‌ها جلوگیری می‌کند. توضیحات آن‌ها همچنان نمایش داده می‌شود.</string>
+    <string name="DisabledMessageWidget">ابزارک HTML پشتیبانی نمی‌شود</string>
 </resources>

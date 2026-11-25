@@ -1705,4 +1705,7 @@
     <string name="QuickAttachNewestFirst">Neueste Fotos links</string>
     <string name="QuickAttachNewestFirstInfo">Wenn aus, werden die letzten Fotos von alt zu neu von links nach rechts angeordnet.</string>
     <string name="PhotoSent">Foto gesendet</string>
+    <string name="DisableMessageWidgets">HTML-Widgets deaktivieren</string>
+    <string name="DisableMessageWidgetsInfo">Eingebettete HTML-Widgets in Nachrichten werden nicht ausgeführt. Ihre Beschriftungen bleiben sichtbar.</string>
+    <string name="DisabledMessageWidget">Nicht unterstütztes HTML-Widget</string>
 </resources>

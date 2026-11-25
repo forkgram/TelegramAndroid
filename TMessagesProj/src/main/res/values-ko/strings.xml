@@ -1461,4 +1461,7 @@
     <string name="QuickAttachNewestFirst">최신 사진을 왼쪽에</string>
     <string name="QuickAttachNewestFirstInfo">끄면 최근 사진이 오래된 것부터 최신 순으로 왼쪽에서 오른쪽으로 정렬됩니다.</string>
     <string name="PhotoSent">사진을 보냈습니다</string>
+    <string name="DisableMessageWidgets">HTML 위젯 사용 안 함</string>
+    <string name="DisableMessageWidgetsInfo">메시지에 포함된 HTML 위젯이 실행되지 않습니다. 캡션은 계속 표시됩니다.</string>
+    <string name="DisabledMessageWidget">지원되지 않는 HTML 위젯</string>
 </resources>

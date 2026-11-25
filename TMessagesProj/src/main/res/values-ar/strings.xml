@@ -1573,4 +1573,7 @@
     <string name="QuickAttachNewestFirst">أحدث الصور على اليسار</string>
     <string name="QuickAttachNewestFirstInfo">عند الإيقاف، تُرتَّب الصور الأخيرة من الأقدم إلى الأحدث، من اليسار إلى اليمين.</string>
     <string name="PhotoSent">تم إرسال الصورة</string>
+    <string name="DisableMessageWidgets">تعطيل أدوات HTML المصغّرة</string>
+    <string name="DisableMessageWidgetsInfo">يمنع تشغيل أدوات HTML المصغّرة المضمّنة في الرسائل. تظل تسمياتها التوضيحية مرئية.</string>
+    <string name="DisabledMessageWidget">أداة HTML مصغّرة غير مدعومة</string>
 </resources>

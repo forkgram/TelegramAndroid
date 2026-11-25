@@ -1994,6 +1994,7 @@ public class MessageObject {
     public RichMessageLayout richLayout;
     /** A widget message laid out as a rich one (WidgetMedia#richMessage); messageOwner.rich_message stays null. */
     private TL_iv.RichMessage widgetRichMessage;
+    private TL_iv.RichMessage widgetUnsupportedRichMessage;
     public boolean richCheckboxEcho; // next edit-echo for this message is our own checkbox toggle -> reuse layout, skip relayout
     public ArrayList<TextLayoutBlock> textLayoutBlocks;
     public boolean hasCode;
@@ -7056,6 +7057,10 @@ public class MessageObject {
         if (type != TYPE_TEXT && type != TYPE_EMOJIS && type != TYPE_ARTICLE || messageOwner.peer_id == null || messageText == null || messageText.length() == 0 && !isBotPendingDraft) {
             return false;
         }
+        if (layoutCreated && type == TYPE_ARTICLE && getMedia(messageOwner) instanceof TLRPC.TL_messageMediaWidget &&
+                richLayout != null && richLayout.needsUpdate(getDisplayRichMessage(), getMaxMessageTextWidth())) {
+            layoutCreated = false;
+        }
         if (layoutCreated) {
             int newMinSize = AndroidUtilities.isTablet() && eventId != 0 ? dp(530) : getParentWidth();
             float newFontSize = Theme.chat_msgTextPaint != null ? Theme.chat_msgTextPaint.getTextSize() : 0;
@@ -8949,6 +8954,12 @@ public class MessageObject {
     public TL_iv.RichMessage getDisplayRichMessage() {
         if (messageOwner == null) {
             return null;
+        }
+        if (getMedia(messageOwner) instanceof TLRPC.TL_messageMediaWidget && org.telegram.messenger.forkgram.MessageWidgets.disabled()) {
+            if (widgetUnsupportedRichMessage == null) {
+                widgetUnsupportedRichMessage = WidgetMedia.unsupportedLayout();
+            }
+            return widgetUnsupportedRichMessage;
         }
         if (translated && messageOwner.translatedRichMessage != null) {
             return messageOwner.translatedRichMessage;

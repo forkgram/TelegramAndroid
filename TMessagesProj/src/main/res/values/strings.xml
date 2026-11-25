@@ -12013,4 +12013,7 @@
     <string name="QuickAttachNewestFirst">Newest photos on the left</string>
     <string name="QuickAttachNewestFirstInfo">When off, recent photos are ordered from oldest to newest, left to right.</string>
     <string name="PhotoSent">Photo sent</string>
+    <string name="DisableMessageWidgets">Disable HTML widgets</string>
+    <string name="DisableMessageWidgetsInfo">Stop embedded HTML widgets in messages from running. Their captions remain visible.</string>
+    <string name="DisabledMessageWidget">Unsupported HTML widget</string>
 </resources>

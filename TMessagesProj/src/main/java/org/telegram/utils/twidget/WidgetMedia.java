@@ -596,6 +596,12 @@ public final class WidgetMedia {
      * The kill switch turned on (AppGlobalConfig#widgetsDisabled): every widget running now, shown or measured off
      * screen, stops at once; their last frames stay drawn. Nothing starts again while it is on. Any thread.
      */
+    public static void onLocalWidgetPreferenceChanged() {
+        if (!org.telegram.messenger.forkgram.MessageWidgets.disabled()) return;
+        WidgetRemoteEngine.INSTANCE.releasePrewarm();
+        onKillSwitch();
+    }
+
     public static void onKillSwitch() {
         AndroidUtilities.runOnUIThread(() -> {
             if (!WidgetSandboxSession.disabledByConfig()) return;
@@ -876,7 +882,17 @@ public final class WidgetMedia {
      * embed of its preview ({@link #previewUrl}), no input, no requests.
      */
     public static TL_iv.RichMessage previewRichMessage(int account, TLRPC.BotInlineResult result) {
-        return layout(null, previewUrl(account, result));
+        return org.telegram.messenger.forkgram.MessageWidgets.disabled() ? unsupportedLayout() : layout(null, previewUrl(account, result));
+    }
+
+    public static TL_iv.RichMessage unsupportedLayout() {
+        TL_iv.textPlain text = new TL_iv.textPlain();
+        text.text = LocaleController.getString(R.string.DisabledMessageWidget);
+        TL_iv.pageBlockParagraph paragraph = new TL_iv.pageBlockParagraph();
+        paragraph.text = text;
+        TL_iv.RichMessage rich = new TL_iv.RichMessage();
+        rich.blocks.add(paragraph);
+        return rich;
     }
 
     /** A widget in a list of inline results: no input reaches it (docs/sdk-v1.md §2.16). */

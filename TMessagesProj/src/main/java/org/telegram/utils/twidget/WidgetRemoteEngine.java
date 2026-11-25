@@ -53,13 +53,24 @@ final class WidgetRemoteEngine extends WidgetEngine {
      */
     void prewarm(Context context) {
         synchronized (lock) {
+            if (org.telegram.messenger.forkgram.MessageWidgets.disabled()) return;
             if (this.context == null) this.context = context.getApplicationContext();
             kept = true;
             hold(connection());
         }
     }
 
-    // Guarded by `lock`: the app's own hold on `binding` (prewarm), never released, so no idle unbind.
+    void releasePrewarm() {
+        synchronized (lock) {
+            kept = false;
+            if (connection != null && connection.held) {
+                connection.held = false;
+                released(connection);
+            }
+        }
+    }
+
+    // Guarded by `lock`: the app's own hold on `binding` (prewarm).
     private void hold(Connection binding) {
         if (binding.held) return;
         binding.held = true;
@@ -137,6 +148,7 @@ final class WidgetRemoteEngine extends WidgetEngine {
         long start = SystemClock.uptimeMillis();
         boolean cold;
         synchronized (lock) {
+            if (org.telegram.messenger.forkgram.MessageWidgets.disabled()) throw new IllegalStateException("Message widgets are disabled");
             if (this.context == null) this.context = context.getApplicationContext();
             binding = connection();
             main.removeCallbacks(binding.idleUnbind);
@@ -163,6 +175,7 @@ final class WidgetRemoteEngine extends WidgetEngine {
         Client client = new Client(binding, generation, backend);
         long nativeId;
         try {
+            if (org.telegram.messenger.forkgram.MessageWidgets.disabled()) throw new IllegalStateException("Message widgets are disabled");
             engine.debug(conformance, attackScan, limits);
             nativeId = engine.create(utf8(html), utf8(theme), width, density, cpuMultiplier, utf8(locale),
                     utf8(storage), utf8(sdk), utf8(stoppedLabel), visible, client);

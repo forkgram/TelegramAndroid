@@ -1414,4 +1414,7 @@
     <string name="QuickAttachNewestFirst">Nieuwste foto\'s links</string>
     <string name="QuickAttachNewestFirstInfo">Staat dit uit, dan staan recente foto\'s van oud naar nieuw, van links naar rechts.</string>
     <string name="PhotoSent">Foto verstuurd</string>
+    <string name="DisableMessageWidgets">HTML-widgets uitschakelen</string>
+    <string name="DisableMessageWidgetsInfo">Voorkomt dat ingesloten HTML-widgets in berichten worden uitgevoerd. De bijschriften blijven zichtbaar.</string>
+    <string name="DisabledMessageWidget">Niet-ondersteunde HTML-widget</string>
 </resources>

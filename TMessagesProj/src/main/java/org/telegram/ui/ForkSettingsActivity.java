@@ -127,6 +127,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_LOCKED_ANIMATED_EMOJI = 43;
     public static final int ID_FULL_RECENT_STICKERS = 44;
     public static final int ID_CONFIRM_GIF_STICKER_SEND = 104;
+    public static final int ID_DISABLE_MESSAGE_WIDGETS = 107;
     public static final int ID_SHOW_ARCHIVED_STICKERS = 45;
     public static final int ID_STICKER_SIZE = 46;
 
@@ -564,6 +565,8 @@ public class ForkSettingsActivity extends BaseFragment {
         }
         items.add(UItem.asButtonCheck(ID_FORCE_BLOCK_SCREENSHOTS, LocaleController.getString(R.string.ForceBlockScreenshots), LocaleController.getString(R.string.ForceBlockScreenshotsInfo))
             .setChecked(pref("forceBlockScreenshots", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_DISABLE_MESSAGE_WIDGETS, LocaleController.getString(R.string.DisableMessageWidgets), LocaleController.getString(R.string.DisableMessageWidgetsInfo))
+            .setChecked(pref("disableMessageWidgets", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_SHOW_NOTIFICATION_CONTENT, LocaleController.getString(R.string.ShowNotificationContent), LocaleController.getString(R.string.ShowNotificationContentInfo))
             .setChecked(pref("showNotificationContent", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DROP_SCREENSHOT_CAPTION, LocaleController.getString(R.string.DropScreenshotCaption), LocaleController.getString(R.string.DropScreenshotCaptionInfo))
@@ -816,6 +819,8 @@ public class ForkSettingsActivity extends BaseFragment {
         } else if (id == ID_FORCE_BLOCK_SCREENSHOTS) {
             toggle("forceBlockScreenshots", item, view);
             ForkSettings.applyEffect(currentAccount, "forceBlockScreenshots", item.checked);
+        } else if (id == ID_DISABLE_MESSAGE_WIDGETS) {
+            ForkSettings.applyEffect(currentAccount, "disableMessageWidgets", toggle("disableMessageWidgets", item, view));
         } else if (id == ID_SHOW_NOTIFICATION_CONTENT) {
             toggle("showNotificationContent", item, view);
         } else if (id == ID_DROP_SCREENSHOT_CAPTION) {

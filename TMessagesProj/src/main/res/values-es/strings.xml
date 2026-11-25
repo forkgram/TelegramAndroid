@@ -1645,4 +1645,7 @@
     <string name="QuickAttachNewestFirst">Fotos más recientes a la izquierda</string>
     <string name="QuickAttachNewestFirstInfo">Si está desactivado, las fotos recientes se ordenan de más antigua a más reciente, de izquierda a derecha.</string>
     <string name="PhotoSent">Foto enviada</string>
+    <string name="DisableMessageWidgets">Desactivar los widgets HTML</string>
+    <string name="DisableMessageWidgetsInfo">Impide que se ejecuten los widgets HTML incrustados en los mensajes. Sus descripciones seguirán visibles.</string>
+    <string name="DisabledMessageWidget">Widget HTML incompatible</string>
 </resources>

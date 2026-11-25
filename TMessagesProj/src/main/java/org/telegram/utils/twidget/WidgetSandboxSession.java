@@ -321,6 +321,7 @@ public final class WidgetSandboxSession {
      * widgets off. No native session is created then, so no widget code runs in the client. Any thread.
      */
     public static boolean disabledByConfig() {
+        if (org.telegram.messenger.forkgram.MessageWidgets.disabled()) return true;
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
             if (UserConfig.getInstance(a).isClientActivated() && AppGlobalConfig.getInstance(a).widgetsDisabled.get()) {
                 return true;

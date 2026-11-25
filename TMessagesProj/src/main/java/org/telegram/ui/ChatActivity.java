@@ -1239,6 +1239,8 @@ public class ChatActivity extends BaseFragment implements
     private float pullingDownAnimateProgress;
     private AnimatorSet fragmentTransition;
     private ChatActivity backToPreviousFragment;
+    private boolean lastWidgetPreference = org.telegram.messenger.forkgram.MessageWidgets.disabled();
+
     /** How long the first messages wait for the heights of the widgets they show (WidgetMedia). */
     private static final long WIDGET_HEIGHTS_WAIT_MS = 150;
     private Runnable fragmentTransitionRunnable = new Runnable() {
@@ -31691,6 +31693,10 @@ public class ChatActivity extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        if (chatAdapter != null && lastWidgetPreference != org.telegram.messenger.forkgram.MessageWidgets.disabled()) {
+            lastWidgetPreference = org.telegram.messenger.forkgram.MessageWidgets.disabled();
+            updateVisibleRows(object -> object != null && WidgetMedia.isWidget(MessageObject.getMedia(object.messageOwner)));
+        }
         checkShowBlur(false);
         activityResumeTime = System.currentTimeMillis();
         if (openImport && getSendMessagesHelper().getImportingHistory(dialog_id) != null) {

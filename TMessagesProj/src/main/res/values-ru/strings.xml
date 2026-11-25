@@ -597,4 +597,7 @@
     <string name="QuickAttachNewestFirst">Новые фото слева</string>
     <string name="QuickAttachNewestFirstInfo">Если выключено, последние фото идут от старых к новым слева направо.</string>
     <string name="PhotoSent">Фото отправлено</string>
+    <string name="DisableMessageWidgets">Отключить HTML-виджеты</string>
+    <string name="DisableMessageWidgetsInfo">Запретить запуск HTML-виджетов в сообщениях. Подписи останутся видны.</string>
+    <string name="DisabledMessageWidget">HTML-виджет не поддерживается</string>
 </resources>
