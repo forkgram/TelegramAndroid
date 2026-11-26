@@ -181,7 +181,7 @@
     <string name="AvatarShapeRounded">Скруглённая</string>
     <string name="AvatarShapeSquare">Квадратная</string>
     <string name="InAppCamera">Включить камеру в приложении</string>
-    <string name="InAppCameraInfo">Во вложениях</string>
+    <string name="InAppCameraInfo">Использовать встроенную камеру для вложений. Без неё нельзя переключиться на видеосообщения.</string>
     <string name="SyncPins">Синхронизировать закреплённые диалоги</string>
     <string name="SyncPinsInfo">Отключение синхронизации позволяет закрепить неограниченное количество диалогов</string>
     <string name="UnmutedOnTop">Незаглушённые сообщения в приоритете</string>

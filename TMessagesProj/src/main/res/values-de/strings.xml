@@ -189,7 +189,7 @@
     <string name="AvatarShapeRounded">Abgerundet</string>
     <string name="AvatarShapeSquare">Quadratisch</string>
     <string name="InAppCamera">In-App-Kamera aktivieren</string>
-    <string name="InAppCameraInfo">In Anhängen</string>
+    <string name="InAppCameraInfo">Verwendet die In-App-Kamera für Anhänge. Ist sie deaktiviert, ist der Wechsel zu Videonachrichten nicht möglich.</string>
     <string name="SyncPins">Angeheftete Dialoge synchronisieren</string>
     <string name="SyncPinsInfo">Synchronisierung deaktiviert ermöglicht das Anheften einer unbegrenzten Anzahl von Dialogen</string>
     <string name="UnmutedOnTop">Stummgeschaltete Nachrichten sind primär</string>

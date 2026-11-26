@@ -189,7 +189,7 @@
     <string name="AvatarShapeRounded">Afgerond</string>
     <string name="AvatarShapeSquare">Vierkant</string>
     <string name="InAppCamera">In-app camera inschakelen</string>
-    <string name="InAppCameraInfo">In bijlagen</string>
+    <string name="InAppCameraInfo">Gebruik de ingebouwde camera voor bijlagen. Als je deze uitschakelt, kun je niet overschakelen naar videoberichten.</string>
     <string name="SyncPins">Gesynchroniseerde dialogen</string>
     <string name="SyncPinsInfo">Synchronisatie uitschakelen staat toe om een onbeperkt aantal dialogen vast te zetten</string>
     <string name="UnmutedOnTop">Niet-stilte berichten zijn primair</string>

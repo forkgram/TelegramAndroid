@@ -95,7 +95,7 @@
     <string name="ForkSettingsTitle">تنظیمات Fork Client</string>
     <string name="ForkCheckUpdate">بررسی به‌روزرسانی‌ها</string>
     <string name="InAppCamera">فعال کردن دوربین داخلی</string>
-    <string name="InAppCameraInfo">در پیوست‌ها</string>
+    <string name="InAppCameraInfo">از دوربین درون‌برنامه‌ای برای پیوست‌ها استفاده می‌شود. با خاموش کردن آن، تغییر حالت به پیام ویدیویی هم امکان‌پذیر نیست.</string>
     <string name="SquareAvatars">نمایه‌های مربعی</string>
     <string name="AvatarShape">شکل نمایه</string>
     <string name="AvatarShapeRound">دایره‌ای</string>

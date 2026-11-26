@@ -189,7 +189,7 @@
     <string name="AvatarShapeRounded">Arrotondata</string>
     <string name="AvatarShapeSquare">Quadrata</string>
     <string name="InAppCamera">Abilita fotocamera nell\'app</string>
-    <string name="InAppCameraInfo">Negli allegati</string>
+    <string name="InAppCameraInfo">Usa la fotocamera interna per gli allegati. Se la disattivi, non puoi passare ai videomessaggi.</string>
     <string name="SyncPins">Sincronizza dialoghi fissati</string>
     <string name="SyncPinsInfo">Disattivare la sincronizzazione consente di fissare un numero illimitato di dialoghi</string>
     <string name="UnmutedOnTop">I messaggi non silenziati sono primari</string>

@@ -189,7 +189,7 @@
     <string name="AvatarShapeRounded">둥근 모서리</string>
     <string name="AvatarShapeSquare">사각형</string>
     <string name="InAppCamera">앱 내 카메라 활성화</string>
-    <string name="InAppCameraInfo">첨부 파일에서</string>
+    <string name="InAppCameraInfo">첨부 파일에 앱 내 카메라를 사용합니다. 끄면 동영상 메시지로 전환할 수 없습니다.</string>
     <string name="SyncPins">고정된 대화 동기화</string>
     <string name="SyncPinsInfo">동기화 해제를 통해 무제한 대화를 고정할 수 있습니다</string>
     <string name="UnmutedOnTop">음소거 해제된 메시지가 우선입니다</string>

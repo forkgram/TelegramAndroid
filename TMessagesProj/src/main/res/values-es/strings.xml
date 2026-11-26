@@ -189,7 +189,7 @@
     <string name="AvatarShapeRounded">Redondeada</string>
     <string name="AvatarShapeSquare">Cuadrada</string>
     <string name="InAppCamera">Habilitar cámara en la aplicación</string>
-    <string name="InAppCameraInfo">En adjuntos</string>
+    <string name="InAppCameraInfo">Usa la cámara integrada para los adjuntos. Si la desactivas, tampoco podrás cambiar a mensajes de vídeo.</string>
     <string name="SyncPins">Sincronizar diálogos anclados</string>
     <string name="SyncPinsInfo">Desactivar la sincronización permite anclar una cantidad ilimitada de diálogos</string>
     <string name="UnmutedOnTop">Mensajes no silenciados son primarios</string>

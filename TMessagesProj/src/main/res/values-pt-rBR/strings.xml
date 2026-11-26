@@ -189,7 +189,7 @@
     <string name="AvatarShapeRounded">Arredondada</string>
     <string name="AvatarShapeSquare">Quadrada</string>
     <string name="InAppCamera">Ativar câmera no aplicativo</string>
-    <string name="InAppCameraInfo">Nos anexos</string>
+    <string name="InAppCameraInfo">Usa a câmera do app para anexos. Ao desativá-la, não é possível alternar para mensagens de vídeo.</string>
     <string name="SyncPins">Sincronizar conversas fixadas</string>
     <string name="SyncPinsInfo">Desativar sincronização permite fixar um número ilimitado de conversas</string>
     <string name="UnmutedOnTop">Mensagens não silenciadas são primárias</string>
