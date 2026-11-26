@@ -390,6 +390,43 @@ public class VoIPPreNotificationService { // } extends Service implements AudioM
     public static TL_phone.PhoneCall pendingCall;
     public static Intent pendingVoIP;
     public static State currentState;
+    private static IncomingCallTelecom bluetoothCall;
+    private static IncomingCallTelecom handoffCall;
+    private static long handoffCallId;
+    private static int handoffAccount;
+    private static final Runnable expireHandoff = () -> {
+        if (handoffCall != null) {
+            handoffCall.close(android.telecom.DisconnectCause.CANCELED);
+            handoffCall = null;
+        }
+    };
+
+    static android.telecom.Connection createBluetoothCallConnection(android.telecom.ConnectionRequest request) {
+        return bluetoothCall != null ? bluetoothCall.createConnection(request) : IncomingCallTelecom.canceled();
+    }
+
+    static void bluetoothCallSubmissionFailed(android.telecom.ConnectionRequest request) {
+        if (bluetoothCall != null) bluetoothCall.onSubmissionFailed(request);
+    }
+
+    static IncomingCallTelecom takeBluetoothCall(long callId, int account) {
+        if (handoffCall == null || handoffCallId != callId || handoffAccount != account) return null;
+        AndroidUtilities.cancelRunOnUIThread(expireHandoff);
+        IncomingCallTelecom result = handoffCall;
+        handoffCall = null;
+        return result;
+    }
+
+    private static void preserveBluetoothCallForService(int account) {
+        if (bluetoothCall == null || pendingCall == null) return;
+        AndroidUtilities.cancelRunOnUIThread(expireHandoff);
+        expireHandoff.run();
+        handoffCall = bluetoothCall;
+        handoffCallId = pendingCall.id;
+        handoffAccount = account;
+        bluetoothCall = null;
+        AndroidUtilities.runOnUIThread(expireHandoff, 5000);
+    }
 //    public static Intent pendingNotificationService;
 
     public static void show(Context context, Intent intent, TL_phone.PhoneCall call) {
@@ -417,12 +454,40 @@ public class VoIPPreNotificationService { // } extends Service implements AudioM
         currentState = new State(account, user_id, call);
 
         acknowledge(context, account, call, () -> {
-            pendingVoIP = intent;
-            pendingCall = call;
-
-            final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(VoIPService.ID_INCOMING_CALL_PRENOTIFICATION, makeNotification(context, account, user_id, call.id, video));
-            startRinging(context, account, user_id);
+            if (pendingVoIP != intent || pendingCall != call) return;
+            Runnable present = () -> {
+                if (pendingVoIP != intent || pendingCall != call) return;
+                final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification notification = makeNotification(context, account, user_id, call.id, video);
+                if (notification != null) nm.notify(VoIPService.ID_INCOMING_CALL_PRENOTIFICATION, notification);
+                startRinging(context, account, user_id);
+            };
+            if (!IncomingCallTelecom.enabled(video, intent.getBooleanExtra("notifications_disabled", false))) {
+                present.run();
+                return;
+            }
+            Runnable deny = () -> {
+                if (pendingVoIP == intent && pendingCall == call) decline(context, VoIPService.DISCARD_REASON_LINE_BUSY);
+            };
+            Runnable reject = () -> {
+                if (pendingVoIP == intent && pendingCall == call) decline(context, VoIPService.DISCARD_REASON_HANGUP);
+            };
+            bluetoothCall = new IncomingCallTelecom(context, present, deny, () -> {
+                if (pendingVoIP != intent || pendingCall != call) return;
+                try {
+                    answer(context);
+                } catch (RuntimeException error) {
+                    // Keep normal phone UI available if the OS cannot start the service from this callback.
+                    FileLog.e(error);
+                }
+            }, reject, reject, VoIPPreNotificationService::stopRinging);
+            IncomingCallTelecom.Submission submission = bluetoothCall.report();
+            if (submission == IncomingCallTelecom.Submission.UNAVAILABLE) {
+                bluetoothCall = null;
+                present.run();
+            } else if (submission == IncomingCallTelecom.Submission.DENIED) {
+                deny.run();
+            }
         });
     }
 
@@ -456,6 +521,7 @@ public class VoIPPreNotificationService { // } extends Service implements AudioM
         req.peer.id = call.id;
         req.peer.access_hash = call.access_hash;
         ConnectionsManager.getInstance(currentAccount).sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
+            if (pendingCall != call) return;
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.w("(VoIPPreNotification) receivedCall response = " + response);
             }
@@ -479,7 +545,7 @@ public class VoIPPreNotificationService { // } extends Service implements AudioM
         if (VoIPService.getSharedInstance() != null) {
             return true;
         }
-        if (pendingVoIP == null || pendingCall == null) return false;
+        if (pendingVoIP == null || pendingCall == null || bluetoothCall != null && !bluetoothCall.isPresented()) return false;
         final int account = pendingVoIP.getIntExtra("account", UserConfig.selectedAccount);
         pendingVoIP.putExtra("openFragment", true);
         pendingVoIP.putExtra("accept", false);
@@ -488,6 +554,7 @@ public class VoIPPreNotificationService { // } extends Service implements AudioM
         } else {
             context.startService(pendingVoIP);
         }
+        preserveBluetoothCallForService(account);
         pendingVoIP = null;
         dismiss(context, true);
         return true;
@@ -499,8 +566,8 @@ public class VoIPPreNotificationService { // } extends Service implements AudioM
 
     public static void answer(Context context) {
         FileLog.d("VoIPPreNotification.answer()");
-        if (pendingVoIP == null) {
-            FileLog.d("VoIPPreNotification.answer(): pending intent is not found");
+        if (pendingVoIP == null || bluetoothCall != null && !bluetoothCall.isPresented()) {
+            FileLog.d("VoIPPreNotification.answer(): pending intent is not ready");
             return;
         }
         currentState = null;
@@ -527,6 +594,7 @@ public class VoIPPreNotificationService { // } extends Service implements AudioM
             } else {
                 context.startService(pendingVoIP);
             }
+            preserveBluetoothCallForService(account);
             pendingVoIP = null;
         }
         dismiss(context, true);
@@ -581,6 +649,14 @@ public class VoIPPreNotificationService { // } extends Service implements AudioM
 
     public static void dismiss(Context context, boolean answered) {
         FileLog.d("VoIPPreNotification.dismiss()");
+        if (bluetoothCall != null) {
+            bluetoothCall.close(android.telecom.DisconnectCause.CANCELED);
+            bluetoothCall = null;
+        }
+        if (!answered) {
+            AndroidUtilities.cancelRunOnUIThread(expireHandoff);
+            expireHandoff.run();
+        }
         pendingVoIP = null;
         pendingCall = null;
         if (currentState != null) {

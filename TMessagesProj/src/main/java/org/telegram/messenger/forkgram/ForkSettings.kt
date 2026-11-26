@@ -149,6 +149,7 @@ object ForkSettings {
         BoolOption("hideGreetingStickers", ForkSettingsActivity.ID_HIDE_GREETING_STICKERS, false),
         BoolOption("hideContactsTab", ForkSettingsActivity.ID_HIDE_CONTACTS_TAB, false),
         BoolOption("gifPlaybackControls", ForkSettingsActivity.ID_GIF_PLAYBACK_CONTROLS, false),
+        BoolOption("bluetoothCallControls", ForkSettingsActivity.ID_BLUETOOTH_CALL_CONTROLS, false),
         BoolOption("hideBottomButton", ForkSettingsActivity.ID_HIDE_BOTTOM_BUTTON, false),
         StringOption(
             "forkCustomTitle", ForkSettingsActivity.ID_CUSTOM_TITLE, "Fork Client",

@@ -609,4 +609,6 @@
     <string name="HideContactsTabInfo">Скрывает контакты с нижней панели. Выбор контакта доступен через «Чаты» → «Новое сообщение». Чтобы применить изменение, перезапустите приложение.</string>
     <string name="GifPlaybackControls">Управление воспроизведением GIF</string>
     <string name="GifPlaybackControlsInfo">Показывает управление воспроизведением и перемоткой видео-GIF в просмотрщике медиа.</string>
+    <string name="BluetoothCallControls">Управление звонками по Bluetooth</string>
+    <string name="BluetoothCallControlsInfo">Экспериментальная функция. Совместимые Bluetooth-устройства смогут показывать, принимать и отклонять входящие голосовые звонки. Данные звонящего не передаются.</string>
 </resources>

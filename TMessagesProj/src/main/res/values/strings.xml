@@ -12025,4 +12025,6 @@
     <string name="HideContactsTabInfo">Hide Contacts from the bottom bar. The contact picker remains available from Chats → New Message. Restart the app to apply.</string>
     <string name="GifPlaybackControls">GIF playback controls</string>
     <string name="GifPlaybackControlsInfo">Show playback and seeking controls for video-based GIFs in the media viewer.</string>
+    <string name="BluetoothCallControls">Bluetooth call controls</string>
+    <string name="BluetoothCallControlsInfo">Experimental. Let compatible Bluetooth devices show, answer and decline incoming voice calls. Caller details are not shared.</string>
 </resources>

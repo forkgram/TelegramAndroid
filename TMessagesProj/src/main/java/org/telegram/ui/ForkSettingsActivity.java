@@ -132,6 +132,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_HIDE_GREETING_STICKERS = 109;
     public static final int ID_HIDE_CONTACTS_TAB = 110;
     public static final int ID_GIF_PLAYBACK_CONTROLS = 111;
+    public static final int ID_BLUETOOTH_CALL_CONTROLS = 112;
     public static final int ID_SHOW_ARCHIVED_STICKERS = 45;
     public static final int ID_STICKER_SIZE = 46;
 
@@ -728,6 +729,10 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.ForkSectionVoice)));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            items.add(UItem.asButtonCheck(ID_BLUETOOTH_CALL_CONTROLS, LocaleController.getString(R.string.BluetoothCallControls), LocaleController.getString(R.string.BluetoothCallControlsInfo))
+                .setChecked(pref("bluetoothCallControls", false)).setMultiline(true));
+        }
         items.add(UItem.asSettingsCell(ID_VOICE_QUALITY, LocaleController.getString(R.string.VoiceMessageQuality), getVoiceQualityText()));
         items.add(UItem.asButtonCheck(ID_DISABLE_AUTOPLAY_NEXT_VOICE, LocaleController.getString(R.string.DisableAutoplayNextVoice), LocaleController.getString(R.string.DisableAutoplayNextVoiceInfo))
             .setChecked(pref("disableAutoplayNextVoice", false)).setMultiline(true));
@@ -854,6 +859,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideGreetingStickers", item, view);
         } else if (id == ID_HIDE_CONTACTS_TAB) {
             toggle("hideContactsTab", item, view);
+        } else if (id == ID_BLUETOOTH_CALL_CONTROLS) {
+            toggle("bluetoothCallControls", item, view);
         } else if (id == ID_GIF_PLAYBACK_CONTROLS) {
             toggle("gifPlaybackControls", item, view);
         } else if (id == ID_HIDE_BOTTOM_BUTTON) {

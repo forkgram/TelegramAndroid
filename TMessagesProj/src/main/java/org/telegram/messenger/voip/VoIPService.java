@@ -210,6 +210,42 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 	public static final int AUDIO_ROUTE_BLUETOOTH = 2;
 
 	public static final boolean USE_CONNECTION_SERVICE = isDeviceCompatibleWithConnectionServiceAPI();
+	private IncomingCallTelecom incomingCallTelecom;
+
+	private void disconnectFromBluetoothTelecom() {
+		if (sharedInstance != this || isCallEnded) {
+			return;
+		}
+		if (isRinging()) {
+			declineIncomingCall(DISCARD_REASON_HANGUP, null);
+		} else {
+			hangUp();
+		}
+	}
+
+	Connection createBluetoothCallConnection(android.telecom.ConnectionRequest request) {
+		return incomingCallTelecom != null ?
+				incomingCallTelecom.createConnection(request) : IncomingCallTelecom.canceled();
+	}
+
+	void bluetoothCallSubmissionFailed(android.telecom.ConnectionRequest request) {
+		if (incomingCallTelecom != null) incomingCallTelecom.onSubmissionFailed(request);
+	}
+
+	private void declineBluetoothCallSilently() {
+		if (sharedInstance == this && !isCallEnded && !isRinging()) {
+			needPlayEndSound = false;
+			declineIncomingCall(DISCARD_REASON_LINE_BUSY, null);
+		}
+	}
+
+	private void bindBluetoothCallControls(IncomingCallTelecom telecom) {
+		telecom.setControls(
+				() -> { if (sharedInstance == this && isRinging()) acceptIncomingCallFromNotification(); },
+				() -> { if (sharedInstance == this && isRinging()) declineIncomingCall(DISCARD_REASON_HANGUP, null); },
+				this::disconnectFromBluetoothTelecom,
+				() -> { if (sharedInstance == this && isRinging()) stopRinging(); });
+	}
 
 	private int currentAccount = -1;
 	private static final int PROXIMITY_SCREEN_OFF_WAKE_LOCK = 32;
@@ -980,6 +1016,10 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 		} else {
 			NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.closeInCallActivity);
 			privateCall = callIShouldHavePutIntoIntent;
+			if (privateCall != null && Build.VERSION.SDK_INT >= 33) {
+				incomingCallTelecom = VoIPPreNotificationService.takeBluetoothCall(privateCall.id, currentAccount);
+				if (incomingCallTelecom != null) bindBluetoothCallControls(incomingCallTelecom);
+			}
 			videoCall = privateCall != null && privateCall.video;
 			if (videoCall) {
 				isVideoAvailable = true;
@@ -1253,7 +1293,7 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 		req.peer.id = privateCall.id;
 		req.peer.access_hash = privateCall.access_hash;
 		ConnectionsManager.getInstance(currentAccount).sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
-			if (sharedInstance == null) {
+			if (sharedInstance != this || isCallEnded) {
 				return;
 			}
 			if (BuildVars.LOGS_ENABLED) {
@@ -1273,7 +1313,21 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 					tm.addNewIncomingCall(addAccountToTelecomManager(), extras);
 				}
 				if (startRinging) {
-					startRinging();
+					if (incomingCallTelecom != null || !IncomingCallTelecom.enabled(videoCall, notificationsDisabled)) {
+						startRinging();
+					} else {
+						incomingCallTelecom = new IncomingCallTelecom(this,
+								() -> { if (sharedInstance == this && !isCallEnded) startRinging(); },
+								this::declineBluetoothCallSilently, null, null, null, null);
+						bindBluetoothCallControls(incomingCallTelecom);
+						IncomingCallTelecom.Submission submission = incomingCallTelecom.report();
+						if (submission == IncomingCallTelecom.Submission.UNAVAILABLE) {
+							incomingCallTelecom = null;
+							startRinging();
+						} else if (submission == IncomingCallTelecom.Submission.DENIED) {
+							declineBluetoothCallSilently();
+						}
+					}
 				}
 			}
 		}), ConnectionsManager.RequestFlagFailOnServerErrorsExceptFloodWait);
@@ -4285,6 +4339,10 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 		if (BuildVars.LOGS_ENABLED) {
 			FileLog.d("=============== VoIPService STOPPING ===============");
 		}
+		if (incomingCallTelecom != null) {
+			incomingCallTelecom.close(DisconnectCause.LOCAL);
+			incomingCallTelecom = null;
+		}
 		stopForeground(true);
 		stopRinging();
 		if (currentAccount >= 0) {
@@ -4962,6 +5020,14 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 			FileLog.d("== Call " + getCallID() + " state changed to " + state + " ==");
 		}
 		currentState = state;
+		if (incomingCallTelecom != null) {
+			if (state == STATE_ESTABLISHED) {
+				incomingCallTelecom.setActive();
+			} else if (state == STATE_ENDED || state == STATE_FAILED) {
+				incomingCallTelecom.close(state == STATE_FAILED ? DisconnectCause.ERROR : DisconnectCause.REMOTE);
+				incomingCallTelecom = null;
+			}
+		}
 		if (currentState == STATE_ESTABLISHED) {
 			destroyConverting();
 		}

@@ -40,7 +40,12 @@ public class TelegramConnectionService extends ConnectionService {
 			FileLog.d("onCreateIncomingConnection "/*+request*/);
 		}
 		Bundle extras = request.getExtras();
-		if (extras.getInt("call_type") == 1) { // private
+		if (IncomingCallTelecom.isBluetoothAccount(request)) {
+			VoIPService svc = VoIPService.getSharedInstance();
+			return svc != null ? svc.createBluetoothCallConnection(request) :
+					VoIPPreNotificationService.createBluetoothCallConnection(request);
+		}
+		if (extras != null && extras.getInt("call_type") == 1) { // private
 			VoIPService svc = VoIPService.getSharedInstance();
 			if (svc == null) {
 				return null;
@@ -63,7 +68,16 @@ public class TelegramConnectionService extends ConnectionService {
 		if (BuildVars.LOGS_ENABLED) {
 			FileLog.e("onCreateIncomingConnectionFailed "/*+request*/);
 		}
-		if (VoIPService.getSharedInstance() != null) {
+		if (IncomingCallTelecom.isBluetoothAccount(request)) {
+			VoIPService svc = VoIPService.getSharedInstance();
+			if (svc != null) {
+				svc.bluetoothCallSubmissionFailed(request);
+			} else {
+				VoIPPreNotificationService.bluetoothCallSubmissionFailed(request);
+			}
+			return;
+		}
+		if (VoIPService.USE_CONNECTION_SERVICE && VoIPService.getSharedInstance() != null) {
 			VoIPService.getSharedInstance().callFailedFromConnectionService();
 		}
 	}
@@ -73,7 +87,7 @@ public class TelegramConnectionService extends ConnectionService {
 		if (BuildVars.LOGS_ENABLED) {
 			FileLog.e("onCreateOutgoingConnectionFailed "/*+request*/);
 		}
-		if (VoIPService.getSharedInstance() != null) {
+		if (VoIPService.USE_CONNECTION_SERVICE && VoIPService.getSharedInstance() != null) {
 			VoIPService.getSharedInstance().callFailedFromConnectionService();
 		}
 	}
