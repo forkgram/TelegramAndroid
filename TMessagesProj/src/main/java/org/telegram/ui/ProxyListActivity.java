@@ -470,6 +470,9 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
                 }
             } else if (position == rotationRow) {
                 SharedConfig.proxyRotationEnabled = !SharedConfig.proxyRotationEnabled;
+                if (!SharedConfig.proxyRotationEnabled) {
+                    ProxyRotationController.onRotationDisabled();
+                }
                 TextCheckCell textCheckCell = (TextCheckCell) view;
                 textCheckCell.setChecked(SharedConfig.proxyRotationEnabled);
                 SharedConfig.saveConfig();
