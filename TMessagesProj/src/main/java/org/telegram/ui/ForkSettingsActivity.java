@@ -131,6 +131,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_SHOW_NEW_MESSAGE_BUTTON = 108;
     public static final int ID_HIDE_GREETING_STICKERS = 109;
     public static final int ID_HIDE_CONTACTS_TAB = 110;
+    public static final int ID_GIF_PLAYBACK_CONTROLS = 111;
     public static final int ID_SHOW_ARCHIVED_STICKERS = 45;
     public static final int ID_STICKER_SIZE = 46;
 
@@ -712,6 +713,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("photoHasSticker", true)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_MOTION_PHOTO, LocaleController.getString(R.string.DisableMotionPhoto), LocaleController.getString(R.string.DisableMotionPhotoInfo))
             .setChecked(pref("disableMotionPhoto", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_GIF_PLAYBACK_CONTROLS, LocaleController.getString(R.string.GifPlaybackControls), LocaleController.getString(R.string.GifPlaybackControlsInfo))
+            .setChecked(pref("gifPlaybackControls", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_DISABLE_FLIP_PHOTOS, LocaleController.getString(R.string.DisableFlipPhotos), LocaleController.getString(R.string.DisableFlipPhotosInfo))
             .setChecked(pref("disableFlipPhotos", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_REAR_VIDEO_MESSAGES, LocaleController.getString(R.string.RearVideoMessages), LocaleController.getString(R.string.RearVideoMessagesInfo))
@@ -851,6 +854,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideGreetingStickers", item, view);
         } else if (id == ID_HIDE_CONTACTS_TAB) {
             toggle("hideContactsTab", item, view);
+        } else if (id == ID_GIF_PLAYBACK_CONTROLS) {
+            toggle("gifPlaybackControls", item, view);
         } else if (id == ID_HIDE_BOTTOM_BUTTON) {
             toggle("hideBottomButton", item, view);
         } else if (id == ID_CUSTOM_TITLE) {

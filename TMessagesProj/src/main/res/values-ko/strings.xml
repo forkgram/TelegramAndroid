@@ -1470,4 +1470,6 @@
     <string name="HideGreetingStickersInfo">비어 있는 개인 채팅에서 추천 스티커를 숨깁니다.</string>
     <string name="HideContactsTab">연락처 탭 숨기기</string>
     <string name="HideContactsTabInfo">하단 표시줄에서 연락처를 숨깁니다. 채팅 → 새 메시지에서 연락처를 선택할 수 있습니다. 적용하려면 앱을 다시 시작하세요.</string>
+    <string name="GifPlaybackControls">GIF 재생 제어</string>
+    <string name="GifPlaybackControlsInfo">미디어 뷰어에서 동영상 기반 GIF의 재생 및 탐색 컨트롤을 표시합니다.</string>
 </resources>

@@ -1714,4 +1714,6 @@
     <string name="HideGreetingStickersInfo">Blendet den Stickervorschlag in einem leeren privaten Chat aus.</string>
     <string name="HideContactsTab">Kontakte-Tab ausblenden</string>
     <string name="HideContactsTabInfo">Blendet Kontakte in der unteren Leiste aus. Die Kontaktauswahl bleibt über Chats → Neue Nachricht verfügbar. App neu starten, um die Änderung anzuwenden.</string>
+    <string name="GifPlaybackControls">GIF-Wiedergabesteuerung</string>
+    <string name="GifPlaybackControlsInfo">Zeigt Wiedergabesteuerung und Zeitleiste für videobasierte GIFs in der Medienansicht.</string>
 </resources>

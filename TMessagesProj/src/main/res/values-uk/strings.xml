@@ -606,4 +606,6 @@
     <string name="HideGreetingStickersInfo">Приховує запропоновану наліпку в порожньому особистому чаті.</string>
     <string name="HideContactsTab">Приховувати вкладку «Контакти»</string>
     <string name="HideContactsTabInfo">Приховує контакти з нижньої панелі. Вибір контакту доступний через «Чати» → «Нове повідомлення». Щоб застосувати зміну, перезапустіть програму.</string>
+    <string name="GifPlaybackControls">Керування відтворенням GIF</string>
+    <string name="GifPlaybackControlsInfo">Показує керування відтворенням і перемотуванням відео-GIF у переглядачі медіа.</string>
 </resources>

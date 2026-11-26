@@ -1876,4 +1876,6 @@
     <string name="HideGreetingStickersInfo">Nasconde lo sticker suggerito in una chat privata vuota.</string>
     <string name="HideContactsTab">Nascondi la scheda Contatti</string>
     <string name="HideContactsTabInfo">Nasconde Contatti dalla barra in basso. Puoi ancora scegliere un contatto da Chat → Nuovo messaggio. Riavvia l’app per applicare la modifica.</string>
+    <string name="GifPlaybackControls">Controlli di riproduzione delle GIF</string>
+    <string name="GifPlaybackControlsInfo">Mostra i controlli di riproduzione e la barra di avanzamento per le GIF basate su video nel visualizzatore multimediale.</string>
 </resources>

@@ -1600,4 +1600,6 @@
     <string name="HideGreetingStickersInfo">Oculta a sugestão de figurinha em uma conversa privada vazia.</string>
     <string name="HideContactsTab">Ocultar aba Contatos</string>
     <string name="HideContactsTabInfo">Oculta Contatos na barra inferior. O seletor de contatos continua disponível em Conversas → Nova mensagem. Reinicie o app para aplicar.</string>
+    <string name="GifPlaybackControls">Controles de reprodução de GIF</string>
+    <string name="GifPlaybackControlsInfo">Mostra controles de reprodução e a barra de progresso de GIFs baseados em vídeo no visualizador de mídia.</string>
 </resources>

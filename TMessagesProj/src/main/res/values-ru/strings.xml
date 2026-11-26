@@ -606,4 +606,6 @@
     <string name="HideGreetingStickersInfo">Скрывает предложенный стикер в пустом личном чате.</string>
     <string name="HideContactsTab">Скрывать вкладку «Контакты»</string>
     <string name="HideContactsTabInfo">Скрывает контакты с нижней панели. Выбор контакта доступен через «Чаты» → «Новое сообщение». Чтобы применить изменение, перезапустите приложение.</string>
+    <string name="GifPlaybackControls">Управление воспроизведением GIF</string>
+    <string name="GifPlaybackControlsInfo">Показывает управление воспроизведением и перемоткой видео-GIF в просмотрщике медиа.</string>
 </resources>

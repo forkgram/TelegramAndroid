@@ -1582,4 +1582,6 @@
     <string name="HideGreetingStickersInfo">إخفاء الملصق المقترح في الدردشة الخاصة الفارغة.</string>
     <string name="HideContactsTab">إخفاء تبويب جهات الاتصال</string>
     <string name="HideContactsTabInfo">إخفاء جهات الاتصال من الشريط السفلي. يبقى منتقي جهات الاتصال متاحًا عبر الدردشات ← رسالة جديدة. أعد تشغيل التطبيق لتطبيق التغيير.</string>
+    <string name="GifPlaybackControls">عناصر التحكم في تشغيل GIF</string>
+    <string name="GifPlaybackControlsInfo">إظهار عناصر التحكم في التشغيل والتنقل الزمني لصور GIF المستندة إلى فيديو في عارض الوسائط.</string>
 </resources>

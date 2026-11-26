@@ -148,6 +148,7 @@ object ForkSettings {
         BoolOption("showNewMessageButton", ForkSettingsActivity.ID_SHOW_NEW_MESSAGE_BUTTON, false),
         BoolOption("hideGreetingStickers", ForkSettingsActivity.ID_HIDE_GREETING_STICKERS, false),
         BoolOption("hideContactsTab", ForkSettingsActivity.ID_HIDE_CONTACTS_TAB, false),
+        BoolOption("gifPlaybackControls", ForkSettingsActivity.ID_GIF_PLAYBACK_CONTROLS, false),
         BoolOption("hideBottomButton", ForkSettingsActivity.ID_HIDE_BOTTOM_BUTTON, false),
         StringOption(
             "forkCustomTitle", ForkSettingsActivity.ID_CUSTOM_TITLE, "Fork Client",
