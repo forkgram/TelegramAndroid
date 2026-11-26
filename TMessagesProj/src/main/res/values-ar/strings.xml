@@ -1580,4 +1580,6 @@
     <string name="ShowNewMessageButtonInfo">إظهار زر كتابة رسالة في قائمة الدردشات الرئيسية.</string>
     <string name="HideGreetingStickers">إخفاء ملصقات الترحيب</string>
     <string name="HideGreetingStickersInfo">إخفاء الملصق المقترح في الدردشة الخاصة الفارغة.</string>
+    <string name="HideContactsTab">إخفاء تبويب جهات الاتصال</string>
+    <string name="HideContactsTabInfo">إخفاء جهات الاتصال من الشريط السفلي. يبقى منتقي جهات الاتصال متاحًا عبر الدردشات ← رسالة جديدة. أعد تشغيل التطبيق لتطبيق التغيير.</string>
 </resources>

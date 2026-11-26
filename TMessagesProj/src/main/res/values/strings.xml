@@ -12020,4 +12020,6 @@
     <string name="ShowNewMessageButtonInfo">Show the compose button in the main chat list.</string>
     <string name="HideGreetingStickers">Hide greeting stickers</string>
     <string name="HideGreetingStickersInfo">Hide the sticker suggestion in an empty private chat.</string>
+    <string name="HideContactsTab">Hide Contacts tab</string>
+    <string name="HideContactsTabInfo">Hide Contacts from the bottom bar. The contact picker remains available from Chats → New Message. Restart the app to apply.</string>
 </resources>

@@ -604,4 +604,6 @@
     <string name="ShowNewMessageButtonInfo">Показує кнопку створення повідомлення в основному списку чатів.</string>
     <string name="HideGreetingStickers">Приховувати вітальні наліпки</string>
     <string name="HideGreetingStickersInfo">Приховує запропоновану наліпку в порожньому особистому чаті.</string>
+    <string name="HideContactsTab">Приховувати вкладку «Контакти»</string>
+    <string name="HideContactsTabInfo">Приховує контакти з нижньої панелі. Вибір контакту доступний через «Чати» → «Нове повідомлення». Щоб застосувати зміну, перезапустіть програму.</string>
 </resources>

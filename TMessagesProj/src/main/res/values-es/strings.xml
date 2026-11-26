@@ -1652,4 +1652,6 @@
     <string name="ShowNewMessageButtonInfo">Muestra el botón de redactar en la lista principal de chats.</string>
     <string name="HideGreetingStickers">Ocultar stickers de saludo</string>
     <string name="HideGreetingStickersInfo">Oculta la sugerencia de sticker en un chat privado vacío.</string>
+    <string name="HideContactsTab">Ocultar la pestaña Contactos</string>
+    <string name="HideContactsTabInfo">Oculta Contactos en la barra inferior. El selector de contactos sigue disponible en Chats → Nuevo mensaje. Reinicia la aplicación para aplicar el cambio.</string>
 </resources>

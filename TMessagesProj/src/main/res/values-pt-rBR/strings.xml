@@ -1598,4 +1598,6 @@
     <string name="ShowNewMessageButtonInfo">Mostra o botão de escrever na lista principal de conversas.</string>
     <string name="HideGreetingStickers">Ocultar figurinhas de saudação</string>
     <string name="HideGreetingStickersInfo">Oculta a sugestão de figurinha em uma conversa privada vazia.</string>
+    <string name="HideContactsTab">Ocultar aba Contatos</string>
+    <string name="HideContactsTabInfo">Oculta Contatos na barra inferior. O seletor de contatos continua disponível em Conversas → Nova mensagem. Reinicie o app para aplicar.</string>
 </resources>

@@ -1712,4 +1712,6 @@
     <string name="ShowNewMessageButtonInfo">Zeigt die Schaltfläche zum Schreiben in der Haupt-Chatliste an.</string>
     <string name="HideGreetingStickers">Begrüßungssticker ausblenden</string>
     <string name="HideGreetingStickersInfo">Blendet den Stickervorschlag in einem leeren privaten Chat aus.</string>
+    <string name="HideContactsTab">Kontakte-Tab ausblenden</string>
+    <string name="HideContactsTabInfo">Blendet Kontakte in der unteren Leiste aus. Die Kontaktauswahl bleibt über Chats → Neue Nachricht verfügbar. App neu starten, um die Änderung anzuwenden.</string>
 </resources>

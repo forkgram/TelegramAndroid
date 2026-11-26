@@ -343,4 +343,6 @@
     <string name="ShowNewMessageButtonInfo">دکمهٔ نوشتن پیام را در فهرست اصلی گفتگوها نشان می‌دهد.</string>
     <string name="HideGreetingStickers">پنهان‌کردن استیکرهای خوشامدگویی</string>
     <string name="HideGreetingStickersInfo">استیکر پیشنهادی را در گفت‌وگوی خصوصی خالی پنهان می‌کند.</string>
+    <string name="HideContactsTab">پنهان‌کردن زبانهٔ مخاطبان</string>
+    <string name="HideContactsTabInfo">مخاطبان را از نوار پایین پنهان می‌کند. انتخاب مخاطب از گفت‌وگوها ← پیام جدید همچنان در دسترس است. برای اعمال تغییر، برنامه را دوباره راه‌اندازی کنید.</string>
 </resources>

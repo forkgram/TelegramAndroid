@@ -1468,4 +1468,6 @@
     <string name="ShowNewMessageButtonInfo">기본 채팅 목록에 메시지 작성 버튼을 표시합니다.</string>
     <string name="HideGreetingStickers">인사 스티커 숨기기</string>
     <string name="HideGreetingStickersInfo">비어 있는 개인 채팅에서 추천 스티커를 숨깁니다.</string>
+    <string name="HideContactsTab">연락처 탭 숨기기</string>
+    <string name="HideContactsTabInfo">하단 표시줄에서 연락처를 숨깁니다. 채팅 → 새 메시지에서 연락처를 선택할 수 있습니다. 적용하려면 앱을 다시 시작하세요.</string>
 </resources>

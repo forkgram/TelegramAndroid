@@ -1421,4 +1421,6 @@
     <string name="ShowNewMessageButtonInfo">Toon de knop om een bericht te schrijven in de hoofdchatlijst.</string>
     <string name="HideGreetingStickers">Begroetingsstickers verbergen</string>
     <string name="HideGreetingStickersInfo">Verberg de stickersuggestie in een lege privéchat.</string>
+    <string name="HideContactsTab">Tabblad Contacten verbergen</string>
+    <string name="HideContactsTabInfo">Verberg Contacten in de balk onderaan. Via Chats → Nieuw bericht kun je nog steeds een contact kiezen. Herstart de app om de wijziging toe te passen.</string>
 </resources>

@@ -604,4 +604,6 @@
     <string name="ShowNewMessageButtonInfo">Показывает кнопку создания сообщения в основном списке чатов.</string>
     <string name="HideGreetingStickers">Скрывать приветственные стикеры</string>
     <string name="HideGreetingStickersInfo">Скрывает предложенный стикер в пустом личном чате.</string>
+    <string name="HideContactsTab">Скрывать вкладку «Контакты»</string>
+    <string name="HideContactsTabInfo">Скрывает контакты с нижней панели. Выбор контакта доступен через «Чаты» → «Новое сообщение». Чтобы применить изменение, перезапустите приложение.</string>
 </resources>

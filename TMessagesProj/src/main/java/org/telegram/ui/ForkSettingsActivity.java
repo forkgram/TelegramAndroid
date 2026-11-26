@@ -130,6 +130,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_DISABLE_MESSAGE_WIDGETS = 107;
     public static final int ID_SHOW_NEW_MESSAGE_BUTTON = 108;
     public static final int ID_HIDE_GREETING_STICKERS = 109;
+    public static final int ID_HIDE_CONTACTS_TAB = 110;
     public static final int ID_SHOW_ARCHIVED_STICKERS = 45;
     public static final int ID_STICKER_SIZE = 46;
 
@@ -586,6 +587,8 @@ public class ForkSettingsActivity extends BaseFragment {
             .setChecked(pref("showNewMessageButton", false)).setMultiline(true));
         items.add(UItem.asButtonCheck(ID_HIDE_GREETING_STICKERS, LocaleController.getString(R.string.HideGreetingStickers), LocaleController.getString(R.string.HideGreetingStickersInfo))
             .setChecked(pref("hideGreetingStickers", false)).setMultiline(true));
+        items.add(UItem.asButtonCheck(ID_HIDE_CONTACTS_TAB, LocaleController.getString(R.string.HideContactsTab), LocaleController.getString(R.string.HideContactsTabInfo))
+            .setChecked(pref("hideContactsTab", false)).setMultiline(true));
         if (SharedConfig.isUserOwner()) {
             items.add(UItem.asButtonCheck(ID_HIDE_BOTTOM_BUTTON, LocaleController.getString(R.string.HideBottomButton), LocaleController.getString(R.string.HideBottomButtonInfo))
                 .setChecked(pref("hideBottomButton", false)).setMultiline(true));
@@ -846,6 +849,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("showNewMessageButton", item, view);
         } else if (id == ID_HIDE_GREETING_STICKERS) {
             toggle("hideGreetingStickers", item, view);
+        } else if (id == ID_HIDE_CONTACTS_TAB) {
+            toggle("hideContactsTab", item, view);
         } else if (id == ID_HIDE_BOTTOM_BUTTON) {
             toggle("hideBottomButton", item, view);
         } else if (id == ID_CUSTOM_TITLE) {
