@@ -106,6 +106,7 @@ public class NotificationsService extends Service {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setShowWhen(false)
                     .setOngoing(true)
+                    .setSilent(true)
                     .setSmallIcon(R.drawable.notification)
                     .setContentText("Push service: tap to learn more");
             try {
