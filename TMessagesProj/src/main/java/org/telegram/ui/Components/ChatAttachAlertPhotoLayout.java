@@ -99,6 +99,7 @@ import org.telegram.messenger.Utilities;
 import org.telegram.messenger.VideoEditedInfo;
 import org.telegram.messenger.camera.CameraController;
 import org.telegram.messenger.camera.CameraView;
+import org.telegram.messenger.forkgram.AttachmentPhotoDeletion;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.ActionBarMenu;
@@ -129,6 +130,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -198,6 +200,11 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
     public static int lastImageId = -1;
 
     public static final int REQUEST_CODE_DELETE_FROM_DEVICE = 9200;
+    public static final int REQUEST_CODE_DELETE_SELECTED_PHOTOS = 9201;
+    private static WeakReference<ChatAttachAlertPhotoLayout> pendingBatchDeletionLayout;
+    private AttachmentPhotoDeletion.Request pendingBatchDeletion;
+    private boolean preparingBatchDeletion;
+    private ActionBarMenuSubItem deleteSelectedPhotosItem;
     private static WeakReference<ChatAttachAlertPhotoLayout> deleteFromDevicePendingLayout;
     private MediaController.PhotoEntry deleteFromDevicePendingEntry;
     private boolean cancelTakingPhotos;
@@ -251,6 +258,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
     public final static int preview = 7;
     public final static int caption = 8;
     public final static int stars = 9;
+    private static final int delete_selected_photos = 41;
 
     private ActionBarMenuSubItem spoilerItem;
     private ActionBarMenuSubItem compressItem;
@@ -873,6 +881,152 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
         }
     }
 
+    private boolean canDeleteSelectedPhotos() {
+        return Build.VERSION.SDK_INT >= 30
+            && parentAlert.getCurrentAttachLayout() == this
+            && parentAlert.baseFragment instanceof ChatActivity
+            && parentAlert.editingMessageObject == null && parentAlert.avatarPicker == 0
+            && !parentAlert.storyMediaPicker && !parentAlert.isStickerMode;
+    }
+
+    private ArrayList<AttachmentPhotoDeletion.Selection> getSelectedGalleryPhotos() {
+        ArrayList<AttachmentPhotoDeletion.Selection> photos = new ArrayList<>();
+        for (Object id : selectedPhotosOrder) {
+            if (selectedPhotos.get(id) instanceof MediaController.PhotoEntry entry
+                && id.equals(entry.imageId) && !entry.isVideo && entry.imageId > 0 && !TextUtils.isEmpty(entry.path)) {
+                photos.add(new AttachmentPhotoDeletion.Selection(entry.imageId, entry.path));
+            }
+        }
+        return photos;
+    }
+
+    void updateDeleteSelectedPhotosColor() {
+        if (deleteSelectedPhotosItem != null) {
+            deleteSelectedPhotosItem.setColorKeys(Theme.key_text_RedBold, Theme.key_text_RedRegular);
+        }
+    }
+
+    private void confirmDeleteSelectedPhotos() {
+        if (!canDeleteSelectedPhotos() || preparingBatchDeletion || pendingBatchDeletionLayout != null) {
+            return;
+        }
+        Activity activity = parentAlert.baseFragment.getParentActivity();
+        ArrayList<AttachmentPhotoDeletion.Selection> photos = getSelectedGalleryPhotos();
+        if (activity == null || photos.size() < 2) {
+            return;
+        }
+        AlertDialog dialog = new AlertDialog.Builder(getContext(), resourcesProvider)
+            .setTitle(getString(R.string.DeleteFromDevice))
+            .setMessage(LocaleController.formatString(R.string.DeleteSelectedPhotosFromDeviceMessage, photos.size()))
+            .setPositiveButton(getString(R.string.Delete), (d, which) -> requestSelectedPhotosDeletion(activity, photos))
+            .setNegativeButton(getString(R.string.Cancel), null)
+            .create();
+        dialog.show();
+        if (dialog.getButton(AlertDialog.BUTTON_POSITIVE) instanceof TextView button) {
+            button.setTextColor(getThemedColor(Theme.key_text_RedBold));
+        }
+    }
+
+    @androidx.annotation.RequiresApi(30)
+    private void requestSelectedPhotosDeletion(Activity activity, ArrayList<AttachmentPhotoDeletion.Selection> photos) {
+        if (preparingBatchDeletion || pendingBatchDeletionLayout != null) {
+            return;
+        }
+        preparingBatchDeletion = true;
+        Utilities.globalQueue.postRunnable(() -> {
+            AttachmentPhotoDeletion.Request request = AttachmentPhotoDeletion.prepare(activity.getContentResolver(), photos);
+            AndroidUtilities.runOnUIThread(() -> {
+                preparingBatchDeletion = false;
+                if (parentAlert.isDismissed() || !canDeleteSelectedPhotos() || pendingBatchDeletionLayout != null) {
+                    return;
+                }
+                if (request == null) {
+                    showBatchDeletionError();
+                    return;
+                }
+                for (AttachmentPhotoDeletion.Target target : request.getTargets()) {
+                    Object entry = selectedPhotos.get(target.getImageId());
+                    if (!(entry instanceof MediaController.PhotoEntry photo) || !target.matches(photo)) {
+                        return;
+                    }
+                }
+                try {
+                    pendingBatchDeletion = request;
+                    pendingBatchDeletionLayout = new WeakReference<>(this);
+                    activity.startIntentSenderForResult(request.getIntent().getIntentSender(), REQUEST_CODE_DELETE_SELECTED_PHOTOS, null, 0, 0, 0);
+                } catch (Exception e) {
+                    FileLog.e(e);
+                    pendingBatchDeletion = null;
+                    pendingBatchDeletionLayout = null;
+                    showBatchDeletionError();
+                }
+            });
+        });
+    }
+
+    public static void onDeleteSelectedPhotosActivityResult(Activity activity, int resultCode) {
+        ChatAttachAlertPhotoLayout layout = pendingBatchDeletionLayout == null ? null : pendingBatchDeletionLayout.get();
+        pendingBatchDeletionLayout = null;
+        if (layout == null) {
+            return;
+        }
+        AttachmentPhotoDeletion.Request request = layout.pendingBatchDeletion;
+        layout.pendingBatchDeletion = null;
+        if (Build.VERSION.SDK_INT < 30 || resultCode != Activity.RESULT_OK || request == null) {
+            return;
+        }
+        Utilities.globalQueue.postRunnable(() -> {
+            List<AttachmentPhotoDeletion.Target> deleted = AttachmentPhotoDeletion.confirmedDeleted(activity.getContentResolver(), request.getTargets());
+            AndroidUtilities.runOnUIThread(() -> layout.applyDeletedGalleryPhotos(deleted, request.getTargets().size()));
+        });
+    }
+
+    private void applyDeletedGalleryPhotos(List<AttachmentPhotoDeletion.Target> deleted, int requestedCount) {
+        if (!deleted.isEmpty()) {
+            HashSet<MediaController.AlbumEntry> albums = new HashSet<>(MediaController.allMediaAlbums);
+            albums.addAll(MediaController.allPhotoAlbums);
+            albums.add(galleryAlbumEntry);
+            albums.add(selectedAlbumEntry);
+            albums.remove(null);
+            for (AttachmentPhotoDeletion.Target target : deleted) {
+                int id = target.getImageId();
+                for (MediaController.AlbumEntry album : albums) {
+                    MediaController.PhotoEntry entry = album.photosByIds.get(id);
+                    if (target.matches(entry)) {
+                        album.photosByIds.remove(id);
+                        album.photos.remove(entry);
+                        if (album.coverPhoto == entry) {
+                            album.coverPhoto = album.photos.isEmpty() ? null : album.photos.get(0);
+                        }
+                    }
+                }
+                Object selected = selectedPhotos.get(id);
+                if (selected instanceof MediaController.PhotoEntry entry && target.matches(entry)) {
+                    selectedPhotos.remove(id);
+                    selectedPhotosOrder.remove((Integer) id);
+                }
+            }
+            if (!parentAlert.isDismissed()) {
+                updateCheckedPhotoIndices();
+                updatePhotosCounter(false);
+                adapter.notifyDataSetChanged();
+                cameraAttachAdapter.notifyDataSetChanged();
+                updateAlbumsDropDown();
+                parentAlert.updateCountButton(0);
+            }
+        }
+        if (requestedCount != deleted.size()) {
+            showBatchDeletionError();
+        }
+    }
+
+    private void showBatchDeletionError() {
+        if (!parentAlert.isDismissed()) {
+            BulletinFactory.of(parentAlert.sizeNotifierFrameLayout, resourcesProvider)
+                .createErrorBulletin(getString(R.string.ErrorOccurred)).show();
+        }
+    }
+
     public ChatAttachAlertPhotoLayout(ChatAttachAlert alert, Context context, boolean forceDarkTheme, boolean needCamera, Theme.ResourcesProvider resourcesProvider) {
         super(alert, context, resourcesProvider);
         this.forceDarkTheme = forceDarkTheme;
@@ -933,6 +1087,11 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
         qualityItem = parentAlert.selectedMenuItem.addSubItem(quality, R.drawable.menu_quality_hd, getString(R.string.SendInHighQuality));
         parentAlert.selectedMenuItem.addSubItem(caption, captionItem);
         starsItem = parentAlert.selectedMenuItem.addSubItem(stars, R.drawable.menu_feature_paid, getString(R.string.PaidMediaButton));
+        if (Build.VERSION.SDK_INT >= 30) {
+            deleteSelectedPhotosItem = parentAlert.selectedMenuItem.addSubItem(delete_selected_photos, R.drawable.msg_delete, getString(R.string.DeleteFromDevice));
+            updateDeleteSelectedPhotosColor();
+            parentAlert.selectedMenuItem.hideSubItem(delete_selected_photos);
+        }
         parentAlert.selectedMenuItem.setFitSubItems(true);
 
         gridView = new RecyclerListView(context, resourcesProvider) {
@@ -3397,6 +3556,10 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
 
     @Override
     public void onMenuItemClick(int id) {
+        if (id == delete_selected_photos) {
+            confirmDeleteSelectedPhotos();
+            return;
+        }
         if (id == caption) {
             parentAlert.setCaptionAbove(!parentAlert.captionAbove);
             captionItem.setState(!parentAlert.captionAbove, true);
@@ -3630,6 +3793,9 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
 
     @Override
     public void onSelectedItemsCountChanged(int count) {
+        if (deleteSelectedPhotosItem != null) {
+            parentAlert.selectedMenuItem.setSubItemShown(delete_selected_photos, count >= 2 && canDeleteSelectedPhotos() && getSelectedGalleryPhotos().size() >= 2);
+        }
         final boolean hasCompress;
         final boolean hasGroup;
         if (count <= 1 || parentAlert.editingMessageObject != null) {

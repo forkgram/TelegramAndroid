@@ -166,6 +166,7 @@
     <string name="GoToFirstMessage">Перейти к началу</string>
     <string name="DeleteFromDevice">Удалить с устройства</string>
     <string name="DeleteFromDeviceMessage">Этот файл будет безвозвратно удалён с вашего устройства.</string>
+    <string name="DeleteSelectedPhotosFromDeviceMessage">Фотографий к удалению: %1$d. Эти фотографии будут безвозвратно удалены с устройства.</string>
     <string name="DeleteFromDeviceDone">Файл удалён с устройства</string>
     <string name="ShowBottomTabs">Показать нижние табы</string>
     <string name="HideBottomTabs">Спрятать нижние табы</string>

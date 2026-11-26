@@ -6950,6 +6950,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             }
         } else if (requestCode == ChatAttachAlertPhotoLayout.REQUEST_CODE_DELETE_FROM_DEVICE) {
             ChatAttachAlertPhotoLayout.onDeleteFromDeviceActivityResult(resultCode);
+        } else if (requestCode == ChatAttachAlertPhotoLayout.REQUEST_CODE_DELETE_SELECTED_PHOTOS) {
+            ChatAttachAlertPhotoLayout.onDeleteSelectedPhotosActivityResult(this, resultCode);
         } else {
             ThemeEditorView editorView = ThemeEditorView.getInstance();
             if (editorView != null) {

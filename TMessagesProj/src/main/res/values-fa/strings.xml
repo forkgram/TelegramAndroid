@@ -281,6 +281,7 @@
     <!--button titles-->
     <string name="DeleteFromDevice">حذف از دستگاه</string>
     <string name="DeleteFromDeviceMessage">این فایل برای همیشه از دستگاه شما حذف می‌شود.</string>
+    <string name="DeleteSelectedPhotosFromDeviceMessage">تعداد عکس‌ها برای حذف: %1$d. این عکس‌ها برای همیشه از این دستگاه حذف می‌شوند.</string>
     <string name="DeleteFromDeviceDone">فایل از دستگاه حذف شد</string>
     <string name="QRLoginTitle">ورود با کد QR</string>
     <string name="QRLoginSubtitle">تلگرام را روی دستگاه دیگری باز کنید و این کد QR را اسکن کنید تا به حساب خود وارد شوید.</string>

@@ -4059,6 +4059,7 @@
     <string name="Delete">Delete</string>
     <string name="DeleteFromDevice">Delete from device</string>
     <string name="DeleteFromDeviceMessage">This file will be permanently deleted from your device.</string>
+    <string name="DeleteSelectedPhotosFromDeviceMessage">Photos to delete: %1$d. These photos will be permanently deleted from this device.</string>
     <string name="DeleteFromDeviceDone">File deleted from device</string>
     <string name="AddACaption">Add Caption</string>
     <string name="Start">Start</string>

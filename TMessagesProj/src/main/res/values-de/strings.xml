@@ -14,6 +14,7 @@
     <string name="DeleteFromDevice">Vom Gerät löschen</string>
     <string name="DeleteFromDeviceDone">Datei vom Gerät gelöscht</string>
     <string name="DeleteFromDeviceMessage">Diese Datei wird endgültig von deinem Gerät gelöscht.</string>
+    <string name="DeleteSelectedPhotosFromDeviceMessage">Zu löschende Fotos: %1$d. Diese Fotos werden endgültig von diesem Gerät gelöscht.</string>
     <string name="SendAsRoundVideo">Als Videonachricht senden</string>
     <string name="ExportSettings">Einstellungen exportieren</string>
     <string name="ExportSettingsDone">Einstellungen exportiert.</string>

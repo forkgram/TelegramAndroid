@@ -14,6 +14,7 @@
     <string name="DeleteFromDevice">Van apparaat verwijderen</string>
     <string name="DeleteFromDeviceDone">Bestand van apparaat verwijderd</string>
     <string name="DeleteFromDeviceMessage">Dit bestand wordt definitief van je apparaat verwijderd.</string>
+    <string name="DeleteSelectedPhotosFromDeviceMessage">Te verwijderen foto’s: %1$d. Deze foto’s worden definitief van dit apparaat verwijderd.</string>
     <string name="SendAsRoundVideo">Als rond videobericht versturen</string>
     <string name="ExportSettings">Instellingen exporteren</string>
     <string name="ExportSettingsDone">Instellingen geëxporteerd.</string>
