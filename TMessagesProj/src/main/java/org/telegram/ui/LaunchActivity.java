@@ -6335,7 +6335,6 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         if (!NotificationsService.isNotificationShown(this)) {
             return;
         }
-        preferences.edit().putBoolean("pushServiceHintShown", true).apply();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Hide the push service notification?");
         builder.setMessage("Forkgram keeps a notification in your shade so Android lets it stay connected for new messages. You can hide it: turn off \"Push Notifications Service\" on the next screen. Messages will still arrive.");
@@ -6347,7 +6346,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             }
         });
         builder.setNegativeButton("Keep it", null);
-        showAlertDialog(builder);
+        if (showAlertDialog(builder) != null) {
+            preferences.edit().putBoolean("pushServiceHintShown", true).apply();
+        }
     }
 
     public Dialog showAlertDialog(AlertDialog.Builder builder) {

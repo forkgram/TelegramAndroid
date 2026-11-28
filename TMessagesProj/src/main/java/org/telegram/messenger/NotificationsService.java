@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.service.notification.StatusBarNotification;
 import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
@@ -104,7 +105,17 @@ public class NotificationsService extends Service {
         try {
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationChannel channel = notificationManager.getNotificationChannel(CHANNEL_ID);
-            return channel != null && channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+            if (channel == null || channel.getImportance() == NotificationManager.IMPORTANCE_NONE || !notificationManager.areNotificationsEnabled()) {
+                return false;
+            }
+            // The channel can stay enabled after the service stops (for example with UnifiedPush),
+            // so also check that the service's notification is actually posted.
+            for (StatusBarNotification notification : notificationManager.getActiveNotifications()) {
+                if (notification.getId() == NOTIFICATION_ID) {
+                    return true;
+                }
+            }
+            return false;
         } catch (Throwable e) {
             return false;
         }
