@@ -15,6 +15,8 @@ import static org.telegram.messenger.MessagesController.LOAD_FORWARD;
 import static org.telegram.messenger.MessagesController.LOAD_FROM_UNREAD;
 
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.text.SpannableStringBuilder;
@@ -805,6 +807,7 @@ public class MessagesStorage extends BaseController {
     }
 
     private void cleanupInternal(boolean deleteFiles) {
+        unsavedWidgetIds = null;
         if (deleteFiles) {
             reset();
         } else {
@@ -10271,6 +10274,48 @@ public class MessagesStorage extends BaseController {
         updateWidgets(dids);
     }
 
+    private ArrayList<Integer> unsavedWidgetIds;
+    private int unsavedWidgetIdsEpoch;
+    private static volatile int widgetsEpoch;
+
+    public static void invalidateUnsavedWidgetIds() {
+        widgetsEpoch++;
+    }
+
+    private ArrayList<Integer> getUnsavedWidgetIds() {
+        int epoch = widgetsEpoch;
+        if (unsavedWidgetIds != null && unsavedWidgetIdsEpoch == epoch) {
+            return unsavedWidgetIds;
+        }
+        ArrayList<Integer> unsaved = new ArrayList<>();
+        SQLiteCursor cursor = null;
+        try {
+            ArrayList<Integer> saved = new ArrayList<>();
+            cursor = database.queryFinalized("SELECT DISTINCT id FROM shortcut_widget");
+            while (cursor.next()) {
+                saved.add(cursor.intValue(0));
+            }
+            SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("shortcut_widget", Context.MODE_PRIVATE);
+            AppWidgetManager manager = AppWidgetManager.getInstance(ApplicationLoader.applicationContext);
+            for (Class<?> provider : new Class<?>[]{ContactsWidgetProvider.class, ChatsWidgetProvider.class}) {
+                for (int id : manager.getAppWidgetIds(new ComponentName(ApplicationLoader.applicationContext, provider))) {
+                    if (!saved.contains(id) && preferences.getInt("account" + id, -1) == currentAccount && !preferences.getBoolean("deleted" + id, false)) {
+                        unsaved.add(id);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            FileLog.e(e);
+            return unsaved;
+        } finally {
+            if (cursor != null) {
+                cursor.dispose();
+            }
+        }
+        unsavedWidgetIdsEpoch = epoch;
+        return unsavedWidgetIds = unsaved;
+    }
+
     private void updateWidgets(ArrayList<Long> dids) {
         if (dids.isEmpty()) {
             return;
@@ -10285,6 +10330,14 @@ public class MessagesStorage extends BaseController {
                 widgetIds.add(cursor.intValue(0));
             }
             cursor.dispose();
+            for (int id : getUnsavedWidgetIds()) {
+                if (widgetIds == null) {
+                    widgetIds = new ArrayList<>();
+                }
+                if (!widgetIds.contains(id)) {
+                    widgetIds.add(id);
+                }
+            }
             if (widgetIds != null) {
                 ArrayList<Integer> widgetIdsFinal = widgetIds;
                 AndroidUtilities.runOnUIThread(() -> {
@@ -10303,6 +10356,7 @@ public class MessagesStorage extends BaseController {
         storageQueue.postRunnable(() -> {
             try {
                 database.beginTransaction();
+                unsavedWidgetIds = null;
                 database.executeFast("DELETE FROM shortcut_widget WHERE id = " + widgetId).stepThis().dispose();
                 SQLitePreparedStatement state = database.executeFast("REPLACE INTO shortcut_widget VALUES(?, ?, ?)");
                 if (dids.isEmpty()) {
@@ -10332,6 +10386,7 @@ public class MessagesStorage extends BaseController {
     public void clearWidgetDialogs(int widgetId) {
         storageQueue.postRunnable(() -> {
             try {
+                unsavedWidgetIds = null;
                 database.executeFast("DELETE FROM shortcut_widget WHERE id = " + widgetId).stepThis().dispose();
             } catch (Exception e) {
                 checkSQLException(e);
