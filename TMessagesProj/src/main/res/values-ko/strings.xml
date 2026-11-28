@@ -1475,4 +1475,6 @@
     <string name="HideContactsTabInfo">하단 표시줄에서 연락처를 숨깁니다. 채팅 → 새 메시지에서 연락처를 선택할 수 있습니다. 적용하려면 앱을 다시 시작하세요.</string>
     <string name="GifPlaybackControls">GIF 재생 제어</string>
     <string name="GifPlaybackControlsInfo">미디어 뷰어에서 동영상 기반 GIF의 재생 및 탐색 컨트롤을 표시합니다.</string>
+    <string name="PushServiceChannelSettings">푸시 서비스 알림</string>
+    <string name="PushServiceChannelSettingsInfo">Android 설정에서 이 알림만 표시하거나 숨길 수 있습니다.</string>
 </resources>

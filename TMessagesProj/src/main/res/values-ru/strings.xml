@@ -613,4 +613,6 @@
     <string name="GifPlaybackControlsInfo">Показывает управление воспроизведением и перемоткой видео-GIF в просмотрщике медиа.</string>
     <string name="BluetoothCallControls">Управление звонками по Bluetooth</string>
     <string name="BluetoothCallControlsInfo">Экспериментальная функция. Совместимые Bluetooth-устройства смогут показывать, принимать и отклонять входящие голосовые звонки. Данные звонящего не передаются.</string>
+    <string name="PushServiceChannelSettings">Уведомление службы доставки</string>
+    <string name="PushServiceChannelSettingsInfo">Покажите или скройте только это уведомление в настройках Android.</string>
 </resources>

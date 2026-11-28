@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.UnifiedPushService;
+import org.telegram.messenger.NotificationsService;
 import org.unifiedpush.android.connector.UnifiedPush;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -115,6 +116,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
 
     private int notificationsServiceRow;
     private int notificationsServiceConnectionRow;
+    private int pushServiceNotificationRow;
 
     private int notificationsSectionRow;
     @Keep
@@ -252,6 +254,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
 
         otherSectionRow = rowCount++;
         notificationsServiceConnectionRow = rowCount++;
+        pushServiceNotificationRow = NotificationsService.hasNotificationChannel(ApplicationLoader.applicationContext) ? rowCount++ : -1;
         androidAutoAlertRow = -1;
         repeatRow = rowCount++;
 
@@ -772,6 +775,14 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                 editor.putBoolean("badgeNumberMessages", getNotificationsController().showBadgeMessages);
                 editor.commit();
                 getNotificationsController().updateBadge();
+            } else if (position == pushServiceNotificationRow) {
+                if (getParentActivity() != null) {
+                    try {
+                        getParentActivity().startActivity(NotificationsService.getChannelSettingsIntent(getParentActivity()));
+                    } catch (RuntimeException e) {
+                        org.telegram.messenger.FileLog.e(e);
+                    }
+                }
             } else if (position == notificationsServiceConnectionRow) {
                 SharedPreferences preferences = MessagesController.getNotificationsSettings(currentAccount);
                 enabled = preferences.getBoolean("pushConnection", getMessagesController().backgroundConnection);
@@ -1183,7 +1194,9 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                 case 2: {
                     TextDetailSettingsCell settingsCell = (TextDetailSettingsCell) holder.itemView;
                     settingsCell.setMultilineDetail(true);
-                    if (position == resetNotificationsRow) {
+                    if (position == pushServiceNotificationRow) {
+                        settingsCell.setTextAndValue(getString(R.string.PushServiceChannelSettings), getString(R.string.PushServiceChannelSettingsInfo), true);
+                    } else if (position == resetNotificationsRow) {
                         settingsCell.setTextAndValue(getString("ResetAllNotifications", R.string.ResetAllNotifications), getString("UndoAllCustom", R.string.UndoAllCustom), false);
                     } else if (position == unifiedPushDistributorRow) {
                         String value = UnifiedPush.getSavedDistributor(ApplicationLoader.applicationContext);
@@ -1360,7 +1373,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                     position == badgeNumberShowRow || position == inappPriorityRow || position == inchatSoundRow ||
                     position == androidAutoAlertRow || position == accountsAllRow || position == disableUnifiedPushRow) {
                 return 1;
-            } else if (position == resetNotificationsRow || position == unifiedPushDistributorRow || position == unifiedPushGatewayRow) {
+            } else if (position == resetNotificationsRow || position == unifiedPushDistributorRow || position == unifiedPushGatewayRow || position == pushServiceNotificationRow) {
                 return 2;
             } else if (position == privateRow || position == groupRow || position == channelsRow || position == storiesRow || position == reactionsRow) {
                 return 3;

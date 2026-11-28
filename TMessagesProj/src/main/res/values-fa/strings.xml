@@ -350,4 +350,6 @@
     <string name="HideContactsTabInfo">مخاطبان را از نوار پایین پنهان می‌کند. انتخاب مخاطب از گفت‌وگوها ← پیام جدید همچنان در دسترس است. برای اعمال تغییر، برنامه را دوباره راه‌اندازی کنید.</string>
     <string name="GifPlaybackControls">کنترل پخش گیف</string>
     <string name="GifPlaybackControlsInfo">کنترل‌های پخش و نوار زمان را برای گیف‌های مبتنی بر ویدیو در نمایشگر رسانه نشان می‌دهد.</string>
+    <string name="PushServiceChannelSettings">اعلان سرویس پوش</string>
+    <string name="PushServiceChannelSettingsInfo">فقط همین اعلان را در تنظیمات اندروید نمایش دهید یا پنهان کنید.</string>
 </resources>

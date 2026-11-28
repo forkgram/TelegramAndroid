@@ -12029,4 +12029,6 @@
     <string name="GifPlaybackControlsInfo">Show playback and seeking controls for video-based GIFs in the media viewer.</string>
     <string name="BluetoothCallControls">Bluetooth call controls</string>
     <string name="BluetoothCallControlsInfo">Experimental. Let compatible Bluetooth devices show, answer and decline incoming voice calls. Caller details are not shared.</string>
+    <string name="PushServiceChannelSettings">Push service notification</string>
+    <string name="PushServiceChannelSettingsInfo">Show or hide only this notification in Android settings.</string>
 </resources>

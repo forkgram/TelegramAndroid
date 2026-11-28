@@ -1659,4 +1659,6 @@
     <string name="HideContactsTabInfo">Oculta Contactos en la barra inferior. El selector de contactos sigue disponible en Chats → Nuevo mensaje. Reinicia la aplicación para aplicar el cambio.</string>
     <string name="GifPlaybackControls">Controles de reproducción de GIF</string>
     <string name="GifPlaybackControlsInfo">Muestra los controles de reproducción y la barra de progreso para los GIF basados en vídeo en el visor multimedia.</string>
+    <string name="PushServiceChannelSettings">Notificación del servicio push</string>
+    <string name="PushServiceChannelSettingsInfo">Muestra u oculta solo esta notificación en los ajustes de Android.</string>
 </resources>

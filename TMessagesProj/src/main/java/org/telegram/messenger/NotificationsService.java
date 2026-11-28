@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.provider.Settings;
 import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
@@ -91,6 +92,21 @@ public class NotificationsService extends Service {
         if (stopWhenForeground) {
             stopSelf();
         }
+    }
+
+    public static boolean hasNotificationChannel(Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || context == null) {
+            return false;
+        }
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        return manager != null && manager.getNotificationChannel(CHANNEL_ID) != null;
+    }
+
+    public static Intent getChannelSettingsIntent(Context context) {
+        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, CHANNEL_ID);
+        return intent;
     }
 
     private Notification getNotification() {

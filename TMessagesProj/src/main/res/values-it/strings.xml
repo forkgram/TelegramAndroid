@@ -1881,4 +1881,6 @@
     <string name="HideContactsTabInfo">Nasconde Contatti dalla barra in basso. Puoi ancora scegliere un contatto da Chat → Nuovo messaggio. Riavvia l’app per applicare la modifica.</string>
     <string name="GifPlaybackControls">Controlli di riproduzione delle GIF</string>
     <string name="GifPlaybackControlsInfo">Mostra i controlli di riproduzione e la barra di avanzamento per le GIF basate su video nel visualizzatore multimediale.</string>
+    <string name="PushServiceChannelSettings">Notifica del servizio push</string>
+    <string name="PushServiceChannelSettingsInfo">Mostra o nascondi solo questa notifica nelle impostazioni di Android.</string>
 </resources>
