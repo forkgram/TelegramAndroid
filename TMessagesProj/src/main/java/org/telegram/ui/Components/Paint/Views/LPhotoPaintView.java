@@ -1950,7 +1950,11 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         }
 
         float x2 = (ev.getX() - renderView.getTranslationX() - getMeasuredWidth() / 2f) / renderView.getScaleX();
-        float y2 = (ev.getY() - renderView.getTranslationY() - getMeasuredHeight() / 2f + dp(32) - (getAdditionalTop() - getAdditionalBottom()) / 2f) / renderView.getScaleY();
+        // Map from where onLayout actually put the canvas. The old constant (dp(32)) only
+        // matched it when the action bar is 32dp taller than the status bar, so in a bubble (no
+        // status bar) strokes landed ~12dp above the pen.
+        float renderCenterY = renderView.getTop() + renderView.getMeasuredHeight() / 2f;
+        float y2 = (ev.getY() - renderView.getTranslationY() - renderCenterY) / renderView.getScaleY();
         float rotation = (float) Math.toRadians(-renderView.getRotation());
         float x = (float) (x2 * Math.cos(rotation) - y2 * Math.sin(rotation)) + renderView.getMeasuredWidth() / 2f;
         float y = (float) (x2 * Math.sin(rotation) + y2 * Math.cos(rotation)) + renderView.getMeasuredHeight() / 2f;
