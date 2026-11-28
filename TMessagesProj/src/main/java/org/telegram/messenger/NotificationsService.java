@@ -19,13 +19,14 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.provider.Settings;
 import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 public class NotificationsService extends Service {
 
     private static final int NOTIFICATION_ID = 9999;
-    private static final String CHANNEL_ID = "push_service_channel";
+    public static final String CHANNEL_ID = "push_service_channel";
 
     private static volatile boolean foregroundStartPending;
     private static volatile boolean stopWhenForeground;
@@ -91,6 +92,29 @@ public class NotificationsService extends Service {
         if (stopWhenForeground) {
             stopSelf();
         }
+    }
+
+    // True when the push service channel exists and the user has not turned it off.
+    // Android does not let an app create a foreground service's channel blocked,
+    // so hiding it is up to the user, in the channel's settings.
+    public static boolean isNotificationShown(Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return false;
+        }
+        try {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel channel = notificationManager.getNotificationChannel(CHANNEL_ID);
+            return channel != null && channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
+    public static Intent getChannelSettingsIntent(Context context) {
+        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, CHANNEL_ID);
+        return intent;
     }
 
     private Notification getNotification() {

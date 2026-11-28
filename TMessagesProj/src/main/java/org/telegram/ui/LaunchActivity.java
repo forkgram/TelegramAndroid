@@ -136,6 +136,7 @@ import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.SharedPrefsHelper;
 import org.telegram.messenger.TopicsController;
 import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.NotificationsService;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.browser.Browser;
@@ -6315,6 +6316,40 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         }
     }
 
+    // One-time offer to hide the push service notification. The app cannot create that
+    // channel blocked, so this takes the user straight to its switch.
+    private void showPushServiceHint() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || !isResumed || isFinishing()) {
+            return;
+        }
+        SharedPreferences preferences = MessagesController.getGlobalMainSettings();
+        if (preferences.getBoolean("pushServiceHintShown", false)) {
+            return;
+        }
+        if (!UserConfig.getInstance(currentAccount).isClientActivated()) {
+            return;
+        }
+        if (passcodeDialog != null && passcodeDialog.passcodeView.getVisibility() == View.VISIBLE) {
+            return;
+        }
+        if (!NotificationsService.isNotificationShown(this)) {
+            return;
+        }
+        preferences.edit().putBoolean("pushServiceHintShown", true).apply();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Hide the push service notification?");
+        builder.setMessage("Forkgram keeps a notification in your shade so Android lets it stay connected for new messages. You can hide it: turn off \"Push Notifications Service\" on the next screen. Messages will still arrive.");
+        builder.setPositiveButton("Hide it", (dialog, which) -> {
+            try {
+                startActivity(NotificationsService.getChannelSettingsIntent(LaunchActivity.this));
+            } catch (Exception e) {
+                FileLog.e(e);
+            }
+        });
+        builder.setNegativeButton("Keep it", null);
+        showAlertDialog(builder);
+    }
+
     public Dialog showAlertDialog(AlertDialog.Builder builder) {
         try {
             AlertDialog dialog = builder.show();
@@ -7362,6 +7397,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         ApplicationLoader.mainInterfacePaused = false;
         MessagesController.getInstance(currentAccount).sortDialogs(null);
         showLanguageAlert(false);
+        AndroidUtilities.runOnUIThread(this::showPushServiceHint, 3000);
         Utilities.stageQueue.postRunnable(() -> {
             ApplicationLoader.mainInterfacePausedStageQueue = false;
             ApplicationLoader.mainInterfacePausedStageQueueTime = System.currentTimeMillis();
