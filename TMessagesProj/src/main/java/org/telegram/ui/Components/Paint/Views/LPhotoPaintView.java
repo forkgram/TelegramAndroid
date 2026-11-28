@@ -1950,7 +1950,8 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         }
 
         float x2 = (ev.getX() - renderView.getTranslationX() - getMeasuredWidth() / 2f) / renderView.getScaleX();
-        float y2 = (ev.getY() - renderView.getTranslationY() - getMeasuredHeight() / 2f + dp(32) - (getAdditionalTop() - getAdditionalBottom()) / 2f) / renderView.getScaleY();
+        float renderCenterY = renderView.getTop() + renderView.getMeasuredHeight() / 2f;
+        float y2 = (ev.getY() - renderView.getTranslationY() - renderCenterY) / renderView.getScaleY();
         float rotation = (float) Math.toRadians(-renderView.getRotation());
         float x = (float) (x2 * Math.cos(rotation) - y2 * Math.sin(rotation)) + renderView.getMeasuredWidth() / 2f;
         float y = (float) (x2 * Math.sin(rotation) + y2 * Math.cos(rotation)) + renderView.getMeasuredHeight() / 2f;
