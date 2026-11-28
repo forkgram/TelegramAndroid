@@ -59,6 +59,8 @@ public class BubbleActivity extends BasePermissionsActivity implements INavigati
     private Runnable lockRunnable;
 
     private long dialogId;
+    private int networkResumedAccount = -1;
+    private boolean isStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +181,10 @@ public class BubbleActivity extends BasePermissionsActivity implements INavigati
         actionBarLayout.removeAllFragments();
         actionBarLayout.addFragmentToStack(chatActivity);
         AccountInstance.getInstance(currentAccount).getNotificationsController().setOpenedInBubble(dialogId, true);
-        AccountInstance.getInstance(currentAccount).getConnectionsManager().setAppPaused(false, false);
+        if (isStarted && networkResumedAccount != currentAccount) {
+            pauseNetwork();
+            resumeNetwork();
+        }
         actionBarLayout.showLastFragment();
 
         return true;
@@ -189,6 +194,22 @@ public class BubbleActivity extends BasePermissionsActivity implements INavigati
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         handleIntent(intent, true, false, false, UserConfig.selectedAccount, 0);
+    }
+
+    private void resumeNetwork() {
+        if (networkResumedAccount != -1 || !UserConfig.isValidAccount(currentAccount)) {
+            return;
+        }
+        networkResumedAccount = currentAccount;
+        AccountInstance.getInstance(networkResumedAccount).getConnectionsManager().setAppPaused(false, false);
+    }
+
+    private void pauseNetwork() {
+        if (networkResumedAccount == -1) {
+            return;
+        }
+        AccountInstance.getInstance(networkResumedAccount).getConnectionsManager().setAppPaused(true, false);
+        networkResumedAccount = -1;
     }
 
     private void onFinish() {
@@ -212,6 +233,20 @@ public class BubbleActivity extends BasePermissionsActivity implements INavigati
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        isStarted = true;
+        resumeNetwork();
+    }
+
+    @Override
+    protected void onStop() {
+        isStarted = false;
+        pauseNetwork();
+        super.onStop();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         actionBarLayout.onPause();
@@ -226,9 +261,9 @@ public class BubbleActivity extends BasePermissionsActivity implements INavigati
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        pauseNetwork();
         if (currentAccount != -1) {
             AccountInstance.getInstance(currentAccount).getNotificationsController().setOpenedInBubble(dialogId, false);
-            AccountInstance.getInstance(currentAccount).getConnectionsManager().setAppPaused(false, false);
         }
         onFinish();
         instance = null;
