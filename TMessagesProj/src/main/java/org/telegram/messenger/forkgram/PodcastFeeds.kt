@@ -1,6 +1,7 @@
 package org.telegram.messenger.forkgram
 
 import android.util.Xml
+import androidx.core.text.HtmlCompat
 import org.xmlpull.v1.XmlPullParser
 import java.io.ByteArrayInputStream
 import java.io.IOException
@@ -17,6 +18,14 @@ internal object PodcastFeeds {
     const val MAX_FEED_BYTES = 4 * 1024 * 1024
     private const val MAX_ARTWORK_BYTES = 4 * 1024 * 1024
     const val MAX_EPISODES = 300
+    private const val MAX_DESCRIPTION_MARKUP = 16_384
+    private const val MAX_DESCRIPTION_TEXT = 6_000
+    private val hiddenHtml = Regex("""(?is)<(script|style|template)\b[^>]*>.*?(?:</\1\s*>|\z)""")
+    private val descriptionSpacing = Regex("""[\t\r\p{Zs}]+""")
+    private val descriptionControls = Regex("""[\p{Cc}&&[^\n\t\r]]""")
+    private val excessiveLineBreaks = Regex("""\n{3,}""")
+    private val metadataTags = setOf("title", "guid", "duration")
+    private val literalHtmlTags = setOf("br", "p", "div", "li", "ul", "ol", "blockquote", "h1", "h2", "h3", "script", "style", "template")
     private val audioExtensions = setOf("mp3", "m4a", "aac", "mp4", "ogg", "opus", "flac", "wav")
     private val hex = "0123456789abcdef"
 
@@ -26,7 +35,8 @@ internal object PodcastFeeds {
         val url: String,
         val type: String,
         val duration: Int,
-        val artworkUrl: String? = null
+        val artworkUrl: String? = null,
+        val description: String? = null
     )
     data class Show @JvmOverloads constructor(
         val url: String,
@@ -166,6 +176,7 @@ internal object PodcastFeeds {
         var showTitle = ""
         val showArtwork = Artwork()
         var episodeArtwork = Artwork()
+        val descriptions = LinkedHashMap<String, String>(3)
         var rssImageDepth = -1
         var mediaGroupDepth = -1
         var episodeTitle = ""
@@ -195,6 +206,7 @@ internal object PodcastFeeds {
                         episodeGuid = ""
                         episodeDuration = 0
                         episodeArtwork = Artwork()
+                        descriptions.clear()
                         enclosure = null
                     } else if (channel > 0 && depth == (if (itemDepth > 0) itemDepth else channel) + 1 &&
                         namespace.isEmpty() && tag == "image"
@@ -219,6 +231,9 @@ internal object PodcastFeeds {
                             artwork.media = url(parser.getAttributeValue(null, "url").orEmpty(), base)?.toString()
                         }
                     }
+                    if (capture?.startsWith("description-") == true && tag in literalHtmlTags && value.length < MAX_DESCRIPTION_MARKUP) {
+                        value.append("<").append(tag).append(">")
+                    }
                     if (itemDepth > 0 && parser.depth == itemDepth + 1 && tag == "enclosure" && enclosure == null) {
                         val href = url(parser.getAttributeValue(null, "url") ?: "", base)
                         val type = parser.getAttributeValue(null, "type")?.substringBefore(';')?.trim()?.lowercase(Locale.ROOT).orEmpty()
@@ -226,30 +241,56 @@ internal object PodcastFeeds {
                         if (href != null && (type.startsWith("audio/") || (type.isEmpty() || type == "application/octet-stream") && ext in audioExtensions)) {
                             enclosure = href to type
                         }
-                    } else if (capture == null && ((itemDepth > 0 && parser.depth == itemDepth + 1 && tag in setOf("title", "guid", "duration")) ||
-                        (itemDepth < 0 && channel > 0 && parser.depth == channel + 1 && tag == "title"))) {
-                        capture = tag
-                        captureDepth = parser.depth
-                        value.setLength(0)
+                    } else if (capture == null) {
+                        val field = when {
+                            itemDepth > 0 && depth == itemDepth + 1 -> when {
+                                tag in metadataTags -> tag
+                                namespace.isEmpty() && tag == "description" -> "description-rss"
+                                namespace == "purl.org/rss/1.0/modules/content" && tag == "encoded" -> "description-encoded"
+                                itunes && tag == "summary" -> "description-itunes"
+                                else -> null
+                            }
+                            itemDepth < 0 && channel > 0 && depth == channel + 1 && tag == "title" -> tag
+                            else -> null
+                        }
+                        if (field != null && field !in descriptions) {
+                            capture = field
+                            captureDepth = depth
+                            value.setLength(0)
+                        }
                     }
                 }
-                XmlPullParser.TEXT, XmlPullParser.CDSECT, XmlPullParser.ENTITY_REF -> if (capture != null && value.length < 4096) {
-                    val text = parser.text.orEmpty()
-                    value.append(text.take(4096 - value.length))
+                XmlPullParser.TEXT, XmlPullParser.CDSECT, XmlPullParser.ENTITY_REF -> {
+                    val field = capture
+                    if (field != null) {
+                        val limit = if (field.startsWith("description-")) MAX_DESCRIPTION_MARKUP else 4096
+                        if (value.length < limit) {
+                            val text = parser.text.orEmpty()
+                            value.append(text, 0, text.length.coerceAtMost(limit - value.length))
+                        }
+                    }
                 }
                 XmlPullParser.END_TAG -> {
-                    if (capture != null && parser.depth == captureDepth) {
-                        val text = value.toString().replace(Regex("\\s+"), " ").trim()
-                        when (capture) {
-                            "title" -> if (itemDepth > 0) episodeTitle = text.take(500) else showTitle = text.take(300)
-                            "guid" -> episodeGuid = text
-                            "duration" -> episodeDuration = duration(text)
-                            "artwork" -> {
-                                val artwork = if (itemDepth > 0) episodeArtwork else showArtwork
-                                if (artwork.rss == null) artwork.rss = url(value.toString().trim(), base)?.toString()
+                    val field = capture
+                    if (field != null && parser.depth == captureDepth) {
+                        if (field.startsWith("description-")) {
+                            if (value.isNotBlank()) descriptions[field] = value.toString()
+                        } else {
+                            val text = value.toString().replace(Regex("\\s+"), " ").trim()
+                            when (field) {
+                                "title" -> if (itemDepth > 0) episodeTitle = text.take(500) else showTitle = text.take(300)
+                                "guid" -> episodeGuid = text
+                                "duration" -> episodeDuration = duration(text)
+                                "artwork" -> {
+                                    val artwork = if (itemDepth > 0) episodeArtwork else showArtwork
+                                    if (artwork.rss == null) artwork.rss = url(value.toString().trim(), base)?.toString()
+                                }
                             }
                         }
                         capture = null
+                    } else if (field?.startsWith("description-") == true && parser.depth > captureDepth && value.length < MAX_DESCRIPTION_MARKUP) {
+                        val tag = parser.name.lowercase(Locale.ROOT)
+                        if (tag in literalHtmlTags && tag != "br") value.append("</").append(tag).append(">")
                     }
                     if (parser.depth == rssImageDepth) rssImageDepth = -1
                     if (parser.depth == mediaGroupDepth) mediaGroupDepth = -1
@@ -257,7 +298,12 @@ internal object PodcastFeeds {
                         val audio = enclosure
                         if (audio != null && episodeTitle.isNotBlank() && entries.size < MAX_EPISODES) {
                             val id = key(canonical.toString() + "\n" + episodeGuid.ifEmpty { audio.first.toString() })
-                            entries.putIfAbsent(id, Episode(id, episodeTitle, audio.first.toString(), audio.second, episodeDuration, episodeArtwork.pick()))
+                            if (id !in entries) {
+                                val description = sequenceOf("description-rss", "description-encoded", "description-itunes")
+                                    .mapNotNull { descriptions[it]?.let(::plainDescription) }
+                                    .firstOrNull()
+                                entries[id] = Episode(id, episodeTitle, audio.first.toString(), audio.second, episodeDuration, episodeArtwork.pick(), description)
+                            }
                         }
                         itemDepth = -1
                     }
@@ -266,6 +312,20 @@ internal object PodcastFeeds {
         }
         if (channel < 0) throw IOException("Unsupported feed")
         return Show(canonical.toString(), showTitle.ifEmpty { canonical.host }, entries.values.toList(), showArtwork.pick())
+    }
+
+    private fun plainDescription(raw: String): String? {
+        // Only the characters are used; no URL spans, images, or interactive HTML are retained.
+        val markup = hiddenHtml.replace(raw, "")
+        val plain = runCatching { HtmlCompat.fromHtml(markup, HtmlCompat.FROM_HTML_MODE_COMPACT).toString() }.getOrNull() ?: return null
+        val text = plain.replace("\uFFFC", "").replace(descriptionControls, "")
+            .replace(descriptionSpacing, " ")
+            .lineSequence().map { it.trim() }.joinToString("\n")
+            .replace(excessiveLineBreaks, "\n\n").trim()
+        if (text.isEmpty()) return null
+        if (text.length <= MAX_DESCRIPTION_TEXT) return text
+        val limit = if (text[MAX_DESCRIPTION_TEXT - 2].isHighSurrogate()) MAX_DESCRIPTION_TEXT - 2 else MAX_DESCRIPTION_TEXT - 1
+        return text.substring(0, limit).trimEnd() + '…'
     }
 
     private fun duration(text: String): Int {

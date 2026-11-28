@@ -1151,13 +1151,13 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         podcastEpisodeIcon.setScaleType(ImageView.ScaleType.CENTER);
         podcastEpisodeIcon.setImageResource(R.drawable.podcast_menu);
         podcastEpisodeIcon.setColorFilter(iconColor, PorterDuff.Mode.SRC_IN);
-        podcastEpisodeIcon.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        podcastEpisodeIcon.setContentDescription(LocaleController.getString(R.string.PodcastOpenEpisode));
+        ThemeBind.selectorBackground(podcastEpisodeIcon, Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), 1, dp(22)), null, ThemeBind.of(Theme.key_listSelector), resourcesProvider);
         podcastEpisodeIcon.setVisibility(View.GONE);
-        optionsButton.addView(podcastEpisodeIcon, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER));
-        optionsButton.setOnClickListener(view -> {
+        playerLayout.addView(podcastEpisodeIcon, LayoutHelper.createFrame(48, 48, Gravity.TOP | Gravity.RIGHT, 0, 16, 16, 0));
+        podcastEpisodeIcon.setOnClickListener(view -> {
             final MessageObject playing = MediaController.getInstance().getPlayingMessageObject();
             if (!PodcastPlayback.isPodcast(playing)) {
-                showMenuOptions(view);
                 return;
             }
             final BaseFragment owner = LaunchActivity.getLastFragmentIncludeMainTabs();
@@ -1174,6 +1174,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
             }, 200);
         });
 
+        optionsButton.setOnClickListener(this::showMenuOptions);
         bottomView.addView(optionsButton, LayoutHelper.createFrame(48, 48, Gravity.LEFT | Gravity.TOP));
 
 
@@ -2382,10 +2383,13 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
             final boolean sameMessageObject = messageObject == lastMessageObject;
             lastMessageObject = messageObject;
             final boolean podcast = PodcastPlayback.isPodcast(messageObject);
-            podcastEpisodeIcon.setVisibility(podcast ? View.VISIBLE : View.GONE);
-            optionsButton.getIconView().setVisibility(podcast ? View.GONE : View.VISIBLE);
-            optionsButton.setContentDescription(LocaleController.getString(podcast ? R.string.PodcastOpenEpisode : R.string.AccDescrMoreOptions));
-            optionsButton.setVisibility(!podcast && (messageObject.eventId != 0 || messageObject.getId() <= -2000000000)
+            if ((podcastEpisodeIcon.getVisibility() == View.VISIBLE) != podcast) {
+                podcastEpisodeIcon.setVisibility(podcast ? View.VISIBLE : View.GONE);
+                coverContainer.setTranslationX(podcast ? -dp(48) : 0);
+                final ImageReceiver receiver = coverContainer.getImageReceiver();
+                setCustomPaddingRight(receiver.hasImageLoaded() || receiver.hasBitmapImage() ? dp(64) : 0, false);
+            }
+            optionsButton.setVisibility(podcast || messageObject.eventId != 0 || messageObject.getId() <= -2000000000
                     ? View.INVISIBLE : View.VISIBLE);
             final long dialogId = messageObject.getDialogId();
             final long docId = messageObject.getDocument() != null ? messageObject.getDocument().id : 0L;
@@ -3679,6 +3683,9 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
     private ValueAnimator rightPaddingAnimator;
 
     private void setCustomPaddingRight(int padding, boolean animated) {
+        if (podcastEpisodeIcon != null && podcastEpisodeIcon.getVisibility() == View.VISIBLE) {
+            padding += dp(48);
+        }
         if (rightPaddingAnimator != null) {
             rightPaddingAnimator.cancel();
             rightPaddingAnimator = null;

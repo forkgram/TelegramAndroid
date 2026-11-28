@@ -365,5 +365,7 @@
     <string name="PodcastExport">برون‌ریزی</string>
     <string name="PodcastBackupError">درون‌ریزی یا برون‌ریزی پشتیبان پادکست ممکن نبود.</string>
     <string name="PodcastPlayed">شنیده‌شده</string>
+    <string name="PodcastShowMore">نمایش بیشتر</string>
+    <string name="PodcastShowLess">نمایش کمتر</string>
     <string name="PodcastOpenEpisode">نمایش قسمت در پادکست‌ها</string>
 </resources>

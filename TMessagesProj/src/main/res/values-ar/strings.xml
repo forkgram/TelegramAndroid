@@ -1602,5 +1602,7 @@
     <string name="PodcastExport">تصدير</string>
     <string name="PodcastBackupError">تعذّر استيراد نسخة البودكاست الاحتياطية أو تصديرها.</string>
     <string name="PodcastPlayed">تم الاستماع</string>
+    <string name="PodcastShowMore">عرض المزيد</string>
+    <string name="PodcastShowLess">عرض أقل</string>
     <string name="PodcastOpenEpisode">إظهار الحلقة في البودكاست</string>
 </resources>

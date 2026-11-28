@@ -1490,5 +1490,7 @@
     <string name="PodcastExport">내보내기</string>
     <string name="PodcastBackupError">팟캐스트 백업을 가져오거나 내보낼 수 없습니다.</string>
     <string name="PodcastPlayed">청취 완료</string>
+    <string name="PodcastShowMore">더 보기</string>
+    <string name="PodcastShowLess">접기</string>
     <string name="PodcastOpenEpisode">팟캐스트에서 에피소드 보기</string>
 </resources>

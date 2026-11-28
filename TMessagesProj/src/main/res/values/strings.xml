@@ -12044,5 +12044,7 @@
     <string name="PodcastExport">Export</string>
     <string name="PodcastBackupError">Could not import or export the podcast backup.</string>
     <string name="PodcastPlayed">Played</string>
+    <string name="PodcastShowMore">Show more</string>
+    <string name="PodcastShowLess">Show less</string>
     <string name="PodcastOpenEpisode">Show episode in podcasts</string>
 </resources>

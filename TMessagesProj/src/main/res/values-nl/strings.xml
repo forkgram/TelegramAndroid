@@ -1443,5 +1443,7 @@
     <string name="PodcastExport">Exporteren</string>
     <string name="PodcastBackupError">Kan de podcastback-up niet importeren of exporteren.</string>
     <string name="PodcastPlayed">Beluisterd</string>
+    <string name="PodcastShowMore">Meer tonen</string>
+    <string name="PodcastShowLess">Minder tonen</string>
     <string name="PodcastOpenEpisode">Aflevering in Podcasts tonen</string>
 </resources>

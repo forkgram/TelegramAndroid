@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.InputType
+import android.text.Layout
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
@@ -163,6 +164,7 @@ object PodcastLibraryAlert {
                 ?: PodcastShelf.Subscription(entry.url, PodcastFeeds.url(entry.url)?.host ?: str(R.string.RssPodcasts))
         }
         private var renderedUrl: String? = null
+        private val expandedDescriptions = mutableSetOf<String>()
         private var busy = false
         private var statusId = 0
         private var closed = false
@@ -224,6 +226,7 @@ object PodcastLibraryAlert {
                     feed = null
                     returnTo = null
                     jumpTo = null
+                    expandedDescriptions.clear()
                     finish(0)
                 }, LinearLayout.LayoutParams(dp(48), dp(48)))
             }
@@ -274,6 +277,7 @@ object PodcastLibraryAlert {
                         artworkUrl = episode.artworkUrl,
                         fallbackArtworkUrl = openedFeed?.artworkUrl,
                         episodeKey = episode.key,
+                        description = episode.description,
                         highlighted = episode.key == returnTo?.episodeKey
                     )
                 }
@@ -451,6 +455,7 @@ object PodcastLibraryAlert {
                     maxLines = 1
                     ellipsize = TextUtils.TruncateAt.END
                 }
+                val details = DescriptionLine(context, provider)
                 val rowIcon = badge(R.drawable.podcast_menu, 44, 21)
                 val artwork = ImageView(context).apply {
                     scaleType = ImageView.ScaleType.CENTER_CROP
@@ -479,6 +484,7 @@ object PodcastLibraryAlert {
                     gravity = Gravity.CENTER_VERTICAL
                     addView(top, LinearLayout.LayoutParams(-1, -2))
                     addView(sub, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(3) })
+                    addView(details, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(3) })
                     addView(progress, LinearLayout.LayoutParams(-1, dp(3)).apply { topMargin = dp(7) })
                 }
                 val layout = LinearLayout(context).apply {
@@ -492,7 +498,7 @@ object PodcastLibraryAlert {
                     addView(chevron, LinearLayout.LayoutParams(dp(20), dp(20)).apply { marginStart = dp(8) })
                     isFocusable = true
                 }
-                return Holder(layout, top, sub, rowIcon, artwork, overlay, chevron, progress)
+                return Holder(layout, top, sub, details, rowIcon, artwork, overlay, chevron, progress)
             }
 
             override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -502,6 +508,12 @@ object PodcastLibraryAlert {
                 holder.title.text = row.title
                 holder.subtitle.text = row.subtitle
                 holder.subtitle.visibility = if (row.subtitle.isBlank()) View.GONE else View.VISIBLE
+                val episodeKey = row.episodeKey
+                holder.details.bind(row.description, episodeKey != null && episodeKey in expandedDescriptions) { expanded ->
+                    if (episodeKey != null) {
+                        if (expanded) expandedDescriptions.add(episodeKey) else expandedDescriptions.remove(episodeKey)
+                    }
+                }
                 holder.rowIcon.setImageResource(when {
                     row.show -> R.drawable.podcast_menu
                     row.complete -> R.drawable.ic_ab_done
@@ -562,6 +574,69 @@ object PodcastLibraryAlert {
         }
     }
 
+    private class DescriptionLine(context: Context, provider: Theme.ResourcesProvider?) : LinearLayout(context) {
+        private val summary = TextView(context).apply {
+            textSize = 13f
+            setTextColor(Theme.getColor(Theme.key_dialogTextGray2, provider))
+            gravity = Gravity.START
+            ellipsize = TextUtils.TruncateAt.END
+        }
+        private val toggle = TextView(context).apply {
+            textSize = 13f
+            setTextColor(Theme.getColor(Theme.key_dialogTextBlue, provider))
+            setTypeface(null, Typeface.BOLD)
+            gravity = Gravity.CENTER_VERTICAL or Gravity.START
+            minHeight = dp(40)
+            maxLines = 1
+            ellipsize = TextUtils.TruncateAt.END
+            isFocusable = true
+        }
+        private var description: String? = null
+        private var preview = ""
+        private var expanded = false
+        private var toggleChange: ((Boolean) -> Unit)? = null
+
+        init {
+            addView(summary)
+            addView(toggle)
+            toggle.setOnClickListener {
+                expanded = !expanded
+                toggleChange?.invoke(expanded)
+                updateLayout()
+            }
+        }
+
+        fun bind(value: String?, expanded: Boolean, onToggle: (Boolean) -> Unit) {
+            description = value
+            preview = value?.replace('\n', ' ').orEmpty()
+            visibility = if (value.isNullOrBlank()) View.GONE else View.VISIBLE
+            this.expanded = expanded
+            toggleChange = onToggle
+            updateLayout()
+        }
+
+        private fun updateLayout() {
+            orientation = if (expanded) VERTICAL else HORIZONTAL
+            gravity = if (expanded) Gravity.START else Gravity.CENTER_VERTICAL
+            summary.text = if (expanded) description else preview
+            summary.maxLines = if (expanded) Int.MAX_VALUE else 1
+            summary.layoutParams = if (expanded) LayoutParams(-1, -2) else LayoutParams(0, -2, 1f)
+            toggle.text = str(if (expanded) R.string.PodcastShowLess else R.string.PodcastShowMore)
+            toggle.setPaddingRelative(if (expanded) 0 else dp(8), 0, dp(2), 0)
+            toggle.layoutParams = LayoutParams(-2, -2)
+            requestLayout()
+        }
+
+        override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+            val width = View.MeasureSpec.getSize(widthMeasureSpec)
+            val available = (width - paddingLeft - paddingRight).coerceAtLeast(0)
+            toggle.visibility = if (expanded ||
+                (available > 0 && Layout.getDesiredWidth(preview, summary.paint) > available)
+            ) View.VISIBLE else View.GONE
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        }
+    }
+
     private class PositionLine(context: Context, private val track: Int, private val fill: Int) : View(context) {
         private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         var value = 0f
@@ -591,6 +666,7 @@ object PodcastLibraryAlert {
         container: LinearLayout,
         val title: TextView,
         val subtitle: TextView,
+        val details: DescriptionLine,
         val rowIcon: ImageView,
         val artwork: ImageView,
         val overlay: ImageView,
@@ -612,6 +688,7 @@ object PodcastLibraryAlert {
         val artworkUrl: String? = null,
         val fallbackArtworkUrl: String? = null,
         val episodeKey: String? = null,
+        val description: String? = null,
         val highlighted: Boolean = false
     )
 }

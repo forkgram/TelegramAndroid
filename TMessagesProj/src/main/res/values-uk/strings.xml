@@ -626,5 +626,7 @@
     <string name="PodcastExport">Експорт</string>
     <string name="PodcastBackupError">Не вдалося імпортувати або експортувати копію подкастів.</string>
     <string name="PodcastPlayed">Прослухано</string>
+    <string name="PodcastShowMore">Показати більше</string>
+    <string name="PodcastShowLess">Згорнути</string>
     <string name="PodcastOpenEpisode">Показати випуск у подкастах</string>
 </resources>

@@ -1620,5 +1620,7 @@
     <string name="PodcastExport">Exportar</string>
     <string name="PodcastBackupError">Não foi possível importar ou exportar o backup de podcasts.</string>
     <string name="PodcastPlayed">Ouvido</string>
+    <string name="PodcastShowMore">Mostrar mais</string>
+    <string name="PodcastShowLess">Mostrar menos</string>
     <string name="PodcastOpenEpisode">Mostrar episódio em Podcasts</string>
 </resources>
