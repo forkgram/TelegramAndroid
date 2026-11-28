@@ -209,6 +209,7 @@ object ForkSettings {
         BoolOption("disableRecentFilesAttachment", ForkSettingsActivity.ID_DISABLE_RECENT_FILES_ATTACHMENT, false),
 
         BoolOption("disableAutoplayNextVoice", ForkSettingsActivity.ID_DISABLE_AUTOPLAY_NEXT_VOICE, false),
+        BoolOption(SkipOwnVoiceAutoplay.PREF_ENABLED, ForkSettingsActivity.ID_SKIP_OWN_VOICE_AUTOPLAY, false),
         BoolOption(VoiceFileSize.PREF_ENABLED, ForkSettingsActivity.ID_VOICE_FILE_SIZE, false),
         IntOption("voiceQualityBitrate", ForkSettingsActivity.ID_VOICE_QUALITY, -1),
         IntOption(

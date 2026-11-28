@@ -156,6 +156,7 @@
     <string name="DisablePlayVisibleVideoOnVolumeInfo">De demping van de zichtbare video niet opheffen met de volumetoetsen.</string>
     <string name="DisableRecentFilesAttachmentInfo">De lijst met recente bestanden in het bijlagemenu verbergen.</string>
     <string name="DisableAutoplayNextVoiceInfo">Niet doorgaan naar het volgende spraakbericht wanneer er een eindigt.</string>
+    <string name="SkipOwnVoiceAutoplayInfo">Als automatisch afspelen doorgaat naar het volgende spraak- of videobericht, worden berichten die je zelf hebt verstuurd overgeslagen. Doorgestuurde berichten worden nog steeds afgespeeld.</string>
     <string name="VoiceFileSizeInfo">Toont de bestandsgrootte naast de duur in spraakberichten, zoals Telegram Desktop.</string>
     <string name="BotSkipShareInfo">Verzoeken van mini-apps om een bericht te delen stilzwijgend negeren.</string>
     <string name="BotSkipFullscreenInfo">Mini-apps niet laten overschakelen naar volledig scherm.</string>
@@ -264,6 +265,7 @@
     <string name="DisableDefaultInAppBrowser">Links openen in de systeembrowser</string>
     <string name="TranslationEngine">Vertaalengine</string>
     <string name="DisableAutoplayNextVoice">Automatisch afspelen van volgend spraak-/videobericht uitschakelen</string>
+    <string name="SkipOwnVoiceAutoplay">Eigen spraak- en videoberichten overslaan bij automatisch afspelen</string>
     <string name="VoiceFileSize">Bestandsgrootte van spraakberichten tonen</string>
     <string name="AudioPlayerAutoplayNext">Volgende automatisch afspelen</string>
     <string name="SmsOnlyOfficialWarning">Let op: SMS-verificatie is ALLEEN beschikbaar voor officiële mobiele apps</string>

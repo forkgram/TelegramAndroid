@@ -85,6 +85,7 @@ import org.telegram.ui.AspectRatioFrameLayout;
 //import com.google.android.gms.common.images.WebImage;
 
 import org.telegram.messenger.audioinfo.AudioInfo;
+import org.telegram.messenger.forkgram.SkipOwnVoiceAutoplay;
 //import org.telegram.messenger.chromecast.ChromecastController;
 import org.telegram.messenger.chromecast.ChromecastFileServer;
 import org.telegram.messenger.chromecast.ChromecastMedia;
@@ -2655,6 +2656,9 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                     if (byVoiceEnd && !MessagesController.getGlobalMainSettings().getBoolean("disableAutoplayNextVoice", false) && (index = voiceMessagesPlaylist.indexOf(lastFile)) >= 0) {
                         voiceMessagesPlaylist.remove(index);
                         voiceMessagesPlaylistMap.remove(lastFile.getId());
+                        for (int skip = SkipOwnVoiceAutoplay.nextIndex(voiceMessagesPlaylist, index, lastFile) - index; skip > 0; skip--) {
+                            voiceMessagesPlaylistMap.remove(voiceMessagesPlaylist.remove(index).getId());
+                        }
                         if (voiceMessagesPlaylist.isEmpty()) {
                             voiceMessagesPlaylist = null;
                             voiceMessagesPlaylistMap = null;
@@ -3043,7 +3047,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
     }
 
     public boolean hasNoNextVoiceOrRoundVideoMessage() {
-        return playingMessageObject == null || (!playingMessageObject.isVoice() && !playingMessageObject.isRoundVideo()) || voiceMessagesPlaylist == null || voiceMessagesPlaylist.size() <= 1 || !voiceMessagesPlaylist.contains(playingMessageObject) || voiceMessagesPlaylist.indexOf(playingMessageObject) >= (voiceMessagesPlaylist.size() - 1);
+        return playingMessageObject == null || (!playingMessageObject.isVoice() && !playingMessageObject.isRoundVideo()) || voiceMessagesPlaylist == null || voiceMessagesPlaylist.size() <= 1 || !voiceMessagesPlaylist.contains(playingMessageObject) || SkipOwnVoiceAutoplay.nextIndex(voiceMessagesPlaylist, voiceMessagesPlaylist.indexOf(playingMessageObject) + 1, playingMessageObject) >= voiceMessagesPlaylist.size();
     }
 
     public void playNextMessage() {
@@ -3207,7 +3211,11 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         if (voiceMessagesPlaylist == null || voiceMessagesPlaylist.size() < 2) {
             return;
         }
-        MessageObject nextAudio = voiceMessagesPlaylist.get(1);
+        int next = SkipOwnVoiceAutoplay.nextIndex(voiceMessagesPlaylist, 1, voiceMessagesPlaylist.get(0));
+        if (next >= voiceMessagesPlaylist.size()) {
+            return;
+        }
+        MessageObject nextAudio = voiceMessagesPlaylist.get(next);
         File file = null;
         if (nextAudio.messageOwner.attachPath != null && nextAudio.messageOwner.attachPath.length() > 0) {
             file = new File(nextAudio.messageOwner.attachPath);
@@ -3269,6 +3277,10 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
             for (int a = 0; a < voiceMessagesPlaylist.size(); a++) {
                 MessageObject messageObject = voiceMessagesPlaylist.get(a);
                 voiceMessagesPlaylistMap.put(messageObject.getId(), messageObject);
+            }
+            if (SkipOwnVoiceAutoplay.isEnabled() && !MessagesController.getGlobalMainSettings().getBoolean("disableAutoplayNextVoice", false)
+                    && !voiceMessagesPlaylist.isEmpty() && isSamePlayingMessage(voiceMessagesPlaylist.get(0))) {
+                checkIsNextVoiceFileDownloaded(playingMessageObject.currentAccount);
             }
         }
     }
