@@ -12031,4 +12031,18 @@
     <string name="BluetoothCallControlsInfo">Experimental. Let compatible Bluetooth devices show, answer and decline incoming voice calls. Caller details are not shared.</string>
     <string name="PushServiceChannelSettings">Push service notification</string>
     <string name="PushServiceChannelSettingsInfo">Show or hide only this notification in Android settings.</string>
+    <string name="RssPodcasts">Podcasts</string>
+    <string name="RssPodcastsInfo">Show Podcasts in the chat list menu. Feeds and audio are loaded directly from their HTTPS hosts.</string>
+    <string name="PodcastAddFeed">Add feed</string>
+    <string name="PodcastFeedHint">HTTPS RSS feed URL</string>
+    <string name="PodcastEmpty">Add an RSS feed to get started.</string>
+    <string name="PodcastNoEpisodes">No playable episodes found.</string>
+    <string name="PodcastInvalidUrl">Enter a public HTTPS RSS feed URL.</string>
+    <string name="PodcastFeedError">Could not load the RSS feed.</string>
+    <string name="PodcastAudioError">Could not open the episode.</string>
+    <string name="PodcastImport">Import</string>
+    <string name="PodcastExport">Export</string>
+    <string name="PodcastBackupError">Could not import or export the podcast backup.</string>
+    <string name="PodcastPlayed">Played</string>
+    <string name="PodcastOpenEpisode">Show episode in podcasts</string>
 </resources>

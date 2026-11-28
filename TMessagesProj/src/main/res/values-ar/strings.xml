@@ -1589,4 +1589,18 @@
     <string name="GifPlaybackControlsInfo">إظهار عناصر التحكم في التشغيل والتنقل الزمني لصور GIF المستندة إلى فيديو في عارض الوسائط.</string>
     <string name="PushServiceChannelSettings">إشعار خدمة الدفع</string>
     <string name="PushServiceChannelSettingsInfo">أظهر هذا الإشعار وحده أو أخفه في إعدادات أندرويد.</string>
+    <string name="RssPodcasts">البودكاست</string>
+    <string name="RssPodcastsInfo">أظهر البودكاست في قائمة المحادثات. تُحمَّل الخلاصات والصوت مباشرة من مضيفي HTTPS.</string>
+    <string name="PodcastAddFeed">إضافة خلاصة</string>
+    <string name="PodcastFeedHint">رابط خلاصة RSS عبر HTTPS</string>
+    <string name="PodcastEmpty">أضف خلاصة RSS للبدء.</string>
+    <string name="PodcastNoEpisodes">لم يتم العثور على حلقات قابلة للتشغيل.</string>
+    <string name="PodcastInvalidUrl">أدخل رابط خلاصة RSS عامة عبر HTTPS.</string>
+    <string name="PodcastFeedError">تعذّر تحميل خلاصة RSS.</string>
+    <string name="PodcastAudioError">تعذّر فتح الحلقة.</string>
+    <string name="PodcastImport">استيراد</string>
+    <string name="PodcastExport">تصدير</string>
+    <string name="PodcastBackupError">تعذّر استيراد نسخة البودكاست الاحتياطية أو تصديرها.</string>
+    <string name="PodcastPlayed">تم الاستماع</string>
+    <string name="PodcastOpenEpisode">إظهار الحلقة في البودكاست</string>
 </resources>

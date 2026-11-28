@@ -1430,4 +1430,18 @@
     <string name="GifPlaybackControlsInfo">Toon afspeelbediening en een voortgangsbalk voor op video gebaseerde GIF’s in de mediaviewer.</string>
     <string name="PushServiceChannelSettings">Melding van pushservice</string>
     <string name="PushServiceChannelSettingsInfo">Toon of verberg alleen deze melding in de Android-instellingen.</string>
+    <string name="RssPodcasts">Podcasts</string>
+    <string name="RssPodcastsInfo">Toon Podcasts in het chatlijstmenu. Feeds en audio worden rechtstreeks via HTTPS bij hun hosts opgehaald.</string>
+    <string name="PodcastAddFeed">Feed toevoegen</string>
+    <string name="PodcastFeedHint">HTTPS-URL van RSS-feed</string>
+    <string name="PodcastEmpty">Voeg een RSS-feed toe om te beginnen.</string>
+    <string name="PodcastNoEpisodes">Geen afspeelbare afleveringen gevonden.</string>
+    <string name="PodcastInvalidUrl">Voer een openbare HTTPS-URL van een RSS-feed in.</string>
+    <string name="PodcastFeedError">Kan de RSS-feed niet laden.</string>
+    <string name="PodcastAudioError">Kan de aflevering niet openen.</string>
+    <string name="PodcastImport">Importeren</string>
+    <string name="PodcastExport">Exporteren</string>
+    <string name="PodcastBackupError">Kan de podcastback-up niet importeren of exporteren.</string>
+    <string name="PodcastPlayed">Beluisterd</string>
+    <string name="PodcastOpenEpisode">Aflevering in Podcasts tonen</string>
 </resources>

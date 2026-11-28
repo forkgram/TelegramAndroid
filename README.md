@@ -39,6 +39,8 @@ Fork Client is a fork of the official Telegram for Android application.
   - Orange dot: last seen 30 minutes ago or less  
   - Red dot: last seen 60 minutes ago or less 
 
+- Optional RSS podcasts in the chat list menu, with streaming in the native audio player and portable subscriptions and listening progress. Podcasts use direct HTTPS requests to feed and audio providers.
+
 ### Privacy Features:
 
 - Hidden `Connecting to proxy...` string.

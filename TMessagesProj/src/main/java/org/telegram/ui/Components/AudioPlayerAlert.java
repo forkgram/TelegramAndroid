@@ -77,6 +77,7 @@ import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.DownloadController;
 import org.telegram.messenger.FileLoader;
+import org.telegram.messenger.forkgram.PodcastPlayback;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.FileRefController;
 import org.telegram.messenger.ImageLoader;
@@ -162,6 +163,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
     private RLottieImageView nextButton;
     private ClippingTextViewSwitcher authorTextView;
     private ActionBarMenuItem optionsButton;
+    private ImageView podcastEpisodeIcon;
     private ChooseQualityLayout.QualityIcon optionsIcon;
     private ActionBarMenuSubItem castItem;
     private CastMediaRouteButton castItemButton;
@@ -1145,7 +1147,32 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         optionsButton.setLongClickEnabled(false);
         optionsButton.setAdditionalYOffset(-dp(157 + 40));
         ThemeBind.selectorBackground(optionsButton, Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), 1, dp(18)), null, ThemeBind.of(Theme.key_listSelector), resourcesProvider);
-        optionsButton.setOnClickListener(this::showMenuOptions);
+        podcastEpisodeIcon = new ImageView(context);
+        podcastEpisodeIcon.setScaleType(ImageView.ScaleType.CENTER);
+        podcastEpisodeIcon.setImageResource(R.drawable.podcast_menu);
+        podcastEpisodeIcon.setColorFilter(iconColor, PorterDuff.Mode.SRC_IN);
+        podcastEpisodeIcon.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        podcastEpisodeIcon.setVisibility(View.GONE);
+        optionsButton.addView(podcastEpisodeIcon, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER));
+        optionsButton.setOnClickListener(view -> {
+            final MessageObject playing = MediaController.getInstance().getPlayingMessageObject();
+            if (!PodcastPlayback.isPodcast(playing)) {
+                showMenuOptions(view);
+                return;
+            }
+            final BaseFragment owner = LaunchActivity.getLastFragmentIncludeMainTabs();
+            final String showUrl = PodcastPlayback.getShowUrl(playing);
+            final String episodeKey = PodcastPlayback.getEpisodeKey(playing);
+            if (owner == null || owner.getParentActivity() == null || showUrl == null || episodeKey == null) {
+                return;
+            }
+            dismiss();
+            AndroidUtilities.runOnUIThread(() -> {
+                if (owner.getParentActivity() != null) {
+                    PodcastLibraryAlert.openAt(owner, showUrl, episodeKey);
+                }
+            }, 200);
+        });
 
         bottomView.addView(optionsButton, LayoutHelper.createFrame(48, 48, Gravity.LEFT | Gravity.TOP));
 
@@ -2280,7 +2307,11 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
                 }
 
                 float bufferedProgress;
-                if (currentAudioFinishedLoading) {
+                if (PodcastPlayback.isPodcast(messageObject)) {
+                    bufferedProgress = messageObject.bufferedProgress;
+                    final int duration = (int) messageObject.getDuration();
+                    durationTextView.setText(duration > 0 ? AndroidUtilities.formatShortDuration(duration) : "-:--");
+                } else if (currentAudioFinishedLoading) {
                     bufferedProgress = 1.0f;
                 } else {
                     long time = SystemClock.elapsedRealtime();
@@ -2311,18 +2342,19 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
     }
 
     private void checkIfMusicDownloaded(MessageObject messageObject) {
+        final boolean podcast = PodcastPlayback.isPodcast(messageObject);
         File cacheFile = null;
-        if (messageObject.messageOwner.attachPath != null && messageObject.messageOwner.attachPath.length() > 0) {
+        if (!podcast && messageObject.messageOwner.attachPath != null && messageObject.messageOwner.attachPath.length() > 0) {
             cacheFile = new File(messageObject.messageOwner.attachPath);
             if (!cacheFile.exists()) {
                 cacheFile = null;
             }
         }
-        if (cacheFile == null) {
+        if (!podcast && cacheFile == null) {
             cacheFile = FileLoader.getInstance(currentAccount).getPathToMessage(messageObject.messageOwner);
         }
-        boolean canStream = SharedConfig.streamMedia && (int) messageObject.getDialogId() != 0 && messageObject.isMusic();
-        if (!cacheFile.exists() && !canStream) {
+        boolean canStream = podcast || SharedConfig.streamMedia && (int) messageObject.getDialogId() != 0 && messageObject.isMusic();
+        if (!canStream && !cacheFile.exists()) {
             String fileName = messageObject.getFileName();
             DownloadController.getInstance(currentAccount).addLoadingFileObserver(fileName, this);
             Float progress = ImageLoader.getInstance().getFileProgress(fileName);
@@ -2349,11 +2381,12 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
             }
             final boolean sameMessageObject = messageObject == lastMessageObject;
             lastMessageObject = messageObject;
-            if (messageObject.eventId != 0 || messageObject.getId() <= -2000000000) {
-                optionsButton.setVisibility(View.INVISIBLE);
-            } else {
-                optionsButton.setVisibility(View.VISIBLE);
-            }
+            final boolean podcast = PodcastPlayback.isPodcast(messageObject);
+            podcastEpisodeIcon.setVisibility(podcast ? View.VISIBLE : View.GONE);
+            optionsButton.getIconView().setVisibility(podcast ? View.GONE : View.VISIBLE);
+            optionsButton.setContentDescription(LocaleController.getString(podcast ? R.string.PodcastOpenEpisode : R.string.AccDescrMoreOptions));
+            optionsButton.setVisibility(!podcast && (messageObject.eventId != 0 || messageObject.getId() <= -2000000000)
+                    ? View.INVISIBLE : View.VISIBLE);
             final long dialogId = messageObject.getDialogId();
             final long docId = messageObject.getDocument() != null ? messageObject.getDocument().id : 0L;
             final boolean noforwards = (
@@ -3758,6 +3791,9 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         if (!delegateColorsApplied || optionsColor != lastOptionsIconColor) {
             lastOptionsIconColor = optionsColor;
             optionsButton.setIconColor(optionsColor);
+            if (podcastEpisodeIcon != null) {
+                podcastEpisodeIcon.setColorFilter(optionsColor, PorterDuff.Mode.SRC_IN);
+            }
         }
         if (!delegateColorsApplied || selectorColor != lastSelectorColor) {
             lastSelectorColor = selectorColor;

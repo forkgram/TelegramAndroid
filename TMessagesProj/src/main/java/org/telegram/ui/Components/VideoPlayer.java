@@ -83,6 +83,7 @@ import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.DispatchQueue;
 import org.telegram.messenger.FileLoader;
+import org.telegram.messenger.forkgram.PodcastStreamDataSource;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.FourierTransform;
 import org.telegram.messenger.MessageObject;
@@ -361,6 +362,8 @@ public class VideoPlayer implements Player.Listener, VideoListener, AnalyticsLis
             ).createMediaSource(mediaItem);
         }
         switch (type) {
+            case "forkgram-podcast":
+                return new ProgressiveMediaSource.Factory(new PodcastStreamDataSource.Factory()).createMediaSource(mediaItem);
             case "dash":
                 if (dashMediaSourceFactory == null) {
                     dashMediaSourceFactory = new DashMediaSource.Factory(mediaDataSourceFactory);
@@ -377,6 +380,10 @@ public class VideoPlayer implements Player.Listener, VideoListener, AnalyticsLis
                 }
                 return progressiveMediaSourceFactory.createMediaSource(mediaItem);
         }
+    }
+
+    public void preparePodcastPlayer(Uri uri) {
+        preparePlayer(uri, "forkgram-podcast");
     }
 
     public void preparePlayer(Uri uri, String type) {

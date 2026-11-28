@@ -615,4 +615,18 @@
     <string name="BluetoothCallControlsInfo">Экспериментальная функция. Совместимые Bluetooth-устройства смогут показывать, принимать и отклонять входящие голосовые звонки. Данные звонящего не передаются.</string>
     <string name="PushServiceChannelSettings">Уведомление службы доставки</string>
     <string name="PushServiceChannelSettingsInfo">Покажите или скройте только это уведомление в настройках Android.</string>
+    <string name="RssPodcasts">Подкасты</string>
+    <string name="RssPodcastsInfo">Показывать «Подкасты» в меню списка чатов. Ленты и аудио загружаются напрямую с их HTTPS-серверов.</string>
+    <string name="PodcastAddFeed">Добавить ленту</string>
+    <string name="PodcastFeedHint">HTTPS-ссылка на RSS-ленту</string>
+    <string name="PodcastEmpty">Добавьте RSS-ленту, чтобы начать.</string>
+    <string name="PodcastNoEpisodes">Нет эпизодов, доступных для воспроизведения.</string>
+    <string name="PodcastInvalidUrl">Введите публичную HTTPS-ссылку на RSS-ленту.</string>
+    <string name="PodcastFeedError">Не удалось загрузить RSS-ленту.</string>
+    <string name="PodcastAudioError">Не удалось открыть эпизод.</string>
+    <string name="PodcastImport">Импорт</string>
+    <string name="PodcastExport">Экспорт</string>
+    <string name="PodcastBackupError">Не удалось импортировать или экспортировать копию подкастов.</string>
+    <string name="PodcastPlayed">Прослушано</string>
+    <string name="PodcastOpenEpisode">Показать выпуск в подкастах</string>
 </resources>

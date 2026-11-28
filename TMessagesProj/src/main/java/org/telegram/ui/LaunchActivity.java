@@ -179,6 +179,7 @@ import org.telegram.ui.Cells.ChatMessageCell;
 import org.telegram.ui.Cells.LanguageCell;
 import org.telegram.utils.twidget.WidgetMedia;
 import org.telegram.ui.Components.ActivityWindowEmptyBackgroundDrawable;
+import org.telegram.ui.Components.PodcastLibraryAlert;
 import org.telegram.ui.Components.AlertsCreator;
 import org.telegram.ui.Components.AnimatedEmojiDrawable;
 import org.telegram.ui.Components.AppIconBulletinLayout;
@@ -6932,6 +6933,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
+        if (PodcastLibraryAlert.onActivityResult(requestCode, resultCode, data)) return;
         if (GramWalletStorageAuth.onActivityResult(this, requestCode, resultCode)) return;
         if (requestCode == SCREEN_CAPTURE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {

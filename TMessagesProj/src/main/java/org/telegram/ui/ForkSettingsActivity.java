@@ -48,6 +48,7 @@ import org.telegram.messenger.forkgram.HiddenAccountHelper;
 import org.telegram.messenger.forkgram.LinkReplacements;
 import org.telegram.messenger.forkgram.UrlTracking;
 import org.telegram.messenger.forkgram.QuickAttachConfig;
+import org.telegram.messenger.forkgram.PodcastShelf;
 import org.telegram.messenger.forkgram.SettingsBackup;
 import org.telegram.messenger.forkgram.WebPublishConfig;
 import org.telegram.messenger.forkgram.SkipOwnVoiceAutoplay;
@@ -134,6 +135,7 @@ public class ForkSettingsActivity extends BaseFragment {
     public static final int ID_HIDE_CONTACTS_TAB = 110;
     public static final int ID_GIF_PLAYBACK_CONTROLS = 111;
     public static final int ID_BLUETOOTH_CALL_CONTROLS = 112;
+    public static final int ID_RSS_PODCASTS = 114;
     public static final int ID_SHOW_ARCHIVED_STICKERS = 45;
     public static final int ID_STICKER_SIZE = 46;
 
@@ -795,6 +797,9 @@ public class ForkSettingsActivity extends BaseFragment {
         items.add(UItem.asSettingsCell(ID_WEB_PUBLISH, LocaleController.getString(R.string.WebPublish), getWebPublishText()));
         items.add(UItem.asShadow(LocaleController.getString(R.string.WebPublishInfo)));
 
+        items.add(UItem.asButtonCheck(ID_RSS_PODCASTS, LocaleController.getString(R.string.RssPodcasts), LocaleController.getString(R.string.RssPodcastsInfo))
+            .setChecked(PodcastShelf.isEnabled()).setMultiline(true));
+
         items.add(UItem.asHeader(LocaleController.getString(R.string.VoiceTimecodesSection)));
         items.add(UItem.asSettingsCell(ID_VOICE_TIMECODES, LocaleController.getString(R.string.VoiceTimecodes), getVoiceTimecodesText()));
         items.add(UItem.asShadow(LocaleController.getString(R.string.VoiceTimecodesInfo)));
@@ -863,6 +868,8 @@ public class ForkSettingsActivity extends BaseFragment {
             toggle("hideGreetingStickers", item, view);
         } else if (id == ID_HIDE_CONTACTS_TAB) {
             toggle("hideContactsTab", item, view);
+        } else if (id == ID_RSS_PODCASTS) {
+            toggle(PodcastShelf.KEY, item, view);
         } else if (id == ID_BLUETOOTH_CALL_CONTROLS) {
             toggle("bluetoothCallControls", item, view);
         } else if (id == ID_GIF_PLAYBACK_CONTROLS) {

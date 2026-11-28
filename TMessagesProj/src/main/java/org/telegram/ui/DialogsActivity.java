@@ -99,6 +99,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.ui.Components.PodcastLibraryAlert;
+import org.telegram.messenger.forkgram.PodcastShelf;
 import org.telegram.messenger.AnimationNotificationsLocker;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BirthdayController;
@@ -13815,6 +13817,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             });
         });
         io.addGap();
+        if (PodcastShelf.isEnabled()) {
+            io.add(R.drawable.podcast_menu, getString(R.string.RssPodcasts), () -> PodcastLibraryAlert.open(this));
+        }
         io.add(R.drawable.outline_saved_24, getString(R.string.SavedMessages), () -> {
             Bundle args = new Bundle();
             args.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());

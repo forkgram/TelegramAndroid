@@ -613,4 +613,18 @@
     <string name="GifPlaybackControlsInfo">Показує керування відтворенням і перемотуванням відео-GIF у переглядачі медіа.</string>
     <string name="PushServiceChannelSettings">Сповіщення служби доставки</string>
     <string name="PushServiceChannelSettingsInfo">Показуйте або приховуйте лише це сповіщення в налаштуваннях Android.</string>
+    <string name="RssPodcasts">Подкасти</string>
+    <string name="RssPodcastsInfo">Показувати «Подкасти» в меню списку чатів. Стрічки й аудіо завантажуються безпосередньо з їхніх HTTPS-серверів.</string>
+    <string name="PodcastAddFeed">Додати стрічку</string>
+    <string name="PodcastFeedHint">HTTPS-посилання на RSS-стрічку</string>
+    <string name="PodcastEmpty">Додайте RSS-стрічку, щоб почати.</string>
+    <string name="PodcastNoEpisodes">Немає епізодів, доступних для відтворення.</string>
+    <string name="PodcastInvalidUrl">Введіть публічне HTTPS-посилання на RSS-стрічку.</string>
+    <string name="PodcastFeedError">Не вдалося завантажити RSS-стрічку.</string>
+    <string name="PodcastAudioError">Не вдалося відкрити епізод.</string>
+    <string name="PodcastImport">Імпорт</string>
+    <string name="PodcastExport">Експорт</string>
+    <string name="PodcastBackupError">Не вдалося імпортувати або експортувати копію подкастів.</string>
+    <string name="PodcastPlayed">Прослухано</string>
+    <string name="PodcastOpenEpisode">Показати випуск у подкастах</string>
 </resources>

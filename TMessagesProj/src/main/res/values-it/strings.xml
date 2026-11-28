@@ -1883,4 +1883,18 @@
     <string name="GifPlaybackControlsInfo">Mostra i controlli di riproduzione e la barra di avanzamento per le GIF basate su video nel visualizzatore multimediale.</string>
     <string name="PushServiceChannelSettings">Notifica del servizio push</string>
     <string name="PushServiceChannelSettingsInfo">Mostra o nascondi solo questa notifica nelle impostazioni di Android.</string>
+    <string name="RssPodcasts">Podcast</string>
+    <string name="RssPodcastsInfo">Mostra Podcast nel menu delle chat. I feed e gli audio vengono caricati direttamente dai loro host HTTPS.</string>
+    <string name="PodcastAddFeed">Aggiungi feed</string>
+    <string name="PodcastFeedHint">URL HTTPS del feed RSS</string>
+    <string name="PodcastEmpty">Aggiungi un feed RSS per iniziare.</string>
+    <string name="PodcastNoEpisodes">Nessun episodio riproducibile.</string>
+    <string name="PodcastInvalidUrl">Inserisci un URL HTTPS di un feed RSS pubblico.</string>
+    <string name="PodcastFeedError">Impossibile caricare il feed RSS.</string>
+    <string name="PodcastAudioError">Impossibile aprire l’episodio.</string>
+    <string name="PodcastImport">Importa</string>
+    <string name="PodcastExport">Esporta</string>
+    <string name="PodcastBackupError">Impossibile importare o esportare il backup dei podcast.</string>
+    <string name="PodcastPlayed">Ascoltato</string>
+    <string name="PodcastOpenEpisode">Mostra episodio nei podcast</string>
 </resources>

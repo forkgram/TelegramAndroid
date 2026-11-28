@@ -86,6 +86,7 @@ import org.telegram.ui.AspectRatioFrameLayout;
 
 import org.telegram.messenger.audioinfo.AudioInfo;
 import org.telegram.messenger.forkgram.SkipOwnVoiceAutoplay;
+import org.telegram.messenger.forkgram.PodcastPlayback;
 //import org.telegram.messenger.chromecast.ChromecastController;
 import org.telegram.messenger.chromecast.ChromecastFileServer;
 import org.telegram.messenger.chromecast.ChromecastMedia;
@@ -2556,6 +2557,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
     }
 
     public void cleanupPlayer(boolean notify, boolean stopService, boolean byVoiceEnd, boolean transferPlayerToPhotoViewer) {
+        PodcastPlayback.saveIfPodcast(playingMessageObject);
         if (stopService && restoreMusicPlaylistState()) {
             return;
         }
@@ -3764,6 +3766,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         if (messageObject == null) {
             return false;
         }
+        final Uri podcastUri = PodcastPlayback.streamUri(messageObject);
         isSilent = silent;
         checkVolumeBarUI();
         if ((audioPlayer != null || videoPlayer != null) && isSamePlayingMessage(messageObject)) {
@@ -3781,8 +3784,9 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         boolean saved = false;
         boolean notify = !playMusicAgain;
         MessageObject oldMessageObject = playingMessageObject;
+        PodcastPlayback.saveIfPodcast(oldMessageObject);
         if (playingMessageObject != null) {
-            if (playingMessageObject.isMusic() && messageObject.isVoice() || messageObject.isRoundVideo() || messageObject.isVideo()) {
+            if (!PodcastPlayback.isPodcast(oldMessageObject) && (playingMessageObject.isMusic() && messageObject.isVoice() || messageObject.isRoundVideo() || messageObject.isVideo())) {
                 saved = saveMusicPlaylistStateIfNeeded();
             }
             notify = false;
@@ -3805,9 +3809,9 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                 file = null;
             }
         }
-        final File cacheFile = file != null ? file : FileLoader.getInstance(messageObject.currentAccount).getPathToMessage(messageObject.messageOwner);
+        final File cacheFile = podcastUri != null ? null : file != null ? file : FileLoader.getInstance(messageObject.currentAccount).getPathToMessage(messageObject.messageOwner);
         boolean canStream = SharedConfig.streamMedia && (messageObject.isMusic() || messageObject.isRoundVideo() || messageObject.isVideo() && messageObject.canStreamVideo()) && !messageObject.shouldEncryptPhotoOrVideo() && !DialogObject.isEncryptedDialog(messageObject.getDialogId());
-        if (cacheFile != file && !(exists = cacheFile.exists()) && !canStream) {
+        if (podcastUri == null && cacheFile != file && !(exists = cacheFile.exists()) && !canStream) {
             FileLoader.getInstance(messageObject.currentAccount).loadFile(messageObject.getDocument(), messageObject, FileLoader.PRIORITY_LOW, messageObject.shouldEncryptPhotoOrVideo() ? 2 : 0);
             downloadingCurrentMessage = true;
             isPaused = false;
@@ -3834,10 +3838,12 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         } else {
             downloadingCurrentMessage = false;
         }
-        if (messageObject.isMusic()) {
-            checkIsNextMusicFileDownloaded(messageObject.currentAccount);
-        } else {
-            checkIsNextVoiceFileDownloaded(messageObject.currentAccount);
+        if (podcastUri == null) {
+            if (messageObject.isMusic()) {
+                checkIsNextMusicFileDownloaded(messageObject.currentAccount);
+            } else {
+                checkIsNextVoiceFileDownloaded(messageObject.currentAccount);
+            }
         }
         if (currentAspectRatioFrameLayout != null) {
             isDrawingWasReady = false;
@@ -4013,10 +4019,20 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                         if (tag != playerNum) {
                             return;
                         }
-                        if (playbackState == ExoPlayer.STATE_ENDED || (playbackState == ExoPlayer.STATE_IDLE || playbackState == ExoPlayer.STATE_BUFFERING) && playWhenReady && messageObject.audioProgress >= 0.999f) {
+                        if (podcastUri != null && playbackState == ExoPlayer.STATE_READY && audioPlayer != null && audioPlayer.player != null) {
+                            long resume = PodcastPlayback.onReady(messageObject, audioPlayer.getDuration(), audioPlayer.player.isCurrentMediaItemSeekable());
+                            if (resume > 0) {
+                                audioPlayer.seekTo(resume);
+                            }
+                        }
+                        if (playbackState == ExoPlayer.STATE_ENDED || podcastUri == null && (playbackState == ExoPlayer.STATE_IDLE || playbackState == ExoPlayer.STATE_BUFFERING) && playWhenReady && messageObject.audioProgress >= 0.999f) {
                             messageObject.audioProgress = 1f;
                             NotificationCenter.getInstance(messageObject.currentAccount).postNotificationName(NotificationCenter.messagePlayingProgressDidChanged, messageObject.getId(), 0);
                             
+                            if (PodcastPlayback.finishIfPodcast(messageObject)) {
+                                cleanupPlayer(true, true, false, false);
+                                return;
+                            }
                             if (messageObject.isMusic() && messageObject.getDuration() > 30) {
                                 String artist = messageObject.getMusicAuthor();
                                 String track = messageObject.getMusicTitle();
@@ -4049,7 +4065,9 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
 
                     @Override
                     public void onError(VideoPlayer player, Exception e) {
-
+                        if (player == audioPlayer && PodcastPlayback.failIfPodcast(messageObject)) {
+                            cleanupPlayer(true, true, false, false);
+                        }
                     }
 
                     @Override
@@ -4072,7 +4090,10 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                         return Theme.getCurrentAudiVisualizerDrawable().getParentView() != null;
                     }
                 });
-                if (exists) {
+                if (podcastUri != null) {
+                    audioPlayer.preparePodcastPlayer(podcastUri);
+                    isStreamingCurrentAudio = true;
+                } else if (exists) {
                     if (!messageObject.mediaExists && cacheFile != file) {
                         AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(messageObject.currentAccount).postNotificationName(NotificationCenter.fileLoaded, FileLoader.getAttachFileName(messageObject.getDocument()), cacheFile));
                     }
@@ -4111,6 +4132,9 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                     if (!saved) {
                         clearPlaylist();
                     }
+                } else if (podcastUri != null) {
+                    audioInfo = null;
+                    audioPlayer.setPlaybackSpeed(currentMusicPlaybackSpeed);
                 } else {
                     try {
                         audioInfo = AudioInfo.getAudioInfo(cacheFile);
@@ -4134,7 +4158,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
                     messageObject.audioProgress = seekToProgressPending = messageObject.forceSeekTo;
                     messageObject.forceSeekTo = -1;
                 }
-                if (messageObject != null && messageObject.isMusic() && messageObject.getDocument() != null && !DialogObject.isEncryptedDialog(messageObject.getDialogId())) {
+                if (podcastUri == null && messageObject != null && messageObject.isMusic() && messageObject.getDocument() != null && !DialogObject.isEncryptedDialog(messageObject.getDialogId())) {
                     if (reporter == null || reporter.currentAccount != messageObject.currentAccount) {
                         if (reporter != null) {
                             reporter.destroy();
@@ -4205,7 +4229,7 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
         startProgressTimer(playingMessageObject);
         NotificationCenter.getInstance(messageObject.currentAccount).postNotificationName(NotificationCenter.messagePlayingDidStart, messageObject, oldMessageObject);
         
-        if (messageObject.isMusic()) {
+        if (messageObject.isMusic() && !PodcastPlayback.isPodcast(messageObject)) {
             String artist = messageObject.getMusicAuthor();
             String track = messageObject.getMusicTitle();
             String album = null;

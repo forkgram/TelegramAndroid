@@ -352,4 +352,18 @@
     <string name="GifPlaybackControlsInfo">کنترل‌های پخش و نوار زمان را برای گیف‌های مبتنی بر ویدیو در نمایشگر رسانه نشان می‌دهد.</string>
     <string name="PushServiceChannelSettings">اعلان سرویس پوش</string>
     <string name="PushServiceChannelSettingsInfo">فقط همین اعلان را در تنظیمات اندروید نمایش دهید یا پنهان کنید.</string>
+    <string name="RssPodcasts">پادکست‌ها</string>
+    <string name="RssPodcastsInfo">پادکست‌ها را در منوی فهرست گفتگوها نشان می‌دهد. خوراک و صوت مستقیماً از میزبان HTTPS دریافت می‌شوند.</string>
+    <string name="PodcastAddFeed">افزودن خوراک</string>
+    <string name="PodcastFeedHint">نشانی HTTPS خوراک RSS</string>
+    <string name="PodcastEmpty">برای شروع یک خوراک RSS اضافه کنید.</string>
+    <string name="PodcastNoEpisodes">قسمت قابل پخشی پیدا نشد.</string>
+    <string name="PodcastInvalidUrl">نشانی HTTPS یک خوراک RSS عمومی را وارد کنید.</string>
+    <string name="PodcastFeedError">بارگیری خوراک RSS ممکن نبود.</string>
+    <string name="PodcastAudioError">باز کردن قسمت ممکن نبود.</string>
+    <string name="PodcastImport">درون‌ریزی</string>
+    <string name="PodcastExport">برون‌ریزی</string>
+    <string name="PodcastBackupError">درون‌ریزی یا برون‌ریزی پشتیبان پادکست ممکن نبود.</string>
+    <string name="PodcastPlayed">شنیده‌شده</string>
+    <string name="PodcastOpenEpisode">نمایش قسمت در پادکست‌ها</string>
 </resources>
