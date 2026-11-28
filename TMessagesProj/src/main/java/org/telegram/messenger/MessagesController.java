@@ -805,9 +805,6 @@ public class MessagesController extends BaseController implements NotificationCe
                 }
                 cursor.dispose();
                 if (messageId != 0) {
-                    if (isReactions) {
-                        getMessagesStorage().markMessageReactionsAsRead(dialogId, topicId, messageId);
-                    }
                     if (isVotes) {
                         getMessagesStorage().markMessagePollVotesAsRead(dialogId, topicId, messageId);
                     }
@@ -838,6 +835,10 @@ public class MessagesController extends BaseController implements NotificationCe
                     request = req;
                 }
                 getConnectionsManager().sendRequestTyped(request, AndroidUtilities::runOnUIThread, (res, error) -> {
+                    if (isReactions && (error != null || res == null)) {
+                        callback.accept(null);
+                        return;
+                    }
                     int messageId = 0;
                     if (error == null && res != null && res.messages != null && !res.messages.isEmpty()) {
                         messageId = res.messages.get(0).id;

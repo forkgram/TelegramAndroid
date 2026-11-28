@@ -555,6 +555,9 @@ public class ChatActivity extends BaseFragment implements
     private boolean pagedownButtonShowedByScroll;
     private ActionBarMenuSubItem hideTitleItem;
     private int reactionsMentionCount;
+    private final HashSet<Integer> countedReactionMessages = new HashSet<>();
+    private int reactionsTapGeneration;
+    private boolean reactionsTapPending;
     private int pollVotesMentionCount;
     public Bulletin messageSeenPrivacyBulletin;
     TextView webBotTitle;
@@ -10966,6 +10969,7 @@ public class ChatActivity extends BaseFragment implements
             }
 
             reactionsMentionCount = topic != null ? topic.unread_reactions_count : 0;
+            resetReactionsTapState();
             pollVotesMentionCount = topic != null ? topic.unread_poll_votes_count : 0;
             updateReactionsMentionButton(false);
             updatePollVotesMentionButton(false);
@@ -11070,6 +11074,7 @@ public class ChatActivity extends BaseFragment implements
             applyDraftMaybe(true, true);
 
             reactionsMentionCount = topic != null ? topic.unread_reactions_count : 0;
+            resetReactionsTapState();
             pollVotesMentionCount = topic != null ? topic.unread_poll_votes_count : 0;
             updateReactionsMentionButton(false);
             updatePollVotesMentionButton(false);
@@ -17458,7 +17463,9 @@ public class ChatActivity extends BaseFragment implements
                     updatePollVotesMentionButton(true);
                 }
                 if (messageObject != null && fragmentOpened && openAnimationEnded && (chatListItemAnimator == null || !chatListItemAnimator.isRunning()) && messageCell.checkUnreadReactions(clipTop, chatListView.getMeasuredHeight() - blurredViewBottomOffset)) {
-                    reactionsMentionCount--;
+                    if (countedReactionMessages.add(messageObject.getId())) {
+                        reactionsMentionCount--;
+                    }
                     getMessagesStorage().markMessageReactionsAsRead(getDialogId(), getTopicId(), messageObject.getId());
                     if (reactionsMentionCount <= 0) {
                         getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
@@ -17492,7 +17499,9 @@ public class ChatActivity extends BaseFragment implements
                 }
                 hasTopicSeparator = cell.topicSeparator != null;
                 if (messageObject != null && fragmentOpened && openAnimationEnded && (chatListItemAnimator == null || !chatListItemAnimator.isRunning()) && cell.checkUnreadReactions(clipTop, chatListView.getMeasuredHeight() - blurredViewBottomOffset)) {
-                    reactionsMentionCount--;
+                    if (countedReactionMessages.add(messageObject.getId())) {
+                        reactionsMentionCount--;
+                    }
                     getMessagesStorage().markMessageReactionsAsRead(getDialogId(), getTopicId(), messageObject.getId());
                     if (reactionsMentionCount <= 0) {
                         getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
@@ -26055,6 +26064,7 @@ public class ChatActivity extends BaseFragment implements
             long topicId = (long) args[1];
             if (dialogId == dialog_id && ((!isTopic && (!ChatObject.isMonoForum(currentChat) || getTopicId() == 0)) || topicId == getTopicId())) {
                 reactionsMentionCount = (int) args[2];
+                resetReactionsTapState();
                 ArrayList<Integer> messages = null;
                 if (args[2] != null) {
                     messages = (ArrayList<Integer>) args[3];
@@ -48607,6 +48617,12 @@ public class ChatActivity extends BaseFragment implements
         }
     }
 
+    private void resetReactionsTapState() {
+        reactionsTapGeneration++;
+        reactionsTapPending = false;
+        countedReactionMessages.clear();
+    }
+
     private void onSideControlButtonOnClick(int buttonId, View v) {
         if (buttonId == ChatActivitySideControlsButtonsLayout.BUTTON_PAGE_DOWN) {
             onPageDownClicked();
@@ -48614,12 +48630,32 @@ public class ChatActivity extends BaseFragment implements
             loadLastUnreadMention();
         } else if (buttonId == ChatActivitySideControlsButtonsLayout.BUTTON_REACTIONS) {
             wasManualScroll = true;
+            if (reactionsTapPending) {
+                return;
+            }
+            reactionsTapPending = true;
+            final int generation = reactionsTapGeneration;
             getMessagesController().getNextReactionMention(dialog_id, getTopicId(), reactionsMentionCount, (messageId) -> {
+                if (generation != reactionsTapGeneration) {
+                    return;
+                }
+                reactionsTapPending = false;
+                if (messageId == null) {
+                    return;
+                }
                 if (messageId == 0) {
                     reactionsMentionCount = 0;
                     updateReactionsMentionButton(true);
                     getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
                 } else {
+                    if (countedReactionMessages.add(messageId)) {
+                        reactionsMentionCount--;
+                    }
+                    getMessagesStorage().markMessageReactionsAsRead(dialog_id, getTopicId(), messageId);
+                    if (reactionsMentionCount <= 0) {
+                        reactionsMentionCount = 0;
+                        getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
+                    }
                     updateReactionsMentionButton(true);
                     scrollToMessageId(messageId, 0, false, 0, true, 0);
                 }
@@ -48739,6 +48775,7 @@ public class ChatActivity extends BaseFragment implements
                     messages.get(i).markReactionsAsRead();
                 }
                 reactionsMentionCount = 0;
+                resetReactionsTapState();
                 updateReactionsMentionButton(true);
                 getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
                 if (scrimPopupWindow != null) {
